@@ -14,12 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CFMS.Application\CFMS.Application.csproj" />
-    <ProjectReference Include="..\CFMS.Contracts\CFMS.Contracts.csproj" />
     <ProjectReference Include="..\CFMS.Infrastructure\CFMS.Infrastructure.csproj" />
   </ItemGroup>
 

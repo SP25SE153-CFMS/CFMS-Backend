@@ -1,17 +1,17 @@
-﻿using System;
+﻿using ErrorOr;
+using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace CFMS.Contracts.Tokens
+namespace CFMS.Application.Tokens.Queries
 {
-    public record GenerateTokenRequest(
-        [property: JsonIgnore]
+    public record GenerateTokenQuery(
         Guid? Id,
         string FirstName,
         string LastName,
         string Email,
-        List<string> Roles);
+        List<string> Roles) : IRequest<ErrorOr<GenerateTokenResult>>;
 }

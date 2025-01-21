@@ -13,4 +13,8 @@
     <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CFMS.Contracts\CFMS.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>
