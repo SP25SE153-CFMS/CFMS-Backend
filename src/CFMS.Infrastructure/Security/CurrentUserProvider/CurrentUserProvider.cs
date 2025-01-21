@@ -18,7 +18,6 @@ namespace CFMS.Infrastructure.Security.CurrentUserProvider
             _httpContextAccessor.HttpContext.ThrowIfNull();
 
             var id = Guid.Parse(GetSingleClaimValue("id"));
-            var permissions = GetClaimValues("permissions");
             var roles = GetClaimValues(ClaimTypes.Role);
             var firstName = GetSingleClaimValue(JwtRegisteredClaimNames.Name);
             var lastName = GetSingleClaimValue(ClaimTypes.Surname);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Contracts.Common.Enums
 {
-    internal class Enum
+    internal class EnumExam
     {
     }
 }

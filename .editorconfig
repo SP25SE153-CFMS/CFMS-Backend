@@ -1,0 +1,2 @@
+[*.cs]
+dotnet_code_quality.remove_unused_usings = true
