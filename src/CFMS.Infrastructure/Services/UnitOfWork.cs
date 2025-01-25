@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CFMS.Domain.Interfaces;
 
 namespace CFMS.Infrastructure.Services
 {
-    public class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
     }
 }

@@ -12,4 +12,14 @@
     <PackageReference Include="Throw" Version="1.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CFMS.Domain.Core\CFMS.Domain.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\" />
+    <Folder Include="EventHandlers\" />
+    <Folder Include="Events\" />
+  </ItemGroup>
+
 </Project>

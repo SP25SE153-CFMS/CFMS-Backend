@@ -1,4 +1,5 @@
-﻿using ErrorOr;
+﻿using CFMS.Domain.Core.Commands;
+using ErrorOr;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,5 @@ namespace CFMS.Application.Tokens.Queries
         string FirstName,
         string LastName,
         string Email,
-        List<string> Roles) : IRequest<ErrorOr<GenerateTokenResult>>;
+        List<string> Roles) : IRequest<ErrorOr<GenerateTokenResult>>, ICommand;
 }
