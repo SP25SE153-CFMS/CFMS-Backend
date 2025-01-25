@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CFMS.Application\CFMS.Application.csproj" />
-    <ProjectReference Include="..\CFMS.Infrastructure\CFMS.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

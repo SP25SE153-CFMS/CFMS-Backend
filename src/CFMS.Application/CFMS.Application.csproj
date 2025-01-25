@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CFMS.Contracts\CFMS.Contracts.csproj" />
     <ProjectReference Include="..\CFMS.Domain\CFMS.Domain.csproj" />
+    <ProjectReference Include="..\CFMS.Infrastructure\CFMS.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

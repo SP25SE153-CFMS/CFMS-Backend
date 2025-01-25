@@ -11,8 +11,4 @@
     <PackageReference Include="Throw" Version="1.4.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CFMS.Domain\CFMS.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

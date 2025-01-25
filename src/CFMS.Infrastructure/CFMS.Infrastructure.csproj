@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CFMS.Application\CFMS.Application.csproj" />
     <ProjectReference Include="..\CFMS.Domain\CFMS.Domain.csproj" />
   </ItemGroup>
 
