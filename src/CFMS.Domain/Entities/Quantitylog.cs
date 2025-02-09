@@ -19,9 +19,9 @@ public partial class Quantitylog
 
     public Guid? Reasonid { get; set; }
 
-    public List<User> Users { get; set; } = new();
-
     public virtual Flock Flock { get; set; } = null!;
 
     public virtual Reason? Reason { get; set; }
+
+    public List<User> Users { get; set; } = new List<User>();
 }

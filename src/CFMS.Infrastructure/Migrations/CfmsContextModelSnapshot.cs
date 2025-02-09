@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CFMS.Domain.Migrations
 {
-    [DbContext(typeof(CfmsContext))]
+    [DbContext(typeof(CfmsDbContext))]
     partial class CfmsContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -60,9 +60,9 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Assignmentid")
                         .HasName("assignment_pkey");
 
-                    b.HasIndex("Taskid");
+                    b.HasIndex(new[] { "Taskid" }, "IX_assignment_taskid");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex(new[] { "Userid" }, "IX_assignment_userid");
 
                     b.ToTable("assignment", (string)null);
                 });
@@ -137,7 +137,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Breadingareaid")
                         .HasName("breadingarea_pkey");
 
-                    b.HasIndex("Farmid");
+                    b.HasIndex(new[] { "Farmid" }, "IX_breadingarea_farmid");
 
                     b.HasIndex(new[] { "Breadingareacode" }, "breadingarea_breadingareacode_key")
                         .IsUnique();
@@ -185,9 +185,9 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Breadingequipmentid")
                         .HasName("breadingequipment_pkey");
 
-                    b.HasIndex("Breadingareaid");
+                    b.HasIndex(new[] { "Breadingareaid" }, "IX_breadingequipment_breadingareaid");
 
-                    b.HasIndex("Equipmentid");
+                    b.HasIndex(new[] { "Equipmentid" }, "IX_breadingequipment_equipmentid");
 
                     b.ToTable("breadingequipment", (string)null);
                 });
@@ -260,9 +260,9 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Chickenbatchid")
                         .HasName("chickenbatch_pkey");
 
-                    b.HasIndex("Breadingareaid");
+                    b.HasIndex(new[] { "Breadingareaid" }, "IX_chickenbatch_breadingareaid");
 
-                    b.HasIndex("Flockid");
+                    b.HasIndex(new[] { "Flockid" }, "IX_chickenbatch_flockid");
 
                     b.ToTable("chickenbatch", (string)null);
                 });
@@ -299,7 +299,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Dtaskid")
                         .HasName("dailytask_pkey");
 
-                    b.HasIndex("Taskid");
+                    b.HasIndex(new[] { "Taskid" }, "IX_dailytask_taskid");
 
                     b.ToTable("dailytask", (string)null);
                 });
@@ -383,6 +383,107 @@ namespace CFMS.Domain.Migrations
                     b.ToTable("equipment", (string)null);
                 });
 
+            modelBuilder.Entity("CFMS.Domain.Entities.Evaluationcriterion", b =>
+                {
+                    b.Property<Guid>("Criteriaid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("criteriaid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Criterianame")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("criterianame");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<double?>("Maxvalue")
+                        .HasColumnType("double precision")
+                        .HasColumnName("maxvalue");
+
+                    b.Property<double?>("Minvalue")
+                        .HasColumnType("double precision")
+                        .HasColumnName("minvalue");
+
+                    b.Property<string>("Tasktype")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("tasktype");
+
+                    b.Property<string>("Unit")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("unit");
+
+                    b.HasKey("Criteriaid")
+                        .HasName("evaluationcriteria_pkey");
+
+                    b.ToTable("evaluationcriteria", (string)null);
+                });
+
+            modelBuilder.Entity("CFMS.Domain.Entities.Evaluationsummary", b =>
+                {
+                    b.Property<Guid>("Summaryid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("summaryid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<Guid>("Criteriaid")
+                        .HasColumnType("uuid")
+                        .HasColumnName("criteriaid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime?>("Evaluationdate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("evaluationdate")
+                        .HasDefaultValueSql("now()");
+
+                    b.Property<int>("Failedcriteria")
+                        .HasColumnType("integer")
+                        .HasColumnName("failedcriteria");
+
+                    b.Property<bool>("Overallresult")
+                        .HasColumnType("boolean")
+                        .HasColumnName("overallresult");
+
+                    b.Property<int>("Passedcriteria")
+                        .HasColumnType("integer")
+                        .HasColumnName("passedcriteria");
+
+                    b.Property<Guid>("Taskid")
+                        .HasColumnType("uuid")
+                        .HasColumnName("taskid");
+
+                    b.Property<string>("Tasktype")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("tasktype");
+
+                    b.Property<int>("Totalcriteria")
+                        .HasColumnType("integer")
+                        .HasColumnName("totalcriteria");
+
+                    b.Property<Guid>("Userid")
+                        .HasColumnType("uuid")
+                        .HasColumnName("userid");
+
+                    b.HasKey("Summaryid")
+                        .HasName("evaluationsummary_pkey");
+
+                    b.ToTable("evaluationsummary", (string)null);
+                });
+
             modelBuilder.Entity("CFMS.Domain.Entities.Expireddamaged", b =>
                 {
                     b.Property<Guid>("Edproductid")
@@ -418,7 +519,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Edproductid")
                         .HasName("expireddamaged_pkey");
 
-                    b.HasIndex("Productid");
+                    b.HasIndex(new[] { "Productid" }, "IX_expireddamaged_productid");
 
                     b.ToTable("expireddamaged", (string)null);
                 });
@@ -473,11 +574,11 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Eproductid")
                         .HasName("exportedproduct_pkey");
 
-                    b.HasIndex("Chickenbatchid");
+                    b.HasIndex(new[] { "Chickenbatchid" }, "IX_exportedproduct_chickenbatchid");
 
-                    b.HasIndex("Farmid");
+                    b.HasIndex(new[] { "Farmid" }, "IX_exportedproduct_farmid");
 
-                    b.HasIndex("Productid");
+                    b.HasIndex(new[] { "Productid" }, "IX_exportedproduct_productid");
 
                     b.HasIndex(new[] { "Productcode" }, "exportedproduct_productcode_key")
                         .IsUnique();
@@ -545,7 +646,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Farmid")
                         .HasName("farm_pkey");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex(new[] { "Userid" }, "IX_farm_userid");
 
                     b.HasIndex(new[] { "Farmcode" }, "farm_farmcode_key")
                         .IsUnique();
@@ -624,9 +725,9 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Flockid")
                         .HasName("flock_pkey");
 
-                    b.HasIndex("Breedid");
+                    b.HasIndex(new[] { "Breedid" }, "IX_flock_breedid");
 
-                    b.HasIndex("Purposeid");
+                    b.HasIndex(new[] { "Purposeid" }, "IX_flock_purposeid");
 
                     b.ToTable("flock", (string)null);
                 });
@@ -668,7 +769,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Foodid")
                         .HasName("food_pkey");
 
-                    b.HasIndex("Supplierid");
+                    b.HasIndex(new[] { "Supplierid" }, "IX_food_supplierid");
 
                     b.ToTable("food", (string)null);
                 });
@@ -719,7 +820,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Htaskid")
                         .HasName("harvesttask_pkey");
 
-                    b.HasIndex("Taskid");
+                    b.HasIndex(new[] { "Taskid" }, "IX_harvesttask_taskid");
 
                     b.ToTable("harvesttask", (string)null);
                 });
@@ -780,7 +881,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Hlogid")
                         .HasName("healthlog_pkey");
 
-                    b.HasIndex("Flockid");
+                    b.HasIndex(new[] { "Flockid" }, "IX_healthlog_flockid");
 
                     b.ToTable("healthlog", (string)null);
                 });
@@ -827,9 +928,9 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Auditid")
                         .HasName("inventoryaudit_pkey");
 
-                    b.HasIndex("Productid");
+                    b.HasIndex(new[] { "Productid" }, "IX_inventoryaudit_productid");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex(new[] { "Userid" }, "IX_inventoryaudit_userid");
 
                     b.ToTable("inventoryaudit", (string)null);
                 });
@@ -883,13 +984,13 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Nutritionid")
                         .HasName("nutrition_pkey");
 
-                    b.HasIndex("Feedscheduleid");
+                    b.HasIndex(new[] { "Feedscheduleid" }, "IX_nutrition_feedscheduleid");
 
-                    b.HasIndex("Flockid");
+                    b.HasIndex(new[] { "Flockid" }, "IX_nutrition_flockid");
 
-                    b.HasIndex("Foodid");
+                    b.HasIndex(new[] { "Foodid" }, "IX_nutrition_foodid");
 
-                    b.HasIndex("Waterid");
+                    b.HasIndex(new[] { "Waterid" }, "IX_nutrition_waterid");
 
                     b.ToTable("nutrition", (string)null);
                 });
@@ -947,7 +1048,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Perstaid")
                         .HasName("performancestatistic_pkey");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex(new[] { "Userid" }, "IX_performancestatistic_userid");
 
                     b.ToTable("performancestatistic", (string)null);
                 });
@@ -998,7 +1099,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Productid")
                         .HasName("product_pkey");
 
-                    b.HasIndex("Supplierid");
+                    b.HasIndex(new[] { "Supplierid" }, "IX_product_supplierid");
 
                     b.HasIndex(new[] { "Productcode" }, "product_productcode_key")
                         .IsUnique();
@@ -1066,9 +1167,9 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Qlogid")
                         .HasName("quantitylog_pkey");
 
-                    b.HasIndex("Flockid");
+                    b.HasIndex(new[] { "Flockid" }, "IX_quantitylog_flockid");
 
-                    b.HasIndex("Reasonid");
+                    b.HasIndex(new[] { "Reasonid" }, "IX_quantitylog_reasonid");
 
                     b.ToTable("quantitylog", (string)null);
                 });
@@ -1196,7 +1297,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Salaryid")
                         .HasName("salary_pkey");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex(new[] { "Userid" }, "IX_salary_userid");
 
                     b.ToTable("salary", (string)null);
                 });
@@ -1285,7 +1386,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Taskid")
                         .HasName("task_pkey");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex(new[] { "Userid" }, "IX_task_userid");
 
                     b.ToTable("task", (string)null);
                 });
@@ -1317,9 +1418,9 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Timekeepingid")
                         .HasName("time_keeping_pkey");
 
-                    b.HasIndex("Timekeepingtype");
+                    b.HasIndex(new[] { "Timekeepingtype" }, "IX_time_keeping_timekeepingtype");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex(new[] { "Userid" }, "IX_time_keeping_userid");
 
                     b.ToTable("time_keeping", (string)null);
                 });
@@ -1401,7 +1502,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Userid")
                         .HasName("users_pkey");
 
-                    b.HasIndex("Roleid");
+                    b.HasIndex(new[] { "Roleid" }, "IX_users_roleid");
 
                     b.HasIndex(new[] { "Cccd" }, "users_cccd_key")
                         .IsUnique();
@@ -1451,9 +1552,9 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Vlogid")
                         .HasName("vaccinationlog_pkey");
 
-                    b.HasIndex("Flockid");
+                    b.HasIndex(new[] { "Flockid" }, "IX_vaccinationlog_flockid");
 
-                    b.HasIndex("Vaccineid");
+                    b.HasIndex(new[] { "Vaccineid" }, "IX_vaccinationlog_vaccineid");
 
                     b.ToTable("vaccinationlog", (string)null);
                 });
@@ -1508,9 +1609,9 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Vaccineid")
                         .HasName("vaccine_pkey");
 
-                    b.HasIndex("Diseaseid");
+                    b.HasIndex(new[] { "Diseaseid" }, "IX_vaccine_diseaseid");
 
-                    b.HasIndex("Supplierid");
+                    b.HasIndex(new[] { "Supplierid" }, "IX_vaccine_supplierid");
 
                     b.ToTable("vaccine", (string)null);
                 });
@@ -1565,7 +1666,7 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Waterid")
                         .HasName("water_pkey");
 
-                    b.HasIndex("Supplierid");
+                    b.HasIndex(new[] { "Supplierid" }, "IX_water_supplierid");
 
                     b.ToTable("water", (string)null);
                 });
@@ -1603,11 +1704,26 @@ namespace CFMS.Domain.Migrations
                     b.HasKey("Workscheduleid")
                         .HasName("workschedule_pkey");
 
-                    b.HasIndex("Taskid");
+                    b.HasIndex(new[] { "Taskid" }, "IX_workschedule_taskid");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex(new[] { "Userid" }, "IX_workschedule_userid");
 
                     b.ToTable("workschedule", (string)null);
+                });
+
+            modelBuilder.Entity("EvaluationSummaryCriteria", b =>
+                {
+                    b.Property<Guid>("criteriaId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("summaryId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("criteriaId", "summaryId");
+
+                    b.HasIndex("summaryId");
+
+                    b.ToTable("evaluation_summary_criteria", (string)null);
                 });
 
             modelBuilder.Entity("UserHealthLog", b =>
@@ -1638,6 +1754,21 @@ namespace CFMS.Domain.Migrations
                     b.HasIndex("userId");
 
                     b.ToTable("user_quantity_log", (string)null);
+                });
+
+            modelBuilder.Entity("UserSummary", b =>
+                {
+                    b.Property<Guid>("summaryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("userId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("summaryId", "userId");
+
+                    b.HasIndex("userId");
+
+                    b.ToTable("user_summary_log", (string)null);
                 });
 
             modelBuilder.Entity("UserVaccineLog", b =>
@@ -2087,6 +2218,21 @@ namespace CFMS.Domain.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("EvaluationSummaryCriteria", b =>
+                {
+                    b.HasOne("CFMS.Domain.Entities.Evaluationcriterion", null)
+                        .WithMany()
+                        .HasForeignKey("criteriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CFMS.Domain.Entities.Evaluationsummary", null)
+                        .WithMany()
+                        .HasForeignKey("summaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("UserHealthLog", b =>
                 {
                     b.HasOne("CFMS.Domain.Entities.Healthlog", null)
@@ -2107,6 +2253,21 @@ namespace CFMS.Domain.Migrations
                     b.HasOne("CFMS.Domain.Entities.Quantitylog", null)
                         .WithMany()
                         .HasForeignKey("qLogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CFMS.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UserSummary", b =>
+                {
+                    b.HasOne("CFMS.Domain.Entities.Evaluationsummary", null)
+                        .WithMany()
+                        .HasForeignKey("summaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

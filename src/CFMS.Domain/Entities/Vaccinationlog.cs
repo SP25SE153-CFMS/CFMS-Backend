@@ -21,9 +21,9 @@ public partial class Vaccinationlog
 
     public Guid Flockid { get; set; }
 
-    public List<User> Users { get; set; } = new();
-
     public virtual Flock Flock { get; set; } = null!;
 
     public virtual Vaccine Vaccine { get; set; } = null!;
+
+    public List<User> Users { get; set; } = new List<User>();
 }

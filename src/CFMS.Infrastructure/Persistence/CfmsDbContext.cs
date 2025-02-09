@@ -5,13 +5,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace CFMS.Domain.Entities;
 
-public partial class CfmsContext : DbContext
+public partial class CfmsDbContext : DbContext
 {
-    public CfmsContext()
+    public CfmsDbContext()
     {
     }
 
-    public CfmsContext(DbContextOptions<CfmsContext> options)
+    public CfmsDbContext(DbContextOptions<CfmsDbContext> options)
         : base(options)
     {
     }
@@ -31,6 +31,10 @@ public partial class CfmsContext : DbContext
     public virtual DbSet<Disease> Diseases { get; set; }
 
     public virtual DbSet<Equipment> Equipment { get; set; }
+
+    public virtual DbSet<Evaluationcriterion> Evaluationcriteria { get; set; }
+
+    public virtual DbSet<Evaluationsummary> Evaluationsummaries { get; set; }
 
     public virtual DbSet<Expireddamaged> Expireddamageds { get; set; }
 
@@ -132,6 +136,10 @@ public partial class CfmsContext : DbContext
 
             entity.ToTable("assignment");
 
+            entity.HasIndex(e => e.Taskid, "IX_assignment_taskid");
+
+            entity.HasIndex(e => e.Userid, "IX_assignment_userid");
+
             entity.Property(e => e.Assignmentid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("assignmentid");
@@ -163,6 +171,8 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Breadingareaid).HasName("breadingarea_pkey");
 
             entity.ToTable("breadingarea");
+
+            entity.HasIndex(e => e.Farmid, "IX_breadingarea_farmid");
 
             entity.HasIndex(e => e.Breadingareacode, "breadingarea_breadingareacode_key").IsUnique();
 
@@ -209,6 +219,10 @@ public partial class CfmsContext : DbContext
 
             entity.ToTable("breadingequipment");
 
+            entity.HasIndex(e => e.Breadingareaid, "IX_breadingequipment_breadingareaid");
+
+            entity.HasIndex(e => e.Equipmentid, "IX_breadingequipment_equipmentid");
+
             entity.Property(e => e.Breadingequipmentid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("breadingequipmentid");
@@ -251,6 +265,10 @@ public partial class CfmsContext : DbContext
 
             entity.ToTable("chickenbatch");
 
+            entity.HasIndex(e => e.Breadingareaid, "IX_chickenbatch_breadingareaid");
+
+            entity.HasIndex(e => e.Flockid, "IX_chickenbatch_flockid");
+
             entity.Property(e => e.Chickenbatchid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("chickenbatchid");
@@ -278,6 +296,8 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Dtaskid).HasName("dailytask_pkey");
 
             entity.ToTable("dailytask");
+
+            entity.HasIndex(e => e.Taskid, "IX_dailytask_taskid");
 
             entity.Property(e => e.Dtaskid)
                 .HasDefaultValueSql("gen_random_uuid()")
@@ -336,11 +356,89 @@ public partial class CfmsContext : DbContext
             entity.Property(e => e.Warrantyperiod).HasColumnName("warrantyperiod");
         });
 
+        modelBuilder.Entity<Evaluationcriterion>(entity =>
+        {
+            entity.HasKey(e => e.Criteriaid).HasName("evaluationcriteria_pkey");
+
+            entity.ToTable("evaluationcriteria");
+
+            entity.Property(e => e.Criteriaid)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .HasColumnName("criteriaid");
+            entity.Property(e => e.Criterianame)
+                .HasMaxLength(255)
+                .HasColumnName("criterianame");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Maxvalue).HasColumnName("maxvalue");
+            entity.Property(e => e.Minvalue).HasColumnName("minvalue");
+            entity.Property(e => e.Tasktype)
+                .HasMaxLength(50)
+                .HasColumnName("tasktype");
+            entity.Property(e => e.Unit)
+                .HasMaxLength(50)
+                .HasColumnName("unit");
+
+            entity.HasMany(v => v.EvaluationSummaries)
+                .WithMany(u => u.EvaluationCriterions)
+                .UsingEntity<Dictionary<string, object>>(
+                    "EvaluationSummaryCriteria",
+                    j => j.HasOne<Evaluationsummary>().WithMany().HasForeignKey("summaryId"),
+                    j => j.HasOne<Evaluationcriterion>().WithMany().HasForeignKey("criteriaId"),
+                    j => j.ToTable("evaluation_summary_criteria")
+                );
+        });
+
+        modelBuilder.Entity<Evaluationsummary>(entity =>
+        {
+            entity.HasKey(e => e.Summaryid).HasName("evaluationsummary_pkey");
+
+            entity.ToTable("evaluationsummary");
+
+            entity.Property(e => e.Summaryid)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .HasColumnName("summaryid");
+            entity.Property(e => e.Criteriaid).HasColumnName("criteriaid");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Evaluationdate)
+                .HasDefaultValueSql("now()")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("evaluationdate");
+            entity.Property(e => e.Failedcriteria).HasColumnName("failedcriteria");
+            entity.Property(e => e.Overallresult).HasColumnName("overallresult");
+            entity.Property(e => e.Passedcriteria).HasColumnName("passedcriteria");
+            entity.Property(e => e.Taskid).HasColumnName("taskid");
+            entity.Property(e => e.Tasktype)
+                .HasMaxLength(50)
+                .HasColumnName("tasktype");
+            entity.Property(e => e.Totalcriteria).HasColumnName("totalcriteria");
+            entity.Property(e => e.Userid).HasColumnName("userid");
+
+            entity.HasMany(v => v.Users)
+                .WithMany(u => u.EvaluationSummaries)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserSummary",
+                    j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
+                    j => j.HasOne<Evaluationsummary>().WithMany().HasForeignKey("summaryId"),
+                    j => j.ToTable("user_summary_log")
+                );
+
+            entity.HasMany(v => v.EvaluationCriterions)
+                .WithMany(u => u.EvaluationSummaries)
+                .UsingEntity<Dictionary<string, object>>(
+                    "EvaluationSummaryCriteria",
+                    j => j.HasOne<Evaluationcriterion>().WithMany().HasForeignKey("criteriaId"),
+                    j => j.HasOne<Evaluationsummary>().WithMany().HasForeignKey("summaryId"),
+                    j => j.ToTable("evaluation_summary_criteria")
+                );
+        });
+
         modelBuilder.Entity<Expireddamaged>(entity =>
         {
             entity.HasKey(e => e.Edproductid).HasName("expireddamaged_pkey");
 
             entity.ToTable("expireddamaged");
+
+            entity.HasIndex(e => e.Productid, "IX_expireddamaged_productid");
 
             entity.Property(e => e.Edproductid)
                 .HasDefaultValueSql("gen_random_uuid()")
@@ -364,6 +462,12 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Eproductid).HasName("exportedproduct_pkey");
 
             entity.ToTable("exportedproduct");
+
+            entity.HasIndex(e => e.Chickenbatchid, "IX_exportedproduct_chickenbatchid");
+
+            entity.HasIndex(e => e.Farmid, "IX_exportedproduct_farmid");
+
+            entity.HasIndex(e => e.Productid, "IX_exportedproduct_productid");
 
             entity.HasIndex(e => e.Productcode, "exportedproduct_productcode_key").IsUnique();
 
@@ -402,6 +506,8 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Farmid).HasName("farm_pkey");
 
             entity.ToTable("farm");
+
+            entity.HasIndex(e => e.Userid, "IX_farm_userid");
 
             entity.HasIndex(e => e.Farmcode, "farm_farmcode_key").IsUnique();
 
@@ -460,6 +566,10 @@ public partial class CfmsContext : DbContext
 
             entity.ToTable("flock");
 
+            entity.HasIndex(e => e.Breedid, "IX_flock_breedid");
+
+            entity.HasIndex(e => e.Purposeid, "IX_flock_purposeid");
+
             entity.Property(e => e.Flockid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("flockid");
@@ -487,6 +597,8 @@ public partial class CfmsContext : DbContext
 
             entity.ToTable("food");
 
+            entity.HasIndex(e => e.Supplierid, "IX_food_supplierid");
+
             entity.Property(e => e.Foodid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("foodid");
@@ -508,6 +620,8 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Htaskid).HasName("harvesttask_pkey");
 
             entity.ToTable("harvesttask");
+
+            entity.HasIndex(e => e.Taskid, "IX_harvesttask_taskid");
 
             entity.Property(e => e.Htaskid)
                 .HasDefaultValueSql("gen_random_uuid()")
@@ -551,6 +665,8 @@ public partial class CfmsContext : DbContext
 
             entity.ToTable("healthlog");
 
+            entity.HasIndex(e => e.Flockid, "IX_healthlog_flockid");
+
             entity.Property(e => e.Hlogid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("hlogid");
@@ -571,7 +687,7 @@ public partial class CfmsContext : DbContext
                     j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
                     j => j.HasOne<Healthlog>().WithMany().HasForeignKey("hLogId"),
                     j => j.ToTable("user_health_log")
-    );
+                );
         });
 
         modelBuilder.Entity<Inventoryaudit>(entity =>
@@ -579,6 +695,10 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Auditid).HasName("inventoryaudit_pkey");
 
             entity.ToTable("inventoryaudit");
+
+            entity.HasIndex(e => e.Productid, "IX_inventoryaudit_productid");
+
+            entity.HasIndex(e => e.Userid, "IX_inventoryaudit_userid");
 
             entity.Property(e => e.Auditid)
                 .HasDefaultValueSql("gen_random_uuid()")
@@ -608,6 +728,14 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Nutritionid).HasName("nutrition_pkey");
 
             entity.ToTable("nutrition");
+
+            entity.HasIndex(e => e.Feedscheduleid, "IX_nutrition_feedscheduleid");
+
+            entity.HasIndex(e => e.Flockid, "IX_nutrition_flockid");
+
+            entity.HasIndex(e => e.Foodid, "IX_nutrition_foodid");
+
+            entity.HasIndex(e => e.Waterid, "IX_nutrition_waterid");
 
             entity.Property(e => e.Nutritionid)
                 .HasDefaultValueSql("gen_random_uuid()")
@@ -650,6 +778,8 @@ public partial class CfmsContext : DbContext
 
             entity.ToTable("performancestatistic");
 
+            entity.HasIndex(e => e.Userid, "IX_performancestatistic_userid");
+
             entity.Property(e => e.Perstaid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("perstaid");
@@ -683,6 +813,8 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Productid).HasName("product_pkey");
 
             entity.ToTable("product");
+
+            entity.HasIndex(e => e.Supplierid, "IX_product_supplierid");
 
             entity.HasIndex(e => e.Productcode, "product_productcode_key").IsUnique();
 
@@ -726,6 +858,10 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Qlogid).HasName("quantitylog_pkey");
 
             entity.ToTable("quantitylog");
+
+            entity.HasIndex(e => e.Flockid, "IX_quantitylog_flockid");
+
+            entity.HasIndex(e => e.Reasonid, "IX_quantitylog_reasonid");
 
             entity.Property(e => e.Qlogid)
                 .HasDefaultValueSql("gen_random_uuid()")
@@ -803,6 +939,8 @@ public partial class CfmsContext : DbContext
 
             entity.ToTable("salary");
 
+            entity.HasIndex(e => e.Userid, "IX_salary_userid");
+
             entity.Property(e => e.Salaryid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("salaryid");
@@ -863,6 +1001,8 @@ public partial class CfmsContext : DbContext
 
             entity.ToTable("task");
 
+            entity.HasIndex(e => e.Userid, "IX_task_userid");
+
             entity.Property(e => e.Taskid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("taskid");
@@ -899,6 +1039,10 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Timekeepingid).HasName("time_keeping_pkey");
 
             entity.ToTable("time_keeping");
+
+            entity.HasIndex(e => e.Timekeepingtype, "IX_time_keeping_timekeepingtype");
+
+            entity.HasIndex(e => e.Userid, "IX_time_keeping_userid");
 
             entity.Property(e => e.Timekeepingid)
                 .HasDefaultValueSql("gen_random_uuid()")
@@ -942,6 +1086,8 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Userid).HasName("users_pkey");
 
             entity.ToTable("users");
+
+            entity.HasIndex(e => e.Roleid, "IX_users_roleid");
 
             entity.HasIndex(e => e.Cccd, "users_cccd_key").IsUnique();
 
@@ -993,6 +1139,15 @@ public partial class CfmsContext : DbContext
                     j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
                     j => j.ToTable("user_health_log")
                 );
+
+            entity.HasMany(u => u.EvaluationSummaries)
+                .WithMany(q => q.Users)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserSummary",
+                    j => j.HasOne<Evaluationsummary>().WithMany().HasForeignKey("summaryId"),
+                    j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
+                    j => j.ToTable("user_summary_log")
+                );
         });
 
         modelBuilder.Entity<Vaccinationlog>(entity =>
@@ -1000,6 +1155,10 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Vlogid).HasName("vaccinationlog_pkey");
 
             entity.ToTable("vaccinationlog");
+
+            entity.HasIndex(e => e.Flockid, "IX_vaccinationlog_flockid");
+
+            entity.HasIndex(e => e.Vaccineid, "IX_vaccinationlog_vaccineid");
 
             entity.Property(e => e.Vlogid)
                 .HasDefaultValueSql("gen_random_uuid()")
@@ -1033,7 +1192,7 @@ public partial class CfmsContext : DbContext
                     j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
                     j => j.HasOne<Vaccinationlog>().WithMany().HasForeignKey("vLogId"),
                     j => j.ToTable("user_vaccine_log")
-    );
+                );
         });
 
         modelBuilder.Entity<Vaccine>(entity =>
@@ -1041,6 +1200,10 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Vaccineid).HasName("vaccine_pkey");
 
             entity.ToTable("vaccine");
+
+            entity.HasIndex(e => e.Diseaseid, "IX_vaccine_diseaseid");
+
+            entity.HasIndex(e => e.Supplierid, "IX_vaccine_supplierid");
 
             entity.Property(e => e.Vaccineid)
                 .HasDefaultValueSql("gen_random_uuid()")
@@ -1070,6 +1233,8 @@ public partial class CfmsContext : DbContext
 
             entity.ToTable("water");
 
+            entity.HasIndex(e => e.Supplierid, "IX_water_supplierid");
+
             entity.Property(e => e.Waterid)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("waterid");
@@ -1094,6 +1259,10 @@ public partial class CfmsContext : DbContext
             entity.HasKey(e => e.Workscheduleid).HasName("workschedule_pkey");
 
             entity.ToTable("workschedule");
+
+            entity.HasIndex(e => e.Taskid, "IX_workschedule_taskid");
+
+            entity.HasIndex(e => e.Userid, "IX_workschedule_userid");
 
             entity.Property(e => e.Workscheduleid)
                 .HasDefaultValueSql("gen_random_uuid()")

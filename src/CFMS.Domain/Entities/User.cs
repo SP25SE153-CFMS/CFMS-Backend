@@ -31,12 +31,6 @@ public partial class User
 
     public virtual Role? Role { get; set; }
 
-    public List<Healthlog> HealthLogs { get; set; } = new();
-
-    public List<Quantitylog> QuantityLogs { get; set; } = new();
-
-    public List<Vaccinationlog> VaccinationLogs { get; set; } = new();
-
     public virtual ICollection<Salary> Salaries { get; set; } = new List<Salary>();
 
     public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
@@ -44,4 +38,12 @@ public partial class User
     public virtual ICollection<TimeKeeping> TimeKeepings { get; set; } = new List<TimeKeeping>();
 
     public virtual ICollection<Workschedule> Workschedules { get; set; } = new List<Workschedule>();
+
+    public List<Healthlog> HealthLogs { get; set; } = new List<Healthlog>();
+
+    public List<Quantitylog> QuantityLogs { get; set; } = new List<Quantitylog>();
+
+    public List<Vaccinationlog> VaccinationLogs { get; set; } = new List<Vaccinationlog>();
+
+    public List<Evaluationsummary> EvaluationSummaries { get; set; } = new List<Evaluationsummary>();
 }

@@ -15,5 +15,5 @@ public partial class Healthlog
 
     public virtual Flock Flock { get; set; } = null!;
 
-    public List<User> Users { get; set; } = new();
+    public List<User> Users { get; set; } = new List<User>();
 }
