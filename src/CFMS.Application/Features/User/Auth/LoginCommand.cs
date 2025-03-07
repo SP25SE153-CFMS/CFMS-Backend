@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Commands.Auth
+namespace CFMS.Application.Features.User.Auth
 {
     public class LoginCommand : IRequest<BaseResponse<string>>
     {
