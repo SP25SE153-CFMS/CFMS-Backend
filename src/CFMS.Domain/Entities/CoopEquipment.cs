@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Infrastructure.Persistence;
+namespace CFMS.Domain.Entities;
 
 public partial class CoopEquipment
 {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Commands.Auth
 {
-    internal class LoginHandler
+    public class LoginHandler
     {
     }
 }
