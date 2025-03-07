@@ -1,62 +1,60 @@
-﻿//using CFMS.Application.Common;
-//using CFMS.Application.Services;
-//using CFMS.Domain.Entities;
-//using CFMS.Domain.Interfaces;
-//using MediatR;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.Auth;
+using CFMS.Application.Services;
+using CFMS.Domain.Entities;
+using CFMS.Domain.Interfaces;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-//namespace CFMS.Application.Features.UserFeat.Auth
-//{
-//    public class SignUpHandler : IRequestHandler<SignUpCommand, BaseResponse<string>>
-//    {
-//        private readonly IUnitOfWork _unitOfWork;
-//        private readonly ITokenService _tokenService;
+namespace CFMS.Application.Features.UserFeat.Auth
+{
+    public class SignUpCommandHandler : IRequestHandler<SignUpCommand, BaseResponse<AuthResponse>>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUtilityService _utilityService;
+        private readonly ITokenService _tokenService;
 
-//        public SignUpHandler(IUnitOfWork unitOfWork, ITokenService tokenService)
-//        {
-//            _unitOfWork = unitOfWork;
-//            _tokenService = tokenService;
-//        }
+        public SignUpCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, IUtilityService utilityService)
+        {
+            _unitOfWork = unitOfWork;
+            _tokenService = tokenService;
+            _utilityService = utilityService;
+        }
 
-//        public Task<BaseResponse<string>> Handle(SignUpCommand request, CancellationToken cancellationToken)
-//        {
-//            var existUser = _unitOfWork.UserRepository.Get().FirstOrDefault(x => x.Mail == request.Mail);
+        public async Task<BaseResponse<AuthResponse>> Handle(SignUpCommand request, CancellationToken cancellationToken)
+        {
+            var existUser = _unitOfWork.UserRepository.Get().FirstOrDefault(x => x.Mail == request.Mail);
 
-//            if (existUser == null)
-//            {
-//                var user = new User
-//                {
-//                    FullName = request.Fullname,
-//                    PhoneNumber = request.PhoneNumber,
-//                    Mail = request.Mail,
-//                    Password = request.Password
-//                };
-//                _unitOfWork.UserRepository.Add(user);
-//                _unitOfWork.Commit();
-//                return Task.FromResult(BaseResponse<string>.SuccessResponse("User created successfully"));
-//            }
+            if (existUser != null)
+            {
+                return BaseResponse<AuthResponse>.FailureResponse("User already exists");
+            }
 
-//                if (request.Mail.Equals(_unitOfWork.UserRepository.Get()) && request.Password == "password123")
-//                {
-//                    var user = new User { Email = request.Email, FullName = "Test User" };
+            var user = new User
+            {
+                FullName = request.Fullname,
+                PhoneNumber = request.PhoneNumber,
+                Mail = request.Mail,
+                HashedPassword = _utilityService.HashPassword(request.Password)
+            };
 
-//                    var accessToken = _tokenService.GenerateAccessToken(user);
-//                    var refreshToken = _tokenService.GenerateRefreshToken();
+            _unitOfWork.UserRepository.Insert(user);
+            _unitOfWork.Save();
 
-//                    var authResponse = new AuthResponse
-//                    {
-//                        AccessToken = accessToken,
-//                        RefreshToken = refreshToken
-//                    };
+            var accessToken = _tokenService.GenerateAccessToken(user);
+            var refreshToken = _tokenService.GenerateRefreshToken();
 
-//                    return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "Login successful");
-//                }
+            var authResponse = new AuthResponse
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
+            };
 
-//                return BaseResponse<AuthResponse>.FailureResponse("Invalid email or password");
-//            }
-//        }
-//    }
+            return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "User registered successfully");
+        }
+    }
+}

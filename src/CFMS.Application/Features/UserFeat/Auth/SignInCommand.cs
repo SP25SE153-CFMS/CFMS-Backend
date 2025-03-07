@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.Auth;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.UserFeat.Auth
 {
-    public class SignInCommand : IRequest<BaseResponse<string>>
+    public class SignInCommand : IRequest<BaseResponse<AuthResponse>>
     {
-        public string Username { get; set; }
+        public string Mail { get; set; }
         public string Password { get; set; }
     }
 }
