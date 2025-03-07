@@ -27,6 +27,8 @@ public partial class User
 
     public string? RoleName { get; set; }
 
+    public string? HashedPassword { get; set; }
+
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
     public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
