@@ -8,7 +8,7 @@
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace CFMS.Application.Features.User.Auth
+//namespace CFMS.Application.Features.UserFeat.Auth
 //{
 //    public class SignUpHandler : IRequestHandler<SignUpCommand, BaseResponse<string>>
 //    {
@@ -27,6 +27,17 @@
 
 //            if (existUser == null)
 //            {
+//                var user = new User
+//                {
+//                    FullName = request.Fullname,
+//                    PhoneNumber = request.PhoneNumber,
+//                    Mail = request.Mail,
+//                    Password = request.Password
+//                };
+//                _unitOfWork.UserRepository.Add(user);
+//                _unitOfWork.Commit();
+//                return Task.FromResult(BaseResponse<string>.SuccessResponse("User created successfully"));
+//            }
 
 //                if (request.Mail.Equals(_unitOfWork.UserRepository.Get()) && request.Password == "password123")
 //                {
