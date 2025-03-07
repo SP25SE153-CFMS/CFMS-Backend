@@ -1,11 +1,11 @@
 ﻿using CFMS.Application.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace CFMS.Api.Controllers
 {
     [ApiController]
+    [Route("api/[controller]")]
     public abstract class BaseController : ControllerBase
     {
         protected readonly IMediator _mediator;

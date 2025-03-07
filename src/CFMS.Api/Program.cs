@@ -2,8 +2,6 @@
 using CFMS.Application.Behaviors;
 using CFMS.Application.Events;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
