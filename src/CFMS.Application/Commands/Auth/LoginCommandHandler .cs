@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Infrastructure.Persistence
+namespace CFMS.Application.Commands.Auth
 {
-    internal class DbContextTemp
+    internal class LoginHandler
     {
     }
 }
+    
