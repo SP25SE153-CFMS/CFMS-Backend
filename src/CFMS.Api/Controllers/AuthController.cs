@@ -16,13 +16,15 @@ namespace CFMS.Api.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpCommand command)
         {
-            return await Send(command);
+            var response = await Send(command);
+            return response;
         }
 
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromBody] SignInCommand command)
         {
-            return await Send(command);
+            var response = await Send(command);
+            return response;
         }
     }
 }

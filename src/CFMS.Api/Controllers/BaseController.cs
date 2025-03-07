@@ -15,19 +15,23 @@ namespace CFMS.Api.Controllers
             _mediator = mediator;
         }
 
-        protected async Task<IActionResult> Send<TResponse>(IRequest<TResponse> request)
+        protected async Task<IActionResult> Send<TResponse>(IRequest<BaseResponse<TResponse>> request)
         {
             var response = await _mediator.Send(request);
-            var baseResponse = response as BaseResponse<TResponse>;
 
-            if (IsSuccessful(baseResponse) == true) 
+            if (response == null)
             {
-                return Ok(baseResponse); 
+                return BadRequest(BaseResponse<TResponse>.FailureResponse("Executed failed"));
             }
 
-            var errorMessage = baseResponse?.Message ?? "Executed failed";
-            return BadRequest(BaseResponse<TResponse>.FailureResponse(errorMessage));
+            if (IsSuccessful(response))
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(response);
         }
+
 
         public bool IsSuccessful<T>(BaseResponse<T> response)
         {

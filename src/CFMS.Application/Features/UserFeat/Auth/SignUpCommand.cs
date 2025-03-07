@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.Auth;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.UserFeat.Auth
 {
-    public class SignUpCommand : IRequest<BaseResponse<string>>
+    public class SignUpCommand : IRequest<BaseResponse<AuthResponse>>
     {
         public string Fullname { get; set; }
         public string PhoneNumber { get; set; }
