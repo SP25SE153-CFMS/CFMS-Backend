@@ -15,6 +15,7 @@ namespace CFMS.Application.Commands.FarmFeat.Create
 
         public Task<BaseResponse<string>> Handle(CreateFarmCommand request, CancellationToken cancellationToken)
         {
+
             throw new NotImplementedException();
         }
     }
