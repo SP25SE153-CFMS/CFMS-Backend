@@ -1211,7 +1211,10 @@ public partial class CfmsDbContext : DbContext
                 .HasColumnName("fullName");
             entity.Property(e => e.Mail)
                 .HasColumnType("character varying")
-                .HasColumnName("mail");
+                .HasColumnName("mail");            
+            entity.Property(e => e.HashedPassword)
+                .HasColumnType("character varying")
+                .HasColumnName("hashedPassword");
             entity.Property(e => e.PhoneNumber)
                 .HasColumnType("character varying")
                 .HasColumnName("phoneNumber");

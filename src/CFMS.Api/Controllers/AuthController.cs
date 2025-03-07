@@ -1,4 +1,4 @@
-﻿using CFMS.Application.Features.User.Auth;
+﻿using CFMS.Application.Features.UserFeat.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

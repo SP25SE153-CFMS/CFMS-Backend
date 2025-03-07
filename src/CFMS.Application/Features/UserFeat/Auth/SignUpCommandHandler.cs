@@ -1,5 +1,6 @@
 ﻿//using CFMS.Application.Common;
 //using CFMS.Application.Services;
+//using CFMS.Domain.Entities;
 //using CFMS.Domain.Interfaces;
 //using MediatR;
 //using System;
