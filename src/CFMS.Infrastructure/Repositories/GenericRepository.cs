@@ -1,4 +1,5 @@
 ﻿using CFMS.Domain.Interfaces;
+using CFMS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,10 @@ namespace CFMS.Infrastructure.Repositories
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        protected DbContext _context;
+        protected CfmsDbContext _context;
         protected DbSet<TEntity> _dbSet;
 
-        public GenericRepository(DbContext context)
+        public GenericRepository(CfmsDbContext context)
         {
             _context = context;
             _dbSet = context.Set<TEntity>();

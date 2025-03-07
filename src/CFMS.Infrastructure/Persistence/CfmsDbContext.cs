@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace CFMS.Infrastructure.Persistence;
 
@@ -101,9 +102,43 @@ public partial class CfmsDbContext : DbContext
 
     public virtual DbSet<WarehouseStock> WarehouseStocks { get; set; }
 
+    public static string GetConnectionString(string connectionStringName)
+    {
+        var basePath = AppDomain.CurrentDomain.BaseDirectory;
+        var directoryInfo = new DirectoryInfo(basePath);
+
+        while (directoryInfo != null && !File.Exists(Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json")))
+        {
+            directoryInfo = directoryInfo.Parent;
+        }
+
+        if (directoryInfo == null)
+        {
+            throw new FileNotFoundException("The configuration file 'appsettings.json' was not found in the project directory or any parent directories.");
+        }
+
+        var configPath = Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json");
+
+        var config = new ConfigurationBuilder()
+            .SetBasePath(directoryInfo.FullName)
+            .AddJsonFile(configPath, optional: false, reloadOnChange: true)
+            .Build();
+
+        string? connectionString = config.GetConnectionString(connectionStringName);
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new InvalidOperationException($"Connection string '{connectionStringName}' is not found in the configuration.");
+        }
+
+        return connectionString;
+    }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=database.nextintern.tech;Database=cfms;Username=root;Password=iumaycauratnhiu");
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseNpgsql(GetConnectionString("DefaultConnection"));
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
