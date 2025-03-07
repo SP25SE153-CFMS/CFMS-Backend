@@ -1,11 +1,11 @@
-﻿using CFMS.Infrastructure.Persistence;
+﻿using CFMS.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task = CFMS.Infrastructure.Persistence.Task;
+using Task = CFMS.Domain.Entities.Task;
 
 namespace CFMS.Domain.Interfaces
 {

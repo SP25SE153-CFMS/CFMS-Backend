@@ -1,5 +1,5 @@
 ﻿using CFMS.Domain.Interfaces;
-using CFMS.Infrastructure.Persistence;
+using CFMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -8,7 +8,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task = CFMS.Infrastructure.Persistence.Task;
+using Task = CFMS.Domain.Entities.Task;
+using CFMS.Infrastructure.Persistence;
 
 namespace CFMS.Infrastructure.Repositories
 {

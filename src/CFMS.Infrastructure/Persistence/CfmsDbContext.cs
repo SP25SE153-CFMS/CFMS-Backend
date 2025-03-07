@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using CFMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Task = CFMS.Domain.Entities.Task;
 
 namespace CFMS.Infrastructure.Persistence;
 
