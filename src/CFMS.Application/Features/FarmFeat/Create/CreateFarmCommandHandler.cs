@@ -2,7 +2,7 @@
 using CFMS.Domain.Interfaces;
 using MediatR;
 
-namespace CFMS.Application.Commands.Farm.Create
+namespace CFMS.Application.Commands.FarmFeat.Create
 {
     public class CreateFarmCommandHandler : IRequestHandler<CreateFarmCommand, BaseResponse<string>>
     {
