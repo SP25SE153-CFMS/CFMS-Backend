@@ -1,39 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
 public partial class Flock
 {
-    public Guid Flockid { get; set; }
+    public Guid FlockId { get; set; }
 
-    public string Name { get; set; } = null!;
+    public int? Quantity { get; set; }
 
-    public int Quantity { get; set; }
+    public string? Name { get; set; }
 
-    public DateOnly Startdate { get; set; }
+    public DateTime? StartDate { get; set; }
 
-    public DateOnly? Enddate { get; set; }
-
-    public string? Status { get; set; }
+    public int? Status { get; set; }
 
     public string? Description { get; set; }
 
-    public Guid Purposeid { get; set; }
+    public DateTime? EndDate { get; set; }
 
-    public Guid Breedid { get; set; }
+    public double? AvgWeight { get; set; }
 
-    public virtual Breed Breed { get; set; } = null!;
+    public double? MortalityRate { get; set; }
 
-    public virtual ICollection<Chickenbatch> Chickenbatches { get; set; } = new List<Chickenbatch>();
+    public DateTime? LastHealthCheck { get; set; }
 
-    public virtual ICollection<Healthlog> Healthlogs { get; set; } = new List<Healthlog>();
+    public string? Gender { get; set; }
 
-    public virtual ICollection<Nutrition> Nutritions { get; set; } = new List<Nutrition>();
+    public Guid? PurposeId { get; set; }
 
-    public virtual Purpose Purpose { get; set; } = null!;
+    public Guid? BreedId { get; set; }
 
-    public virtual ICollection<Quantitylog> Quantitylogs { get; set; } = new List<Quantitylog>();
+    public Guid? ChickenBatchId { get; set; }
 
-    public virtual ICollection<Vaccinationlog> Vaccinationlogs { get; set; } = new List<Vaccinationlog>();
+    public virtual SubCategory? Breed { get; set; }
+
+    public virtual ChickenBatch? ChickenBatch { get; set; }
+
+    public virtual ICollection<FlockNutrition> FlockNutritions { get; set; } = new List<FlockNutrition>();
+
+    public virtual ICollection<HealthLog> HealthLogs { get; set; } = new List<HealthLog>();
+
+    public virtual SubCategory? Purpose { get; set; }
+
+    public virtual ICollection<QuantityLog> QuantityLogs { get; set; } = new List<QuantityLog>();
+
+    public virtual ICollection<VaccinationLog> VaccinationLogs { get; set; } = new List<VaccinationLog>();
 }

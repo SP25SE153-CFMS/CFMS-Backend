@@ -1,27 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
-public partial class Quantitylog
+public partial class QuantityLog
 {
-    public Guid Qlogid { get; set; }
+    public Guid QLogId { get; set; }
 
-    public DateTime Logdate { get; set; }
+    public DateTime? LogDate { get; set; }
 
     public string? Notes { get; set; }
 
-    public int Quantity { get; set; }
+    public int? Quantity { get; set; }
 
-    public string Logtype { get; set; } = null!;
+    public string? Img { get; set; }
 
-    public Guid Flockid { get; set; }
+    public string? LogType { get; set; }
 
-    public Guid? Reasonid { get; set; }
+    public Guid? FlockId { get; set; }
 
-    public virtual Flock Flock { get; set; } = null!;
+    public Guid? ReasonId { get; set; }
 
-    public virtual Reason? Reason { get; set; }
+    public Guid? CheckedBy { get; set; }
 
-    public List<User> Users { get; set; } = new List<User>();
+    public virtual User? CheckedByNavigation { get; set; }
+
+    public virtual Flock? Flock { get; set; }
+
+    public virtual SubCategory? Reason { get; set; }
 }

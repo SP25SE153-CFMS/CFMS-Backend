@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
 public partial class CfmsDbContext : DbContext
 {
@@ -18,1272 +17,1386 @@ public partial class CfmsDbContext : DbContext
 
     public virtual DbSet<Assignment> Assignments { get; set; }
 
-    public virtual DbSet<Breadingarea> Breadingareas { get; set; }
+    public virtual DbSet<Attendance> Attendances { get; set; }
 
-    public virtual DbSet<Breadingequipment> Breadingequipments { get; set; }
+    public virtual DbSet<BreedingArea> BreedingAreas { get; set; }
 
-    public virtual DbSet<Breed> Breeds { get; set; }
+    public virtual DbSet<Category> Categories { get; set; }
 
-    public virtual DbSet<Chickenbatch> Chickenbatches { get; set; }
+    public virtual DbSet<ChickenBatch> ChickenBatches { get; set; }
 
-    public virtual DbSet<Dailytask> Dailytasks { get; set; }
+    public virtual DbSet<ChickenCoop> ChickenCoops { get; set; }
 
-    public virtual DbSet<Disease> Diseases { get; set; }
+    public virtual DbSet<CoopEquipment> CoopEquipments { get; set; }
+
+    public virtual DbSet<DailyTask> DailyTasks { get; set; }
 
     public virtual DbSet<Equipment> Equipment { get; set; }
 
-    public virtual DbSet<Evaluationcriterion> Evaluationcriteria { get; set; }
-
-    public virtual DbSet<Evaluationsummary> Evaluationsummaries { get; set; }
-
-    public virtual DbSet<Expireddamaged> Expireddamageds { get; set; }
-
-    public virtual DbSet<Exportedproduct> Exportedproducts { get; set; }
-
     public virtual DbSet<Farm> Farms { get; set; }
 
-    public virtual DbSet<Feedschedule> Feedschedules { get; set; }
+    public virtual DbSet<FarmEmployee> FarmEmployees { get; set; }
+
+    public virtual DbSet<FeedSchedule> FeedSchedules { get; set; }
 
     public virtual DbSet<Flock> Flocks { get; set; }
 
+    public virtual DbSet<FlockNutrition> FlockNutritions { get; set; }
+
     public virtual DbSet<Food> Foods { get; set; }
 
-    public virtual DbSet<Harvesttask> Harvesttasks { get; set; }
+    public virtual DbSet<HarvestDetail> HarvestDetails { get; set; }
 
-    public virtual DbSet<Healthcriterion> Healthcriteria { get; set; }
+    public virtual DbSet<HarvestLog> HarvestLogs { get; set; }
 
-    public virtual DbSet<Healthlog> Healthlogs { get; set; }
+    public virtual DbSet<HarvestProduct> HarvestProducts { get; set; }
 
-    public virtual DbSet<Inventoryaudit> Inventoryaudits { get; set; }
+    public virtual DbSet<HarvestTask> HarvestTasks { get; set; }
+
+    public virtual DbSet<HealthLog> HealthLogs { get; set; }
+
+    public virtual DbSet<HealthLogDetail> HealthLogDetails { get; set; }
+
+    public virtual DbSet<Notification> Notifications { get; set; }
 
     public virtual DbSet<Nutrition> Nutritions { get; set; }
 
-    public virtual DbSet<Performancestatistic> Performancestatistics { get; set; }
+    public virtual DbSet<Performance> Performances { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
-    public virtual DbSet<Purpose> Purposes { get; set; }
+    public virtual DbSet<QuantityLog> QuantityLogs { get; set; }
 
-    public virtual DbSet<Quantitylog> Quantitylogs { get; set; }
+    public virtual DbSet<Request> Requests { get; set; }
 
-    public virtual DbSet<Reason> Reasons { get; set; }
-
-    public virtual DbSet<Role> Roles { get; set; }
+    public virtual DbSet<RequestDetail> RequestDetails { get; set; }
 
     public virtual DbSet<Salary> Salaries { get; set; }
 
-    public virtual DbSet<Supplier> Suppliers { get; set; }
+    public virtual DbSet<StockReceipt> StockReceipts { get; set; }
+
+    public virtual DbSet<SubCategory> SubCategories { get; set; }
 
     public virtual DbSet<Task> Tasks { get; set; }
 
-    public virtual DbSet<TimeKeeping> TimeKeepings { get; set; }
+    public virtual DbSet<TaskDetail> TaskDetails { get; set; }
 
-    public virtual DbSet<TimeKeepingType> TimeKeepingTypes { get; set; }
+    public virtual DbSet<TaskEvaluation> TaskEvaluations { get; set; }
+
+    public virtual DbSet<TaskLog> TaskLogs { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<Vaccinationlog> Vaccinationlogs { get; set; }
+    public virtual DbSet<VaccinationEmployee> VaccinationEmployees { get; set; }
+
+    public virtual DbSet<VaccinationLog> VaccinationLogs { get; set; }
 
     public virtual DbSet<Vaccine> Vaccines { get; set; }
 
-    public virtual DbSet<Water> Water { get; set; }
+    public virtual DbSet<WareTransaction> WareTransactions { get; set; }
 
-    public virtual DbSet<Workschedule> Workschedules { get; set; }
+    public virtual DbSet<Warehouse> Warehouses { get; set; }
 
-    public static string GetConnectionString(string connectionStringName)
-    {
-        var basePath = AppDomain.CurrentDomain.BaseDirectory;
-        var directoryInfo = new DirectoryInfo(basePath);
+    public virtual DbSet<WarehousePermission> WarehousePermissions { get; set; }
 
-        while (directoryInfo != null && !File.Exists(Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json")))
-        {
-            directoryInfo = directoryInfo.Parent;
-        }
+    public virtual DbSet<WarehouseStock> WarehouseStocks { get; set; }
 
-        if (directoryInfo == null)
-        {
-            throw new FileNotFoundException("The configuration file 'appsettings.json' was not found in the project directory or any parent directories.");
-        }
-
-        var configPath = Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json");
-
-        var config = new ConfigurationBuilder()
-            .SetBasePath(directoryInfo.FullName)
-            .AddJsonFile(configPath, optional: false, reloadOnChange: true)
-            .Build();
-
-        string? connectionString = config.GetConnectionString(connectionStringName);
-        if (string.IsNullOrEmpty(connectionString))
-        {
-            throw new InvalidOperationException($"Connection string '{connectionStringName}' is not found in the configuration.");
-        }
-
-        return connectionString;
-    }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseNpgsql(GetConnectionString("DefaultConnection"));
-        }
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql("Host=database.nextintern.tech;Database=cfms;Username=root;Password=iumaycauratnhiu");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Assignment>(entity =>
         {
-            entity.HasKey(e => e.Assignmentid).HasName("assignment_pkey");
+            entity.HasKey(e => e.AssignmentId).HasName("Assignment_pkey");
 
-            entity.ToTable("assignment");
+            entity.ToTable("Assignment");
 
-            entity.HasIndex(e => e.Taskid, "IX_assignment_taskid");
-
-            entity.HasIndex(e => e.Userid, "IX_assignment_userid");
-
-            entity.Property(e => e.Assignmentid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("assignmentid");
-            entity.Property(e => e.Assigneddate)
-                .HasDefaultValueSql("now()")
+            entity.Property(e => e.AssignmentId)
+                .ValueGeneratedNever()
+                .HasColumnName("assignmentId");
+            entity.Property(e => e.AssignedDate)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("assigneddate");
-            entity.Property(e => e.Completeddate)
+                .HasColumnName("assignedDate");
+            entity.Property(e => e.CompletedDate)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("completeddate");
+                .HasColumnName("completedDate");
+            entity.Property(e => e.DeadlineDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("deadlineDate");
             entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.Status)
-                .HasMaxLength(50)
+                .HasColumnType("character varying")
                 .HasColumnName("status");
-            entity.Property(e => e.Taskid).HasColumnName("taskid");
-            entity.Property(e => e.Userid).HasColumnName("userid");
+            entity.Property(e => e.TaskId).HasColumnName("taskId");
+            entity.Property(e => e.UserId).HasColumnName("userId");
 
             entity.HasOne(d => d.Task).WithMany(p => p.Assignments)
-                .HasForeignKey(d => d.Taskid)
-                .HasConstraintName("assignment_taskid_fkey");
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("Assignment_taskId_fkey");
 
             entity.HasOne(d => d.User).WithMany(p => p.Assignments)
-                .HasForeignKey(d => d.Userid)
-                .HasConstraintName("assignment_userid_fkey");
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("Assignment_userId_fkey");
         });
 
-        modelBuilder.Entity<Breadingarea>(entity =>
+        modelBuilder.Entity<Attendance>(entity =>
         {
-            entity.HasKey(e => e.Breadingareaid).HasName("breadingarea_pkey");
+            entity.HasKey(e => e.AttendanceId).HasName("Attendance_pkey");
 
-            entity.ToTable("breadingarea");
+            entity.ToTable("Attendance");
 
-            entity.HasIndex(e => e.Farmid, "IX_breadingarea_farmid");
+            entity.Property(e => e.AttendanceId)
+                .ValueGeneratedNever()
+                .HasColumnName("attendanceId");
+            entity.Property(e => e.CheckIn).HasColumnName("checkIn");
+            entity.Property(e => e.CheckOut).HasColumnName("checkOut");
+            entity.Property(e => e.UserId).HasColumnName("userId");
+            entity.Property(e => e.WorkDate).HasColumnName("workDate");
 
-            entity.HasIndex(e => e.Breadingareacode, "breadingarea_breadingareacode_key").IsUnique();
+            entity.HasOne(d => d.User).WithMany(p => p.Attendances)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("Attendance_userId_fkey");
+        });
 
-            entity.Property(e => e.Breadingareaid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("breadingareaid");
-            entity.Property(e => e.Area)
-                .HasPrecision(10, 2)
-                .HasColumnName("area");
-            entity.Property(e => e.Breadingareacode)
-                .HasMaxLength(50)
-                .HasColumnName("breadingareacode");
-            entity.Property(e => e.Breadingareaname)
-                .HasMaxLength(255)
-                .HasColumnName("breadingareaname");
-            entity.Property(e => e.Breadingpurpose)
-                .HasMaxLength(50)
-                .HasColumnName("breadingpurpose");
-            entity.Property(e => e.Covered)
-                .HasDefaultValue(false)
-                .HasColumnName("covered");
-            entity.Property(e => e.Farmid).HasColumnName("farmid");
-            entity.Property(e => e.Humidity)
-                .HasPrecision(5, 2)
-                .HasColumnName("humidity");
-            entity.Property(e => e.Image).HasColumnName("image");
-            entity.Property(e => e.Mealsperday).HasColumnName("mealsperday");
+        modelBuilder.Entity<BreedingArea>(entity =>
+        {
+            entity.HasKey(e => e.BreedingAreaId).HasName("BreedingArea_pkey");
+
+            entity.ToTable("BreedingArea");
+
+            entity.Property(e => e.BreedingAreaId)
+                .ValueGeneratedNever()
+                .HasColumnName("breedingAreaId");
+            entity.Property(e => e.BreedingAreaCode)
+                .HasColumnType("character varying")
+                .HasColumnName("breedingAreaCode");
+            entity.Property(e => e.BreedingAreaName)
+                .HasColumnType("character varying")
+                .HasColumnName("breedingAreaName");
+            entity.Property(e => e.CreatedDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createdDate");
+            entity.Property(e => e.FarmId).HasColumnName("farmId");
+            entity.Property(e => e.Image)
+                .HasColumnType("character varying")
+                .HasColumnName("image");
+            entity.Property(e => e.MealsPerDay).HasColumnName("mealsPerDay");
             entity.Property(e => e.Notes).HasColumnName("notes");
-            entity.Property(e => e.Temperature)
-                .HasPrecision(5, 2)
-                .HasColumnName("temperature");
-            entity.Property(e => e.Weight)
-                .HasPrecision(10, 2)
-                .HasColumnName("weight");
 
-            entity.HasOne(d => d.Farm).WithMany(p => p.Breadingareas)
-                .HasForeignKey(d => d.Farmid)
-                .HasConstraintName("breadingarea_farmid_fkey");
+            entity.HasOne(d => d.Farm).WithMany(p => p.BreedingAreas)
+                .HasForeignKey(d => d.FarmId)
+                .HasConstraintName("BreedingArea_farmId_fkey");
         });
 
-        modelBuilder.Entity<Breadingequipment>(entity =>
+        modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Breadingequipmentid).HasName("breadingequipment_pkey");
+            entity.HasKey(e => e.CategoryId).HasName("Category_pkey");
 
-            entity.ToTable("breadingequipment");
+            entity.ToTable("Category");
 
-            entity.HasIndex(e => e.Breadingareaid, "IX_breadingequipment_breadingareaid");
+            entity.Property(e => e.CategoryId)
+                .ValueGeneratedNever()
+                .HasColumnName("categoryId");
+            entity.Property(e => e.CategoryCode)
+                .HasColumnType("character varying")
+                .HasColumnName("categoryCode");
+            entity.Property(e => e.CategoryType)
+                .HasColumnType("character varying")
+                .HasColumnName("categoryType");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Status)
+                .HasColumnType("character varying")
+                .HasColumnName("status");
+        });
 
-            entity.HasIndex(e => e.Equipmentid, "IX_breadingequipment_equipmentid");
+        modelBuilder.Entity<ChickenBatch>(entity =>
+        {
+            entity.HasKey(e => e.ChickenBatchId).HasName("ChickenBatch_pkey");
 
-            entity.Property(e => e.Breadingequipmentid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("breadingequipmentid");
-            entity.Property(e => e.Assigneddate).HasColumnName("assigneddate");
-            entity.Property(e => e.Breadingareaid).HasColumnName("breadingareaid");
-            entity.Property(e => e.Equipmentid).HasColumnName("equipmentid");
-            entity.Property(e => e.Maintaindate).HasColumnName("maintaindate");
+            entity.ToTable("ChickenBatch");
+
+            entity.Property(e => e.ChickenBatchId)
+                .ValueGeneratedNever()
+                .HasColumnName("chickenBatchId");
+            entity.Property(e => e.ChickenCoopId).HasColumnName("chickenCoopId");
+            entity.Property(e => e.EndDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("endDate");
+            entity.Property(e => e.Name)
+                .HasColumnType("character varying")
+                .HasColumnName("name");
+            entity.Property(e => e.Note).HasColumnName("note");
+            entity.Property(e => e.StartDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("startDate");
+            entity.Property(e => e.Status).HasColumnName("status");
+
+            entity.HasOne(d => d.ChickenCoop).WithMany(p => p.ChickenBatches)
+                .HasForeignKey(d => d.ChickenCoopId)
+                .HasConstraintName("ChickenBatch_chickenCoopId_fkey");
+        });
+
+        modelBuilder.Entity<ChickenCoop>(entity =>
+        {
+            entity.HasKey(e => e.ChickenCoopId).HasName("ChickenCoop_pkey");
+
+            entity.ToTable("ChickenCoop");
+
+            entity.Property(e => e.ChickenCoopId)
+                .ValueGeneratedNever()
+                .HasColumnName("chickenCoopId");
+            entity.Property(e => e.Area).HasColumnName("area");
+            entity.Property(e => e.BreedingAreaId).HasColumnName("breedingAreaId");
+            entity.Property(e => e.Capacity).HasColumnName("capacity");
+            entity.Property(e => e.ChickenCoopCode)
+                .HasColumnType("character varying")
+                .HasColumnName("chickenCoopCode");
+            entity.Property(e => e.ChickenCoopName)
+                .HasColumnType("character varying")
+                .HasColumnName("chickenCoopName");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createdAt");
+            entity.Property(e => e.Description)
+                .HasColumnType("character varying")
+                .HasColumnName("description");
+            entity.Property(e => e.PurposeId).HasColumnName("purposeId");
+            entity.Property(e => e.Status)
+                .HasColumnType("character varying")
+                .HasColumnName("status");
+            entity.Property(e => e.UpdatedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("updatedAt");
+
+            entity.HasOne(d => d.BreedingArea).WithMany(p => p.ChickenCoops)
+                .HasForeignKey(d => d.BreedingAreaId)
+                .HasConstraintName("ChickenCoop_breedingAreaId_fkey");
+
+            entity.HasOne(d => d.Purpose).WithMany(p => p.ChickenCoops)
+                .HasForeignKey(d => d.PurposeId)
+                .HasConstraintName("ChickenCoop_purposeId_fkey");
+        });
+
+        modelBuilder.Entity<CoopEquipment>(entity =>
+        {
+            entity.HasKey(e => e.CoopEquipmentId).HasName("CoopEquipment_pkey");
+
+            entity.ToTable("CoopEquipment");
+
+            entity.Property(e => e.CoopEquipmentId)
+                .ValueGeneratedNever()
+                .HasColumnName("coopEquipmentId");
+            entity.Property(e => e.AssignedDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("assignedDate");
+            entity.Property(e => e.ChickenCoopId).HasColumnName("chickenCoopId");
+            entity.Property(e => e.EquipmentId).HasColumnName("equipmentId");
+            entity.Property(e => e.MaintainDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("maintainDate");
             entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.Status)
-                .HasMaxLength(50)
+                .HasColumnType("character varying")
                 .HasColumnName("status");
 
-            entity.HasOne(d => d.Breadingarea).WithMany(p => p.Breadingequipments)
-                .HasForeignKey(d => d.Breadingareaid)
-                .HasConstraintName("breadingequipment_breadingareaid_fkey");
+            entity.HasOne(d => d.ChickenCoop).WithMany(p => p.CoopEquipments)
+                .HasForeignKey(d => d.ChickenCoopId)
+                .HasConstraintName("CoopEquipment_chickenCoopId_fkey");
 
-            entity.HasOne(d => d.Equipment).WithMany(p => p.Breadingequipments)
-                .HasForeignKey(d => d.Equipmentid)
-                .HasConstraintName("breadingequipment_equipmentid_fkey");
+            entity.HasOne(d => d.Equipment).WithMany(p => p.CoopEquipments)
+                .HasForeignKey(d => d.EquipmentId)
+                .HasConstraintName("CoopEquipment_equipmentId_fkey");
         });
 
-        modelBuilder.Entity<Breed>(entity =>
+        modelBuilder.Entity<DailyTask>(entity =>
         {
-            entity.HasKey(e => e.Breedid).HasName("breed_pkey");
+            entity.HasKey(e => e.DTaskId).HasName("DailyTask_pkey");
 
-            entity.ToTable("breed");
+            entity.ToTable("DailyTask");
 
-            entity.Property(e => e.Breedid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("breedid");
+            entity.Property(e => e.DTaskId)
+                .ValueGeneratedNever()
+                .HasColumnName("dTaskId");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Img).HasColumnName("img");
-            entity.Property(e => e.Name).HasColumnName("name");
-        });
+            entity.Property(e => e.ItemId).HasColumnName("itemId");
+            entity.Property(e => e.TaskDate).HasColumnName("taskDate");
+            entity.Property(e => e.TaskId).HasColumnName("taskId");
 
-        modelBuilder.Entity<Chickenbatch>(entity =>
-        {
-            entity.HasKey(e => e.Chickenbatchid).HasName("chickenbatch_pkey");
-
-            entity.ToTable("chickenbatch");
-
-            entity.HasIndex(e => e.Breadingareaid, "IX_chickenbatch_breadingareaid");
-
-            entity.HasIndex(e => e.Flockid, "IX_chickenbatch_flockid");
-
-            entity.Property(e => e.Chickenbatchid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("chickenbatchid");
-            entity.Property(e => e.Breadingareaid).HasColumnName("breadingareaid");
-            entity.Property(e => e.Enddate).HasColumnName("enddate");
-            entity.Property(e => e.Flockid).HasColumnName("flockid");
-            entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.Numberofchicken).HasColumnName("numberofchicken");
-            entity.Property(e => e.Startdate).HasColumnName("startdate");
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .HasColumnName("status");
-
-            entity.HasOne(d => d.Breadingarea).WithMany(p => p.Chickenbatches)
-                .HasForeignKey(d => d.Breadingareaid)
-                .HasConstraintName("chickenbatch_breadingareaid_fkey");
-
-            entity.HasOne(d => d.Flock).WithMany(p => p.Chickenbatches)
-                .HasForeignKey(d => d.Flockid)
-                .HasConstraintName("chickenbatch_flockid_fkey");
-        });
-
-        modelBuilder.Entity<Dailytask>(entity =>
-        {
-            entity.HasKey(e => e.Dtaskid).HasName("dailytask_pkey");
-
-            entity.ToTable("dailytask");
-
-            entity.HasIndex(e => e.Taskid, "IX_dailytask_taskid");
-
-            entity.Property(e => e.Dtaskid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("dtaskid");
-            entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.Priority).HasColumnName("priority");
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .HasColumnName("status");
-            entity.Property(e => e.Taskdate).HasColumnName("taskdate");
-            entity.Property(e => e.Taskid).HasColumnName("taskid");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.Dailytasks)
-                .HasForeignKey(d => d.Taskid)
-                .HasConstraintName("dailytask_taskid_fkey");
-        });
-
-        modelBuilder.Entity<Disease>(entity =>
-        {
-            entity.HasKey(e => e.Diseaseid).HasName("disease_pkey");
-
-            entity.ToTable("disease");
-
-            entity.Property(e => e.Diseaseid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("diseaseid");
-            entity.Property(e => e.Cause).HasColumnName("cause");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Diseasetype).HasColumnName("diseasetype");
-            entity.Property(e => e.Name).HasColumnName("name");
+            entity.HasOne(d => d.Task).WithMany(p => p.DailyTasks)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("DailyTask_taskId_fkey");
         });
 
         modelBuilder.Entity<Equipment>(entity =>
         {
-            entity.HasKey(e => e.Equipmentid).HasName("equipment_pkey");
+            entity.HasKey(e => e.EquipmentId).HasName("Equipment_pkey");
 
-            entity.ToTable("equipment");
+            entity.HasIndex(e => e.ProductId, "Equipment_productId_key").IsUnique();
 
-            entity.Property(e => e.Equipmentid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("equipmentid");
-            entity.Property(e => e.Cost)
-                .HasPrecision(12, 2)
-                .HasColumnName("cost");
-            entity.Property(e => e.Equipmentname)
-                .HasMaxLength(255)
-                .HasColumnName("equipmentname");
-            entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.Purchasedate).HasColumnName("purchasedate");
+            entity.Property(e => e.EquipmentId)
+                .ValueGeneratedNever()
+                .HasColumnName("equipmentId");
+            entity.Property(e => e.Cost).HasColumnName("cost");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createdAt");
+            entity.Property(e => e.EndDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("endDate");
+            entity.Property(e => e.EquipmentCode)
+                .HasColumnType("character varying")
+                .HasColumnName("equipmentCode");
+            entity.Property(e => e.EquipmentName)
+                .HasColumnType("character varying")
+                .HasColumnName("equipmentName");
+            entity.Property(e => e.ProductId)
+                .IsRequired()
+                .HasColumnName("productId");
+            entity.Property(e => e.PurchaseDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("purchaseDate");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.Specifications)
+                .HasColumnType("character varying")
+                .HasColumnName("specifications");
+            entity.Property(e => e.StartDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("startDate");
             entity.Property(e => e.Status)
-                .HasMaxLength(50)
+                .HasColumnType("character varying")
                 .HasColumnName("status");
-            entity.Property(e => e.Type)
-                .HasMaxLength(100)
-                .HasColumnName("type");
-            entity.Property(e => e.Warrantyperiod).HasColumnName("warrantyperiod");
-        });
-
-        modelBuilder.Entity<Evaluationcriterion>(entity =>
-        {
-            entity.HasKey(e => e.Criteriaid).HasName("evaluationcriteria_pkey");
-
-            entity.ToTable("evaluationcriteria");
-
-            entity.Property(e => e.Criteriaid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("criteriaid");
-            entity.Property(e => e.Criterianame)
-                .HasMaxLength(255)
-                .HasColumnName("criterianame");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Maxvalue).HasColumnName("maxvalue");
-            entity.Property(e => e.Minvalue).HasColumnName("minvalue");
-            entity.Property(e => e.Tasktype)
-                .HasMaxLength(50)
-                .HasColumnName("tasktype");
-            entity.Property(e => e.Unit)
-                .HasMaxLength(50)
-                .HasColumnName("unit");
-
-            entity.HasMany(v => v.EvaluationSummaries)
-                .WithMany(u => u.EvaluationCriterions)
-                .UsingEntity<Dictionary<string, object>>(
-                    "EvaluationSummaryCriteria",
-                    j => j.HasOne<Evaluationsummary>().WithMany().HasForeignKey("summaryId"),
-                    j => j.HasOne<Evaluationcriterion>().WithMany().HasForeignKey("criteriaId"),
-                    j => j.ToTable("evaluation_summary_criteria")
-                );
-        });
-
-        modelBuilder.Entity<Evaluationsummary>(entity =>
-        {
-            entity.HasKey(e => e.Summaryid).HasName("evaluationsummary_pkey");
-
-            entity.ToTable("evaluationsummary");
-
-            entity.Property(e => e.Summaryid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("summaryid");
-            entity.Property(e => e.Criteriaid).HasColumnName("criteriaid");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Evaluationdate)
-                .HasDefaultValueSql("now()")
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("evaluationdate");
-            entity.Property(e => e.Failedcriteria).HasColumnName("failedcriteria");
-            entity.Property(e => e.Overallresult).HasColumnName("overallresult");
-            entity.Property(e => e.Passedcriteria).HasColumnName("passedcriteria");
-            entity.Property(e => e.Taskid).HasColumnName("taskid");
-            entity.Property(e => e.Tasktype)
-                .HasMaxLength(50)
-                .HasColumnName("tasktype");
-            entity.Property(e => e.Totalcriteria).HasColumnName("totalcriteria");
-            entity.Property(e => e.Userid).HasColumnName("userid");
-
-            entity.HasMany(v => v.Users)
-                .WithMany(u => u.EvaluationSummaries)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserSummary",
-                    j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
-                    j => j.HasOne<Evaluationsummary>().WithMany().HasForeignKey("summaryId"),
-                    j => j.ToTable("user_summary_log")
-                );
-
-            entity.HasMany(v => v.EvaluationCriterions)
-                .WithMany(u => u.EvaluationSummaries)
-                .UsingEntity<Dictionary<string, object>>(
-                    "EvaluationSummaryCriteria",
-                    j => j.HasOne<Evaluationcriterion>().WithMany().HasForeignKey("criteriaId"),
-                    j => j.HasOne<Evaluationsummary>().WithMany().HasForeignKey("summaryId"),
-                    j => j.ToTable("evaluation_summary_criteria")
-                );
-        });
-
-        modelBuilder.Entity<Expireddamaged>(entity =>
-        {
-            entity.HasKey(e => e.Edproductid).HasName("expireddamaged_pkey");
-
-            entity.ToTable("expireddamaged");
-
-            entity.HasIndex(e => e.Productid, "IX_expireddamaged_productid");
-
-            entity.Property(e => e.Edproductid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("edproductid");
-            entity.Property(e => e.Actiontaken).HasColumnName("actiontaken");
-            entity.Property(e => e.Productid).HasColumnName("productid");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.Reason).HasColumnName("reason");
-            entity.Property(e => e.Recorddate)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("recorddate");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.Expireddamageds)
-                .HasForeignKey(d => d.Productid)
-                .HasConstraintName("expireddamaged_productid_fkey");
-        });
-
-        modelBuilder.Entity<Exportedproduct>(entity =>
-        {
-            entity.HasKey(e => e.Eproductid).HasName("exportedproduct_pkey");
-
-            entity.ToTable("exportedproduct");
-
-            entity.HasIndex(e => e.Chickenbatchid, "IX_exportedproduct_chickenbatchid");
-
-            entity.HasIndex(e => e.Farmid, "IX_exportedproduct_farmid");
-
-            entity.HasIndex(e => e.Productid, "IX_exportedproduct_productid");
-
-            entity.HasIndex(e => e.Productcode, "exportedproduct_productcode_key").IsUnique();
-
-            entity.Property(e => e.Eproductid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("eproductid");
-            entity.Property(e => e.Chickenbatchid).HasColumnName("chickenbatchid");
-            entity.Property(e => e.Expireddate).HasColumnName("expireddate");
-            entity.Property(e => e.Exporteddate).HasColumnName("exporteddate");
-            entity.Property(e => e.Farmid).HasColumnName("farmid");
-            entity.Property(e => e.Productcode)
-                .HasMaxLength(100)
-                .HasColumnName("productcode");
-            entity.Property(e => e.Productid).HasColumnName("productid");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.Reason).HasColumnName("reason");
-            entity.Property(e => e.Storagelocation)
-                .HasMaxLength(255)
-                .HasColumnName("storagelocation");
-
-            entity.HasOne(d => d.Chickenbatch).WithMany(p => p.Exportedproducts)
-                .HasForeignKey(d => d.Chickenbatchid)
-                .HasConstraintName("exportedproduct_chickenbatchid_fkey");
-
-            entity.HasOne(d => d.Farm).WithMany(p => p.Exportedproducts)
-                .HasForeignKey(d => d.Farmid)
-                .HasConstraintName("exportedproduct_farmid_fkey");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.Exportedproducts)
-                .HasForeignKey(d => d.Productid)
-                .HasConstraintName("exportedproduct_productid_fkey");
+                .HasColumnName("updatedAt");
+            entity.Property(e => e.WarrantyPeriod).HasColumnName("warrantyPeriod");
         });
 
         modelBuilder.Entity<Farm>(entity =>
         {
-            entity.HasKey(e => e.Farmid).HasName("farm_pkey");
+            entity.HasKey(e => e.FarmId).HasName("Farm_pkey");
 
-            entity.ToTable("farm");
+            entity.ToTable("Farm");
 
-            entity.HasIndex(e => e.Userid, "IX_farm_userid");
-
-            entity.HasIndex(e => e.Farmcode, "farm_farmcode_key").IsUnique();
-
-            entity.Property(e => e.Farmid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("farmid");
-            entity.Property(e => e.Address).HasColumnName("address");
-            entity.Property(e => e.Area)
-                .HasPrecision(10, 2)
-                .HasColumnName("area");
-            entity.Property(e => e.Farmcode)
-                .HasMaxLength(50)
-                .HasColumnName("farmcode");
-            entity.Property(e => e.Farmimage).HasColumnName("farmimage");
-            entity.Property(e => e.Farmname)
-                .HasMaxLength(255)
-                .HasColumnName("farmname");
-            entity.Property(e => e.Phonenumber)
-                .HasMaxLength(20)
-                .HasColumnName("phonenumber");
+            entity.Property(e => e.FarmId)
+                .ValueGeneratedNever()
+                .HasColumnName("farmId");
+            entity.Property(e => e.Address)
+                .HasColumnType("character varying")
+                .HasColumnName("address");
+            entity.Property(e => e.Area).HasColumnName("area");
+            entity.Property(e => e.FarmCode)
+                .HasColumnType("character varying")
+                .HasColumnName("farmCode");
+            entity.Property(e => e.FarmImage)
+                .HasColumnType("character varying")
+                .HasColumnName("farmImage");
+            entity.Property(e => e.FarmName)
+                .HasColumnType("character varying")
+                .HasColumnName("farmName");
+            entity.Property(e => e.OwnerId).HasColumnName("ownerId");
+            entity.Property(e => e.PhoneNumber)
+                .HasColumnType("character varying")
+                .HasColumnName("phoneNumber");
             entity.Property(e => e.Scale)
-                .HasMaxLength(100)
+                .HasColumnType("character varying")
                 .HasColumnName("scale");
             entity.Property(e => e.Type)
-                .HasMaxLength(100)
+                .HasColumnType("character varying")
                 .HasColumnName("type");
-            entity.Property(e => e.Userid).HasColumnName("userid");
             entity.Property(e => e.Website)
-                .HasMaxLength(255)
+                .HasColumnType("character varying")
                 .HasColumnName("website");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Farms)
-                .HasForeignKey(d => d.Userid)
-                .HasConstraintName("farm_userid_fkey");
+            entity.HasOne(d => d.Owner).WithMany(p => p.Farms)
+                .HasForeignKey(d => d.OwnerId)
+                .HasConstraintName("Farm_ownerId_fkey");
         });
 
-        modelBuilder.Entity<Feedschedule>(entity =>
+        modelBuilder.Entity<FarmEmployee>(entity =>
         {
-            entity.HasKey(e => e.Feedscheduleid).HasName("feedschedule_pkey");
+            entity.HasKey(e => e.FarmEmployeeId).HasName("FarmEmployee_pkey");
 
-            entity.ToTable("feedschedule");
+            entity.ToTable("FarmEmployee");
 
-            entity.Property(e => e.Feedscheduleid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("feedscheduleid");
-            entity.Property(e => e.Feedamount)
-                .HasPrecision(10, 2)
-                .HasColumnName("feedamount");
-            entity.Property(e => e.Feedtime).HasColumnName("feedtime");
+            entity.Property(e => e.FarmEmployeeId)
+                .ValueGeneratedNever()
+                .HasColumnName("farmEmployeeId");
+            entity.Property(e => e.EmployeeId).HasColumnName("employeeId");
+            entity.Property(e => e.EndDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("endDate");
+            entity.Property(e => e.FarmId).HasColumnName("farmId");
+            entity.Property(e => e.RoleName)
+                .HasColumnType("character varying")
+                .HasColumnName("roleName");
+            entity.Property(e => e.StartDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("startDate");
+            entity.Property(e => e.Status).HasColumnName("status");
+
+            entity.HasOne(d => d.Employee).WithMany(p => p.FarmEmployees)
+                .HasForeignKey(d => d.EmployeeId)
+                .HasConstraintName("FarmEmployee_employeeId_fkey");
+
+            entity.HasOne(d => d.Farm).WithMany(p => p.FarmEmployees)
+                .HasForeignKey(d => d.FarmId)
+                .HasConstraintName("FarmEmployee_farmId_fkey");
+        });
+
+        modelBuilder.Entity<FeedSchedule>(entity =>
+        {
+            entity.HasKey(e => e.FeedScheduleId).HasName("FeedSchedule_pkey");
+
+            entity.ToTable("FeedSchedule");
+
+            entity.Property(e => e.FeedScheduleId)
+                .ValueGeneratedNever()
+                .HasColumnName("feedScheduleId");
+            entity.Property(e => e.FeedAmount).HasColumnName("feedAmount");
+            entity.Property(e => e.FeedTime)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("feedTime");
             entity.Property(e => e.Notes).HasColumnName("notes");
         });
 
         modelBuilder.Entity<Flock>(entity =>
         {
-            entity.HasKey(e => e.Flockid).HasName("flock_pkey");
+            entity.HasKey(e => e.FlockId).HasName("Flock_pkey");
 
-            entity.ToTable("flock");
+            entity.ToTable("Flock");
 
-            entity.HasIndex(e => e.Breedid, "IX_flock_breedid");
-
-            entity.HasIndex(e => e.Purposeid, "IX_flock_purposeid");
-
-            entity.Property(e => e.Flockid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("flockid");
-            entity.Property(e => e.Breedid).HasColumnName("breedid");
+            entity.Property(e => e.FlockId)
+                .ValueGeneratedNever()
+                .HasColumnName("flockId");
+            entity.Property(e => e.AvgWeight).HasColumnName("avgWeight");
+            entity.Property(e => e.BreedId).HasColumnName("breedId");
+            entity.Property(e => e.ChickenBatchId).HasColumnName("chickenBatchId");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Enddate).HasColumnName("enddate");
-            entity.Property(e => e.Name).HasColumnName("name");
-            entity.Property(e => e.Purposeid).HasColumnName("purposeid");
+            entity.Property(e => e.EndDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("endDate");
+            entity.Property(e => e.Gender)
+                .HasColumnType("character varying")
+                .HasColumnName("gender");
+            entity.Property(e => e.LastHealthCheck)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("lastHealthCheck");
+            entity.Property(e => e.MortalityRate).HasColumnName("mortalityRate");
+            entity.Property(e => e.Name)
+                .HasColumnType("character varying")
+                .HasColumnName("name");
+            entity.Property(e => e.PurposeId).HasColumnName("purposeId");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.Startdate).HasColumnName("startdate");
+            entity.Property(e => e.StartDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("startDate");
             entity.Property(e => e.Status).HasColumnName("status");
 
-            entity.HasOne(d => d.Breed).WithMany(p => p.Flocks)
-                .HasForeignKey(d => d.Breedid)
-                .HasConstraintName("fk_flock_breed");
+            entity.HasOne(d => d.Breed).WithMany(p => p.FlockBreeds)
+                .HasForeignKey(d => d.BreedId)
+                .HasConstraintName("Flock_breedId_fkey");
 
-            entity.HasOne(d => d.Purpose).WithMany(p => p.Flocks)
-                .HasForeignKey(d => d.Purposeid)
-                .HasConstraintName("fk_flock_purpose");
+            entity.HasOne(d => d.ChickenBatch).WithMany(p => p.Flocks)
+                .HasForeignKey(d => d.ChickenBatchId)
+                .HasConstraintName("Flock_chickenBatchId_fkey");
+
+            entity.HasOne(d => d.Purpose).WithMany(p => p.FlockPurposes)
+                .HasForeignKey(d => d.PurposeId)
+                .HasConstraintName("Flock_purposeId_fkey");
+        });
+
+        modelBuilder.Entity<FlockNutrition>(entity =>
+        {
+            entity.HasKey(e => e.FlockNutritionId).HasName("FlockNutrition_pkey");
+
+            entity.ToTable("FlockNutrition");
+
+            entity.Property(e => e.FlockNutritionId)
+                .ValueGeneratedNever()
+                .HasColumnName("flockNutritionId");
+            entity.Property(e => e.EndDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("endDate");
+            entity.Property(e => e.FlockId).HasColumnName("flockId");
+            entity.Property(e => e.NutritionId).HasColumnName("nutritionId");
+            entity.Property(e => e.StartDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("startDate");
+
+            entity.HasOne(d => d.Flock).WithMany(p => p.FlockNutritions)
+                .HasForeignKey(d => d.FlockId)
+                .HasConstraintName("FlockNutrition_flockId_fkey");
+
+            entity.HasOne(d => d.Nutrition).WithMany(p => p.FlockNutritions)
+                .HasForeignKey(d => d.NutritionId)
+                .HasConstraintName("FlockNutrition_nutritionId_fkey");
         });
 
         modelBuilder.Entity<Food>(entity =>
         {
-            entity.HasKey(e => e.Foodid).HasName("food_pkey");
+            entity.HasKey(e => e.FoodId).HasName("Food_pkey");
 
-            entity.ToTable("food");
+            entity.ToTable("Food");
 
-            entity.HasIndex(e => e.Supplierid, "IX_food_supplierid");
+            entity.HasIndex(e => e.ProductId, "Food_productId_key").IsUnique();
 
-            entity.Property(e => e.Foodid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("foodid");
-            entity.Property(e => e.Expirydate).HasColumnName("expirydate");
-            entity.Property(e => e.Ingredients).HasColumnName("ingredients");
-            entity.Property(e => e.Name).HasColumnName("name");
-            entity.Property(e => e.Notes).HasColumnName("notes");
-            entity.Property(e => e.Supplierid).HasColumnName("supplierid");
-            entity.Property(e => e.Usage).HasColumnName("usage");
-
-            entity.HasOne(d => d.Supplier).WithMany(p => p.Foods)
-                .HasForeignKey(d => d.Supplierid)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("food_supplierid_fkey");
+            entity.Property(e => e.FoodId)
+                .ValueGeneratedNever()
+                .HasColumnName("foodId");
+            entity.Property(e => e.ExpiryDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("expiryDate");
+            entity.Property(e => e.Ingredients)
+                .HasColumnType("character varying")
+                .HasColumnName("ingredients");
+            entity.Property(e => e.Name)
+                .HasColumnType("character varying")
+                .HasColumnName("name");
+            entity.Property(e => e.Notes)
+                .HasColumnType("character varying")
+                .HasColumnName("notes");
+            entity.Property(e => e.ProductId)
+                .IsRequired()
+                .HasColumnName("productId");
+            entity.Property(e => e.ProductionDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("productionDate");
         });
 
-        modelBuilder.Entity<Harvesttask>(entity =>
+        modelBuilder.Entity<HarvestDetail>(entity =>
         {
-            entity.HasKey(e => e.Htaskid).HasName("harvesttask_pkey");
+            entity.HasKey(e => e.HarvestDetailId).HasName("HarvestDetail_pkey");
 
-            entity.ToTable("harvesttask");
+            entity.ToTable("HarvestDetail");
 
-            entity.HasIndex(e => e.Taskid, "IX_harvesttask_taskid");
-
-            entity.Property(e => e.Htaskid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("htaskid");
-            entity.Property(e => e.Damagedquantity).HasColumnName("damagedquantity");
-            entity.Property(e => e.Goodquantity).HasColumnName("goodquantity");
-            entity.Property(e => e.Harvestdate).HasColumnName("harvestdate");
-            entity.Property(e => e.Harvesttype)
-                .HasMaxLength(100)
-                .HasColumnName("harvesttype");
+            entity.Property(e => e.HarvestDetailId)
+                .ValueGeneratedNever()
+                .HasColumnName("harvestDetailId");
+            entity.Property(e => e.HarvestLogId).HasColumnName("harvestLogId");
             entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .HasColumnName("status");
-            entity.Property(e => e.Taskid).HasColumnName("taskid");
-            entity.Property(e => e.Totalquantity).HasColumnName("totalquantity");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.TypeProductId).HasColumnName("typeProductId");
 
-            entity.HasOne(d => d.Task).WithMany(p => p.Harvesttasks)
-                .HasForeignKey(d => d.Taskid)
-                .HasConstraintName("harvesttask_taskid_fkey");
+            entity.HasOne(d => d.HarvestLog).WithMany(p => p.HarvestDetails)
+                .HasForeignKey(d => d.HarvestLogId)
+                .HasConstraintName("HarvestDetail_harvestLogId_fkey");
+
+            entity.HasOne(d => d.TypeProduct).WithMany(p => p.HarvestDetails)
+                .HasForeignKey(d => d.TypeProductId)
+                .HasConstraintName("HarvestDetail_typeProductId_fkey");
         });
 
-        modelBuilder.Entity<Healthcriterion>(entity =>
+        modelBuilder.Entity<HarvestLog>(entity =>
         {
-            entity.HasKey(e => e.Criteriaid).HasName("healthcriteria_pkey");
+            entity.HasKey(e => e.HarvestLogId).HasName("HarvestLog_pkey");
 
-            entity.ToTable("healthcriteria");
+            entity.ToTable("HarvestLog");
 
-            entity.Property(e => e.Criteriaid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("criteriaid");
-            entity.Property(e => e.Characteristic).HasColumnName("characteristic");
+            entity.Property(e => e.HarvestLogId)
+                .ValueGeneratedNever()
+                .HasColumnName("harvestLogId");
+            entity.Property(e => e.ChickenCoopId).HasColumnName("chickenCoopId");
+            entity.Property(e => e.Date)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("date");
+            entity.Property(e => e.Note).HasColumnName("note");
+            entity.Property(e => e.Total).HasColumnName("total");
+            entity.Property(e => e.Type)
+                .HasColumnType("character varying")
+                .HasColumnName("type");
+
+            entity.HasOne(d => d.ChickenCoop).WithMany(p => p.HarvestLogs)
+                .HasForeignKey(d => d.ChickenCoopId)
+                .HasConstraintName("HarvestLog_chickenCoopId_fkey");
+        });
+
+        modelBuilder.Entity<HarvestProduct>(entity =>
+        {
+            entity.HasKey(e => e.HarvestProductId).HasName("HarvestProduct_pkey");
+
+            entity.ToTable("HarvestProduct");
+
+            entity.HasIndex(e => e.ProductId, "HarvestProduct_productId_key").IsUnique();
+
+            entity.Property(e => e.HarvestProductId)
+                .ValueGeneratedNever()
+                .HasColumnName("harvestProductId");
+            entity.Property(e => e.HarvestProductName)
+                .HasColumnType("character varying")
+                .HasColumnName("harvestProductName");
+            entity.Property(e => e.Note).HasColumnName("note");
+            entity.Property(e => e.ProductId)
+                .IsRequired()
+                .HasColumnName("productId");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.UnitId).HasColumnName("unitId");
+
+            entity.HasOne(d => d.Unit).WithMany(p => p.HarvestProducts)
+                .HasForeignKey(d => d.UnitId)
+                .HasConstraintName("HarvestProduct_unitId_fkey");
+        });
+
+        modelBuilder.Entity<HarvestTask>(entity =>
+        {
+            entity.HasKey(e => e.HTaskId).HasName("HarvestTask_pkey");
+
+            entity.ToTable("HarvestTask");
+
+            entity.Property(e => e.HTaskId)
+                .ValueGeneratedNever()
+                .HasColumnName("hTaskId");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Name).HasColumnName("name");
-            entity.Property(e => e.Unit).HasColumnName("unit");
+            entity.Property(e => e.HarvestDate).HasColumnName("harvestDate");
+            entity.Property(e => e.HarvestType)
+                .HasColumnType("character varying")
+                .HasColumnName("harvestType");
+            entity.Property(e => e.QuantityTypeId).HasColumnName("quantityTypeId");
+            entity.Property(e => e.TaskId).HasColumnName("taskId");
+
+            entity.HasOne(d => d.QuantityType).WithMany(p => p.HarvestTasks)
+                .HasForeignKey(d => d.QuantityTypeId)
+                .HasConstraintName("HarvestTask_quantityTypeId_fkey");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.HarvestTasks)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("HarvestTask_taskId_fkey");
         });
 
-        modelBuilder.Entity<Healthlog>(entity =>
+        modelBuilder.Entity<HealthLog>(entity =>
         {
-            entity.HasKey(e => e.Hlogid).HasName("healthlog_pkey");
+            entity.HasKey(e => e.HLogId).HasName("HealthLog_pkey");
 
-            entity.ToTable("healthlog");
+            entity.ToTable("HealthLog");
 
-            entity.HasIndex(e => e.Flockid, "IX_healthlog_flockid");
-
-            entity.Property(e => e.Hlogid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("hlogid");
-            entity.Property(e => e.Flockid).HasColumnName("flockid");
-            entity.Property(e => e.Logdate)
+            entity.Property(e => e.HLogId)
+                .ValueGeneratedNever()
+                .HasColumnName("hLogId");
+            entity.Property(e => e.CreatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("logdate");
+                .HasColumnName("createdAt");
+            entity.Property(e => e.EndDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("endDate");
+            entity.Property(e => e.FlockId).HasColumnName("flockId");
+            entity.Property(e => e.Humidity).HasColumnName("humidity");
+            entity.Property(e => e.Location)
+                .HasColumnType("character varying")
+                .HasColumnName("location");
             entity.Property(e => e.Notes).HasColumnName("notes");
+            entity.Property(e => e.StaffId).HasColumnName("staffId");
+            entity.Property(e => e.StartDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("startDate");
+            entity.Property(e => e.Temperature).HasColumnName("temperature");
+            entity.Property(e => e.UpdatedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("updatedAt");
 
-            entity.HasOne(d => d.Flock).WithMany(p => p.Healthlogs)
-                .HasForeignKey(d => d.Flockid)
-                .HasConstraintName("healthlog_flockid_fkey");
-
-            entity.HasMany(h => h.Users)
-                .WithMany(u => u.HealthLogs)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserHealthLog",
-                    j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
-                    j => j.HasOne<Healthlog>().WithMany().HasForeignKey("hLogId"),
-                    j => j.ToTable("user_health_log")
-                );
+            entity.HasOne(d => d.Flock).WithMany(p => p.HealthLogs)
+                .HasForeignKey(d => d.FlockId)
+                .HasConstraintName("HealthLog_flockId_fkey");
         });
 
-        modelBuilder.Entity<Inventoryaudit>(entity =>
+        modelBuilder.Entity<HealthLogDetail>(entity =>
         {
-            entity.HasKey(e => e.Auditid).HasName("inventoryaudit_pkey");
+            entity.HasKey(e => e.LogDetailId).HasName("HealthLogDetail_pkey");
 
-            entity.ToTable("inventoryaudit");
+            entity.ToTable("HealthLogDetail");
 
-            entity.HasIndex(e => e.Productid, "IX_inventoryaudit_productid");
-
-            entity.HasIndex(e => e.Userid, "IX_inventoryaudit_userid");
-
-            entity.Property(e => e.Auditid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("auditid");
-            entity.Property(e => e.Actualquantity).HasColumnName("actualquantity");
-            entity.Property(e => e.Auditdate)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+            entity.Property(e => e.LogDetailId)
+                .ValueGeneratedNever()
+                .HasColumnName("logDetailId");
+            entity.Property(e => e.CheckedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("auditdate");
-            entity.Property(e => e.Condition).HasColumnName("condition");
-            entity.Property(e => e.Productid).HasColumnName("productid");
-            entity.Property(e => e.Reason).HasColumnName("reason");
-            entity.Property(e => e.Systemquantity).HasColumnName("systemquantity");
-            entity.Property(e => e.Userid).HasColumnName("userid");
+                .HasColumnName("checkedAt");
+            entity.Property(e => e.CheckedBy).HasColumnName("checkedBy");
+            entity.Property(e => e.CriteriaId).HasColumnName("criteriaId");
+            entity.Property(e => e.HLogId).HasColumnName("hLogId");
+            entity.Property(e => e.Result).HasColumnName("result");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.Inventoryaudits)
-                .HasForeignKey(d => d.Productid)
-                .HasConstraintName("inventoryaudit_productid_fkey");
+            entity.HasOne(d => d.CheckedByNavigation).WithMany(p => p.HealthLogDetails)
+                .HasForeignKey(d => d.CheckedBy)
+                .HasConstraintName("HealthLogDetail_checkedBy_fkey");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Inventoryaudits)
-                .HasForeignKey(d => d.Userid)
-                .HasConstraintName("inventoryaudit_userid_fkey");
+            entity.HasOne(d => d.Criteria).WithMany(p => p.HealthLogDetails)
+                .HasForeignKey(d => d.CriteriaId)
+                .HasConstraintName("HealthLogDetail_criteriaId_fkey");
+
+            entity.HasOne(d => d.HLog).WithMany(p => p.HealthLogDetails)
+                .HasForeignKey(d => d.HLogId)
+                .HasConstraintName("HealthLogDetail_hLogId_fkey");
+        });
+
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.HasKey(e => e.NotificationId).HasName("Notification_pkey");
+
+            entity.ToTable("Notification");
+
+            entity.Property(e => e.NotificationId)
+                .ValueGeneratedNever()
+                .HasColumnName("notificationId");
+            entity.Property(e => e.Content).HasColumnName("content");
+            entity.Property(e => e.IsRead).HasColumnName("isRead");
+            entity.Property(e => e.NotificationName)
+                .HasColumnType("character varying")
+                .HasColumnName("notificationName");
+            entity.Property(e => e.Type)
+                .HasColumnType("character varying")
+                .HasColumnName("type");
+            entity.Property(e => e.UserId).HasColumnName("userId");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Notifications)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("Notification_userId_fkey");
         });
 
         modelBuilder.Entity<Nutrition>(entity =>
         {
-            entity.HasKey(e => e.Nutritionid).HasName("nutrition_pkey");
+            entity.HasKey(e => e.NutritionId).HasName("Nutrition_pkey");
 
-            entity.ToTable("nutrition");
+            entity.ToTable("Nutrition");
 
-            entity.HasIndex(e => e.Feedscheduleid, "IX_nutrition_feedscheduleid");
-
-            entity.HasIndex(e => e.Flockid, "IX_nutrition_flockid");
-
-            entity.HasIndex(e => e.Foodid, "IX_nutrition_foodid");
-
-            entity.HasIndex(e => e.Waterid, "IX_nutrition_waterid");
-
-            entity.Property(e => e.Nutritionid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("nutritionid");
+            entity.Property(e => e.NutritionId)
+                .ValueGeneratedNever()
+                .HasColumnName("nutritionId");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Developmentstage)
-                .HasMaxLength(255)
-                .HasColumnName("developmentstage");
-            entity.Property(e => e.Feedscheduleid).HasColumnName("feedscheduleid");
-            entity.Property(e => e.Flockid).HasColumnName("flockid");
-            entity.Property(e => e.Foodid).HasColumnName("foodid");
+            entity.Property(e => e.DevelopmentStage)
+                .HasColumnType("character varying")
+                .HasColumnName("developmentStage");
+            entity.Property(e => e.FeedScheduleId).HasColumnName("feedScheduleId");
+            entity.Property(e => e.FoodId).HasColumnName("foodId");
             entity.Property(e => e.Name)
-                .HasMaxLength(255)
+                .HasColumnType("character varying")
                 .HasColumnName("name");
-            entity.Property(e => e.Targetaudience)
-                .HasMaxLength(255)
-                .HasColumnName("targetaudience");
-            entity.Property(e => e.Waterid).HasColumnName("waterid");
+            entity.Property(e => e.TargetAudience)
+                .HasColumnType("character varying")
+                .HasColumnName("targetAudience");
 
-            entity.HasOne(d => d.Feedschedule).WithMany(p => p.Nutritions)
-                .HasForeignKey(d => d.Feedscheduleid)
-                .HasConstraintName("nutrition_feedscheduleid_fkey");
-
-            entity.HasOne(d => d.Flock).WithMany(p => p.Nutritions)
-                .HasForeignKey(d => d.Flockid)
-                .HasConstraintName("nutrition_flockid_fkey");
+            entity.HasOne(d => d.FeedSchedule).WithMany(p => p.Nutritions)
+                .HasForeignKey(d => d.FeedScheduleId)
+                .HasConstraintName("Nutrition_feedScheduleId_fkey");
 
             entity.HasOne(d => d.Food).WithMany(p => p.Nutritions)
-                .HasForeignKey(d => d.Foodid)
-                .HasConstraintName("nutrition_foodid_fkey");
-
-            entity.HasOne(d => d.Water).WithMany(p => p.Nutritions)
-                .HasForeignKey(d => d.Waterid)
-                .HasConstraintName("nutrition_waterid_fkey");
+                .HasForeignKey(d => d.FoodId)
+                .HasConstraintName("Nutrition_foodId_fkey");
         });
 
-        modelBuilder.Entity<Performancestatistic>(entity =>
+        modelBuilder.Entity<Performance>(entity =>
         {
-            entity.HasKey(e => e.Perstaid).HasName("performancestatistic_pkey");
+            entity.HasKey(e => e.PerId).HasName("Performance_pkey");
 
-            entity.ToTable("performancestatistic");
+            entity.ToTable("Performance");
 
-            entity.HasIndex(e => e.Userid, "IX_performancestatistic_userid");
-
-            entity.Property(e => e.Perstaid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("perstaid");
-            entity.Property(e => e.Completedtask)
-                .HasDefaultValue(0)
-                .HasColumnName("completedtask");
-            entity.Property(e => e.Completionrate)
-                .HasPrecision(5, 2)
-                .HasComputedColumnSql("\nCASE\n    WHEN (totaltask > 0) THEN (((completedtask)::numeric * 100.0) / (totaltask)::numeric)\n    ELSE (0)::numeric\nEND", true)
-                .HasColumnName("completionrate");
-            entity.Property(e => e.Delaytask)
-                .HasDefaultValue(0)
-                .HasColumnName("delaytask");
+            entity.Property(e => e.PerId)
+                .ValueGeneratedNever()
+                .HasColumnName("perId");
+            entity.Property(e => e.CompletedTask).HasColumnName("completedTask");
+            entity.Property(e => e.CompletionRate).HasColumnName("completionRate");
+            entity.Property(e => e.DelayTask).HasColumnName("delayTask");
             entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.Performancerating)
-                .HasMaxLength(50)
-                .HasColumnName("performancerating");
-            entity.Property(e => e.Rangetime).HasColumnName("rangetime");
-            entity.Property(e => e.Totaltask)
-                .HasDefaultValue(0)
-                .HasColumnName("totaltask");
-            entity.Property(e => e.Userid).HasColumnName("userid");
+            entity.Property(e => e.PerformanceRating).HasColumnName("performanceRating");
+            entity.Property(e => e.RangeTime)
+                .HasColumnType("character varying")
+                .HasColumnName("rangeTime");
+            entity.Property(e => e.TotalTask).HasColumnName("totalTask");
+            entity.Property(e => e.UserId).HasColumnName("userId");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Performancestatistics)
-                .HasForeignKey(d => d.Userid)
-                .HasConstraintName("performancestatistic_userid_fkey");
+            entity.HasOne(d => d.User).WithMany(p => p.Performances)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("Performance_userId_fkey");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.Productid).HasName("product_pkey");
+            entity.HasKey(e => e.ProductId).HasName("Product_pkey");
 
-            entity.ToTable("product");
+            entity.ToTable("Product");
 
-            entity.HasIndex(e => e.Supplierid, "IX_product_supplierid");
-
-            entity.HasIndex(e => e.Productcode, "product_productcode_key").IsUnique();
-
-            entity.Property(e => e.Productid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("productid");
-            entity.Property(e => e.Maxstock).HasColumnName("maxstock");
-            entity.Property(e => e.Minstock).HasColumnName("minstock");
-            entity.Property(e => e.Productcode)
-                .HasMaxLength(50)
-                .HasColumnName("productcode");
-            entity.Property(e => e.Productname)
-                .HasMaxLength(255)
-                .HasColumnName("productname");
-            entity.Property(e => e.Storagelocation).HasColumnName("storagelocation");
-            entity.Property(e => e.Supplierid).HasColumnName("supplierid");
+            entity.Property(e => e.ProductId)
+                .ValueGeneratedNever()
+                .HasColumnName("productId");
+            entity.Property(e => e.Package)
+                .HasColumnType("character varying")
+                .HasColumnName("package");
+            entity.Property(e => e.ProductTypeId).HasColumnName("productTypeId");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.Unit)
-                .HasMaxLength(50)
+                .HasColumnType("character varying")
                 .HasColumnName("unit");
+            entity.Property(e => e.Usage).HasColumnName("usage");
 
-            entity.HasOne(d => d.Supplier).WithMany(p => p.Products)
-                .HasForeignKey(d => d.Supplierid)
-                .HasConstraintName("product_supplierid_fkey");
+            entity.HasOne(d => d.ProductNavigation).WithOne(p => p.Product)
+                .HasPrincipalKey<Equipment>(p => p.ProductId)
+                .HasForeignKey<Product>(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Product_productId_fkey1");
+
+            entity.HasOne(d => d.Product1).WithOne(p => p.Product)
+                .HasPrincipalKey<Food>(p => p.ProductId)
+                .HasForeignKey<Product>(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Product_productId_fkey3");
+
+            entity.HasOne(d => d.Product2).WithOne(p => p.Product)
+                .HasPrincipalKey<HarvestProduct>(p => p.ProductId)
+                .HasForeignKey<Product>(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Product_productId_fkey");
+
+            entity.HasOne(d => d.Product3).WithOne(p => p.Product)
+                .HasPrincipalKey<Vaccine>(p => p.ProductId)
+                .HasForeignKey<Product>(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Product_productId_fkey2");
+
+            entity.HasOne(d => d.ProductType).WithMany(p => p.Products)
+                .HasForeignKey(d => d.ProductTypeId)
+                .HasConstraintName("Product_productTypeId_fkey");
         });
 
-        modelBuilder.Entity<Purpose>(entity =>
+        modelBuilder.Entity<QuantityLog>(entity =>
         {
-            entity.HasKey(e => e.Purposeid).HasName("purpose_pkey");
+            entity.HasKey(e => e.QLogId).HasName("QuantityLog_pkey");
 
-            entity.ToTable("purpose");
+            entity.ToTable("QuantityLog");
 
-            entity.Property(e => e.Purposeid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("purposeid");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Name).HasColumnName("name");
-        });
-
-        modelBuilder.Entity<Quantitylog>(entity =>
-        {
-            entity.HasKey(e => e.Qlogid).HasName("quantitylog_pkey");
-
-            entity.ToTable("quantitylog");
-
-            entity.HasIndex(e => e.Flockid, "IX_quantitylog_flockid");
-
-            entity.HasIndex(e => e.Reasonid, "IX_quantitylog_reasonid");
-
-            entity.Property(e => e.Qlogid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("qlogid");
-            entity.Property(e => e.Flockid).HasColumnName("flockid");
-            entity.Property(e => e.Logdate)
+            entity.Property(e => e.QLogId)
+                .ValueGeneratedNever()
+                .HasColumnName("qLogId");
+            entity.Property(e => e.CheckedBy).HasColumnName("checkedBy");
+            entity.Property(e => e.FlockId).HasColumnName("flockId");
+            entity.Property(e => e.Img)
+                .HasColumnType("character varying")
+                .HasColumnName("img");
+            entity.Property(e => e.LogDate)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("logdate");
-            entity.Property(e => e.Logtype)
-                .HasMaxLength(20)
-                .HasColumnName("logtype");
+                .HasColumnName("logDate");
+            entity.Property(e => e.LogType)
+                .HasColumnType("character varying")
+                .HasColumnName("logType");
             entity.Property(e => e.Notes).HasColumnName("notes");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.Reasonid).HasColumnName("reasonid");
+            entity.Property(e => e.ReasonId).HasColumnName("reasonId");
 
-            entity.HasOne(d => d.Flock).WithMany(p => p.Quantitylogs)
-                .HasForeignKey(d => d.Flockid)
-                .HasConstraintName("quantitylog_flockid_fkey");
+            entity.HasOne(d => d.CheckedByNavigation).WithMany(p => p.QuantityLogs)
+                .HasForeignKey(d => d.CheckedBy)
+                .HasConstraintName("QuantityLog_checkedBy_fkey");
 
-            entity.HasOne(d => d.Reason).WithMany(p => p.Quantitylogs)
-                .HasForeignKey(d => d.Reasonid)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("quantitylog_reasonid_fkey");
+            entity.HasOne(d => d.Flock).WithMany(p => p.QuantityLogs)
+                .HasForeignKey(d => d.FlockId)
+                .HasConstraintName("QuantityLog_flockId_fkey");
 
-            entity.HasMany(q => q.Users)
-                .WithMany(u => u.QuantityLogs)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserQuantityLog",
-                    j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
-                    j => j.HasOne<Quantitylog>().WithMany().HasForeignKey("qLogId"),
-                    j => j.ToTable("user_quantity_log")
-                );
+            entity.HasOne(d => d.Reason).WithMany(p => p.QuantityLogs)
+                .HasForeignKey(d => d.ReasonId)
+                .HasConstraintName("QuantityLog_reasonId_fkey");
         });
 
-        modelBuilder.Entity<Reason>(entity =>
+        modelBuilder.Entity<Request>(entity =>
         {
-            entity.HasKey(e => e.Reasonid).HasName("reason_pkey");
+            entity.HasKey(e => e.RequestId).HasName("Request_pkey");
 
-            entity.ToTable("reason");
+            entity.ToTable("Request");
 
-            entity.Property(e => e.Reasonid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("reasonid");
+            entity.Property(e => e.RequestId)
+                .ValueGeneratedNever()
+                .HasColumnName("requestId");
+            entity.Property(e => e.ApprovedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("approvedAt");
+            entity.Property(e => e.ApprovedBy).HasColumnName("approvedBy");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createdAt");
+            entity.Property(e => e.CreatedBy).HasColumnName("createdBy");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Name)
-                .HasMaxLength(255)
-                .HasColumnName("name");
-            entity.Property(e => e.Type)
-                .HasMaxLength(50)
-                .HasColumnName("type");
+            entity.Property(e => e.IsEmergency).HasColumnName("isEmergency");
+            entity.Property(e => e.RequestTypeId).HasColumnName("requestTypeId");
+            entity.Property(e => e.Status)
+                .HasColumnType("character varying")
+                .HasColumnName("status");
+            entity.Property(e => e.UserId).HasColumnName("userId");
+
+            entity.HasOne(d => d.ApprovedByNavigation).WithMany(p => p.RequestApprovedByNavigations)
+                .HasForeignKey(d => d.ApprovedBy)
+                .HasConstraintName("Request_approvedBy_fkey");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.RequestCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("Request_createdBy_fkey");
+
+            entity.HasOne(d => d.RequestType).WithMany(p => p.Requests)
+                .HasForeignKey(d => d.RequestTypeId)
+                .HasConstraintName("Request_requestTypeId_fkey");
+
+            entity.HasOne(d => d.User).WithMany(p => p.RequestUsers)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("Request_userId_fkey");
         });
 
-        modelBuilder.Entity<Role>(entity =>
+        modelBuilder.Entity<RequestDetail>(entity =>
         {
-            entity.HasKey(e => e.Roleid).HasName("roles_pkey");
+            entity.HasKey(e => e.DetailId).HasName("RequestDetails_pkey");
 
-            entity.ToTable("roles");
+            entity.Property(e => e.DetailId)
+                .ValueGeneratedNever()
+                .HasColumnName("detailId");
+            entity.Property(e => e.ExpectedQuantity).HasColumnName("expectedQuantity");
+            entity.Property(e => e.ItemId).HasColumnName("itemId");
+            entity.Property(e => e.LocationFrom)
+                .HasColumnType("character varying")
+                .HasColumnName("locationFrom");
+            entity.Property(e => e.LocationTo)
+                .HasColumnType("character varying")
+                .HasColumnName("locationTo");
+            entity.Property(e => e.Price).HasColumnName("price");
+            entity.Property(e => e.RequestId).HasColumnName("requestId");
 
-            entity.HasIndex(e => e.Rolename, "roles_rolename_key").IsUnique();
-
-            entity.Property(e => e.Roleid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("roleid");
-            entity.Property(e => e.Permission)
-                .HasMaxLength(255)
-                .HasColumnName("permission");
-            entity.Property(e => e.Rolename)
-                .HasMaxLength(255)
-                .HasColumnName("rolename");
+            entity.HasOne(d => d.Request).WithMany(p => p.RequestDetails)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("RequestDetails_requestId_fkey");
         });
 
         modelBuilder.Entity<Salary>(entity =>
         {
-            entity.HasKey(e => e.Salaryid).HasName("salary_pkey");
+            entity.HasKey(e => e.SalaryId).HasName("Salary_pkey");
 
-            entity.ToTable("salary");
+            entity.ToTable("Salary");
 
-            entity.HasIndex(e => e.Userid, "IX_salary_userid");
-
-            entity.Property(e => e.Salaryid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("salaryid");
-            entity.Property(e => e.Basicsalary)
-                .HasPrecision(12, 2)
-                .HasColumnName("basicsalary");
-            entity.Property(e => e.Bonus)
-                .HasPrecision(12, 2)
-                .HasDefaultValueSql("0")
-                .HasColumnName("bonus");
-            entity.Property(e => e.Deduction)
-                .HasPrecision(12, 2)
-                .HasDefaultValueSql("0")
-                .HasColumnName("deduction");
-            entity.Property(e => e.Finalsalary)
-                .HasPrecision(12, 2)
-                .HasComputedColumnSql("((basicsalary + bonus) - deduction)", true)
-                .HasColumnName("finalsalary");
-            entity.Property(e => e.Overtimehours)
-                .HasPrecision(5, 2)
-                .HasDefaultValueSql("0")
-                .HasColumnName("overtimehours");
-            entity.Property(e => e.Salarymonth).HasColumnName("salarymonth");
+            entity.Property(e => e.SalaryId)
+                .ValueGeneratedNever()
+                .HasColumnName("salaryId");
+            entity.Property(e => e.BasicSalary).HasColumnName("basicSalary");
+            entity.Property(e => e.Bonus).HasColumnName("bonus");
+            entity.Property(e => e.Deduction).HasColumnName("deduction");
+            entity.Property(e => e.Final).HasColumnName("final");
+            entity.Property(e => e.OverTimeHours).HasColumnName("overTimeHours");
             entity.Property(e => e.Status)
-                .HasMaxLength(20)
+                .HasColumnType("character varying")
                 .HasColumnName("status");
-            entity.Property(e => e.Totalhoursworked)
-                .HasPrecision(5, 2)
-                .HasDefaultValueSql("0")
-                .HasColumnName("totalhoursworked");
-            entity.Property(e => e.Userid).HasColumnName("userid");
+            entity.Property(e => e.TotalHoursWorked).HasColumnName("totalHoursWorked");
+            entity.Property(e => e.UserId).HasColumnName("userId");
 
             entity.HasOne(d => d.User).WithMany(p => p.Salaries)
-                .HasForeignKey(d => d.Userid)
-                .HasConstraintName("salary_userid_fkey");
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("Salary_userId_fkey");
         });
 
-        modelBuilder.Entity<Supplier>(entity =>
+        modelBuilder.Entity<StockReceipt>(entity =>
         {
-            entity.HasKey(e => e.Supplierid).HasName("supplier_pkey");
+            entity.HasKey(e => e.InRepId).HasName("StockReceipt_pkey");
 
-            entity.ToTable("supplier");
+            entity.ToTable("StockReceipt");
 
-            entity.Property(e => e.Supplierid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("supplierid");
-            entity.Property(e => e.Address).HasColumnName("address");
-            entity.Property(e => e.Contactinformation).HasColumnName("contactinformation");
+            entity.Property(e => e.InRepId)
+                .ValueGeneratedNever()
+                .HasColumnName("inRepId");
+            entity.Property(e => e.ActualQuantity).HasColumnName("actualQuantity");
+            entity.Property(e => e.CreatedBy).HasColumnName("createdBy");
+            entity.Property(e => e.CreatedDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createdDate");
+            entity.Property(e => e.DetailId).HasColumnName("detailId");
+            entity.Property(e => e.ItemType)
+                .HasColumnType("character varying")
+                .HasColumnName("itemType");
+            entity.Property(e => e.LocationFrom)
+                .HasColumnType("character varying")
+                .HasColumnName("locationFrom");
+            entity.Property(e => e.LocationTo)
+                .HasColumnType("character varying")
+                .HasColumnName("locationTo");
+            entity.Property(e => e.StockReceiptType)
+                .HasColumnType("character varying")
+                .HasColumnName("stockReceiptType");
+
+            entity.HasOne(d => d.Detail).WithMany(p => p.StockReceipts)
+                .HasForeignKey(d => d.DetailId)
+                .HasConstraintName("StockReceipt_detailId_fkey");
+        });
+
+        modelBuilder.Entity<SubCategory>(entity =>
+        {
+            entity.HasKey(e => e.SubCategoryId).HasName("SubCategory_pkey");
+
+            entity.ToTable("SubCategory");
+
+            entity.Property(e => e.SubCategoryId)
+                .ValueGeneratedNever()
+                .HasColumnName("subCategoryId");
+            entity.Property(e => e.CategoryId).HasColumnName("categoryId");
+            entity.Property(e => e.CreatedDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createdDate");
+            entity.Property(e => e.DataType)
+                .HasColumnType("character varying")
+                .HasColumnName("dataType");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Name)
-                .HasMaxLength(255)
-                .HasColumnName("name");
+            entity.Property(e => e.Status)
+                .HasColumnType("character varying")
+                .HasColumnName("status");
+            entity.Property(e => e.SubCategoryName)
+                .HasColumnType("character varying")
+                .HasColumnName("subCategoryName");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.SubCategories)
+                .HasForeignKey(d => d.CategoryId)
+                .HasConstraintName("SubCategory_categoryId_fkey");
         });
 
         modelBuilder.Entity<Task>(entity =>
         {
-            entity.HasKey(e => e.Taskid).HasName("task_pkey");
+            entity.HasKey(e => e.TaskId).HasName("Task_pkey");
 
-            entity.ToTable("task");
+            entity.ToTable("Task");
 
-            entity.HasIndex(e => e.Userid, "IX_task_userid");
-
-            entity.Property(e => e.Taskid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("taskid");
-            entity.Property(e => e.Createddate)
-                .HasDefaultValueSql("now()")
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("createddate");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Duedate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("duedate");
+            entity.Property(e => e.TaskId)
+                .ValueGeneratedNever()
+                .HasColumnName("taskId");
             entity.Property(e => e.Location)
-                .HasMaxLength(255)
+                .HasColumnType("character varying")
                 .HasColumnName("location");
             entity.Property(e => e.Status)
-                .HasMaxLength(50)
+                .HasColumnType("character varying")
                 .HasColumnName("status");
-            entity.Property(e => e.Taskname)
-                .HasMaxLength(255)
-                .HasColumnName("taskname");
-            entity.Property(e => e.Tasktype)
-                .HasMaxLength(100)
-                .HasColumnName("tasktype");
-            entity.Property(e => e.Userid).HasColumnName("userid");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Tasks)
-                .HasForeignKey(d => d.Userid)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("task_userid_fkey");
+            entity.Property(e => e.TaskName)
+                .HasColumnType("character varying")
+                .HasColumnName("taskName");
+            entity.Property(e => e.TaskType)
+                .HasColumnType("character varying")
+                .HasColumnName("taskType");
         });
 
-        modelBuilder.Entity<TimeKeeping>(entity =>
+        modelBuilder.Entity<TaskDetail>(entity =>
         {
-            entity.HasKey(e => e.Timekeepingid).HasName("time_keeping_pkey");
+            entity.HasKey(e => e.TaskDetailId).HasName("TaskDetail_pkey");
 
-            entity.ToTable("time_keeping");
+            entity.ToTable("TaskDetail");
 
-            entity.HasIndex(e => e.Timekeepingtype, "IX_time_keeping_timekeepingtype");
+            entity.Property(e => e.TaskDetailId)
+                .ValueGeneratedNever()
+                .HasColumnName("taskDetailId");
+            entity.Property(e => e.Note).HasColumnName("note");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.TaskLogId).HasColumnName("taskLogId");
+            entity.Property(e => e.TypeProductId).HasColumnName("typeProductId");
 
-            entity.HasIndex(e => e.Userid, "IX_time_keeping_userid");
+            entity.HasOne(d => d.TaskLog).WithMany(p => p.TaskDetails)
+                .HasForeignKey(d => d.TaskLogId)
+                .HasConstraintName("TaskDetail_taskLogId_fkey");
 
-            entity.Property(e => e.Timekeepingid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("timekeepingid");
-            entity.Property(e => e.Endtime).HasColumnName("endtime");
-            entity.Property(e => e.Timekeepingtype).HasColumnName("timekeepingtype");
-            entity.Property(e => e.Userid).HasColumnName("userid");
-            entity.Property(e => e.Workdate).HasColumnName("workdate");
-
-            entity.HasOne(d => d.TimekeepingtypeNavigation).WithMany(p => p.TimeKeepings)
-                .HasForeignKey(d => d.Timekeepingtype)
-                .HasConstraintName("time_keeping_timekeepingtype_fkey");
-
-            entity.HasOne(d => d.User).WithMany(p => p.TimeKeepings)
-                .HasForeignKey(d => d.Userid)
-                .HasConstraintName("time_keeping_userid_fkey");
+            entity.HasOne(d => d.TypeProduct).WithMany(p => p.TaskDetails)
+                .HasForeignKey(d => d.TypeProductId)
+                .HasConstraintName("TaskDetail_typeProductId_fkey");
         });
 
-        modelBuilder.Entity<TimeKeepingType>(entity =>
+        modelBuilder.Entity<TaskEvaluation>(entity =>
         {
-            entity.HasKey(e => e.Timetypeid).HasName("time_keeping_types_pkey");
+            entity.HasKey(e => e.TaskEvalId).HasName("TaskEvaluation_pkey");
 
-            entity.ToTable("time_keeping_types");
+            entity.ToTable("TaskEvaluation");
 
-            entity.HasIndex(e => e.Typename, "time_keeping_types_typename_key").IsUnique();
-
-            entity.Property(e => e.Timetypeid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("timetypeid");
+            entity.Property(e => e.TaskEvalId)
+                .ValueGeneratedNever()
+                .HasColumnName("taskEvalId");
+            entity.Property(e => e.CategoryId).HasColumnName("categoryId");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Typename)
-                .HasMaxLength(255)
-                .HasColumnName("typename");
-            entity.Property(e => e.Unitsalary)
-                .HasPrecision(10, 2)
-                .HasColumnName("unitsalary");
+            entity.Property(e => e.FailedCriteria).HasColumnName("failedCriteria");
+            entity.Property(e => e.OverallResult)
+                .HasColumnType("character varying")
+                .HasColumnName("overallResult");
+            entity.Property(e => e.PassedCriteria).HasColumnName("passedCriteria");
+            entity.Property(e => e.StaffName)
+                .HasColumnType("character varying")
+                .HasColumnName("staffName");
+            entity.Property(e => e.TaskId).HasColumnName("taskId");
+            entity.Property(e => e.TaskType)
+                .HasColumnType("character varying")
+                .HasColumnName("taskType");
+            entity.Property(e => e.TotalCriteria).HasColumnName("totalCriteria");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.TaskEvaluations)
+                .HasForeignKey(d => d.CategoryId)
+                .HasConstraintName("TaskEvaluation_categoryId_fkey");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskEvaluations)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("TaskEvaluation_taskId_fkey");
+        });
+
+        modelBuilder.Entity<TaskLog>(entity =>
+        {
+            entity.HasKey(e => e.TaskLogId).HasName("TaskLog_pkey");
+
+            entity.ToTable("TaskLog");
+
+            entity.Property(e => e.TaskLogId)
+                .ValueGeneratedNever()
+                .HasColumnName("taskLogId");
+            entity.Property(e => e.ChickenCoopId).HasColumnName("chickenCoopId");
+            entity.Property(e => e.EndDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("endDate");
+            entity.Property(e => e.StartDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("startDate");
+            entity.Property(e => e.Type)
+                .HasColumnType("character varying")
+                .HasColumnName("type");
+
+            entity.HasOne(d => d.ChickenCoop).WithMany(p => p.TaskLogs)
+                .HasForeignKey(d => d.ChickenCoopId)
+                .HasConstraintName("TaskLog_chickenCoopId_fkey");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Userid).HasName("users_pkey");
+            entity.HasKey(e => e.UserId).HasName("User_pkey");
 
-            entity.ToTable("users");
+            entity.ToTable("User");
 
-            entity.HasIndex(e => e.Roleid, "IX_users_roleid");
-
-            entity.HasIndex(e => e.Cccd, "users_cccd_key").IsUnique();
-
-            entity.Property(e => e.Userid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("userid");
+            entity.Property(e => e.UserId)
+                .ValueGeneratedNever()
+                .HasColumnName("userId");
             entity.Property(e => e.Address).HasColumnName("address");
+            entity.Property(e => e.Avatar)
+                .HasColumnType("character varying")
+                .HasColumnName("avatar");
             entity.Property(e => e.Cccd)
-                .HasMaxLength(12)
-                .HasColumnName("cccd");
-            entity.Property(e => e.Dateofbirth).HasColumnName("dateofbirth");
-            entity.Property(e => e.Fullname)
-                .HasMaxLength(255)
-                .HasColumnName("fullname");
-            entity.Property(e => e.Roleid).HasColumnName("roleid");
-            entity.Property(e => e.Startdate).HasColumnName("startdate");
+                .HasColumnType("character varying")
+                .HasColumnName("CCCD");
+            entity.Property(e => e.DateOfBirth).HasColumnName("dateOfBirth");
+            entity.Property(e => e.FullName)
+                .HasColumnType("character varying")
+                .HasColumnName("fullName");
+            entity.Property(e => e.Mail)
+                .HasColumnType("character varying")
+                .HasColumnName("mail");
+            entity.Property(e => e.PhoneNumber)
+                .HasColumnType("character varying")
+                .HasColumnName("phoneNumber");
+            entity.Property(e => e.RoleName)
+                .HasColumnType("character varying")
+                .HasColumnName("roleName");
+            entity.Property(e => e.StartDate).HasColumnName("startDate");
             entity.Property(e => e.Status)
-                .HasDefaultValue(true)
+                .HasColumnType("character varying")
                 .HasColumnName("status");
-
-            entity.HasOne(d => d.Role).WithMany(p => p.Users)
-                .HasForeignKey(d => d.Roleid)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("fk_users_role");
-
-            entity.HasMany(u => u.QuantityLogs)
-                .WithMany(q => q.Users)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserQuantityLog",
-                    j => j.HasOne<Quantitylog>().WithMany().HasForeignKey("qLogId"),
-                    j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
-                    j => j.ToTable("user_quantity_log")
-                );
-
-            entity.HasMany(u => u.VaccinationLogs)
-                .WithMany(v => v.Users)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserVaccineLog",
-                    j => j.HasOne<Vaccinationlog>().WithMany().HasForeignKey("vLogId"),
-                    j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
-                    j => j.ToTable("user_vaccine_log")
-                );
-
-            entity.HasMany(u => u.HealthLogs)
-                .WithMany(h => h.Users)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserHealthLog",
-                    j => j.HasOne<Healthlog>().WithMany().HasForeignKey("hLogId"),
-                    j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
-                    j => j.ToTable("user_health_log")
-                );
-
-            entity.HasMany(u => u.EvaluationSummaries)
-                .WithMany(q => q.Users)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserSummary",
-                    j => j.HasOne<Evaluationsummary>().WithMany().HasForeignKey("summaryId"),
-                    j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
-                    j => j.ToTable("user_summary_log")
-                );
         });
 
-        modelBuilder.Entity<Vaccinationlog>(entity =>
+        modelBuilder.Entity<VaccinationEmployee>(entity =>
         {
-            entity.HasKey(e => e.Vlogid).HasName("vaccinationlog_pkey");
+            entity.HasKey(e => e.VaccinationEmployeeId).HasName("VaccinationEmployee_pkey");
 
-            entity.ToTable("vaccinationlog");
+            entity.ToTable("VaccinationEmployee");
 
-            entity.HasIndex(e => e.Flockid, "IX_vaccinationlog_flockid");
+            entity.Property(e => e.VaccinationEmployeeId)
+                .ValueGeneratedNever()
+                .HasColumnName("vaccinationEmployeeId");
+            entity.Property(e => e.Employee).HasColumnName("employee");
+            entity.Property(e => e.VaccinationLogId).HasColumnName("vaccinationLogId");
 
-            entity.HasIndex(e => e.Vaccineid, "IX_vaccinationlog_vaccineid");
+            entity.HasOne(d => d.EmployeeNavigation).WithMany(p => p.VaccinationEmployees)
+                .HasForeignKey(d => d.Employee)
+                .HasConstraintName("VaccinationEmployee_employee_fkey");
 
-            entity.Property(e => e.Vlogid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("vlogid");
+            entity.HasOne(d => d.VaccinationLog).WithMany(p => p.VaccinationEmployees)
+                .HasForeignKey(d => d.VaccinationLogId)
+                .HasConstraintName("VaccinationEmployee_vaccinationLogId_fkey");
+        });
+
+        modelBuilder.Entity<VaccinationLog>(entity =>
+        {
+            entity.HasKey(e => e.VLogId).HasName("VaccinationLog_pkey");
+
+            entity.ToTable("VaccinationLog");
+
+            entity.Property(e => e.VLogId)
+                .ValueGeneratedNever()
+                .HasColumnName("vLogId");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createdAt");
             entity.Property(e => e.Dosage)
-                .HasPrecision(5, 2)
+                .HasColumnType("character varying")
                 .HasColumnName("dosage");
-            entity.Property(e => e.Flockid).HasColumnName("flockid");
+            entity.Property(e => e.FlockId).HasColumnName("flockId");
             entity.Property(e => e.Notes).HasColumnName("notes");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.Reaction).HasColumnName("reaction");
             entity.Property(e => e.Status)
-                .HasMaxLength(10)
+                .HasColumnType("character varying")
                 .HasColumnName("status");
-            entity.Property(e => e.Vaccinationdate)
+            entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
-                .HasColumnName("vaccinationdate");
-            entity.Property(e => e.Vaccineid).HasColumnName("vaccineid");
+                .HasColumnName("updatedAt");
+            entity.Property(e => e.VaccineId).HasColumnName("vaccineId");
 
-            entity.HasOne(d => d.Flock).WithMany(p => p.Vaccinationlogs)
-                .HasForeignKey(d => d.Flockid)
-                .HasConstraintName("vaccinationlog_flockid_fkey");
+            entity.HasOne(d => d.Flock).WithMany(p => p.VaccinationLogs)
+                .HasForeignKey(d => d.FlockId)
+                .HasConstraintName("VaccinationLog_flockId_fkey");
 
-            entity.HasOne(d => d.Vaccine).WithMany(p => p.Vaccinationlogs)
-                .HasForeignKey(d => d.Vaccineid)
-                .HasConstraintName("vaccinationlog_vaccineid_fkey");
-
-            entity.HasMany(v => v.Users)
-                .WithMany(u => u.VaccinationLogs)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserVaccineLog",
-                    j => j.HasOne<User>().WithMany().HasForeignKey("userId"),
-                    j => j.HasOne<Vaccinationlog>().WithMany().HasForeignKey("vLogId"),
-                    j => j.ToTable("user_vaccine_log")
-                );
+            entity.HasOne(d => d.Vaccine).WithMany(p => p.VaccinationLogs)
+                .HasForeignKey(d => d.VaccineId)
+                .HasConstraintName("VaccinationLog_vaccineId_fkey");
         });
 
         modelBuilder.Entity<Vaccine>(entity =>
         {
-            entity.HasKey(e => e.Vaccineid).HasName("vaccine_pkey");
+            entity.HasKey(e => e.VaccineId).HasName("Vaccine_pkey");
 
-            entity.ToTable("vaccine");
+            entity.ToTable("Vaccine");
 
-            entity.HasIndex(e => e.Diseaseid, "IX_vaccine_diseaseid");
+            entity.HasIndex(e => e.ProductId, "Vaccine_productId_key").IsUnique();
 
-            entity.HasIndex(e => e.Supplierid, "IX_vaccine_supplierid");
-
-            entity.Property(e => e.Vaccineid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("vaccineid");
-            entity.Property(e => e.Batchnumber).HasColumnName("batchnumber");
-            entity.Property(e => e.Diseaseid).HasColumnName("diseaseid");
-            entity.Property(e => e.Dosage).HasColumnName("dosage");
-            entity.Property(e => e.Expirydate).HasColumnName("expirydate");
+            entity.Property(e => e.VaccineId)
+                .ValueGeneratedNever()
+                .HasColumnName("vaccineId");
+            entity.Property(e => e.BatchNumber)
+                .HasColumnType("character varying")
+                .HasColumnName("batchNumber");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createdAt");
+            entity.Property(e => e.DiseaseId).HasColumnName("diseaseId");
+            entity.Property(e => e.Dosage)
+                .HasColumnType("character varying")
+                .HasColumnName("dosage");
+            entity.Property(e => e.ExpiryDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("expiryDate");
             entity.Property(e => e.Instructions).HasColumnName("instructions");
-            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Name)
+                .HasColumnType("character varying")
+                .HasColumnName("name");
             entity.Property(e => e.Notes).HasColumnName("notes");
-            entity.Property(e => e.Productiondate).HasColumnName("productiondate");
-            entity.Property(e => e.Supplierid).HasColumnName("supplierid");
+            entity.Property(e => e.ProductId)
+                .IsRequired()
+                .HasColumnName("productId");
+            entity.Property(e => e.ProductionDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("productionDate");
+            entity.Property(e => e.SupplierId).HasColumnName("supplierId");
+            entity.Property(e => e.UpdatedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("updatedAt");
 
-            entity.HasOne(d => d.Disease).WithMany(p => p.Vaccines)
-                .HasForeignKey(d => d.Diseaseid)
-                .HasConstraintName("vaccine_diseaseid_fkey");
+            entity.HasOne(d => d.Disease).WithMany(p => p.VaccineDiseases)
+                .HasForeignKey(d => d.DiseaseId)
+                .HasConstraintName("Vaccine_diseaseId_fkey");
 
-            entity.HasOne(d => d.Supplier).WithMany(p => p.Vaccines)
-                .HasForeignKey(d => d.Supplierid)
-                .HasConstraintName("vaccine_supplierid_fkey");
+            entity.HasOne(d => d.Supplier).WithMany(p => p.VaccineSuppliers)
+                .HasForeignKey(d => d.SupplierId)
+                .HasConstraintName("Vaccine_supplierId_fkey");
         });
 
-        modelBuilder.Entity<Water>(entity =>
+        modelBuilder.Entity<WareTransaction>(entity =>
         {
-            entity.HasKey(e => e.Waterid).HasName("water_pkey");
+            entity.HasKey(e => e.TransactionId).HasName("WareTransaction_pkey");
 
-            entity.ToTable("water");
+            entity.ToTable("WareTransaction");
 
-            entity.HasIndex(e => e.Supplierid, "IX_water_supplierid");
+            entity.Property(e => e.TransactionId)
+                .ValueGeneratedNever()
+                .HasColumnName("transactionId");
+            entity.Property(e => e.LocationFrom).HasColumnName("locationFrom");
+            entity.Property(e => e.LocationTo).HasColumnName("locationTo");
+            entity.Property(e => e.ProductId).HasColumnName("productId");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.Reason).HasColumnName("reason");
+            entity.Property(e => e.TransactionDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("transactionDate");
+            entity.Property(e => e.TransactionType)
+                .HasColumnType("character varying")
+                .HasColumnName("transactionType");
+            entity.Property(e => e.WareId).HasColumnName("wareId");
 
-            entity.Property(e => e.Waterid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("waterid");
-            entity.Property(e => e.Expirydate).HasColumnName("expirydate");
-            entity.Property(e => e.Ingredients).HasColumnName("ingredients");
-            entity.Property(e => e.Instructions).HasColumnName("instructions");
-            entity.Property(e => e.Mixingratio).HasColumnName("mixingratio");
-            entity.Property(e => e.Name).HasColumnName("name");
-            entity.Property(e => e.Notes).HasColumnName("notes");
-            entity.Property(e => e.Supplierid).HasColumnName("supplierid");
-            entity.Property(e => e.Targetaudience).HasColumnName("targetaudience");
-            entity.Property(e => e.Usage).HasColumnName("usage");
+            entity.HasOne(d => d.Product).WithMany(p => p.WareTransactions)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("WareTransaction_productId_fkey");
 
-            entity.HasOne(d => d.Supplier).WithMany(p => p.Water)
-                .HasForeignKey(d => d.Supplierid)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("water_supplierid_fkey");
+            entity.HasOne(d => d.Ware).WithMany(p => p.WareTransactions)
+                .HasForeignKey(d => d.WareId)
+                .HasConstraintName("WareTransaction_wareId_fkey");
         });
 
-        modelBuilder.Entity<Workschedule>(entity =>
+        modelBuilder.Entity<Warehouse>(entity =>
         {
-            entity.HasKey(e => e.Workscheduleid).HasName("workschedule_pkey");
+            entity.HasKey(e => e.WareId).HasName("Warehouse_pkey");
 
-            entity.ToTable("workschedule");
+            entity.ToTable("Warehouse");
 
-            entity.HasIndex(e => e.Taskid, "IX_workschedule_taskid");
+            entity.Property(e => e.WareId)
+                .ValueGeneratedNever()
+                .HasColumnName("wareId");
+            entity.Property(e => e.CreatedDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("createdDate");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.FarmId).HasColumnName("farmId");
+            entity.Property(e => e.MaxCapacity).HasColumnName("maxCapacity");
+            entity.Property(e => e.TotalQuantity).HasColumnName("totalQuantity");
+            entity.Property(e => e.TotalWeight).HasColumnName("totalWeight");
+            entity.Property(e => e.WarehouseName)
+                .HasColumnType("character varying")
+                .HasColumnName("warehouseName");
 
-            entity.HasIndex(e => e.Userid, "IX_workschedule_userid");
+            entity.HasOne(d => d.Farm).WithMany(p => p.Warehouses)
+                .HasForeignKey(d => d.FarmId)
+                .HasConstraintName("Warehouse_farmId_fkey");
+        });
 
-            entity.Property(e => e.Workscheduleid)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("workscheduleid");
-            entity.Property(e => e.Colorcode)
-                .HasMaxLength(7)
-                .HasColumnName("colorcode");
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .HasColumnName("status");
-            entity.Property(e => e.Taskid).HasColumnName("taskid");
-            entity.Property(e => e.Userid).HasColumnName("userid");
-            entity.Property(e => e.Workdate).HasColumnName("workdate");
+        modelBuilder.Entity<WarehousePermission>(entity =>
+        {
+            entity.HasKey(e => e.PermissionId).HasName("WarehousePermission_pkey");
 
-            entity.HasOne(d => d.Task).WithMany(p => p.Workschedules)
-                .HasForeignKey(d => d.Taskid)
-                .HasConstraintName("workschedule_taskid_fkey");
+            entity.ToTable("WarehousePermission");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Workschedules)
-                .HasForeignKey(d => d.Userid)
-                .HasConstraintName("workschedule_userid_fkey");
+            entity.Property(e => e.PermissionId)
+                .ValueGeneratedNever()
+                .HasColumnName("permissionId");
+            entity.Property(e => e.GrantedAt)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("grantedAt");
+            entity.Property(e => e.UserId).HasColumnName("userId");
+            entity.Property(e => e.WareId).HasColumnName("wareId");
+
+            entity.HasOne(d => d.User).WithMany(p => p.WarehousePermissions)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("WarehousePermission_userId_fkey");
+
+            entity.HasOne(d => d.Ware).WithMany(p => p.WarehousePermissions)
+                .HasForeignKey(d => d.WareId)
+                .HasConstraintName("WarehousePermission_wareId_fkey");
+        });
+
+        modelBuilder.Entity<WarehouseStock>(entity =>
+        {
+            entity.HasKey(e => e.WareStockId).HasName("WarehouseStock_pkey");
+
+            entity.ToTable("WarehouseStock");
+
+            entity.Property(e => e.WareStockId)
+                .ValueGeneratedNever()
+                .HasColumnName("wareStockId");
+            entity.Property(e => e.ProductId).HasColumnName("productId");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.UpdatedDate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("updatedDate");
+            entity.Property(e => e.WareId).HasColumnName("wareId");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.WarehouseStocks)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("WarehouseStock_productId_fkey");
+
+            entity.HasOne(d => d.Ware).WithMany(p => p.WarehouseStocks)
+                .HasForeignKey(d => d.WareId)
+                .HasConstraintName("WarehouseStock_wareId_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
 public partial class Food
 {
-    public Guid Foodid { get; set; }
+    public Guid FoodId { get; set; }
 
-    public string Name { get; set; } = null!;
-
-    public DateOnly Expirydate { get; set; }
-
-    public string Ingredients { get; set; } = null!;
-
-    public string? Usage { get; set; }
+    public string? Name { get; set; }
 
     public string? Notes { get; set; }
 
-    public Guid Supplierid { get; set; }
+    public string? Ingredients { get; set; }
+
+    public DateTime? ProductionDate { get; set; }
+
+    public DateTime? ExpiryDate { get; set; }
+
+    public Guid? ProductId { get; set; }
 
     public virtual ICollection<Nutrition> Nutritions { get; set; } = new List<Nutrition>();
 
-    public virtual Supplier Supplier { get; set; } = null!;
+    public virtual Product? Product { get; set; }
 }

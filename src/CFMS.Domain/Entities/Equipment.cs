@@ -1,25 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
 public partial class Equipment
 {
-    public Guid Equipmentid { get; set; }
+    public Guid EquipmentId { get; set; }
 
-    public string Equipmentname { get; set; } = null!;
+    public string? EquipmentCode { get; set; }
 
-    public string Type { get; set; } = null!;
+    public string? EquipmentName { get; set; }
 
-    public DateOnly Purchasedate { get; set; }
+    public DateTime? PurchaseDate { get; set; }
 
-    public TimeSpan? Warrantyperiod { get; set; }
+    public int? WarrantyPeriod { get; set; }
 
     public string? Status { get; set; }
 
-    public decimal? Cost { get; set; }
+    public double? Cost { get; set; }
 
-    public string? Note { get; set; }
+    public int? Quantity { get; set; }
 
-    public virtual ICollection<Breadingequipment> Breadingequipments { get; set; } = new List<Breadingequipment>();
+    public string? Specifications { get; set; }
+
+    public DateTime? StartDate { get; set; }
+
+    public DateTime? EndDate { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
+    public Guid? ProductId { get; set; }
+
+    public virtual ICollection<CoopEquipment> CoopEquipments { get; set; } = new List<CoopEquipment>();
+
+    public virtual Product? Product { get; set; }
 }

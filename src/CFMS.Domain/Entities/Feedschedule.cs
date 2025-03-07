@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
-public partial class Feedschedule
+public partial class FeedSchedule
 {
-    public Guid Feedscheduleid { get; set; }
+    public Guid FeedScheduleId { get; set; }
 
-    public TimeOnly Feedtime { get; set; }
+    public DateTime? FeedTime { get; set; }
 
-    public decimal Feedamount { get; set; }
+    public double? FeedAmount { get; set; }
 
     public string? Notes { get; set; }
 

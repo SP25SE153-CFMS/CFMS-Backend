@@ -1,19 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
-public partial class Healthlog
+public partial class HealthLog
 {
-    public Guid Hlogid { get; set; }
+    public Guid HLogId { get; set; }
 
-    public DateTime Logdate { get; set; }
+    public DateTime? StartDate { get; set; }
+
+    public DateTime? EndDate { get; set; }
 
     public string? Notes { get; set; }
 
-    public Guid Flockid { get; set; }
+    public Guid? FlockId { get; set; }
 
-    public virtual Flock Flock { get; set; } = null!;
+    public Guid? StaffId { get; set; }
 
-    public List<User> Users { get; set; } = new List<User>();
+    public string? Location { get; set; }
+
+    public double? Temperature { get; set; }
+
+    public double? Humidity { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
+    public virtual Flock? Flock { get; set; }
+
+    public virtual ICollection<HealthLogDetail> HealthLogDetails { get; set; } = new List<HealthLogDetail>();
 }

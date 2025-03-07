@@ -1,27 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
-public partial class Harvesttask
+public partial class HarvestTask
 {
-    public Guid Htaskid { get; set; }
+    public Guid HTaskId { get; set; }
 
-    public Guid Taskid { get; set; }
+    public Guid? TaskId { get; set; }
 
-    public string Harvesttype { get; set; } = null!;
+    public string? HarvestType { get; set; }
 
-    public int Totalquantity { get; set; }
+    public string? Description { get; set; }
 
-    public int Damagedquantity { get; set; }
+    public Guid? QuantityTypeId { get; set; }
 
-    public int Goodquantity { get; set; }
+    public DateOnly? HarvestDate { get; set; }
 
-    public DateOnly Harvestdate { get; set; }
+    public virtual HarvestProduct? QuantityType { get; set; }
 
-    public string? Status { get; set; }
-
-    public string? Note { get; set; }
-
-    public virtual Task Task { get; set; } = null!;
+    public virtual Task? Task { get; set; }
 }

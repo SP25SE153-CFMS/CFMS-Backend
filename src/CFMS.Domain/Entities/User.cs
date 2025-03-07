@@ -1,49 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
 public partial class User
 {
-    public Guid Userid { get; set; }
+    public Guid UserId { get; set; }
 
-    public string Fullname { get; set; } = null!;
+    public string? FullName { get; set; }
 
-    public DateOnly Dateofbirth { get; set; }
+    public string? PhoneNumber { get; set; }
 
-    public DateOnly Startdate { get; set; }
+    public string? Mail { get; set; }
 
-    public bool? Status { get; set; }
+    public string? Avatar { get; set; }
+
+    public DateOnly? DateOfBirth { get; set; }
+
+    public DateOnly? StartDate { get; set; }
+
+    public string? Status { get; set; }
 
     public string? Address { get; set; }
 
-    public string Cccd { get; set; } = null!;
+    public string? Cccd { get; set; }
 
-    public Guid? Roleid { get; set; }
+    public string? RoleName { get; set; }
 
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
+    public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
+
+    public virtual ICollection<FarmEmployee> FarmEmployees { get; set; } = new List<FarmEmployee>();
+
     public virtual ICollection<Farm> Farms { get; set; } = new List<Farm>();
 
-    public virtual ICollection<Inventoryaudit> Inventoryaudits { get; set; } = new List<Inventoryaudit>();
+    public virtual ICollection<HealthLogDetail> HealthLogDetails { get; set; } = new List<HealthLogDetail>();
 
-    public virtual ICollection<Performancestatistic> Performancestatistics { get; set; } = new List<Performancestatistic>();
+    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
-    public virtual Role? Role { get; set; }
+    public virtual ICollection<Performance> Performances { get; set; } = new List<Performance>();
+
+    public virtual ICollection<QuantityLog> QuantityLogs { get; set; } = new List<QuantityLog>();
+
+    public virtual ICollection<Request> RequestApprovedByNavigations { get; set; } = new List<Request>();
+
+    public virtual ICollection<Request> RequestCreatedByNavigations { get; set; } = new List<Request>();
+
+    public virtual ICollection<Request> RequestUsers { get; set; } = new List<Request>();
 
     public virtual ICollection<Salary> Salaries { get; set; } = new List<Salary>();
 
-    public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+    public virtual ICollection<VaccinationEmployee> VaccinationEmployees { get; set; } = new List<VaccinationEmployee>();
 
-    public virtual ICollection<TimeKeeping> TimeKeepings { get; set; } = new List<TimeKeeping>();
-
-    public virtual ICollection<Workschedule> Workschedules { get; set; } = new List<Workschedule>();
-
-    public List<Healthlog> HealthLogs { get; set; } = new List<Healthlog>();
-
-    public List<Quantitylog> QuantityLogs { get; set; } = new List<Quantitylog>();
-
-    public List<Vaccinationlog> VaccinationLogs { get; set; } = new List<Vaccinationlog>();
-
-    public List<Evaluationsummary> EvaluationSummaries { get; set; } = new List<Evaluationsummary>();
+    public virtual ICollection<WarehousePermission> WarehousePermissions { get; set; } = new List<WarehousePermission>();
 }

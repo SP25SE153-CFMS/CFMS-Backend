@@ -1,25 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
 public partial class Assignment
 {
-    public Guid Assignmentid { get; set; }
+    public Guid AssignmentId { get; set; }
 
-    public Guid Taskid { get; set; }
+    public Guid? TaskId { get; set; }
 
-    public Guid Userid { get; set; }
+    public Guid? UserId { get; set; }
 
-    public DateTime Assigneddate { get; set; }
+    public DateTime? AssignedDate { get; set; }
 
-    public DateTime? Completeddate { get; set; }
+    public DateTime? DeadlineDate { get; set; }
+
+    public DateTime? CompletedDate { get; set; }
 
     public string? Status { get; set; }
 
     public string? Note { get; set; }
 
-    public virtual Task Task { get; set; } = null!;
+    public virtual Task? Task { get; set; }
 
-    public virtual User User { get; set; } = null!;
+    public virtual User? User { get; set; }
 }

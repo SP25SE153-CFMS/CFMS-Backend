@@ -1,29 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
-public partial class Vaccinationlog
+public partial class VaccinationLog
 {
-    public Guid Vlogid { get; set; }
+    public Guid VLogId { get; set; }
 
-    public DateTime Vaccinationdate { get; set; }
+    public Guid? VaccineId { get; set; }
 
-    public decimal Dosage { get; set; }
+    public Guid? FlockId { get; set; }
+
+    public string? Dosage { get; set; }
 
     public string? Notes { get; set; }
 
-    public int Quantity { get; set; }
+    public int? Quantity { get; set; }
 
-    public string Status { get; set; } = null!;
+    public string? Status { get; set; }
 
-    public Guid Vaccineid { get; set; }
+    public string? Reaction { get; set; }
 
-    public Guid Flockid { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
-    public virtual Flock Flock { get; set; } = null!;
+    public DateTime? UpdatedAt { get; set; }
 
-    public virtual Vaccine Vaccine { get; set; } = null!;
+    public virtual Flock? Flock { get; set; }
 
-    public List<User> Users { get; set; } = new List<User>();
+    public virtual ICollection<VaccinationEmployee> VaccinationEmployees { get; set; } = new List<VaccinationEmployee>();
+
+    public virtual Vaccine? Vaccine { get; set; }
 }

@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
 public partial class Salary
 {
-    public Guid Salaryid { get; set; }
+    public Guid SalaryId { get; set; }
 
-    public Guid Userid { get; set; }
+    public Guid? UserId { get; set; }
 
-    public decimal Basicsalary { get; set; }
+    public double? BasicSalary { get; set; }
 
-    public decimal? Bonus { get; set; }
+    public double? Bonus { get; set; }
 
-    public decimal? Deduction { get; set; }
+    public double? Deduction { get; set; }
 
-    public decimal? Totalhoursworked { get; set; }
-
-    public decimal? Overtimehours { get; set; }
-
-    public decimal? Finalsalary { get; set; }
+    public double? Final { get; set; }
 
     public string? Status { get; set; }
 
-    public DateOnly Salarymonth { get; set; }
+    public int? TotalHoursWorked { get; set; }
 
-    public virtual User User { get; set; } = null!;
+    public int? OverTimeHours { get; set; }
+
+    public virtual User? User { get; set; }
 }

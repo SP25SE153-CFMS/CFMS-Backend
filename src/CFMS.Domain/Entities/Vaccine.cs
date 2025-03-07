@@ -1,33 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
 public partial class Vaccine
 {
-    public Guid Vaccineid { get; set; }
+    public Guid VaccineId { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
 
     public string? Notes { get; set; }
 
-    public DateOnly Productiondate { get; set; }
+    public DateTime? ProductionDate { get; set; }
 
-    public DateOnly Expirydate { get; set; }
+    public DateTime? ExpiryDate { get; set; }
 
-    public string Dosage { get; set; } = null!;
+    public string? Dosage { get; set; }
 
     public string? Instructions { get; set; }
 
-    public string Batchnumber { get; set; } = null!;
+    public string? BatchNumber { get; set; }
 
-    public Guid Supplierid { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
-    public Guid Diseaseid { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
-    public virtual Disease Disease { get; set; } = null!;
+    public Guid? SupplierId { get; set; }
 
-    public virtual Supplier Supplier { get; set; } = null!;
+    public Guid? DiseaseId { get; set; }
 
-    public virtual ICollection<Vaccinationlog> Vaccinationlogs { get; set; } = new List<Vaccinationlog>();
+    public Guid? ProductId { get; set; }
+
+    public virtual SubCategory? Disease { get; set; }
+
+    public virtual Product? Product { get; set; }
+
+    public virtual SubCategory? Supplier { get; set; }
+
+    public virtual ICollection<VaccinationLog> VaccinationLogs { get; set; } = new List<VaccinationLog>();
 }

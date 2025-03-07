@@ -1,35 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
 public partial class Task
 {
-    public Guid Taskid { get; set; }
+    public Guid TaskId { get; set; }
 
-    public string Taskname { get; set; } = null!;
+    public string? TaskName { get; set; }
 
-    public string? Description { get; set; }
-
-    public string? Tasktype { get; set; }
-
-    public DateTime? Createddate { get; set; }
-
-    public DateTime? Duedate { get; set; }
+    public string? TaskType { get; set; }
 
     public string? Status { get; set; }
 
     public string? Location { get; set; }
 
-    public Guid? Userid { get; set; }
-
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
-    public virtual ICollection<Dailytask> Dailytasks { get; set; } = new List<Dailytask>();
+    public virtual ICollection<DailyTask> DailyTasks { get; set; } = new List<DailyTask>();
 
-    public virtual ICollection<Harvesttask> Harvesttasks { get; set; } = new List<Harvesttask>();
+    public virtual ICollection<HarvestTask> HarvestTasks { get; set; } = new List<HarvestTask>();
 
-    public virtual User? User { get; set; }
-
-    public virtual ICollection<Workschedule> Workschedules { get; set; } = new List<Workschedule>();
+    public virtual ICollection<TaskEvaluation> TaskEvaluations { get; set; } = new List<TaskEvaluation>();
 }

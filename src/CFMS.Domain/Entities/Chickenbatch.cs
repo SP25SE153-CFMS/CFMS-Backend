@@ -1,29 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
-public partial class Chickenbatch
+public partial class ChickenBatch
 {
-    public Guid Chickenbatchid { get; set; }
+    public Guid ChickenBatchId { get; set; }
 
-    public int Numberofchicken { get; set; }
+    public Guid? ChickenCoopId { get; set; }
 
-    public DateOnly Startdate { get; set; }
+    public string? Name { get; set; }
 
-    public DateOnly? Enddate { get; set; }
+    public DateTime? StartDate { get; set; }
 
-    public string Status { get; set; } = null!;
+    public DateTime? EndDate { get; set; }
 
     public string? Note { get; set; }
 
-    public Guid Breadingareaid { get; set; }
+    public int? Status { get; set; }
 
-    public Guid Flockid { get; set; }
+    public virtual ChickenCoop? ChickenCoop { get; set; }
 
-    public virtual Breadingarea Breadingarea { get; set; } = null!;
-
-    public virtual ICollection<Exportedproduct> Exportedproducts { get; set; } = new List<Exportedproduct>();
-
-    public virtual Flock Flock { get; set; } = null!;
+    public virtual ICollection<Flock> Flocks { get; set; } = new List<Flock>();
 }

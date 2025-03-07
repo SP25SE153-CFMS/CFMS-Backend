@@ -1,35 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CFMS.Domain.Entities;
+namespace CFMS.Infrastructure.Persistence;
 
 public partial class Farm
 {
-    public Guid Farmid { get; set; }
+    public Guid FarmId { get; set; }
 
-    public string Farmname { get; set; } = null!;
+    public string? FarmName { get; set; }
 
-    public string Farmcode { get; set; } = null!;
-
-    public Guid Userid { get; set; }
+    public string? FarmCode { get; set; }
 
     public string? Type { get; set; }
 
     public string? Address { get; set; }
 
-    public decimal? Area { get; set; }
+    public double? Area { get; set; }
 
     public string? Scale { get; set; }
 
-    public string? Phonenumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
     public string? Website { get; set; }
 
-    public string? Farmimage { get; set; }
+    public string? FarmImage { get; set; }
 
-    public virtual ICollection<Breadingarea> Breadingareas { get; set; } = new List<Breadingarea>();
+    public Guid? OwnerId { get; set; }
 
-    public virtual ICollection<Exportedproduct> Exportedproducts { get; set; } = new List<Exportedproduct>();
+    public virtual ICollection<BreedingArea> BreedingAreas { get; set; } = new List<BreedingArea>();
 
-    public virtual User User { get; set; } = null!;
+    public virtual ICollection<FarmEmployee> FarmEmployees { get; set; } = new List<FarmEmployee>();
+
+    public virtual User? Owner { get; set; }
+
+    public virtual ICollection<Warehouse> Warehouses { get; set; } = new List<Warehouse>();
 }
