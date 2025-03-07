@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.User.Auth
 {
-    public class LoginHandler
+    public class SignInHandlẻ
     {
     }
 }

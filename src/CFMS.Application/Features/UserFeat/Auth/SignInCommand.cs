@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.User.Auth
 {
-    public class LoginCommand : IRequest<BaseResponse<string>>
+    public class SignInCommand : IRequest<BaseResponse<string>>
     {
         public string Username { get; set; }
         public string Password { get; set; }
