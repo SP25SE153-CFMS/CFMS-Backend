@@ -56,5 +56,6 @@ namespace CFMS.Domain.Interfaces
         IGenericRepository<WarehouseStock> WarehouseStockRepository { get; }
 
         void Save();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

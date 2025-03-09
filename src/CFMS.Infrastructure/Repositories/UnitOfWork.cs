@@ -126,6 +126,22 @@ namespace CFMS.Infrastructure.Repositories
             context.SaveChanges();
         }
 
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var validationErrors = context.ChangeTracker.Entries<IValidatableObject>()
+                .SelectMany(e => e.Entity.Validate(null))
+                .Where(e => e != ValidationResult.Success)
+                .ToArray();
+            if (validationErrors.Any())
+            {
+                var exceptionMessage = string.Join(Environment.NewLine,
+                    validationErrors.Select(error => $"Properties {error.MemberNames} Error: {error.ErrorMessage}"));
+                throw new Exception(exceptionMessage);
+            }
+
+            return context.SaveChangesAsync(cancellationToken);
+        }
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)

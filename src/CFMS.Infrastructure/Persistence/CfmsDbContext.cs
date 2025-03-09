@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CFMS.Domain.Entities;
+using CFMS.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Task = CFMS.Domain.Entities.Task;
@@ -103,6 +104,21 @@ public partial class CfmsDbContext : DbContext
     public virtual DbSet<WarehousePermission> WarehousePermissions { get; set; }
 
     public virtual DbSet<WarehouseStock> WarehouseStocks { get; set; }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        foreach (var entry in ChangeTracker.Entries())
+        {
+            if (entry is { State: EntityState.Deleted, Entity: ISoftDelete delete })
+            {
+                entry.State = EntityState.Modified;
+                delete.IsDeleted = true;
+                delete.DeletedWhen = DateTimeOffset.UtcNow;
+            }
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
 
     public static string GetConnectionString(string connectionStringName)
     {
