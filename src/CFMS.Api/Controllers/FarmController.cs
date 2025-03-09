@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using CFMS.Application.Commands.FarmFeat.Create;
+using CFMS.Application.Common;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CFMS.Api.Controllers
@@ -14,25 +16,26 @@ namespace CFMS.Api.Controllers
         {
             return "Hello World";
         }
-        
+
         [HttpGet("{id}")]
         public string Get(string id)
         {
             return "Hello World";
         }
-        
+
         [HttpPost]
-        public string Create()
+        public async Task<IActionResult> Create(CreateFarmCommand command)
         {
-            return "Hello World";
+            var result = await Send(command);
+            return result;
         }
-        
+
         [HttpPut("{id}")]
         public string Update(string id)
         {
             return "Hello World";
         }
-        
+
         [HttpDelete("{id}")]
         public string Delete(string id)
         {

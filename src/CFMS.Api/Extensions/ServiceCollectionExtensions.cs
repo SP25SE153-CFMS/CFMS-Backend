@@ -1,8 +1,7 @@
 ﻿using CFMS.Application.Behaviors;
-using CFMS.Application.Common;
-using CFMS.Application.DTOs.Auth;
+using CFMS.Application.Commands.FarmFeat.Create;
 using CFMS.Application.Events;
-using CFMS.Application.Features.UserFeat.Auth;
+using CFMS.Application.Mappings;
 using CFMS.Application.Services;
 using CFMS.Application.Services.Impl;
 using CFMS.Domain.Interfaces;
@@ -10,8 +9,6 @@ using CFMS.Infrastructure.Persistence;
 using CFMS.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CFMS.Api.Extensions
 {
@@ -19,6 +16,9 @@ namespace CFMS.Api.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            //Mapper
+            services.AddAutoMapper(typeof(FarmProfile));
+
             //DbContext
             services.AddDbContext<CfmsDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
@@ -26,7 +26,7 @@ namespace CFMS.Api.Extensions
             //MediatR
             services.AddMediatR(config =>
             {
-                config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+                config.RegisterServicesFromAssembly(typeof(CreateFarmCommandHandler).Assembly);
             });
 
             //Behaviors
@@ -39,8 +39,8 @@ namespace CFMS.Api.Extensions
             services.AddScoped<IUtilityService, UtilityService>();
 
             //Handlers
-            services.AddScoped<IRequestHandler<SignInCommand, BaseResponse<AuthResponse>>, SignInCommandHandler>();
-            services.AddScoped<IRequestHandler<SignUpCommand, BaseResponse<AuthResponse>>, SignUpCommandHandler>();
+            //services.AddScoped<IRequestHandler<SignInCommand, BaseResponse<AuthResponse>>, SignInCommandHandler>();
+            //services.AddScoped<IRequestHandler<SignUpCommand, BaseResponse<AuthResponse>>, SignUpCommandHandler>();
 
             return services;
         }

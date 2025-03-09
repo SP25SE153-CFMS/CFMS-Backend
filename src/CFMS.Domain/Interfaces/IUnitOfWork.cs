@@ -55,6 +55,6 @@ namespace CFMS.Domain.Interfaces
         IGenericRepository<WarehousePermission> WarehousePermissionRepository { get; }
         IGenericRepository<WarehouseStock> WarehouseStockRepository { get; }
 
-        void Save();
+        int Save();
     }
 }
