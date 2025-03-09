@@ -22,13 +22,9 @@ builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwaggerDocumentation();
-}   
-
+app.UseSwaggerDocumentation();
 app.UseMiddleware<ErrorHandlingMiddleware>();
-app.UseCorsPolicy();  
+app.UseCorsPolicy();
 app.UseAuthorization();
 
 app.MapControllers();

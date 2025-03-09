@@ -18,7 +18,7 @@ COPY ["src/CFMS.Infrastructure/CFMS.Infrastructure.csproj", "src/CFMS.Infrastruc
 COPY ["src/CFMS.Domain/CFMS.Domain.csproj", "src/CFMS.Domain/"]
 RUN dotnet restore "./src/CFMS.Api/CFMS.Api.csproj"
 COPY . .
-WORKDIR "/src/CFMS.Api"
+WORKDIR "/src/src/CFMS.Api"
 RUN dotnet build "./CFMS.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
