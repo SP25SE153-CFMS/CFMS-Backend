@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CFMS.Domain.Entities;
+using CFMS.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Task = CFMS.Domain.Entities.Task;
@@ -104,6 +105,21 @@ public partial class CfmsDbContext : DbContext
 
     public virtual DbSet<WarehouseStock> WarehouseStocks { get; set; }
 
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        foreach (var entry in ChangeTracker.Entries())
+        {
+            if (entry is { State: EntityState.Deleted, Entity: ISoftDelete delete })
+            {
+                entry.State = EntityState.Modified;
+                delete.IsDeleted = true;
+                delete.DeletedWhen = DateTimeOffset.UtcNow;
+            }
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
     public static string GetConnectionString(string connectionStringName)
     {
         var basePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -151,7 +167,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Assignment");
 
             entity.Property(e => e.AssignmentId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("assignmentId");
             entity.Property(e => e.AssignedDate)
                 .HasColumnType("timestamp without time zone")
@@ -185,7 +201,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Attendance");
 
             entity.Property(e => e.AttendanceId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("attendanceId");
             entity.Property(e => e.CheckIn).HasColumnName("checkIn");
             entity.Property(e => e.CheckOut).HasColumnName("checkOut");
@@ -204,7 +220,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("BreedingArea");
 
             entity.Property(e => e.BreedingAreaId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("breedingAreaId");
             entity.Property(e => e.BreedingAreaCode)
                 .HasColumnType("character varying")
@@ -234,7 +250,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Category");
 
             entity.Property(e => e.CategoryId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("categoryId");
             entity.Property(e => e.CategoryCode)
                 .HasColumnType("character varying")
@@ -255,7 +271,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("ChickenBatch");
 
             entity.Property(e => e.ChickenBatchId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("chickenBatchId");
             entity.Property(e => e.ChickenCoopId).HasColumnName("chickenCoopId");
             entity.Property(e => e.EndDate)
@@ -282,7 +298,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("ChickenCoop");
 
             entity.Property(e => e.ChickenCoopId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("chickenCoopId");
             entity.Property(e => e.Area).HasColumnName("area");
             entity.Property(e => e.BreedingAreaId).HasColumnName("breedingAreaId");
@@ -323,7 +339,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("CoopEquipment");
 
             entity.Property(e => e.CoopEquipmentId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("coopEquipmentId");
             entity.Property(e => e.AssignedDate)
                 .HasColumnType("timestamp without time zone")
@@ -355,7 +371,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("DailyTask");
 
             entity.Property(e => e.DTaskId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("dTaskId");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.ItemId).HasColumnName("itemId");
@@ -374,7 +390,7 @@ public partial class CfmsDbContext : DbContext
             entity.HasIndex(e => e.ProductId, "Equipment_productId_key").IsUnique();
 
             entity.Property(e => e.EquipmentId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("equipmentId");
             entity.Property(e => e.Cost).HasColumnName("cost");
             entity.Property(e => e.CreatedAt)
@@ -418,7 +434,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Farm");
 
             entity.Property(e => e.FarmId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("farmId");
             entity.Property(e => e.Address)
                 .HasColumnType("character varying")
@@ -459,7 +475,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("FarmEmployee");
 
             entity.Property(e => e.FarmEmployeeId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("farmEmployeeId");
             entity.Property(e => e.EmployeeId).HasColumnName("employeeId");
             entity.Property(e => e.EndDate)
@@ -490,7 +506,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("FeedSchedule");
 
             entity.Property(e => e.FeedScheduleId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("feedScheduleId");
             entity.Property(e => e.FeedAmount).HasColumnName("feedAmount");
             entity.Property(e => e.FeedTime)
@@ -506,7 +522,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Flock");
 
             entity.Property(e => e.FlockId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("flockId");
             entity.Property(e => e.AvgWeight).HasColumnName("avgWeight");
             entity.Property(e => e.BreedId).HasColumnName("breedId");
@@ -552,7 +568,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("FlockNutrition");
 
             entity.Property(e => e.FlockNutritionId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("flockNutritionId");
             entity.Property(e => e.EndDate)
                 .HasColumnType("timestamp without time zone")
@@ -581,7 +597,7 @@ public partial class CfmsDbContext : DbContext
             entity.HasIndex(e => e.ProductId, "Food_productId_key").IsUnique();
 
             entity.Property(e => e.FoodId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("foodId");
             entity.Property(e => e.ExpiryDate)
                 .HasColumnType("timestamp without time zone")
@@ -610,7 +626,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("HarvestDetail");
 
             entity.Property(e => e.HarvestDetailId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("harvestDetailId");
             entity.Property(e => e.HarvestLogId).HasColumnName("harvestLogId");
             entity.Property(e => e.Note).HasColumnName("note");
@@ -633,7 +649,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("HarvestLog");
 
             entity.Property(e => e.HarvestLogId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("harvestLogId");
             entity.Property(e => e.ChickenCoopId).HasColumnName("chickenCoopId");
             entity.Property(e => e.Date)
@@ -659,7 +675,7 @@ public partial class CfmsDbContext : DbContext
             entity.HasIndex(e => e.ProductId, "HarvestProduct_productId_key").IsUnique();
 
             entity.Property(e => e.HarvestProductId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("harvestProductId");
             entity.Property(e => e.HarvestProductName)
                 .HasColumnType("character varying")
@@ -683,7 +699,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("HarvestTask");
 
             entity.Property(e => e.HTaskId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("hTaskId");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.HarvestDate).HasColumnName("harvestDate");
@@ -709,7 +725,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("HealthLog");
 
             entity.Property(e => e.HLogId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("hLogId");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("timestamp without time zone")
@@ -744,7 +760,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("HealthLogDetail");
 
             entity.Property(e => e.LogDetailId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("logDetailId");
             entity.Property(e => e.CheckedAt)
                 .HasColumnType("timestamp without time zone")
@@ -774,7 +790,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Notification");
 
             entity.Property(e => e.NotificationId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("notificationId");
             entity.Property(e => e.Content).HasColumnName("content");
             entity.Property(e => e.IsRead).HasColumnName("isRead");
@@ -798,7 +814,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Nutrition");
 
             entity.Property(e => e.NutritionId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("nutritionId");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.DevelopmentStage)
@@ -829,7 +845,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Performance");
 
             entity.Property(e => e.PerId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("perId");
             entity.Property(e => e.CompletedTask).HasColumnName("completedTask");
             entity.Property(e => e.CompletionRate).HasColumnName("completionRate");
@@ -854,7 +870,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Product");
 
             entity.Property(e => e.ProductId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("productId");
             entity.Property(e => e.Package)
                 .HasColumnType("character varying")
@@ -902,7 +918,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("QuantityLog");
 
             entity.Property(e => e.QLogId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("qLogId");
             entity.Property(e => e.CheckedBy).HasColumnName("checkedBy");
             entity.Property(e => e.FlockId).HasColumnName("flockId");
@@ -939,7 +955,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Request");
 
             entity.Property(e => e.RequestId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("requestId");
             entity.Property(e => e.ApprovedAt)
                 .HasColumnType("timestamp without time zone")
@@ -979,7 +995,7 @@ public partial class CfmsDbContext : DbContext
             entity.HasKey(e => e.DetailId).HasName("RequestDetails_pkey");
 
             entity.Property(e => e.DetailId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("detailId");
             entity.Property(e => e.ExpectedQuantity).HasColumnName("expectedQuantity");
             entity.Property(e => e.ItemId).HasColumnName("itemId");
@@ -1004,7 +1020,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Salary");
 
             entity.Property(e => e.SalaryId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("salaryId");
             entity.Property(e => e.BasicSalary).HasColumnName("basicSalary");
             entity.Property(e => e.Bonus).HasColumnName("bonus");
@@ -1029,7 +1045,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("StockReceipt");
 
             entity.Property(e => e.InRepId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("inRepId");
             entity.Property(e => e.ActualQuantity).HasColumnName("actualQuantity");
             entity.Property(e => e.CreatedBy).HasColumnName("createdBy");
@@ -1062,7 +1078,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("SubCategory");
 
             entity.Property(e => e.SubCategoryId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("subCategoryId");
             entity.Property(e => e.CategoryId).HasColumnName("categoryId");
             entity.Property(e => e.CreatedDate)
@@ -1091,7 +1107,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Task");
 
             entity.Property(e => e.TaskId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("taskId");
             entity.Property(e => e.Location)
                 .HasColumnType("character varying")
@@ -1114,7 +1130,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("TaskDetail");
 
             entity.Property(e => e.TaskDetailId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("taskDetailId");
             entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
@@ -1137,7 +1153,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("TaskEvaluation");
 
             entity.Property(e => e.TaskEvalId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("taskEvalId");
             entity.Property(e => e.CategoryId).HasColumnName("categoryId");
             entity.Property(e => e.Description).HasColumnName("description");
@@ -1171,7 +1187,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("TaskLog");
 
             entity.Property(e => e.TaskLogId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("taskLogId");
             entity.Property(e => e.ChickenCoopId).HasColumnName("chickenCoopId");
             entity.Property(e => e.EndDate)
@@ -1196,7 +1212,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("User");
 
             entity.Property(e => e.UserId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("userId");
             entity.Property(e => e.Address).HasColumnName("address");
             entity.Property(e => e.Avatar)
@@ -1234,7 +1250,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("VaccinationEmployee");
 
             entity.Property(e => e.VaccinationEmployeeId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("vaccinationEmployeeId");
             entity.Property(e => e.Employee).HasColumnName("employee");
             entity.Property(e => e.VaccinationLogId).HasColumnName("vaccinationLogId");
@@ -1255,7 +1271,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("VaccinationLog");
 
             entity.Property(e => e.VLogId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("vLogId");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("timestamp without time zone")
@@ -1293,7 +1309,7 @@ public partial class CfmsDbContext : DbContext
             entity.HasIndex(e => e.ProductId, "Vaccine_productId_key").IsUnique();
 
             entity.Property(e => e.VaccineId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("vaccineId");
             entity.Property(e => e.BatchNumber)
                 .HasColumnType("character varying")
@@ -1340,7 +1356,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("WareTransaction");
 
             entity.Property(e => e.TransactionId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("transactionId");
             entity.Property(e => e.LocationFrom).HasColumnName("locationFrom");
             entity.Property(e => e.LocationTo).HasColumnName("locationTo");
@@ -1371,7 +1387,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Warehouse");
 
             entity.Property(e => e.WareId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("wareId");
             entity.Property(e => e.CreatedDate)
                 .HasColumnType("timestamp without time zone")
@@ -1397,7 +1413,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("WarehousePermission");
 
             entity.Property(e => e.PermissionId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("permissionId");
             entity.Property(e => e.GrantedAt)
                 .HasColumnType("timestamp without time zone")
@@ -1421,7 +1437,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("WarehouseStock");
 
             entity.Property(e => e.WareStockId)
-                .ValueGeneratedNever()
+                .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("wareStockId");
             entity.Property(e => e.ProductId).HasColumnName("productId");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
