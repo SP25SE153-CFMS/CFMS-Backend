@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CFMS.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace CFMS.Application.Services
     {
         string HashPassword(string password);
         bool VerifyPassword(string password, string hashedPassword);
+        string GenerateCode(EntityType type);
     }
 }

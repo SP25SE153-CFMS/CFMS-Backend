@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CFMS.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,32 @@ namespace CFMS.Application.Services.Impl
         public bool VerifyPassword(string password, string hashedPassword)
         {
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+        }
+
+        private Dictionary<EntityType, int> _counters = new()
+        {
+            { EntityType.Farm, 0 },
+            { EntityType.Product, 0 },
+            { EntityType.ChickenCoop, 0 },
+            { EntityType.Equipment, 0 },
+            { EntityType.BreedingArea, 0 }
+        };
+
+        public string GenerateCode(EntityType type)
+        {
+            _counters[type]++;
+
+            string prefix = type switch
+            {
+                EntityType.Farm => "FARM",
+                EntityType.Product => "PROD",
+                EntityType.ChickenCoop => "COOP",
+                EntityType.Equipment => "EQUIP",
+                EntityType.BreedingArea => "BREED",
+                _ => "DEF"
+            };
+
+            return $"{prefix}{_counters[type].ToString("D2")}";
         }
     }
 }
