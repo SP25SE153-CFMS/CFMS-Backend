@@ -3,7 +3,7 @@ using MediatR;
 
 namespace CFMS.Application.Commands.FarmFeat.Create
 {
-    public class CreateFarmCommand : IRequest<BaseResponse<string>>
+    public class CreateFarmCommand : IRequest<BaseResponse<bool>>
     {
         public CreateFarmCommand(string? farmName, string? farmCode, string? type, string? address, double? area, string? scale, string? phoneNumber, string? website, string? farmImage, Guid? ownerId)
         {

@@ -111,7 +111,7 @@ namespace CFMS.Infrastructure.Repositories
         public IGenericRepository<Salary> SalaryRepository => salaryRepository ??= new GenericRepository<Salary>(context);
         public IGenericRepository<StockReceipt> StockReceiptRepository => stockReceiptRepository ??= new GenericRepository<StockReceipt>(context);
 
-        public int Save()
+        public void Save()
         {
             var validationErrors = context.ChangeTracker.Entries<IValidatableObject>()
                 .SelectMany(e => e.Entity.Validate(null))
@@ -123,7 +123,7 @@ namespace CFMS.Infrastructure.Repositories
                     validationErrors.Select(error => $"Properties {error.MemberNames} Error: {error.ErrorMessage}"));
                 throw new Exception(exceptionMessage);
             }
-            return context.SaveChanges();
+            context.SaveChanges();
         }
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

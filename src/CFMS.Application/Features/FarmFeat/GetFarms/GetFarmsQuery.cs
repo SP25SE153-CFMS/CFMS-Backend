@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CFMS.Application.Common;
+using CFMS.Domain.Entities;
+using MediatR;
 
 namespace CFMS.Application.Features.FarmFeat.GetFarms
 {
-    internal class GetFarmsQuery
+    public class GetFarmsQuery : IRequest<BaseResponse<IEnumerable<Farm>>>
     {
+        public GetFarmsQuery() { }
     }
 }

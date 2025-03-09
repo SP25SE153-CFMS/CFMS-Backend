@@ -1,5 +1,9 @@
 ﻿using CFMS.Application.Commands.FarmFeat.Create;
 using CFMS.Application.Common;
+using CFMS.Application.Features.FarmFeat.Delete;
+using CFMS.Application.Features.FarmFeat.GetFarm;
+using CFMS.Application.Features.FarmFeat.GetFarms;
+using CFMS.Application.Features.FarmFeat.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,15 +16,17 @@ namespace CFMS.Api.Controllers
         }
 
         [HttpGet]
-        public string Get()
+        public async Task<IActionResult> Get()
         {
-            return "Hello World";
+            var result = await Send(new GetFarmsQuery());
+            return result;
         }
 
         [HttpGet("{id}")]
-        public string Get(string id)
+        public async Task<IActionResult> Get(Guid id)
         {
-            return "Hello World";
+            var result = await Send(new GetFarmQuery(id));
+            return result;
         }
 
         [HttpPost]
@@ -30,16 +36,18 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpPut("{id}")]
-        public string Update(string id)
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateFarmCommand command)
         {
-            return "Hello World";
+            var result = await Send(command);
+            return result;
         }
 
         [HttpDelete("{id}")]
-        public string Delete(string id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            return "Hello World";
+            var result = await Send(new DeleteFarmCommand(id));
+            return result;
         }
     }
 }
