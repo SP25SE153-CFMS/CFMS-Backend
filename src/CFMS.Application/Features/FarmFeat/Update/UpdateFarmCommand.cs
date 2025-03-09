@@ -1,12 +1,14 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Domain.Entities;
 using MediatR;
 
-namespace CFMS.Application.Commands.FarmFeat.Create
+namespace CFMS.Application.Features.FarmFeat.Update
 {
-    public class CreateFarmCommand : IRequest<BaseResponse<bool>>
+    public class UpdateFarmCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateFarmCommand(string? farmName, string? farmCode, string? type, string? address, double? area, string? scale, string? phoneNumber, string? website, string? farmImage, Guid? ownerId)
+        public UpdateFarmCommand(Guid farmId, string? farmName, string? farmCode, string? type, string? address, double? area, string? scale, string? phoneNumber, string? website, string? farmImage)
         {
+            FarmId = farmId;
             FarmName = farmName;
             FarmCode = farmCode;
             Type = type;
@@ -16,8 +18,9 @@ namespace CFMS.Application.Commands.FarmFeat.Create
             PhoneNumber = phoneNumber;
             Website = website;
             FarmImage = farmImage;
-            OwnerId = ownerId;
         }
+
+        public Guid FarmId { get; set; }
 
         public string? FarmName { get; set; }
 
@@ -36,7 +39,5 @@ namespace CFMS.Application.Commands.FarmFeat.Create
         public string? Website { get; set; }
 
         public string? FarmImage { get; set; }
-
-        public Guid? OwnerId { get; set; }
     }
 }
