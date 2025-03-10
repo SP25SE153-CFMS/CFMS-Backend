@@ -1,7 +1,10 @@
-﻿using CFMS.Application.Services;
+﻿using CFMS.Application.DTOs.Auth;
+using CFMS.Application.Services;
 using CFMS.Domain.Entities;
+using CFMS.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -28,7 +31,8 @@ public class TokenService : ITokenService
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Email, user.Mail)
+            new Claim(ClaimTypes.Role, user.RoleName.ToString().ToUpper()),
+            new Claim("IsRevoked", "false")
         };
 
         var token = new JwtSecurityToken(
@@ -42,13 +46,15 @@ public class TokenService : ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public string GenerateRefreshToken()
+    public string GenerateRefreshToken(User user)
     {
         var key = new SymmetricSecurityKey(Convert.FromBase64String(_refreshSecretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
         {
+            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+            new Claim(ClaimTypes.Role, user.RoleName.ToString().ToUpper()),
             new Claim("RefreshToken", Guid.NewGuid().ToString())
         };
 
@@ -63,19 +69,72 @@ public class TokenService : ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public string RefreshAccessToken(string refreshToken)
+    public AuthResponse RefreshAccessToken(string refreshToken)
     {
-        var user = GetUserByRefreshToken(refreshToken);
-        if (user == null)
-        {
-            throw new UnauthorizedAccessException("Invalid refresh token.");
-        }
+        var handler = new JwtSecurityTokenHandler();
+        var key = new SymmetricSecurityKey(Convert.FromBase64String(_refreshSecretKey));
 
-        return GenerateAccessToken(user);
+        try
+        {
+            var principal = handler.ValidateToken(refreshToken, new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = true,
+                ValidIssuer = _issuer,
+                ValidAudience = _audience,
+                IssuerSigningKey = key
+            }, out SecurityToken validatedToken);
+
+            var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
+            var roleClaim = principal.FindFirst(ClaimTypes.Role);
+
+            if (userIdClaim == null || roleClaim == null) return null;
+
+            var user = new User
+            {
+                UserId = Guid.Parse(userIdClaim.Value.ToString()),
+                RoleName = roleClaim.Value.ToString().ToUpper()
+            };
+
+            RevokeRefreshToken(refreshToken);
+
+            return new AuthResponse
+            {
+                AccessToken = GenerateAccessToken(user),
+                RefreshToken = GenerateRefreshToken(user)
+            };
+        }
+        catch
+        {
+            return null;
+        }
     }
 
-    private User GetUserByRefreshToken(string refreshToken)
+    public bool RevokeRefreshToken(string refreshToken)
     {
-        return new User();
+        var handler = new JwtSecurityTokenHandler();
+        var key = new SymmetricSecurityKey(Convert.FromBase64String(_refreshSecretKey));
+        try
+        {
+            var principal = handler.ValidateToken(refreshToken, new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = true,
+                ValidIssuer = _issuer,
+                ValidAudience = _audience,
+                IssuerSigningKey = key
+            }, out SecurityToken validatedToken);
+            var isRevokedClaim = principal.FindFirst("IsRevoked");
+            if (isRevokedClaim == null) return false;
+            return bool.Parse(isRevokedClaim.Value);
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
