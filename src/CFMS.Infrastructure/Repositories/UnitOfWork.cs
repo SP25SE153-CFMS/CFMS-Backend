@@ -61,6 +61,7 @@ namespace CFMS.Infrastructure.Repositories
         private GenericRepository<Warehouse> warehouseRepository;
         private GenericRepository<WarehousePermission> warehousePermissionRepository;
         private GenericRepository<WarehouseStock> warehouseStockRepository;
+        private GenericRepository<RevokedToken> revokedTokenRepository;
 
         public UnitOfWork(CfmsDbContext _context)
         {
@@ -110,6 +111,7 @@ namespace CFMS.Infrastructure.Repositories
         public IGenericRepository<RequestDetail> RequestDetailRepository => requestDetailRepository ??= new GenericRepository<RequestDetail>(context);
         public IGenericRepository<Salary> SalaryRepository => salaryRepository ??= new GenericRepository<Salary>(context);
         public IGenericRepository<StockReceipt> StockReceiptRepository => stockReceiptRepository ??= new GenericRepository<StockReceipt>(context);
+        public IGenericRepository<RevokedToken> RevokedTokenRepository => revokedTokenRepository ??= new GenericRepository<RevokedToken>(context);
 
         public void Save()
         {

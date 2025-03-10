@@ -105,6 +105,8 @@ public partial class CfmsDbContext : DbContext
 
     public virtual DbSet<WarehouseStock> WarehouseStocks { get; set; }
 
+    public virtual DbSet<RevokedToken> RevokedTokens { get; set; }
+
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker.Entries())
@@ -1242,6 +1244,38 @@ public partial class CfmsDbContext : DbContext
                 .HasColumnType("character varying")
                 .HasColumnName("status");
         });
+
+        modelBuilder.Entity<RevokedToken>(entity =>
+        {
+            entity.HasKey(e => e.RevokedTokenId).HasName("RevokedToken_pkey");
+
+            entity.ToTable("RevokedToken");
+
+            entity.Property(e => e.RevokedTokenId)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .HasColumnName("revokedTokenId");
+
+            entity.Property(e => e.Token)
+                .HasColumnType("character varying")
+                .HasColumnName("token");
+
+            entity.Property(e => e.TokenType)
+                .HasColumnName("tokenType");
+
+            entity.Property(e => e.RevokedAt)
+                .HasColumnName("revokedAt");
+
+            entity.Property(e => e.ExpiryDate)
+                .HasColumnName("expiryDate");
+
+            entity.Property(e => e.UserId)
+                .HasColumnName("userId");
+
+            entity.HasOne(rt => rt.User).WithMany(u => u.RevokedTokens)
+                .HasForeignKey(rt => rt.UserId)
+                .HasConstraintName("RevokedToken_userId_fkey");
+        });
+
 
         modelBuilder.Entity<VaccinationEmployee>(entity =>
         {
