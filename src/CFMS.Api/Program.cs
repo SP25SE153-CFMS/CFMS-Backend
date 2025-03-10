@@ -24,14 +24,12 @@ builder.Services.AddAuthorizationPolicies();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwaggerDocumentation();
-}   
-
+app.UseSwaggerDocumentation();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseCorsPolicy();
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

@@ -19,7 +19,7 @@ namespace CFMS.Application.Common
             Data = data;
         }
 
-        public static BaseResponse<T> SuccessResponse(T data, string? message = null) =>
+        public static BaseResponse<T> SuccessResponse(T? data = default, string? message = null) =>
             new BaseResponse<T>(true, message, data);
 
         public static BaseResponse<T> FailureResponse(string? message = null) =>
