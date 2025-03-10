@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Behaviors;
+using CFMS.Application.Commands.FarmFeat.Create;
 using CFMS.Application.Common;
 using CFMS.Application.DTOs.Auth;
 using CFMS.Application.Events;
@@ -9,6 +10,7 @@ using CFMS.Domain.Interfaces;
 using CFMS.Infrastructure.Persistence;
 using CFMS.Infrastructure.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +28,10 @@ namespace CFMS.Api.Extensions
             //MediatR
             services.AddMediatR(config =>
             {
-                config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+                config.RegisterServicesFromAssembly(typeof(CreateFarmCommandHandler).Assembly);
+                config.RegisterServicesFromAssembly(typeof(SignInCommandHandler).Assembly);
+                config.RegisterServicesFromAssembly(typeof(SignUpCommandHandler).Assembly);
+                config.RegisterServicesFromAssembly(typeof(RefreshTokenCommandHandler).Assembly);
             });
 
             //Behaviors
@@ -37,10 +42,6 @@ namespace CFMS.Api.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUtilityService, UtilityService>();
-
-            //Handlers
-            services.AddScoped<IRequestHandler<SignInCommand, BaseResponse<AuthResponse>>, SignInCommandHandler>();
-            services.AddScoped<IRequestHandler<SignUpCommand, BaseResponse<AuthResponse>>, SignUpCommandHandler>();
 
             return services;
         }
