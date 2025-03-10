@@ -12,8 +12,8 @@ namespace CFMS.Domain.Entities
         public Guid RevokedTokenId { get; set; }
         public string Token { get; set; } = string.Empty;
         public TokenType TokenType { get; set; }
-        public DateTime RevokedAt { get; set; } = DateTime.UtcNow;
-        public DateTime ExpiryDate { get; set; }
+        public DateTime? RevokedAt { get; set; }
+        public DateTime? ExpiryDate { get; set; }
         public Guid? UserId { get; set; }
 
         public virtual User? User { get; set; }

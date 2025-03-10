@@ -58,5 +58,6 @@ namespace CFMS.Domain.Interfaces
 
         void Save();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task<T> ExecuteInTransactionAsync<T>(Func<Task<T>> action);
     }
 }

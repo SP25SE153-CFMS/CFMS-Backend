@@ -7,6 +7,9 @@ namespace CFMS.Application.Services
     {
         string GenerateAccessToken(User user);
         string GenerateRefreshToken(User user);
-        AuthResponse RefreshAccessToken(string refreshToken);
+        Task<AuthResponse> RefreshAccessTokenAsync(RevokedToken token);
+        bool IsTokenRevoked(RevokedToken token);
+        DateTime? GetExpiryDate(string token);
+        bool IsTokenExpired(string token);
     }
 }

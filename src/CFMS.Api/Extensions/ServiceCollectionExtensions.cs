@@ -30,9 +30,9 @@ namespace CFMS.Api.Extensions
             services.AddMediatR(config =>
             {
                 config.RegisterServicesFromAssembly(typeof(CreateFarmCommandHandler).Assembly);
-                config.RegisterServicesFromAssembly(typeof(SignInCommandHandler).Assembly);
-                config.RegisterServicesFromAssembly(typeof(SignUpCommandHandler).Assembly);
-                config.RegisterServicesFromAssembly(typeof(RefreshTokenCommandHandler).Assembly);
+                //config.RegisterServicesFromAssembly(typeof(SignInCommandHandler).Assembly);
+                //config.RegisterServicesFromAssembly(typeof(SignUpCommandHandler).Assembly);
+                //config.RegisterServicesFromAssembly(typeof(RefreshTokenCommandHandler).Assembly);
 
             });
 
