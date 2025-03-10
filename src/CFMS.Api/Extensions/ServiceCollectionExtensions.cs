@@ -1,6 +1,6 @@
 ﻿using CFMS.Application.Behaviors;
-using CFMS.Application.Commands.FarmFeat.Create;
 using CFMS.Application.Events;
+using CFMS.Application.Features.FarmFeat.Create;
 using CFMS.Application.Mappings;
 using CFMS.Application.Services;
 using CFMS.Application.Services.Impl;

@@ -1,7 +1,7 @@
 ﻿using CFMS.Application.Common;
 using MediatR;
 
-namespace CFMS.Application.Commands.FarmFeat.Create
+namespace CFMS.Application.Features.FarmFeat.Create
 {
     public class CreateFarmCommand : IRequest<BaseResponse<bool>>
     {
