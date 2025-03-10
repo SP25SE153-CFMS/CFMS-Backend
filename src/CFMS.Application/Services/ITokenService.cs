@@ -1,16 +1,12 @@
-﻿using CFMS.Domain.Entities;
-using CFMS.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CFMS.Application.DTOs.Auth;
+using CFMS.Domain.Entities;
 
 namespace CFMS.Application.Services
 {
     public interface ITokenService
     {
         string GenerateAccessToken(User user);
-        string GenerateRefreshToken();
+        string GenerateRefreshToken(User user);
+        AuthResponse RefreshAccessToken(string refreshToken);
     }
 }

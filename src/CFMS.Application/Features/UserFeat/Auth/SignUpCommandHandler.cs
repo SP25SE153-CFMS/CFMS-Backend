@@ -46,7 +46,7 @@ namespace CFMS.Application.Features.UserFeat.Auth
             _unitOfWork.Save();
 
             var accessToken = _tokenService.GenerateAccessToken(user);
-            var refreshToken = _tokenService.GenerateRefreshToken();
+            var refreshToken = _tokenService.GenerateRefreshToken(user);
 
             var authResponse = new AuthResponse
             {
@@ -54,7 +54,7 @@ namespace CFMS.Application.Features.UserFeat.Auth
                 RefreshToken = refreshToken
             };
 
-            return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "User registered successfully");
+            return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "User sign up successfully");
         }
     }
 }

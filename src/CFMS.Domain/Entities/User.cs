@@ -29,6 +29,8 @@ public partial class User
 
     public string? HashedPassword { get; set; }
 
+    public virtual ICollection<RevokedToken> RevokedTokens { get; set; } = new List<RevokedToken>();
+
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
     public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
