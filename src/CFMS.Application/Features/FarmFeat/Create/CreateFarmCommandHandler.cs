@@ -4,7 +4,7 @@ using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
 
-namespace CFMS.Application.Commands.FarmFeat.Create
+namespace CFMS.Application.Features.FarmFeat.Create
 {
     public class CreateFarmCommandHandler : IRequestHandler<CreateFarmCommand, BaseResponse<bool>>
     {
