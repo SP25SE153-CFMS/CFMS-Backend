@@ -2,6 +2,7 @@
 using CFMS.Application.DTOs.Auth;
 using CFMS.Application.Services;
 using CFMS.Domain.Entities;
+using CFMS.Domain.Enums;
 using CFMS.Domain.Interfaces;
 using MediatR;
 using System;
@@ -39,20 +40,34 @@ namespace CFMS.Application.Features.UserFeat.Auth
                 FullName = request.Fullname,
                 PhoneNumber = request.PhoneNumber,
                 Mail = request.Mail,
-                HashedPassword = _utilityService.HashPassword(request.Password)
+                HashedPassword = _utilityService.HashPassword(request.Password),
+                RoleName = "USER"
             };
 
-            _unitOfWork.UserRepository.Insert(user);
-            _unitOfWork.Save();
-
-            var accessToken = _tokenService.GenerateAccessToken(user);
-            var refreshToken = _tokenService.GenerateRefreshToken(user);
-
-            var authResponse = new AuthResponse
+            var authResponse = await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken
-            };
+                _unitOfWork.UserRepository.Insert(user);
+                await _unitOfWork.SaveChangesAsync();
+
+                var accessToken = _tokenService.GenerateAccessToken(user);
+                var refreshToken = _tokenService.GenerateRefreshToken(user);
+
+                var revokedToken = new RevokedToken
+                {
+                    Token = refreshToken,
+                    TokenType = TokenType.RefreshToken,
+                    UserId = user.UserId,
+                    ExpiryDate = _tokenService.GetExpiryDate(refreshToken)
+                };
+
+                _unitOfWork.RevokedTokenRepository.Insert(revokedToken);
+                await _unitOfWork.SaveChangesAsync();
+                return new AuthResponse
+                {
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken
+                };
+            });
 
             return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "User sign up successfully");
         }
