@@ -17,7 +17,7 @@ public partial class Food
 
     public DateTime? ExpiryDate { get; set; }
 
-    public Guid? ProductId { get; set; }
+    public Guid ProductId { get; set; }
 
     public virtual ICollection<Nutrition> Nutritions { get; set; } = new List<Nutrition>();
 

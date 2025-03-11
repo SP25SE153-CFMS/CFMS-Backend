@@ -21,6 +21,8 @@ public partial class BreedingArea
 
     public Guid? FarmId { get; set; }
 
+    public double? Area { get; set; }
+
     public virtual ICollection<ChickenCoop> ChickenCoops { get; set; } = new List<ChickenCoop>();
 
     public virtual Farm? Farm { get; set; }

@@ -3,6 +3,7 @@ using System;
 using CFMS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    partial class CfmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311081452_UpdateFarmAndBreedingArea")]
+    partial class UpdateFarmAndBreedingArea
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -419,7 +422,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasIndex(new[] { "ProductId" }, "Equipment_productId_key")
                         .IsUnique();
 
-                    b.ToTable("Equipment", (string)null);
+                    b.ToTable("Equipment");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.Farm", b =>
@@ -1244,7 +1247,7 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasIndex("RequestId");
 
-                    b.ToTable("RequestDetails", (string)null);
+                    b.ToTable("RequestDetails");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.RevokedToken", b =>

@@ -29,7 +29,7 @@ public partial class Vaccine
 
     public Guid? DiseaseId { get; set; }
 
-    public Guid? ProductId { get; set; }
+    public Guid ProductId { get; set; }
 
     public virtual SubCategory? Disease { get; set; }
 

@@ -31,7 +31,7 @@ public partial class Equipment
 
     public DateTime? UpdatedAt { get; set; }
 
-    public Guid? ProductId { get; set; }
+    public Guid ProductId { get; set; }
 
     public virtual ICollection<CoopEquipment> CoopEquipments { get; set; } = new List<CoopEquipment>();
 

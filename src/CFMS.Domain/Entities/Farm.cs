@@ -11,13 +11,11 @@ public partial class Farm
 
     public string? FarmCode { get; set; }
 
-    public string? Type { get; set; }
-
     public string? Address { get; set; }
 
     public double? Area { get; set; }
 
-    public string? Scale { get; set; }
+    public int? Scale { get; set; }
 
     public string? PhoneNumber { get; set; }
 
@@ -26,6 +24,8 @@ public partial class Farm
     public string? FarmImage { get; set; }
 
     public Guid? OwnerId { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
 
     public virtual ICollection<BreedingArea> BreedingAreas { get; set; } = new List<BreedingArea>();
 

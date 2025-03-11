@@ -55,7 +55,7 @@ namespace CFMS.Application.Features.UserFeat.Auth
                 var revokedToken = new RevokedToken
                 {
                     Token = refreshToken,
-                    TokenType = TokenType.RefreshToken,
+                    TokenType = (int)TokenType.RefreshToken,
                     UserId = user.UserId,
                     ExpiryDate = _tokenService.GetExpiryDate(refreshToken)
                 };
