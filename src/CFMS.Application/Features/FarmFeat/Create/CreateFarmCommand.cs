@@ -5,7 +5,7 @@ namespace CFMS.Application.Features.FarmFeat.Create
 {
     public class CreateFarmCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateFarmCommand(string? farmName, string? farmCode, string? address, double? area, int? scale, string? phoneNumber, string? website, string? farmImage, Guid? ownerId)
+        public CreateFarmCommand(string? farmName, string? farmCode, string? address, double? area, int? scale, string? phoneNumber, string? website, string? farmImage)
         {
             FarmName = farmName;
             FarmCode = farmCode;
@@ -15,7 +15,6 @@ namespace CFMS.Application.Features.FarmFeat.Create
             PhoneNumber = phoneNumber;
             Website = website;
             FarmImage = farmImage;
-            OwnerId = ownerId;
         }
 
         public string? FarmName { get; set; }
@@ -33,7 +32,5 @@ namespace CFMS.Application.Features.FarmFeat.Create
         public string? Website { get; set; }
 
         public string? FarmImage { get; set; }
-
-        public Guid? OwnerId { get; set; }
     }
 }

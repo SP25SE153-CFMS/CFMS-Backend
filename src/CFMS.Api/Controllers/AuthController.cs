@@ -1,10 +1,7 @@
 ﻿using CFMS.Application.Features.UserFeat.Auth;
-using CFMS.Application.Services;
-using CFMS.Application.Services.Impl;
+using CFMS.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace CFMS.Api.Controllers
 {

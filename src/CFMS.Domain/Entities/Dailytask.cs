@@ -6,7 +6,6 @@ namespace CFMS.Domain.Entities;
 
 public class DailyTask : EntityAudit
 {
-    [Key]
     public Guid DTaskId { get; set; }
 
     public Guid? TaskId { get; set; }

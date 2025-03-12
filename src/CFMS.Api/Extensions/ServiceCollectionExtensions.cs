@@ -7,6 +7,7 @@ using CFMS.Application.Mappings;
 using CFMS.Application.Services;
 using CFMS.Application.Services.Impl;
 using CFMS.Domain.Interfaces;
+using CFMS.Infrastructure.Interceptors;
 using CFMS.Infrastructure.Persistence;
 using CFMS.Infrastructure.Repositories;
 using MediatR;
@@ -19,6 +20,10 @@ namespace CFMS.Api.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            //Interceptors
+            services.AddScoped<AuditInterceptor>();
+            services.AddScoped<SoftDeleteInterceptor>();
+
             //HttpContext
             services.AddHttpContextAccessor();
 
