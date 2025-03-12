@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Domain.Enums.Status
+namespace CFMS.Domain.Enums.Roles
 {
-    public enum UserStatus
+    public enum FarmRole
     {
-        Active = 2,
-        Inactive = 1,
-        Banned = 0
+        Owner,
+        Manager,
+        Staff
     }
 }

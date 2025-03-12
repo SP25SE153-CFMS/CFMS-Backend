@@ -1,16 +1,13 @@
-﻿using CFMS.Application.Common;
-using CFMS.Domain.Enums.Roles;
-using CFMS.Domain.Enums.Status;
-using MediatR;
+﻿using CFMS.Domain.Enums.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.UserFeat.Update
+namespace CFMS.Application.DTOs.Auth
 {
-    public class UpdateUserCommand : IRequest<BaseResponse<bool>>
+    public class UserResponse
     {
         public Guid UserId { get; set; }
 
@@ -26,14 +23,12 @@ namespace CFMS.Application.Features.UserFeat.Update
 
         public DateOnly? StartDate { get; set; }
 
-        public UserStatus? Status { get; set; }
+        public string? Status { get; set; }
 
         public string? Address { get; set; }
 
         public string? Cccd { get; set; }
 
-        public SystemRole? SystemRole { get; set; }
-
-        public string? Password { get; set; }
+        public string? SystemRole { get; set; }
     }
 }

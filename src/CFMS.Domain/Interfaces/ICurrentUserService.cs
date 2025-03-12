@@ -12,8 +12,7 @@ namespace CFMS.Domain.Interfaces
         string? GetUserId();
         string? GetUserRole();
         string? GetUserEmail();
-        bool? IsOwner();
-        bool? IsManager();
+        bool? IsAdmin();
         bool? IsUser();
     }
 }

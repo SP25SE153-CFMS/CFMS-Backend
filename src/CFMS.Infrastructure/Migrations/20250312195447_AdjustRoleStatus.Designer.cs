@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250312154832_UpdateDatabase")]
-    partial class UpdateDatabase
+    [Migration("20250312195447_AdjustRoleStatus")]
+    partial class AdjustRoleStatus
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -705,6 +705,10 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("farmId");
 
+                    b.Property<int?>("FarmRole")
+                        .HasColumnType("int")
+                        .HasColumnName("farmRole");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -714,16 +718,12 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("RoleName")
-                        .HasColumnType("character varying")
-                        .HasColumnName("roleName");
-
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("startDate");
 
                     b.Property<int?>("Status")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("status");
 
                     b.HasKey("FarmEmployeeId")
@@ -1834,27 +1834,9 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnName("revokedTokenId")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<Guid>("CreatedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedWhen")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedWhen")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime?>("ExpiryDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("expiryDate");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastEditedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastEditedWhen")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("RevokedAt")
                         .HasColumnType("timestamp with time zone")
@@ -1875,10 +1857,6 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasKey("RevokedTokenId")
                         .HasName("RevokedToken_pkey");
-
-                    b.HasIndex("CreatedByUserId");
-
-                    b.HasIndex("LastEditedByUserId");
 
                     b.HasIndex("UserId");
 
@@ -2337,6 +2315,10 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("character varying")
                         .HasColumnName("CCCD");
 
+                    b.Property<DateOnly?>("CreatedDate")
+                        .HasColumnType("date")
+                        .HasColumnName("createdDate");
+
                     b.Property<DateOnly?>("DateOfBirth")
                         .HasColumnType("date")
                         .HasColumnName("dateOfBirth");
@@ -2357,17 +2339,13 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("character varying")
                         .HasColumnName("phoneNumber");
 
-                    b.Property<string>("RoleName")
-                        .HasColumnType("character varying")
-                        .HasColumnName("roleName");
-
-                    b.Property<DateOnly?>("StartDate")
-                        .HasColumnType("date")
-                        .HasColumnName("startDate");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("text")
+                    b.Property<int?>("Status")
+                        .HasColumnType("int")
                         .HasColumnName("status");
+
+                    b.Property<int?>("SystemRole")
+                        .HasColumnType("int")
+                        .HasColumnName("systemRole");
 
                     b.HasKey("UserId")
                         .HasName("User_pkey");
@@ -3613,26 +3591,10 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.RevokedToken", b =>
                 {
-                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
-                        .WithMany()
-                        .HasForeignKey("LastEditedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("CFMS.Domain.Entities.User", "User")
                         .WithMany("RevokedTokens")
                         .HasForeignKey("UserId")
                         .HasConstraintName("RevokedToken_userId_fkey");
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("LastEditedByUser");
 
                     b.Navigation("User");
                 });

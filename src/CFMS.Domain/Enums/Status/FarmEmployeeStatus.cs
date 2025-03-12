@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CFMS.Domain.Enums.Status
 {
-    public enum UserStatus
+    public enum FarmEmployeeStatus
     {
         Active = 2,
         Inactive = 1,
-        Banned = 0
+        Fired = 0
     }
 }

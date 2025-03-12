@@ -31,10 +31,10 @@ namespace CFMS.Application.Features.UserFeat.Update
 
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-                if ((existUser.StartDate != null) && (!_currentUserService.IsOwner() ?? true))
-                {
-                    return BaseResponse<bool>.FailureResponse("Bạn không có quyền cập nhật thông tin người dùng");
-                }
+                //if ((existUser.CreatedDate != null) && (!_currentUserService.IsOwner() ?? true))
+                //{
+                //    return BaseResponse<bool>.FailureResponse("Bạn không có quyền cập nhật thông tin người dùng");
+                //}
 
                 if (!string.IsNullOrEmpty(request.Password) && existUser.HashedPassword.Equals(BCrypt.Net.BCrypt.HashPassword(request.Password)))
                 {
@@ -48,8 +48,8 @@ namespace CFMS.Application.Features.UserFeat.Update
                 existUser.DateOfBirth = request.DateOfBirth ?? existUser.DateOfBirth;
                 existUser.Address = request.Address ?? existUser.Address;
                 existUser.Cccd = request.Cccd ?? existUser.Cccd;
-                existUser.Status = !string.IsNullOrEmpty(request.Status) ? request.Status : existUser.Status;
-                existUser.Status = !string.IsNullOrEmpty(request.RoleName) ? request.RoleName : existUser.RoleName;
+                existUser.Status = !string.IsNullOrEmpty(request.Status.ToString()) ? request.Status : existUser.Status;
+                existUser.SystemRole = !string.IsNullOrEmpty(request.SystemRole.ToString()) ? request.SystemRole : existUser.SystemRole;
                 existUser.HashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
                 _unitOfWork.UserRepository.Update(existUser);

@@ -973,14 +973,17 @@ public partial class CfmsDbContext : DbContext
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("endDate");
             entity.Property(e => e.FarmId).HasColumnName("farmId");
-            entity.Property(e => e.RoleName)
-                .HasColumnType("character varying")
-                .HasColumnName("roleName");
+            entity.Property(e => e.FarmRole)
+                .HasConversion<int>()
+                .HasColumnType("int")
+                .HasColumnName("farmRole");
             entity.Property(e => e.StartDate)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("startDate");
-            entity.Property(e => e.Status).HasColumnName("status");
-
+            entity.Property(e => e.Status)
+                .HasConversion<int>()
+                .HasColumnType("int")
+                .HasColumnName("status");
             entity.HasOne(d => d.Employee).WithMany(p => p.FarmEmployees)
                 .HasForeignKey(d => d.EmployeeId)
                 .HasConstraintName("FarmEmployee_employeeId_fkey");
@@ -1671,7 +1674,8 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.Cccd)
                 .HasColumnType("character varying")
                 .HasColumnName("CCCD");
-            entity.Property(e => e.DateOfBirth).HasColumnName("dateOfBirth");
+            entity.Property(e => e.DateOfBirth)
+                .HasColumnName("dateOfBirth");
             entity.Property(e => e.FullName)
                 .HasColumnType("character varying")
                 .HasColumnName("fullName");
@@ -1684,11 +1688,16 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.PhoneNumber)
                 .HasColumnType("character varying")
                 .HasColumnName("phoneNumber");
-            entity.Property(e => e.RoleName)
-                .HasColumnType("character varying")
-                .HasColumnName("roleName");
-            entity.Property(e => e.StartDate).HasColumnName("startDate");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.SystemRole)
+                .HasConversion<int>()
+                .HasColumnType("int")
+                .HasColumnName("systemRole");
+            entity.Property(e => e.CreatedDate)
+                .HasColumnName("createdDate");
+            entity.Property(e => e.Status)
+                .HasConversion<int>()
+                .HasColumnType("int")
+                .HasColumnName("status");
         });
 
         modelBuilder.Entity<RevokedToken>(entity =>
