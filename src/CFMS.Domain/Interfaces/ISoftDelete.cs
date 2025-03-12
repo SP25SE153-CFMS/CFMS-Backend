@@ -12,6 +12,6 @@ namespace CFMS.Domain.Interfaces
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
-        public DateTimeOffset? DeletedWhen { get; set; }
+        public DateTime? DeletedWhen { get; set; }
     }
 }

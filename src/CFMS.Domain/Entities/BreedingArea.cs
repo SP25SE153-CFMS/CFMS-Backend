@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class BreedingArea
+public class BreedingArea : EntityAudit
 {
     public Guid BreedingAreaId { get; set; }
 
@@ -17,9 +17,9 @@ public partial class BreedingArea
 
     public string? Notes { get; set; }
 
-    public DateTime? CreatedDate { get; set; }
-
     public Guid? FarmId { get; set; }
+
+    public double? Area { get; set; }
 
     public virtual ICollection<ChickenCoop> ChickenCoops { get; set; } = new List<ChickenCoop>();
 

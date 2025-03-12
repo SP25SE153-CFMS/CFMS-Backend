@@ -18,7 +18,6 @@ namespace CFMS.Application.Features.FarmFeat.GetFarms
         {
             var farms = _unitOfWork.FarmRepository.Get();
             return BaseResponse<IEnumerable<Farm>>.SuccessResponse(data: farms);
-            throw new NotImplementedException();
         }
     }
 }

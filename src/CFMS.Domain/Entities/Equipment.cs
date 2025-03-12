@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class Equipment
+public class Equipment : EntityAudit
 {
     public Guid EquipmentId { get; set; }
 
@@ -27,11 +27,7 @@ public partial class Equipment
 
     public DateTime? EndDate { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public Guid? ProductId { get; set; }
+    public Guid ProductId { get; set; }
 
     public virtual ICollection<CoopEquipment> CoopEquipments { get; set; } = new List<CoopEquipment>();
 

@@ -31,7 +31,6 @@ namespace CFMS.Application.Features.FarmFeat.Update
                 existFarm.PhoneNumber = request.PhoneNumber;
                 existFarm.PhoneNumber = request.PhoneNumber;
                 existFarm.Scale = request.Scale;
-                existFarm.Type = request.Type;
 
                 _unitOfWork.FarmRepository.Update(existFarm);
                 var result = await _unitOfWork.SaveChangesAsync();

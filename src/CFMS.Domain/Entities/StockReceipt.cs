@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class StockReceipt
+public class StockReceipt : EntityAudit
 {
-    public Guid InRepId { get; set; }
+    public Guid StockRepId { get; set; }
 
     public Guid? DetailId { get; set; }
 
@@ -18,10 +18,6 @@ public partial class StockReceipt
     public string? LocationFrom { get; set; }
 
     public string? LocationTo { get; set; }
-
-    public Guid? CreatedBy { get; set; }
-
-    public DateTime? CreatedDate { get; set; }
 
     public virtual RequestDetail? Detail { get; set; }
 }

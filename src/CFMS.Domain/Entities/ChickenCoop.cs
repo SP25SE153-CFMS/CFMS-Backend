@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class ChickenCoop
+public class ChickenCoop : EntityAudit
 {
     public Guid ChickenCoopId { get; set; }
 
@@ -18,10 +18,6 @@ public partial class ChickenCoop
     public string? Status { get; set; }
 
     public string? Description { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
 
     public Guid? PurposeId { get; set; }
 

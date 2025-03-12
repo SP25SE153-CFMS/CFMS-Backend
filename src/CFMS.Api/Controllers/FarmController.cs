@@ -1,5 +1,4 @@
-﻿using CFMS.Application.Commands.FarmFeat.Create;
-using CFMS.Application.Common;
+﻿using CFMS.Application.Features.FarmFeat.Create;
 using CFMS.Application.Features.FarmFeat.Delete;
 using CFMS.Application.Features.FarmFeat.GetFarm;
 using CFMS.Application.Features.FarmFeat.GetFarms;

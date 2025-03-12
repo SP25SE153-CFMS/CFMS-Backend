@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CFMS.Application.Commands.FarmFeat.Create;
+using CFMS.Application.Features.FarmFeat.Create;
 using CFMS.Domain.Entities;
 
 namespace CFMS.Application.Mappings

@@ -6,12 +6,11 @@ namespace CFMS.Application.Features.FarmFeat.Update
 {
     public class UpdateFarmCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateFarmCommand(Guid farmId, string? farmName, string? farmCode, string? type, string? address, double? area, string? scale, string? phoneNumber, string? website, string? farmImage)
+        public UpdateFarmCommand(Guid farmId, string? farmName, string? farmCode, string? address, double? area, int? scale, string? phoneNumber, string? website, string? farmImage)
         {
             FarmId = farmId;
             FarmName = farmName;
             FarmCode = farmCode;
-            Type = type;
             Address = address;
             Area = area;
             Scale = scale;
@@ -26,13 +25,11 @@ namespace CFMS.Application.Features.FarmFeat.Update
 
         public string? FarmCode { get; set; }
 
-        public string? Type { get; set; }
-
         public string? Address { get; set; }
 
         public double? Area { get; set; }
 
-        public string? Scale { get; set; }
+        public int? Scale { get; set; }
 
         public string? PhoneNumber { get; set; }
 

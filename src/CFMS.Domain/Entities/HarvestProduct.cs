@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class HarvestProduct
+public class HarvestProduct : EntityAudit
 {
     public Guid HarvestProductId { get; set; }
 
@@ -15,7 +15,7 @@ public partial class HarvestProduct
 
     public Guid? UnitId { get; set; }
 
-    public Guid? ProductId { get; set; }
+    public Guid ProductId { get; set; }
 
     public virtual ICollection<HarvestTask> HarvestTasks { get; set; } = new List<HarvestTask>();
 
