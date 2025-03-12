@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Services
+namespace CFMS.Domain.Interfaces
 {
     public interface ICurrentUserService
     {

@@ -1,6 +1,6 @@
 ﻿using CFMS.Application.Common;
 using CFMS.Application.DTOs.Auth;
-using CFMS.Application.Services;
+using CFMS.Domain.Interfaces;
 using MediatR;
 using System;
 using System.Collections.Generic;
