@@ -114,8 +114,12 @@ public partial class CfmsDbContext : DbContext
         var entities = ChangeTracker.Entries()
             .Where(x => x.Entity is EntityAudit)
             .ToList();
-        UpdateSoftDelete(entities);
-        UpdateEntityAudit(entities);
+
+        if (entities.Any())
+        {
+            UpdateSoftDelete(entities);
+            UpdateEntityAudit(entities);
+        }
     }
 
     private void UpdateSoftDelete(List<EntityEntry> entries)
