@@ -2,7 +2,7 @@
 using CFMS.Application.DTOs.Auth;
 using CFMS.Application.Services;
 using CFMS.Domain.Entities;
-using CFMS.Domain.Enums;
+using CFMS.Domain.Enums.Types;
 using CFMS.Domain.Interfaces;
 using MediatR;
 using System;
@@ -41,7 +41,7 @@ namespace CFMS.Application.Features.UserFeat.Auth
                 PhoneNumber = request.PhoneNumber,
                 Mail = request.Mail,
                 HashedPassword = _utilityService.HashPassword(request.Password),
-                RoleName = "USER"
+                RoleName = RoleType.User.ToString(),
             };
 
             var authResponse = await _unitOfWork.ExecuteInTransactionAsync(async () =>

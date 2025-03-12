@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CFMS.Domain.Enums.Types;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,21 @@ namespace CFMS.Application.Services.Impl
         public string? GetUserEmail()
         {
             return _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Email)?.Value;
+        }
+
+        public bool? IsOwner()
+        {
+            return _httpContextAccessor.HttpContext?.User.IsInRole(RoleType.Owner.ToString());
+        }
+
+        public bool? IsManager()
+        {
+            return _httpContextAccessor.HttpContext?.User.IsInRole(RoleType.Manager.ToString());
+        }
+
+        public bool? IsUser()
+        {
+            return _httpContextAccessor.HttpContext?.User.IsInRole(RoleType.User.ToString());
         }
     }
 }

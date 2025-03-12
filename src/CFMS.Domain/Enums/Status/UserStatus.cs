@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Domain.Enums
+namespace CFMS.Domain.Enums.Status
 {
-    public enum TokenType
+    public enum UserStatus
     {
-        AccessToken,
-        RefreshToken
+        Active = 2,
+        Inactive = 1,
+        Fired = 0
     }
 }

@@ -11,5 +11,6 @@ namespace CFMS.Application.Services
         bool IsTokenRevoked(RevokedToken token);
         DateTime? GetExpiryDate(string token);
         bool IsTokenExpired(string token);
+        System.Threading.Tasks.Task RevokeRefreshTokenAsync(RevokedToken token);
     }
 }

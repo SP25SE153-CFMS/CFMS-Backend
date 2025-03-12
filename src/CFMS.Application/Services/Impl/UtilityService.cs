@@ -1,4 +1,4 @@
-﻿using CFMS.Domain.Enums;
+﻿using CFMS.Domain.Enums.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
