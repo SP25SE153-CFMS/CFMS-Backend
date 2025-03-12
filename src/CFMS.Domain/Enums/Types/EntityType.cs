@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Domain.Enums
+namespace CFMS.Domain.Enums.Types
 {
     public enum EntityType
     {

@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 namespace CFMS.Application.Features.UserFeat.Auth
 {
     public class GetCurrentUserQuery : IRequest<BaseResponse<CurrentUserResponse>>
-    { 
+    {
+        public GetCurrentUserQuery()
+        {
+        }
     }
 }
