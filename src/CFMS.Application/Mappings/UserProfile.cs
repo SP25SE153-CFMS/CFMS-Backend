@@ -4,6 +4,7 @@ using CFMS.Application.Features.FarmFeat.Create;
 using CFMS.Application.Features.UserFeat.GetUsers;
 using CFMS.Domain.Dictionaries;
 using CFMS.Domain.Entities;
+using CFMS.Domain.Enums.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,17 @@ namespace CFMS.Application.Mappings
         public UserProfile()
         {
             CreateMap<User, UserResponse>()
-                .ForMember(dest => dest.SystemRole, opt => opt.MapFrom(src =>
-                    src.SystemRole.HasValue ? src.SystemRole.ToString() : "Không xác định"));
+                .ForMember(dest => dest.SystemRole, opt => opt.MapFrom(src => GetSystemRoleName(src.SystemRole)));
+        }
+
+        private string GetSystemRoleName(SystemRole? systemRole)
+        {
+            if (systemRole.HasValue && RoleDictionary.SystemRole.TryGetValue((int)systemRole.Value, out string roleName))
+            {
+                return roleName;
+            }
+
+            return "Không xác định";
         }
     }
 }
