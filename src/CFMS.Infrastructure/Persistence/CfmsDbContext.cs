@@ -1,19 +1,24 @@
 ﻿using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
+using CFMS.Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 
 namespace CFMS.Infrastructure.Persistence;
 
 public partial class CfmsDbContext : DbContext
 {
+    private readonly ICurrentUserService _currentUserService;
+
     public CfmsDbContext()
     {
     }
 
-    public CfmsDbContext(DbContextOptions<CfmsDbContext> options)
+    public CfmsDbContext(DbContextOptions<CfmsDbContext> options, ICurrentUserService currentUserService)
         : base(options)
     {
+        _currentUserService = currentUserService;
     }
 
     public virtual DbSet<Assignment> Assignments { get; set; }
@@ -104,18 +109,62 @@ public partial class CfmsDbContext : DbContext
 
     public virtual DbSet<WarehouseStock> WarehouseStocks { get; set; }
 
+    private void OnBeforeSaving()
+    {
+        var entities = ChangeTracker.Entries()
+            .Where(x => x.Entity is EntityAudit)
+            .ToList();
+        UpdateSoftDelete(entities);
+        UpdateEntityAudit(entities);
+    }
+
+    private void UpdateSoftDelete(List<EntityEntry> entries)
+    {
+        var filtered = entries
+            .Where(x => x.State == EntityState.Deleted);
+
+        foreach (var entry in filtered)
+        {
+            entry.State = EntityState.Modified;
+            ((EntityAudit)entry.Entity).IsDeleted = true;
+            ((EntityAudit)entry.Entity).DeletedWhen = DateTime.UtcNow;
+            break;
+        }
+    }
+
+    private void UpdateEntityAudit(List<EntityEntry> entries)
+    {
+        var filtered = entries
+            .Where(x => x.State == EntityState.Added
+                || x.State == EntityState.Modified);
+
+        var currentUserId = Guid.Parse(_currentUserService?.GetUserId()!);
+
+        foreach (var entry in filtered)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                ((EntityAudit)entry.Entity).CreatedWhen = DateTime.UtcNow;
+                ((EntityAudit)entry.Entity).CreatedByUserId = currentUserId;
+            }
+
+            ((EntityAudit)entry.Entity).LastEditedWhen = DateTime.UtcNow;
+            ((EntityAudit)entry.Entity).LastEditedByUserId = currentUserId;
+        }
+    }
+
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        foreach (var entry in ChangeTracker.Entries())
-        {
-            if (entry is { State: EntityState.Deleted, Entity: ISoftDelete delete })
-            {
-                entry.State = EntityState.Modified;
-                delete.IsDeleted = true;
-                delete.DeletedWhen = DateTime.UtcNow;
-            }
-        }
-
+        //foreach (var entry in ChangeTracker.Entries())
+        //{
+        //    if (entry is { State: EntityState.Deleted, Entity: ISoftDelete delete })
+        //    {
+        //        entry.State = EntityState.Modified;
+        //        delete.IsDeleted = true;
+        //        delete.DeletedWhen = DateTime.UtcNow;
+        //    }
+        //}
+        OnBeforeSaving();
         return base.SaveChangesAsync(cancellationToken);
     }
 
@@ -467,18 +516,6 @@ public partial class CfmsDbContext : DbContext
         .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<RequestDetail>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<RevokedToken>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<RevokedToken>()
         .HasOne(a => a.LastEditedByUser)
         .WithMany()
         .HasForeignKey(a => a.LastEditedByUserId)

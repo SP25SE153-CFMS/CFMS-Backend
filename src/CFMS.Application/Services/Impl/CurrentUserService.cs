@@ -1,11 +1,10 @@
-﻿using CFMS.Domain.Enums.Types;
+using CFMS.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
+using CFMS.Domain.Enums.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CFMS.Application.Services.Impl
 {
