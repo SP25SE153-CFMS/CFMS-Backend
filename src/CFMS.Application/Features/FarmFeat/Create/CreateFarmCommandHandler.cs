@@ -19,11 +19,11 @@ namespace CFMS.Application.Features.FarmFeat.Create
 
         public async Task<BaseResponse<bool>> Handle(CreateFarmCommand request, CancellationToken cancellationToken)
         {
-            var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(request.OwnerId));
-            if (existUser == null)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
-            }
+            //var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(request.OwnerId));
+            //if (existUser == null)
+            //{
+            //    return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
+            //}
 
             var farms = _unitOfWork.FarmRepository.Get(filter: f => f.FarmCode.Equals(request.FarmCode));
             if (farms.Any())
