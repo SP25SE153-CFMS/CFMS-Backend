@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class Flock
+public class Flock : EntityAudit
 {
     public Guid FlockId { get; set; }
 
@@ -37,11 +37,11 @@ public partial class Flock
 
     public virtual ChickenBatch? ChickenBatch { get; set; }
 
+    public virtual SubCategory? Purpose { get; set; }
+
     public virtual ICollection<FlockNutrition> FlockNutritions { get; set; } = new List<FlockNutrition>();
 
     public virtual ICollection<HealthLog> HealthLogs { get; set; } = new List<HealthLog>();
-
-    public virtual SubCategory? Purpose { get; set; }
 
     public virtual ICollection<QuantityLog> QuantityLogs { get; set; } = new List<QuantityLog>();
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class Performance
+public class Performance : EntityAudit
 {
     public Guid PerId { get; set; }
 

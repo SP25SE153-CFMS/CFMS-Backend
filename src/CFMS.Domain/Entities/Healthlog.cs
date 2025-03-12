@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class HealthLog
+public class HealthLog : EntityAudit
 {
     public Guid HLogId { get; set; }
 
@@ -22,10 +22,6 @@ public partial class HealthLog
     public double? Temperature { get; set; }
 
     public double? Humidity { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
 
     public virtual Flock? Flock { get; set; }
 

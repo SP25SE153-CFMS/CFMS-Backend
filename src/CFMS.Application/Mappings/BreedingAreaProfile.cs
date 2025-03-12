@@ -8,8 +8,7 @@ namespace CFMS.Application.Mappings
     {
         public BreedingAreaProfile()
         {
-            CreateMap<CreateBreedingAreaCommand, BreedingArea>()
-                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.UtcNow.ToLocalTime()));
+            CreateMap<CreateBreedingAreaCommand, BreedingArea>();
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class RevokedToken
+public class RevokedToken : EntityAudit
 {
     public Guid RevokedTokenId { get; set; }
 

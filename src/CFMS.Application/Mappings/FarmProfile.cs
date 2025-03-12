@@ -9,8 +9,7 @@ namespace CFMS.Application.Mappings
         public FarmProfile()
         {
             // Mapping from CreateFarmCommand to Farm entity
-            CreateMap<CreateFarmCommand, Farm>()
-                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.UtcNow));
+            CreateMap<CreateFarmCommand, Farm>();
         }
     }
 }

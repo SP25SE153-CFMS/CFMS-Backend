@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class Warehouse
+public class Warehouse : EntityAudit
 {
     public Guid WareId { get; set; }
 
@@ -18,8 +18,6 @@ public partial class Warehouse
     public int? TotalQuantity { get; set; }
 
     public string? Description { get; set; }
-
-    public DateTime? CreatedDate { get; set; }
 
     public virtual Farm? Farm { get; set; }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class HealthLogDetail
+public class HealthLogDetail : EntityAudit
 {
     public Guid LogDetailId { get; set; }
 
@@ -13,11 +13,7 @@ public partial class HealthLogDetail
 
     public string? Result { get; set; }
 
-    public Guid? CheckedBy { get; set; }
-
     public DateTime? CheckedAt { get; set; }
-
-    public virtual User? CheckedByNavigation { get; set; }
 
     public virtual SubCategory? Criteria { get; set; }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class QuantityLog
+public class QuantityLog : EntityAudit
 {
     public Guid QLogId { get; set; }
 
@@ -20,10 +20,6 @@ public partial class QuantityLog
     public Guid? FlockId { get; set; }
 
     public Guid? ReasonId { get; set; }
-
-    public Guid? CheckedBy { get; set; }
-
-    public virtual User? CheckedByNavigation { get; set; }
 
     public virtual Flock? Flock { get; set; }
 
