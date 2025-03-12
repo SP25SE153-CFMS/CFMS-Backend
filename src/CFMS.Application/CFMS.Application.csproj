@@ -22,7 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\UserFeat\GetUser\" />
+    <Folder Include="Features\UserFeat\GetUsers\" />
+    <Folder Include="Features\UserFeat\Delete\" />
+    <Folder Include="Features\UserFeat\Update\" />
   </ItemGroup>
 
 </Project>

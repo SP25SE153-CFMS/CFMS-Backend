@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Mappings
+namespace CFMS.Domain.Enums.Types
 {
-    internal class MappingTemp
+    public enum TokenType
     {
+        AccessToken,
+        RefreshToken
     }
 }

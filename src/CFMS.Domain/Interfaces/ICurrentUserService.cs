@@ -11,5 +11,8 @@ namespace CFMS.Application.Services
         string? GetUserId();
         string? GetUserRole();
         string? GetUserEmail();
+        bool? IsOwner();
+        bool? IsManager();
+        bool? IsUser();
     }
 }
