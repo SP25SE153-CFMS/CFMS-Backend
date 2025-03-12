@@ -35,7 +35,8 @@ public class TokenService : ITokenService
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Role, user.RoleName.ToString().ToUpper())
+            new Claim(ClaimTypes.Role, user.RoleName.ToString().ToUpper()),
+            new Claim(ClaimTypes.Email, user.Mail.ToString())
         };
 
         var token = new JwtSecurityToken(
@@ -58,7 +59,7 @@ public class TokenService : ITokenService
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
             new Claim(ClaimTypes.Role, user.RoleName.ToString().ToUpper()),
-            new Claim("RefreshToken", Guid.NewGuid().ToString())
+            new Claim(ClaimTypes.Email, user.Mail.ToString())
         };
 
         var token = new JwtSecurityToken(
@@ -103,13 +104,15 @@ public class TokenService : ITokenService
 
             var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
             var roleClaim = principal.FindFirst(ClaimTypes.Role);
+            var mailClaim = principal.FindFirst(ClaimTypes.Email);
 
             if (userIdClaim == null || roleClaim == null) return null;
 
             var user = new User
             {
                 UserId = Guid.Parse(userIdClaim.Value),
-                RoleName = roleClaim.Value.ToUpper()
+                RoleName = roleClaim?.Value.ToUpper(),
+                Mail = mailClaim?.Value
             };
 
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
