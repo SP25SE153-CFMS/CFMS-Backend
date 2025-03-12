@@ -1,3 +1,4 @@
+using CFMS.Domain.Enums.Types;
 using CFMS.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using CFMS.Domain.Enums.Types;
