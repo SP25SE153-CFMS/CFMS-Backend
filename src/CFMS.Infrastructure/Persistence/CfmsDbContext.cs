@@ -1,6 +1,5 @@
 ﻿using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
-using CFMS.Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
