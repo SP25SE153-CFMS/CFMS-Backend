@@ -1,5 +1,6 @@
 ﻿using CFMS.Application.Features.UserFeat.Auth;
 using CFMS.Application.Services;
+using CFMS.Application.Services.Impl;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace CFMS.Api.Controllers
 {
     public class AuthController : BaseController
     {
-        public AuthController(IMediator mediator) : base(mediator)
+        public AuthController(IMediator mediator, ICurrentUserService currentUserService) : base(mediator)
         {
         }
 
@@ -31,6 +32,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
         {
             var response = await Send(command);
+            return response;
+        }
+
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var response = await Send(new GetCurrentUserQuery());
             return response;
         }
     }

@@ -19,7 +19,10 @@ namespace CFMS.Api.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            //Mapper
+            //HttpContext
+            services.AddHttpContextAccessor();
+
+            //Mappers
             services.AddAutoMapper(typeof(FarmProfile));
 
             //DbContext
@@ -30,10 +33,6 @@ namespace CFMS.Api.Extensions
             services.AddMediatR(config =>
             {
                 config.RegisterServicesFromAssembly(typeof(CreateFarmCommandHandler).Assembly);
-                //config.RegisterServicesFromAssembly(typeof(SignInCommandHandler).Assembly);
-                //config.RegisterServicesFromAssembly(typeof(SignUpCommandHandler).Assembly);
-                //config.RegisterServicesFromAssembly(typeof(RefreshTokenCommandHandler).Assembly);
-
             });
 
             //Behaviors
@@ -44,6 +43,7 @@ namespace CFMS.Api.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUtilityService, UtilityService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             return services;
         }
