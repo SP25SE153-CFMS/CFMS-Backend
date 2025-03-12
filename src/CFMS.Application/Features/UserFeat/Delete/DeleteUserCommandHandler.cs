@@ -29,7 +29,8 @@ namespace CFMS.Application.Features.UserFeat.Delete
             {
                 var existUser = _unitOfWork.UserRepository.GetByID(request.UserId);
                 if (existUser == null) return BaseResponse<bool>.FailureResponse("Người dùng không tồn tại");
-                existUser.Status = UserStatus.Fired.ToString();
+                if (existUser.Status.Equals(UserStatus.Inactive.ToString())) return BaseResponse<bool>.FailureResponse("Người dùng đã bị xoá");
+                existUser.Status = UserStatus.Inactive;
                 _unitOfWork.UserRepository.Update(existUser);
 
                 var tokens = _unitOfWork.RevokedTokenRepository.Get(

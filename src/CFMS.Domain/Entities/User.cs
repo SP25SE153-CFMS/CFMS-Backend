@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CFMS.Domain.Enums.Roles;
+using CFMS.Domain.Enums.Status;
+using System;
 using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
@@ -17,15 +19,15 @@ public class User
 
     public DateOnly? DateOfBirth { get; set; }
 
-    public DateOnly? StartDate { get; set; }
+    public DateOnly? CreatedDate { get; set; }
 
-    public string? Status { get; set; }
+    public UserStatus? Status { get; set; }
 
     public string? Address { get; set; }
 
     public string? Cccd { get; set; }
 
-    public string? RoleName { get; set; }
+    public SystemRole? SystemRole { get; set; }
 
     public string? HashedPassword { get; set; }
 

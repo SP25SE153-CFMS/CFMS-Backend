@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Domain.Enums.Types
+namespace CFMS.Domain.Enums.Roles
 {
-    public enum RoleType
-    {
-        Owner,
-        Manager,
-        User
+    public enum SystemRole
+	{
+		Admin,
+		User
     }
 }
