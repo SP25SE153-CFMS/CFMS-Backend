@@ -31,13 +31,13 @@ namespace CFMS.Application.Features.UserFeat.Auth
 
             if (user == null)
             {
-                return BaseResponse<AuthResponse>.FailureResponse("User not found");
+                return BaseResponse<AuthResponse>.FailureResponse("Người dùng không tồn tại");
             }
 
             bool isPasswordValid = _utilityService.VerifyPassword(request.Password, user.HashedPassword);
             if (!isPasswordValid)
             {
-                return BaseResponse<AuthResponse>.FailureResponse("Invalid email or password");
+                return BaseResponse<AuthResponse>.FailureResponse("Mail hoặc mật khẩu không hợp lệ");
             }
 
             var accessToken = _tokenService.GenerateAccessToken(user);
@@ -49,7 +49,7 @@ namespace CFMS.Application.Features.UserFeat.Auth
                 RefreshToken = refreshToken
             };
 
-            return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "Sign in successful");
+            return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "Đăng nhập thành công");
         }
 
     }

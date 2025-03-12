@@ -32,7 +32,7 @@ namespace CFMS.Application.Features.UserFeat.Auth
 
             if (existUser != null)
             {
-                return BaseResponse<AuthResponse>.FailureResponse("User already exists");
+                return BaseResponse<AuthResponse>.FailureResponse("Người dùng đã tồn tại");
             }
 
             var user = new User
@@ -69,7 +69,7 @@ namespace CFMS.Application.Features.UserFeat.Auth
                 };
             });
 
-            return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "User sign up successfully");
+            return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "Đăng ký thành công");
         }
     }
 }

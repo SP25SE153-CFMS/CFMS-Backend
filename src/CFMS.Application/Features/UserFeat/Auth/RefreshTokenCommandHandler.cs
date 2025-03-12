@@ -28,14 +28,14 @@ namespace CFMS.Application.Features.UserFeat.Auth
 
             if (existToken == null)
             {
-                return BaseResponse<AuthResponse>.FailureResponse("Invalid or expired refresh token");
+                return BaseResponse<AuthResponse>.FailureResponse("Token không hợp lệ hoặc hết hạn");
             }
 
             var newTokens = _tokenService.RefreshAccessTokenAsync(existToken);
 
             if (newTokens.Result == null)
             {
-                return BaseResponse<AuthResponse>.FailureResponse("Invalid or expired refresh token");
+                return BaseResponse<AuthResponse>.FailureResponse("Token không hợp lệ hoặc hết hạn");
             }
 
             return BaseResponse<AuthResponse>.SuccessResponse(newTokens.Result);
