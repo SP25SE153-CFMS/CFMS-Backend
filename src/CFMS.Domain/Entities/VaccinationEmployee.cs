@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class VaccinationEmployee
+public class VaccinationEmployee
 {
     public Guid VaccinationEmployeeId { get; set; }
 

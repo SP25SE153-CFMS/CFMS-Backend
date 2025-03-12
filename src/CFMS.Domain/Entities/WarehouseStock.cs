@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class WarehouseStock
+public class WarehouseStock : EntityAudit
 {
     public Guid WareStockId { get; set; }
 
@@ -12,8 +12,6 @@ public partial class WarehouseStock
     public Guid? ProductId { get; set; }
 
     public int? Quantity { get; set; }
-
-    public DateTime? UpdatedDate { get; set; }
 
     public virtual Product? Product { get; set; }
 

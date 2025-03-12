@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class VaccinationLog
+public class VaccinationLog : EntityAudit
 {
     public Guid VLogId { get; set; }
 
@@ -20,10 +20,6 @@ public partial class VaccinationLog
     public string? Status { get; set; }
 
     public string? Reaction { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
 
     public virtual Flock? Flock { get; set; }
 
