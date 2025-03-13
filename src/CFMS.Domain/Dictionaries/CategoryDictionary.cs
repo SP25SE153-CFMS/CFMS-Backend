@@ -17,9 +17,9 @@ namespace CFMS.Domain.Dictionaries
         
         public static readonly Dictionary<int, string> CategoryStatus = new()
         {
-            { 2, "Còn hàng" },
-            { 1, "Hết hàng" },
-            { 0, "Không hữu dụng" }
+            { 2, "Có sẵn" },
+            { 1, "Ẩn" },
+            { 0, "Hết hàng" }
         };
     }
 }
