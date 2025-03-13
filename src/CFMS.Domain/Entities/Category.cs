@@ -9,6 +9,8 @@ public  class Category : EntityAudit
 {
     public Guid CategoryId { get; set; }
 
+    public string? CategoryName { get; set; }
+
     public CategoryType? CategoryType { get; set; }
 
     public string? CategoryCode { get; set; }
@@ -19,3 +21,4 @@ public  class Category : EntityAudit
 
     public virtual ICollection<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
 }
+    
