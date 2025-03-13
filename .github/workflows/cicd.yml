@@ -30,7 +30,7 @@ jobs:
                   password: ${{ secrets.DOCKER_PASSWORD }}
 
             - name: Remove appsettings.json
-              run: rm appsettings.json
+              run: rm src/CFMS.Api/appsettings.json
     pull-image:
         runs-on: self-hosted
         needs: deploy-image
