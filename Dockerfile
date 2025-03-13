@@ -16,6 +16,7 @@ COPY ["src/CFMS.Api/CFMS.Api.csproj", "src/CFMS.Api/"]
 COPY ["src/CFMS.Application/CFMS.Application.csproj", "src/CFMS.Application/"]
 COPY ["src/CFMS.Infrastructure/CFMS.Infrastructure.csproj", "src/CFMS.Infrastructure/"]
 COPY ["src/CFMS.Domain/CFMS.Domain.csproj", "src/CFMS.Domain/"]
+COPY ["src/CFMS.Api/appsettings.json", "src/CFMS.Api/appsettings.json"]
 RUN dotnet restore "./src/CFMS.Api/CFMS.Api.csproj"
 COPY . .
 WORKDIR "/src/src/CFMS.Api"
