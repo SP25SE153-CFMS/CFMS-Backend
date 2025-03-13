@@ -1,10 +1,10 @@
 using CFMS.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
-using CFMS.Domain.Enums.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using CFMS.Domain.Enums.Roles;
 
 namespace CFMS.Application.Services.Impl
 {
@@ -32,19 +32,14 @@ namespace CFMS.Application.Services.Impl
             return _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Email)?.Value;
         }
 
-        public bool? IsOwner()
+        public bool? IsAdmin()
         {
-            return _httpContextAccessor.HttpContext?.User.IsInRole(RoleType.Owner.ToString());
-        }
-
-        public bool? IsManager()
-        {
-            return _httpContextAccessor.HttpContext?.User.IsInRole(RoleType.Manager.ToString());
+            return _httpContextAccessor.HttpContext?.User.IsInRole(SystemRole.Admin.ToString());
         }
 
         public bool? IsUser()
         {
-            return _httpContextAccessor.HttpContext?.User.IsInRole(RoleType.User.ToString());
+            return _httpContextAccessor.HttpContext?.User.IsInRole(SystemRole.User.ToString());
         }
     }
 }

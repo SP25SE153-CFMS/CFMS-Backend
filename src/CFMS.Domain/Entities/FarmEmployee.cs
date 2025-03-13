@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CFMS.Domain.Enums.Roles;
+using CFMS.Domain.Enums.Status;
+using System;
 using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
@@ -15,9 +17,9 @@ public class FarmEmployee : EntityAudit
 
     public DateTime? EndDate { get; set; }
 
-    public int? Status { get; set; }
+    public FarmEmployeeStatus? Status { get; set; }
 
-    public string? RoleName { get; set; }
+    public FarmRole? FarmRole { get; set; }
 
     public virtual User? Employee { get; set; }
 

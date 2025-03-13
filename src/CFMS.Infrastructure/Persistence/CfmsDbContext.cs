@@ -1,9 +1,9 @@
 ﻿using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
-using CFMS.Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json;
 
 namespace CFMS.Infrastructure.Persistence;
 
@@ -172,36 +172,78 @@ public partial class CfmsDbContext : DbContext
         return base.SaveChangesAsync(cancellationToken);
     }
 
+    //public static string GetConnectionString(string connectionStringName)
+    //{
+    //    var basePath = AppDomain.CurrentDomain.BaseDirectory;
+    //    var directoryInfo = new DirectoryInfo(basePath);
+
+    //    while (directoryInfo != null && !File.Exists(Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json")))
+    //    {
+    //        directoryInfo = directoryInfo.Parent;
+    //    }
+
+    //    if (directoryInfo == null)
+    //    {
+    //        throw new FileNotFoundException("The configuration file 'appsettings.json' was not found in the project directory or any parent directories.");
+    //    }
+
+    //    var configPath = Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json");
+
+    //    var config = new ConfigurationBuilder()
+    //        .SetBasePath(directoryInfo.FullName)
+    //        .AddJsonFile(configPath, optional: false, reloadOnChange: true)
+    //        .Build();
+
+    //    string? connectionString = config.GetConnectionString(connectionStringName);
+    //    if (string.IsNullOrEmpty(connectionString))
+    //    {
+    //        throw new InvalidOperationException($"Connection string '{connectionStringName}' is not found in the configuration.");
+    //    }
+
+    //    return connectionString;
+    //}
+
     public static string GetConnectionString(string connectionStringName)
     {
-        var basePath = AppDomain.CurrentDomain.BaseDirectory;
-        var directoryInfo = new DirectoryInfo(basePath);
+        string? connectionString = Environment.GetEnvironmentVariable($"ConnectionStrings__{connectionStringName}");
 
-        while (directoryInfo != null && !File.Exists(Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json")))
-        {
-            directoryInfo = directoryInfo.Parent;
-        }
-
-        if (directoryInfo == null)
-        {
-            throw new FileNotFoundException("The configuration file 'appsettings.json' was not found in the project directory or any parent directories.");
-        }
-
-        var configPath = Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json");
-
-        var config = new ConfigurationBuilder()
-            .SetBasePath(directoryInfo.FullName)
-            .AddJsonFile(configPath, optional: false, reloadOnChange: true)
-            .Build();
-
-        string? connectionString = config.GetConnectionString(connectionStringName);
         if (string.IsNullOrEmpty(connectionString))
         {
-            throw new InvalidOperationException($"Connection string '{connectionStringName}' is not found in the configuration.");
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var directoryInfo = new DirectoryInfo(basePath);
+
+            while (directoryInfo != null && !File.Exists(Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json")))
+            {
+                directoryInfo = directoryInfo.Parent;
+            }
+
+            if (directoryInfo == null)
+            {
+                throw new FileNotFoundException("The configuration file 'appsettings.json' was not found in the project directory or any parent directories.");
+            }
+
+            var configPath = Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json");
+
+            var config = new ConfigurationBuilder()
+                .SetBasePath(directoryInfo.FullName)
+                .AddJsonFile(configPath, optional: false, reloadOnChange: true)
+                .Build();
+
+            connectionString = config.GetConnectionString(connectionStringName);
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException($"Connection string '{connectionStringName}' is not found in the configuration.");
+            }
+        }
+
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new InvalidOperationException($"Không tìm thấy Connection String '{connectionStringName}'");
         }
 
         return connectionString;
     }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -974,14 +1016,17 @@ public partial class CfmsDbContext : DbContext
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("endDate");
             entity.Property(e => e.FarmId).HasColumnName("farmId");
-            entity.Property(e => e.RoleName)
-                .HasColumnType("character varying")
-                .HasColumnName("roleName");
+            entity.Property(e => e.FarmRole)
+                .HasConversion<int>()
+                .HasColumnType("int")
+                .HasColumnName("farmRole");
             entity.Property(e => e.StartDate)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("startDate");
-            entity.Property(e => e.Status).HasColumnName("status");
-
+            entity.Property(e => e.Status)
+                .HasConversion<int>()
+                .HasColumnType("int")
+                .HasColumnName("status");
             entity.HasOne(d => d.Employee).WithMany(p => p.FarmEmployees)
                 .HasForeignKey(d => d.EmployeeId)
                 .HasConstraintName("FarmEmployee_employeeId_fkey");
@@ -1672,7 +1717,8 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.Cccd)
                 .HasColumnType("character varying")
                 .HasColumnName("CCCD");
-            entity.Property(e => e.DateOfBirth).HasColumnName("dateOfBirth");
+            entity.Property(e => e.DateOfBirth)
+                .HasColumnName("dateOfBirth");
             entity.Property(e => e.FullName)
                 .HasColumnType("character varying")
                 .HasColumnName("fullName");
@@ -1685,11 +1731,16 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.PhoneNumber)
                 .HasColumnType("character varying")
                 .HasColumnName("phoneNumber");
-            entity.Property(e => e.RoleName)
-                .HasColumnType("character varying")
-                .HasColumnName("roleName");
-            entity.Property(e => e.StartDate).HasColumnName("startDate");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.SystemRole)
+                .HasConversion<int>()
+                .HasColumnType("int")
+                .HasColumnName("systemRole");
+            entity.Property(e => e.CreatedDate)
+                .HasColumnName("createdDate");
+            entity.Property(e => e.Status)
+                .HasConversion<int>()
+                .HasColumnType("int")
+                .HasColumnName("status");
         });
 
         modelBuilder.Entity<RevokedToken>(entity =>

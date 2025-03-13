@@ -1,4 +1,6 @@
-﻿using CFMS.Application.Common;
+﻿using AutoMapper;
+using CFMS.Application.Common;
+using CFMS.Application.DTOs.Auth;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
@@ -10,23 +12,25 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.UserFeat.GetUser
 {
-    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, BaseResponse<User>>
+    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, BaseResponse<UserResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetUserQueryHandler(IUnitOfWork unitOfWork)
+        public GetUserQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<BaseResponse<User>> Handle(GetUserQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<UserResponse>> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
             var existUser = _unitOfWork.UserRepository.GetByID(request.UserId);
             if (existUser == null)
             {
-                return BaseResponse<User>.FailureResponse("Người dùng không tồn tại");
+                return BaseResponse<UserResponse>.FailureResponse("Người dùng không tồn tại");
             }
-            return BaseResponse<User>.SuccessResponse(existUser);
+            return BaseResponse<UserResponse>.SuccessResponse(_mapper.Map<UserResponse>(existUser));
         }
     }
 }

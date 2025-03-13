@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CFMS.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateDatabase : Migration
+    public partial class AdjustRoleStatus : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,11 +21,11 @@ namespace CFMS.Infrastructure.Migrations
                     mail = table.Column<string>(type: "character varying", nullable: true),
                     avatar = table.Column<string>(type: "character varying", nullable: true),
                     dateOfBirth = table.Column<DateOnly>(type: "date", nullable: true),
-                    startDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    status = table.Column<string>(type: "text", nullable: true),
+                    createdDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    status = table.Column<int>(type: "int", nullable: true),
                     address = table.Column<string>(type: "text", nullable: true),
                     CCCD = table.Column<string>(type: "character varying", nullable: true),
-                    roleName = table.Column<string>(type: "character varying", nullable: true),
+                    systemRole = table.Column<int>(type: "int", nullable: true),
                     hashedPassword = table.Column<string>(type: "character varying", nullable: true)
                 },
                 constraints: table =>
@@ -346,29 +346,11 @@ namespace CFMS.Infrastructure.Migrations
                     tokenType = table.Column<int>(type: "integer", nullable: false),
                     revokedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     expiryDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    userId = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    userId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("RevokedToken_pkey", x => x.revokedTokenId);
-                    table.ForeignKey(
-                        name: "FK_RevokedToken_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "userId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RevokedToken_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "userId",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "RevokedToken_userId_fkey",
                         column: x => x.userId,
@@ -541,8 +523,8 @@ namespace CFMS.Infrastructure.Migrations
                     employeeId = table.Column<Guid>(type: "uuid", nullable: true),
                     startDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     endDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    status = table.Column<int>(type: "integer", nullable: true),
-                    roleName = table.Column<string>(type: "character varying", nullable: true),
+                    status = table.Column<int>(type: "int", nullable: true),
+                    farmRole = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -2350,16 +2332,6 @@ namespace CFMS.Infrastructure.Migrations
                 name: "IX_RequestDetails_requestId",
                 table: "RequestDetails",
                 column: "requestId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RevokedToken_CreatedByUserId",
-                table: "RevokedToken",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RevokedToken_LastEditedByUserId",
-                table: "RevokedToken",
-                column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RevokedToken_userId",

@@ -1,6 +1,7 @@
 ﻿using CFMS.Application.DTOs.Auth;
 using CFMS.Application.Services;
 using CFMS.Domain.Entities;
+using CFMS.Domain.Enums.Roles;
 using CFMS.Domain.Interfaces;
 using CFMS.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
@@ -35,7 +36,7 @@ public class TokenService : ITokenService
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Role, user.RoleName.ToString().ToUpper()),
+            new Claim(ClaimTypes.Role, user.SystemRole.ToString().ToUpper()),
             new Claim(ClaimTypes.Email, user.Mail.ToString())
         };
 
@@ -58,7 +59,7 @@ public class TokenService : ITokenService
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Role, user.RoleName.ToString().ToUpper()),
+            new Claim(ClaimTypes.Role, user.SystemRole.ToString().ToUpper()),
             new Claim(ClaimTypes.Email, user.Mail.ToString())
         };
 
@@ -111,7 +112,7 @@ public class TokenService : ITokenService
             var user = new User
             {
                 UserId = Guid.Parse(userIdClaim.Value),
-                RoleName = roleClaim?.Value.ToUpper(),
+                SystemRole = (SystemRole)Enum.Parse(typeof(SystemRole), roleClaim?.Value.ToUpper()),
                 Mail = mailClaim?.Value
             };
 

@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.Auth;
 using CFMS.Domain.Entities;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.UserFeat.GetUser
 {
-    public class GetUserQuery : IRequest<BaseResponse<User>>
+    public class GetUserQuery : IRequest<BaseResponse<UserResponse>>
     {
         public GetUserQuery(Guid id)
         {
