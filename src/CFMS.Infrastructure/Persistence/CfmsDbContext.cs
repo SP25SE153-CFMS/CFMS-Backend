@@ -3,6 +3,7 @@ using CFMS.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json;
 
 namespace CFMS.Infrastructure.Persistence;
 
@@ -171,36 +172,78 @@ public partial class CfmsDbContext : DbContext
         return base.SaveChangesAsync(cancellationToken);
     }
 
+    //public static string GetConnectionString(string connectionStringName)
+    //{
+    //    var basePath = AppDomain.CurrentDomain.BaseDirectory;
+    //    var directoryInfo = new DirectoryInfo(basePath);
+
+    //    while (directoryInfo != null && !File.Exists(Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json")))
+    //    {
+    //        directoryInfo = directoryInfo.Parent;
+    //    }
+
+    //    if (directoryInfo == null)
+    //    {
+    //        throw new FileNotFoundException("The configuration file 'appsettings.json' was not found in the project directory or any parent directories.");
+    //    }
+
+    //    var configPath = Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json");
+
+    //    var config = new ConfigurationBuilder()
+    //        .SetBasePath(directoryInfo.FullName)
+    //        .AddJsonFile(configPath, optional: false, reloadOnChange: true)
+    //        .Build();
+
+    //    string? connectionString = config.GetConnectionString(connectionStringName);
+    //    if (string.IsNullOrEmpty(connectionString))
+    //    {
+    //        throw new InvalidOperationException($"Connection string '{connectionStringName}' is not found in the configuration.");
+    //    }
+
+    //    return connectionString;
+    //}
+
     public static string GetConnectionString(string connectionStringName)
     {
-        var basePath = AppDomain.CurrentDomain.BaseDirectory;
-        var directoryInfo = new DirectoryInfo(basePath);
+        string? connectionString = Environment.GetEnvironmentVariable($"ConnectionStrings__{connectionStringName}");
 
-        while (directoryInfo != null && !File.Exists(Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json")))
-        {
-            directoryInfo = directoryInfo.Parent;
-        }
-
-        if (directoryInfo == null)
-        {
-            throw new FileNotFoundException("The configuration file 'appsettings.json' was not found in the project directory or any parent directories.");
-        }
-
-        var configPath = Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json");
-
-        var config = new ConfigurationBuilder()
-            .SetBasePath(directoryInfo.FullName)
-            .AddJsonFile(configPath, optional: false, reloadOnChange: true)
-            .Build();
-
-        string? connectionString = config.GetConnectionString(connectionStringName);
         if (string.IsNullOrEmpty(connectionString))
         {
-            throw new InvalidOperationException($"Connection string '{connectionStringName}' is not found in the configuration.");
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var directoryInfo = new DirectoryInfo(basePath);
+
+            while (directoryInfo != null && !File.Exists(Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json")))
+            {
+                directoryInfo = directoryInfo.Parent;
+            }
+
+            if (directoryInfo == null)
+            {
+                throw new FileNotFoundException("The configuration file 'appsettings.json' was not found in the project directory or any parent directories.");
+            }
+
+            var configPath = Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json");
+
+            var config = new ConfigurationBuilder()
+                .SetBasePath(directoryInfo.FullName)
+                .AddJsonFile(configPath, optional: false, reloadOnChange: true)
+                .Build();
+
+            connectionString = config.GetConnectionString(connectionStringName);
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException($"Connection string '{connectionStringName}' is not found in the configuration.");
+            }
+        }
+
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            throw new InvalidOperationException($"Không tìm thấy Connection String '{connectionStringName}'");
         }
 
         return connectionString;
     }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
