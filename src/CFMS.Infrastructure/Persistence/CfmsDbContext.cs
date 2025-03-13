@@ -159,15 +159,6 @@ public partial class CfmsDbContext : DbContext
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        //foreach (var entry in ChangeTracker.Entries())
-        //{
-        //    if (entry is { State: EntityState.Deleted, Entity: ISoftDelete delete })
-        //    {
-        //        entry.State = EntityState.Modified;
-        //        delete.IsDeleted = true;
-        //        delete.DeletedWhen = DateTime.UtcNow;
-        //    }
-        //}
         OnBeforeSaving();
         return base.SaveChangesAsync(cancellationToken);
     }
@@ -243,7 +234,6 @@ public partial class CfmsDbContext : DbContext
 
         return connectionString;
     }
-
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

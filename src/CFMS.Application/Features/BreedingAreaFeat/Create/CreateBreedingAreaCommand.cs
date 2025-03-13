@@ -12,7 +12,6 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Create
             MealsPerDay = mealsPerDay;
             Image = image;
             Notes = notes;
-            //CreatedDate = createdDate;
             FarmId = farmId;
         }
 
@@ -27,8 +26,6 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Create
         public string? Notes { get; set; }
 
         public double? Area { get; set; }
-
-        //public DateTime? CreatedDate { get; set; }
 
         public Guid? FarmId { get; set; }
     }

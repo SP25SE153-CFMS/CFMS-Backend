@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.GetBreedingArea
 
         public async Task<BaseResponse<BreedingArea>> Handle(GetBreedingAreaQuery request, CancellationToken cancellationToken)
         {
-            var existBreedingArea = _unitOfWork.BreedingAreaRepository.GetByID(request.Id);
+            var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaId.Equals(request.Id) && ba.IsDeleted == false).FirstOrDefault();
             if (existBreedingArea == null)
             {
                 return BaseResponse<BreedingArea>.FailureResponse(message: "Farm không tồn tại");

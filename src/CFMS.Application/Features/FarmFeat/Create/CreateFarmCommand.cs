@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.FarmFeat.Create
 
         public double? Area { get; set; }
 
-        public int? Scale { get; set; }
+        public int? Scale { get; set; } //0 - Nhỏ, 1 - Vừa, 2 - Lớn
 
         public string? PhoneNumber { get; set; }
 
