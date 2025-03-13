@@ -820,10 +820,14 @@ public partial class CfmsDbContext : DbContext
                 .HasColumnType("character varying")
                 .HasColumnName("categoryCode");
             entity.Property(e => e.CategoryType)
-                .HasColumnType("character varying")
+                .HasConversion<int>()
+                .HasColumnType("int")
                 .HasColumnName("categoryType");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.Status)
+                .HasConversion<int>()
+                .HasColumnType("int")
+                .HasColumnName("status");
         });
 
         modelBuilder.Entity<ChickenBatch>(entity =>

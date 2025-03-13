@@ -221,8 +221,8 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("character varying")
                         .HasColumnName("categoryCode");
 
-                    b.Property<string>("CategoryType")
-                        .HasColumnType("character varying")
+                    b.Property<int?>("CategoryType")
+                        .HasColumnType("int")
                         .HasColumnName("categoryType");
 
                     b.Property<Guid>("CreatedByUserId")
@@ -247,8 +247,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("text")
+                    b.Property<int?>("Status")
+                        .HasColumnType("int")
                         .HasColumnName("status");
 
                     b.HasKey("CategoryId")

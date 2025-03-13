@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Domain.Enums.Roles
+namespace CFMS.Domain.Enums.Types
 {
-    public enum FarmRole
+    public enum CategoryType
     {
-        Owner = 3,
-        Manager = 2,
-        Staff = 1
+        Vaccine = 3,
+        Food = 2,
+        Equipment = 1,
     }
 }
