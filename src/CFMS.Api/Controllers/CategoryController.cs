@@ -1,4 +1,5 @@
-﻿using CFMS.Application.Features.CategoryFeat.Create;
+﻿using CFMS.Application.Features.CategoryFeat.AddSubCate;
+using CFMS.Application.Features.CategoryFeat.Create;
 using CFMS.Application.Features.CategoryFeat.Delete;
 using CFMS.Application.Features.CategoryFeat.GetCategories;
 using CFMS.Application.Features.CategoryFeat.GetCategory;
@@ -46,6 +47,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await Send(new DeleteCategoryCommand(id));
+            return result;
+        }
+
+        [HttpPost("addSub")]
+        public async Task<IActionResult> AddSubCategory(AddSubCateCommand command)
+        {
+            var result = await Send(command);
             return result;
         }
     }

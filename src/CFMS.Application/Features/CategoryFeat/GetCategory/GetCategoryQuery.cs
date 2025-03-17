@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CFMS.Application.Features.CategoryFeat.GetCategory
 {
-    public class GetCategoryQuery : IRequest<BaseResponse<CategoryResponse>>
+    public class GetCategoryQuery : IRequest<BaseResponse<Category>>
     {
         public GetCategoryQuery(Guid categoryId)
         {

@@ -7,7 +7,7 @@ using MediatR;
 
 namespace CFMS.Application.Features.CategoryFeat.GetCategory
 {
-    public class GetCategoryQueryHandler : IRequestHandler<GetCategoryQuery, BaseResponse<CategoryResponse>>
+    public class GetCategoryQueryHandler : IRequestHandler<GetCategoryQuery, BaseResponse<Category>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -18,14 +18,14 @@ namespace CFMS.Application.Features.CategoryFeat.GetCategory
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse<CategoryResponse>> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<Category>> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
         {
-            var existCategory = _unitOfWork.CategoryRepository.Get(filter: c => c.CategoryId.Equals(request.CategoryId) && c.IsDeleted == false).FirstOrDefault();
+            var existCategory = _unitOfWork.CategoryRepository.Get(filter: c => c.CategoryId.Equals(request.CategoryId) && c.IsDeleted == false, includeProperties: "SubCategories").FirstOrDefault();
             if (existCategory == null)
             {
-                return BaseResponse<CategoryResponse>.FailureResponse(message: "Category không tồn tại");
+                return BaseResponse<Category>.FailureResponse(message: "Category không tồn tại");
             }
-            return BaseResponse<CategoryResponse>.SuccessResponse(data: _mapper.Map<CategoryResponse>(existCategory));
+            return BaseResponse<Category>.SuccessResponse(data: existCategory);
         }
     }
 }

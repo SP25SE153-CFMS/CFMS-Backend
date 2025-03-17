@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CFMS.Application.DTOs.Auth;
 using CFMS.Application.DTOs.Category;
+using CFMS.Application.Features.CategoryFeat.AddSubCate;
 using CFMS.Application.Features.CategoryFeat.Create;
 using CFMS.Domain.Dictionaries;
 using CFMS.Domain.Entities;
@@ -23,6 +24,15 @@ namespace CFMS.Application.Mappings
                 .ForMember(dest => dest.CategoryType, opt => opt.MapFrom(src => GetCategoryName(src.CategoryType)))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => GetCategoryStatus(src.Status)));
             CreateMap<CreateCategoryCommand, Category>();
+            //CreateMap<AddSubCateCommand, Category>()
+            //    .ForMember(dest => dest.SubCategories, opt => opt.MapFrom(src => new SubCategory()
+            //    {
+            //        Description = src.Description,
+            //        SubCategoryName = src.SubCategoryName,
+            //        Status = src.Status,
+            //        DataType = src.DataType,
+            //        CategoryId = src.CategoryId
+            //    }));
         }
 
         private string GetCategoryName(CategoryType? categoryType)
