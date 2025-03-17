@@ -806,14 +806,21 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.CategoryId)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("categoryId");
+            entity.Property(e => e.CategoryName)
+                .HasColumnType("character varying")
+                .HasColumnName("categoryName");
             entity.Property(e => e.CategoryCode)
                 .HasColumnType("character varying")
                 .HasColumnName("categoryCode");
             entity.Property(e => e.CategoryType)
-                .HasColumnType("character varying")
+                .HasConversion<int>()
+                .HasColumnType("int")
                 .HasColumnName("categoryType");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.Status)
+                .HasConversion<int>()
+                .HasColumnType("int")
+                .HasColumnName("status");
         });
 
         modelBuilder.Entity<ChickenBatch>(entity =>

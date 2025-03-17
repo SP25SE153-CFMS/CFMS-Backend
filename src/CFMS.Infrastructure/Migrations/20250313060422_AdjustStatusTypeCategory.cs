@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CFMS.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AdjustRoleStatus : Migration
+    public partial class AdjustStatusTypeCategory : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -76,10 +76,10 @@ namespace CFMS.Infrastructure.Migrations
                 columns: table => new
                 {
                     categoryId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    categoryType = table.Column<string>(type: "character varying", nullable: true),
+                    categoryType = table.Column<int>(type: "int", nullable: true),
                     categoryCode = table.Column<string>(type: "character varying", nullable: true),
                     description = table.Column<string>(type: "text", nullable: true),
-                    status = table.Column<string>(type: "text", nullable: true),
+                    status = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),

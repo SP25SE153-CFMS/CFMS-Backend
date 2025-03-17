@@ -8,7 +8,7 @@ namespace CFMS.Domain.Enums.Roles
 {
     public enum SystemRole
 	{
-		Admin,
-		User
+		Admin = 2,
+		User = 1
     }
 }

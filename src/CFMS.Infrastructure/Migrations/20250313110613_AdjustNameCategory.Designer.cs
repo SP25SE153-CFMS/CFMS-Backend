@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250312195447_AdjustRoleStatus")]
-    partial class AdjustRoleStatus
+    [Migration("20250313110613_AdjustNameCategory")]
+    partial class AdjustNameCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -224,8 +224,12 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("character varying")
                         .HasColumnName("categoryCode");
 
-                    b.Property<string>("CategoryType")
+                    b.Property<string>("CategoryName")
                         .HasColumnType("character varying")
+                        .HasColumnName("categoryName");
+
+                    b.Property<int?>("CategoryType")
+                        .HasColumnType("int")
                         .HasColumnName("categoryType");
 
                     b.Property<Guid>("CreatedByUserId")
@@ -250,8 +254,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("text")
+                    b.Property<int?>("Status")
+                        .HasColumnType("int")
                         .HasColumnName("status");
 
                     b.HasKey("CategoryId")
