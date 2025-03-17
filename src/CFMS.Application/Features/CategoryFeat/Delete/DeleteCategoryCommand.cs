@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CFMS.Application.Common;
+using MediatR;
 
 namespace CFMS.Application.Features.CategoryFeat.Delete
 {
-    internal class DeleteCategoryCommand
+    public class DeleteCategoryCommand : IRequest<BaseResponse<bool>>
     {
+        public DeleteCategoryCommand(Guid categoryId)
+        {
+            CategoryId = categoryId;
+        }
+
+        public Guid CategoryId { get; set; }
     }
 }
