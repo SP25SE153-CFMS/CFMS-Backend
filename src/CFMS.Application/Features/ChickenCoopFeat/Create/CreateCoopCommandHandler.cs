@@ -1,4 +1,6 @@
-﻿using CFMS.Application.Common;
+﻿using AutoMapper;
+using CFMS.Application.Common;
+using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
 using System;
@@ -12,15 +14,36 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
     public class CreateCoopCommandHandler : IRequestHandler<CreateCoopCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public CreateCoopCommandHandler(IUnitOfWork unitOfWork)
+        public CreateCoopCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public Task<BaseResponse<bool>> Handle(CreateCoopCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(CreateCoopCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopCode.Equals(request.ChickenCoopCode) && c.IsDeleted == false).FirstOrDefault();
+            if (existCoop != null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Code đã tồn tại");
+            }
+
+            try
+            {
+                _unitOfWork.ChickenCoopRepository.Insert(_mapper.Map<ChickenCoop>(request));
+                var result = await _unitOfWork.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return BaseResponse<bool>.SuccessResponse(message: "Tạo chuồng thành công");
+                }
+                return BaseResponse<bool>.SuccessResponse(message: "Tạo chuồng không thành công");
+            }
+            catch (Exception ex)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+            }
         }
     }
 }
