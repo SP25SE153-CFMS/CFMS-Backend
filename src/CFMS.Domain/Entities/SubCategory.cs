@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -19,6 +20,7 @@ public class SubCategory : EntityAudit
 
     public Guid? CategoryId { get; set; }
 
+    [JsonIgnore]
     public virtual Category? Category { get; set; }
 
     public virtual ICollection<ChickenCoop> ChickenCoops { get; set; } = new List<ChickenCoop>();
