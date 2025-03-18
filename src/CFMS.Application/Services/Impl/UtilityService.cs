@@ -44,5 +44,11 @@ namespace CFMS.Application.Services.Impl
 
             return $"{prefix}{_counters[type].ToString("D2")}";
         }
+
+        public DateTime ToVietnamTime(DateTime? utcDateTime)
+        {
+            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+            return TimeZoneInfo.ConvertTimeFromUtc(utcDateTime ?? default, vietnamTimeZone);
+        }
     }
 }

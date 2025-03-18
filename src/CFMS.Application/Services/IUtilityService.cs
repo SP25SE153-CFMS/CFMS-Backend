@@ -12,5 +12,6 @@ namespace CFMS.Application.Services
         string HashPassword(string password);
         bool VerifyPassword(string password, string hashedPassword);
         string GenerateCode(EntityType type);
+        DateTime ToVietnamTime(DateTime? utcDateTime);
     }
 }
