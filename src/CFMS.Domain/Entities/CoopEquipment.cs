@@ -15,7 +15,11 @@ public class CoopEquipment : EntityAudit
 
     public DateTime? AssignedDate { get; set; }
 
-    public DateTime? MaintainDate { get; set; }
+    public DateTime? LastMaintenanceDate { get; set; }
+
+    public DateTime? NextMaintenanceDate { get; set; }
+
+    public int MaintenanceInterval { get; set; }
 
     public string? Status { get; set; }
 

@@ -18,9 +18,19 @@ namespace CFMS.Application.Mappings
     {
         public CategoryProfile()
         {
-            CreateMap<Category, CategoryResponse>()
-                .ForMember(dest => dest.CategoryType, opt => opt.MapFrom(src => GetCategoryName(src.CategoryType)))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => GetCategoryStatus(src.Status)));
+            CreateMap<Category, CategoryResponse>();
+                //.ForMember(dest => dest.CategoryType, opt => opt.MapFrom(src => GetCategoryName(src.CategoryType)))
+                //.ForMember(dest => dest.Status, opt => opt.MapFrom(src => GetCategoryStatus(src.Status)));
+            //CreateMap<CreateCategoryCommand, Category>();
+            //CreateMap<AddSubCateCommand, Category>()
+            //    .ForMember(dest => dest.SubCategories, opt => opt.MapFrom(src => new SubCategory()
+            //    {
+            //        Description = src.Description,
+            //        SubCategoryName = src.SubCategoryName,
+            //        Status = src.Status,
+            //        DataType = src.DataType,
+            //        CategoryId = src.CategoryId
+            //    }));
         }
 
         private string GetCategoryName(CategoryType? categoryType)

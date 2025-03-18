@@ -25,8 +25,6 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Update
             {
                 existBreedingArea.BreedingAreaName = request.BreedingAreaName;
                 existBreedingArea.BreedingAreaCode = request.BreedingAreaCode;
-                existBreedingArea.Image = request.Image;
-                existBreedingArea.MealsPerDay = request.MealsPerDay;
                 existBreedingArea.Notes = request.Notes;
                 existBreedingArea.Area = request.Area;
 

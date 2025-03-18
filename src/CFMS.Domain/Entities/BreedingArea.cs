@@ -11,9 +11,7 @@ public class BreedingArea : EntityAudit
 
     public string? BreedingAreaName { get; set; }
 
-    public int? MealsPerDay { get; set; }
-
-    public string? Image { get; set; }
+    public string? ImageUrl { get; set; }
 
     public string? Notes { get; set; }
 

@@ -21,7 +21,7 @@ public class Farm : EntityAudit
 
     public string? Website { get; set; }
 
-    public string? FarmImage { get; set; }
+    public string? ImageUrl { get; set; }
 
     public virtual ICollection<BreedingArea> BreedingAreas { get; set; } = new List<BreedingArea>();
 

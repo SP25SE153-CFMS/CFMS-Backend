@@ -48,8 +48,8 @@ namespace CFMS.Application.Features.UserFeat.Update
                 existUser.DateOfBirth = request.DateOfBirth ?? existUser.DateOfBirth;
                 existUser.Address = request.Address ?? existUser.Address;
                 existUser.Cccd = request.Cccd ?? existUser.Cccd;
-                existUser.Status = !string.IsNullOrEmpty(request.Status.ToString()) ? request.Status : existUser.Status;
-                existUser.SystemRole = !string.IsNullOrEmpty(request.SystemRole.ToString()) ? request.SystemRole : existUser.SystemRole;
+                existUser.Status = !string.IsNullOrEmpty(request.Status.ToString()) ? (int)request.Status : existUser.Status;
+                existUser.SystemRole = !string.IsNullOrEmpty(request.SystemRole.ToString()) ? (int)request.SystemRole : existUser.SystemRole;
                 existUser.HashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
                 _unitOfWork.UserRepository.Update(existUser);

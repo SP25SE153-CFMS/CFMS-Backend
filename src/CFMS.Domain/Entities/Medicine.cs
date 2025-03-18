@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace CFMS.Domain.Entities;
+
+public class Medicine : EntityAudit
+{
+    public Guid MedicineId { get; set; }
+
+    public string? Usage { get; set; }
+
+    public string? DosageForm { get; set; }
+
+    public string? StorageCondition { get; set; }
+
+    public Guid? DiseaseId { get; set; }
+
+    public DateTime? ProductionDate { get; set; }
+
+    public DateTime? ExpiryDate { get; set; }
+
+    public virtual SubCategory? Disease { get; set; }
+
+    public virtual Resource MedicineNavigation { get; set; } = null!;
+}
