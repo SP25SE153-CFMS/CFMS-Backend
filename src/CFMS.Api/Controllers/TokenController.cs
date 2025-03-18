@@ -13,7 +13,7 @@ namespace CFMS.Api.Controllers
         }
 
         [HttpGet("admin")]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Policy = "AdminOnly")]
         public IActionResult AdminOnly()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

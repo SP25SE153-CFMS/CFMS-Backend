@@ -26,8 +26,8 @@ namespace CFMS.Application.Features.UserFeat.Auth
 
         public async Task<BaseResponse<AuthResponse>> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
-            var user = _unitOfWork.UserRepository.Get()
-                .FirstOrDefault(x => x.Mail == request.Mail);
+            var user = _unitOfWork.UserRepository.Get(filter: x => x.Mail == request.Mail)
+                .FirstOrDefault();
 
             if (user == null)
             {
@@ -41,7 +41,7 @@ namespace CFMS.Application.Features.UserFeat.Auth
             }
 
             var accessToken = _tokenService.GenerateAccessToken(user);
-            var refreshToken = _tokenService.GenerateRefreshToken(user);
+            var refreshToken = _unitOfWork.RevokedTokenRepository.Get(filter: x => x.UserId == user.UserId).FirstOrDefault().Token;
 
             var authResponse = new AuthResponse
             {

@@ -10,6 +10,8 @@ using CFMS.Domain.Interfaces;
 using CFMS.Infrastructure;
 using CFMS.Infrastructure.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
