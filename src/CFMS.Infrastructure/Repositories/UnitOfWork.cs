@@ -144,6 +144,26 @@ namespace CFMS.Infrastructure.Repositories
             return context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task<T> ExecuteInTransactionAsync<T>(Func<Task<T>> action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action), "Transaction action cannot be null");
+
+            using var transaction = await context.Database.BeginTransactionAsync();
+            try
+            {
+                T result = await action(); 
+                await context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return result;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)

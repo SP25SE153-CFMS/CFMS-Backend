@@ -1,17 +1,13 @@
 ﻿using CFMS.Application.Features.UserFeat.Auth;
-using CFMS.Application.Services;
+using CFMS.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace CFMS.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class AuthController : BaseController
     {
-        public AuthController(IMediator mediator) : base(mediator)
+        public AuthController(IMediator mediator, ICurrentUserService currentUserService) : base(mediator)
         {
         }
 
@@ -33,6 +29,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command)
         {
             var response = await Send(command);
+            return response;
+        }
+
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var response = await Send(new GetCurrentUserQuery());
             return response;
         }
     }

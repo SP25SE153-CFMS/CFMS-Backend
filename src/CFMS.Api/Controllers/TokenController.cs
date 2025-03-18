@@ -6,8 +6,6 @@ using System.Security.Claims;
 namespace CFMS.Api.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
     public class TokenController : BaseController
     {
         public TokenController(IMediator mediator) : base(mediator)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class Food
+public class Food : EntityAudit
 {
     public Guid FoodId { get; set; }
 
@@ -17,7 +17,7 @@ public partial class Food
 
     public DateTime? ExpiryDate { get; set; }
 
-    public Guid? ProductId { get; set; }
+    public Guid ProductId { get; set; }
 
     public virtual ICollection<Nutrition> Nutritions { get; set; } = new List<Nutrition>();
 

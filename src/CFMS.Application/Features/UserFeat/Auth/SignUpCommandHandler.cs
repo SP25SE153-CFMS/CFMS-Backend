@@ -2,6 +2,9 @@
 using CFMS.Application.DTOs.Auth;
 using CFMS.Application.Services;
 using CFMS.Domain.Entities;
+using CFMS.Domain.Enums.Roles;
+using CFMS.Domain.Enums.Status;
+using CFMS.Domain.Enums.Types;
 using CFMS.Domain.Interfaces;
 using MediatR;
 using System;
@@ -31,7 +34,7 @@ namespace CFMS.Application.Features.UserFeat.Auth
 
             if (existUser != null)
             {
-                return BaseResponse<AuthResponse>.FailureResponse("User already exists");
+                return BaseResponse<AuthResponse>.FailureResponse("Người dùng đã tồn tại");
             }
 
             var user = new User
@@ -39,22 +42,38 @@ namespace CFMS.Application.Features.UserFeat.Auth
                 FullName = request.Fullname,
                 PhoneNumber = request.PhoneNumber,
                 Mail = request.Mail,
-                HashedPassword = _utilityService.HashPassword(request.Password)
+                HashedPassword = _utilityService.HashPassword(request.Password),
+                SystemRole = SystemRole.User,
+                CreatedDate = DateOnly.FromDateTime(DateTime.Now),
+                Status = UserStatus.Active
             };
 
-            _unitOfWork.UserRepository.Insert(user);
-            _unitOfWork.Save();
-
-            var accessToken = _tokenService.GenerateAccessToken(user);
-            var refreshToken = _tokenService.GenerateRefreshToken(user);
-
-            var authResponse = new AuthResponse
+            var authResponse = await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken
-            };
+                _unitOfWork.UserRepository.Insert(user);
+                await _unitOfWork.SaveChangesAsync();
 
-            return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "User sign up successfully");
+                var accessToken = _tokenService.GenerateAccessToken(user);
+                var refreshToken = _tokenService.GenerateRefreshToken(user);
+
+                var revokedToken = new RevokedToken
+                {
+                    Token = refreshToken,
+                    TokenType = (int)TokenType.RefreshToken,
+                    UserId = user.UserId,
+                    ExpiryDate = _tokenService.GetExpiryDate(refreshToken)
+                };
+
+                _unitOfWork.RevokedTokenRepository.Insert(revokedToken);
+                await _unitOfWork.SaveChangesAsync();
+                return new AuthResponse
+                {
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken
+                };
+            });
+
+            return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "Đăng ký thành công");
         }
     }
 }

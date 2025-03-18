@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class Vaccine
+public class Vaccine : EntityAudit
 {
     public Guid VaccineId { get; set; }
 
@@ -21,15 +21,11 @@ public partial class Vaccine
 
     public string? BatchNumber { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
     public Guid? SupplierId { get; set; }
 
     public Guid? DiseaseId { get; set; }
 
-    public Guid? ProductId { get; set; }
+    public Guid ProductId { get; set; }
 
     public virtual SubCategory? Disease { get; set; }
 

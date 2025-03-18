@@ -1,19 +1,19 @@
-﻿using CFMS.Application.Behaviors;
-using CFMS.Application.Commands.FarmFeat.Create;
+using CFMS.Application.Behaviors;
 using CFMS.Application.Common;
 using CFMS.Application.DTOs.Auth;
 using CFMS.Application.Events;
-using CFMS.Application.Features.UserFeat.Auth;
+using CFMS.Application.Features.FarmFeat.Create;
+using CFMS.Application.Mappings;
 using CFMS.Application.Services;
 using CFMS.Application.Services.Impl;
 using CFMS.Domain.Interfaces;
+
 using CFMS.Infrastructure.Persistence;
 using CFMS.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
 
 namespace CFMS.Api.Extensions
 {
@@ -22,16 +22,20 @@ namespace CFMS.Api.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             //DbContext
+
             services.AddDbContext<CfmsDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+
+            //HttpContext
+            services.AddHttpContextAccessor();
+
+            //Mappers
+            services.AddAutoMapper(typeof(FarmProfile));
 
             //MediatR
             services.AddMediatR(config =>
             {
                 config.RegisterServicesFromAssembly(typeof(CreateFarmCommandHandler).Assembly);
-                config.RegisterServicesFromAssembly(typeof(SignInCommandHandler).Assembly);
-                config.RegisterServicesFromAssembly(typeof(SignUpCommandHandler).Assembly);
-                config.RegisterServicesFromAssembly(typeof(RefreshTokenCommandHandler).Assembly);
             });
 
             //Behaviors
@@ -42,6 +46,7 @@ namespace CFMS.Api.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUtilityService, UtilityService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             return services;
         }

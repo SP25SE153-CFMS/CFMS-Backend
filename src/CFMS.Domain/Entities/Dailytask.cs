@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CFMS.Domain.Entities;
 
-public partial class DailyTask
+public class DailyTask : EntityAudit
 {
     public Guid DTaskId { get; set; }
 

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using CFMS.Domain.Enums.Roles;
+using CFMS.Domain.Enums.Status;
+using System;
 using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class User
+public class User
 {
     public Guid UserId { get; set; }
 
@@ -17,19 +19,17 @@ public partial class User
 
     public DateOnly? DateOfBirth { get; set; }
 
-    public DateOnly? StartDate { get; set; }
+    public DateOnly? CreatedDate { get; set; }
 
-    public string? Status { get; set; }
+    public UserStatus? Status { get; set; }
 
     public string? Address { get; set; }
 
     public string? Cccd { get; set; }
 
-    public string? RoleName { get; set; }
+    public SystemRole? SystemRole { get; set; }
 
     public string? HashedPassword { get; set; }
-
-    public virtual ICollection<RevokedToken> RevokedTokens { get; set; } = new List<RevokedToken>();
 
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
@@ -52,6 +52,8 @@ public partial class User
     public virtual ICollection<Request> RequestCreatedByNavigations { get; set; } = new List<Request>();
 
     public virtual ICollection<Request> RequestUsers { get; set; } = new List<Request>();
+
+    public virtual ICollection<RevokedToken> RevokedTokens { get; set; } = new List<RevokedToken>();
 
     public virtual ICollection<Salary> Salaries { get; set; } = new List<Salary>();
 
