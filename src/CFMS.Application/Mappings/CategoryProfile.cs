@@ -21,7 +21,7 @@ namespace CFMS.Application.Mappings
             CreateMap<Category, CategoryResponse>();
                 //.ForMember(dest => dest.CategoryType, opt => opt.MapFrom(src => GetCategoryName(src.CategoryType)))
                 //.ForMember(dest => dest.Status, opt => opt.MapFrom(src => GetCategoryStatus(src.Status)));
-            CreateMap<CreateCategoryCommand, Category>();
+            //CreateMap<CreateCategoryCommand, Category>();
             //CreateMap<AddSubCateCommand, Category>()
             //    .ForMember(dest => dest.SubCategories, opt => opt.MapFrom(src => new SubCategory()
             //    {
