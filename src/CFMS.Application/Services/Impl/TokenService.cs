@@ -3,7 +3,6 @@ using CFMS.Application.Services;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Enums.Roles;
 using CFMS.Domain.Interfaces;
-using CFMS.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
@@ -112,7 +111,7 @@ public class TokenService : ITokenService
             var user = new User
             {
                 UserId = Guid.Parse(userIdClaim.Value),
-                SystemRole = (SystemRole)Enum.Parse(typeof(SystemRole), roleClaim?.Value.ToUpper()),
+                //SystemRole = (SystemRole)Enum.Parse(typeof(SystemRole), roleClaim?.Value.ToUpper()),
                 Mail = mailClaim?.Value
             };
 

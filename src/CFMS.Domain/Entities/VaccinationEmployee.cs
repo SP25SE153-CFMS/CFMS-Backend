@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class VaccinationEmployee
+public class VaccinationEmployee : EntityAudit
 {
     public Guid VaccinationEmployeeId { get; set; }
 
@@ -12,6 +12,4 @@ public class VaccinationEmployee
     public Guid? VaccinationLogId { get; set; }
 
     public virtual User? EmployeeNavigation { get; set; }
-
-    public virtual VaccinationLog? VaccinationLog { get; set; }
 }
