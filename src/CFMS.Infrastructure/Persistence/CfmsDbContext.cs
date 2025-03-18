@@ -1,11 +1,12 @@
-﻿using CFMS.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
-using System.Text.Json;
 
-namespace CFMS.Infrastructure.Persistence;
+namespace CFMS.Infrastructure;
 
 public partial class CfmsDbContext : DbContext
 {
@@ -23,91 +24,109 @@ public partial class CfmsDbContext : DbContext
 
     public virtual DbSet<Assignment> Assignments { get; set; }
 
-    public virtual DbSet<Attendance> Attendances { get; set; }
-
     public virtual DbSet<BreedingArea> BreedingAreas { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
+
+    public virtual DbSet<Chicken> Chickens { get; set; }
 
     public virtual DbSet<ChickenBatch> ChickenBatches { get; set; }
 
     public virtual DbSet<ChickenCoop> ChickenCoops { get; set; }
 
+    public virtual DbSet<ChickenDetail> ChickenDetails { get; set; }
+
     public virtual DbSet<CoopEquipment> CoopEquipments { get; set; }
 
-    public virtual DbSet<DailyTask> DailyTasks { get; set; }
-
     public virtual DbSet<Equipment> Equipment { get; set; }
+
+    public virtual DbSet<EvaluatedTarget> EvaluatedTargets { get; set; }
+
+    public virtual DbSet<EvaluationResult> EvaluationResults { get; set; }
+
+    public virtual DbSet<EvaluationResultDetail> EvaluationResultDetails { get; set; }
+
+    public virtual DbSet<EvaluationTemplate> EvaluationTemplates { get; set; }
 
     public virtual DbSet<Farm> Farms { get; set; }
 
     public virtual DbSet<FarmEmployee> FarmEmployees { get; set; }
 
-    public virtual DbSet<FeedSchedule> FeedSchedules { get; set; }
+    public virtual DbSet<FeedLog> FeedLogs { get; set; }
 
-    public virtual DbSet<Flock> Flocks { get; set; }
-
-    public virtual DbSet<FlockNutrition> FlockNutritions { get; set; }
+    public virtual DbSet<FeedSession> FeedSessions { get; set; }
 
     public virtual DbSet<Food> Foods { get; set; }
 
-    public virtual DbSet<HarvestDetail> HarvestDetails { get; set; }
+    public virtual DbSet<GrowthBatch> GrowthBatches { get; set; }
 
-    public virtual DbSet<HarvestLog> HarvestLogs { get; set; }
+    public virtual DbSet<GrowthNutrition> GrowthNutritions { get; set; }
 
-    public virtual DbSet<HarvestProduct> HarvestProducts { get; set; }
-
-    public virtual DbSet<HarvestTask> HarvestTasks { get; set; }
+    public virtual DbSet<GrowthStage> GrowthStages { get; set; }
 
     public virtual DbSet<HealthLog> HealthLogs { get; set; }
 
     public virtual DbSet<HealthLogDetail> HealthLogDetails { get; set; }
 
+    public virtual DbSet<InventoryReceipt> InventoryReceipts { get; set; }
+
+    public virtual DbSet<InventoryReceiptDetail> InventoryReceiptDetails { get; set; }
+
+    public virtual DbSet<InventoryRequest> InventoryRequests { get; set; }
+
+    public virtual DbSet<InventoryRequestDetail> InventoryRequestDetails { get; set; }
+
+    public virtual DbSet<Medicine> Medicines { get; set; }
+
     public virtual DbSet<Notification> Notifications { get; set; }
 
-    public virtual DbSet<Nutrition> Nutritions { get; set; }
+    public virtual DbSet<NutritionPlan> NutritionPlans { get; set; }
 
-    public virtual DbSet<Performance> Performances { get; set; }
-
-    public virtual DbSet<Product> Products { get; set; }
+    public virtual DbSet<NutritionPlanDetail> NutritionPlanDetails { get; set; }
 
     public virtual DbSet<QuantityLog> QuantityLogs { get; set; }
 
     public virtual DbSet<Request> Requests { get; set; }
 
-    public virtual DbSet<RequestDetail> RequestDetails { get; set; }
+    public virtual DbSet<Resource> Resources { get; set; }
+
+    public virtual DbSet<ResourceSupplier> ResourceSuppliers { get; set; }
 
     public virtual DbSet<RevokedToken> RevokedTokens { get; set; }
 
-    public virtual DbSet<Salary> Salaries { get; set; }
+    public virtual DbSet<Shift> Shifts { get; set; }
 
-    public virtual DbSet<StockReceipt> StockReceipts { get; set; }
+    public virtual DbSet<ShiftSchedule> ShiftSchedules { get; set; }
 
     public virtual DbSet<SubCategory> SubCategories { get; set; }
 
     public virtual DbSet<Domain.Entities.Task> Tasks { get; set; }
 
-    public virtual DbSet<TaskDetail> TaskDetails { get; set; }
+    public virtual DbSet<TaskHarvest> TaskHarvests { get; set; }
 
-    public virtual DbSet<TaskEvaluation> TaskEvaluations { get; set; }
+    public virtual DbSet<TaskLocation> TaskLocations { get; set; }
 
     public virtual DbSet<TaskLog> TaskLogs { get; set; }
 
+    public virtual DbSet<TaskRequest> TaskRequests { get; set; }
+
+    public virtual DbSet<TaskResource> TaskResources { get; set; }
+
+    public virtual DbSet<TaskSchedule> TaskSchedules { get; set; }
+
+    public virtual DbSet<TemplateCriterion> TemplateCriteria { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<VaccinationEmployee> VaccinationEmployees { get; set; }
+    public virtual DbSet<VaccineLog> VaccineLogs { get; set; }
 
-    public virtual DbSet<VaccinationLog> VaccinationLogs { get; set; }
+    public virtual DbSet<WarePermission> WarePermissions { get; set; }
 
-    public virtual DbSet<Vaccine> Vaccines { get; set; }
+    public virtual DbSet<WareStock> WareStocks { get; set; }
 
     public virtual DbSet<WareTransaction> WareTransactions { get; set; }
 
     public virtual DbSet<Warehouse> Warehouses { get; set; }
-
-    public virtual DbSet<WarehousePermission> WarehousePermissions { get; set; }
-
-    public virtual DbSet<WarehouseStock> WarehouseStocks { get; set; }
 
     private void OnBeforeSaving()
     {
@@ -172,37 +191,6 @@ public partial class CfmsDbContext : DbContext
         return base.SaveChangesAsync(cancellationToken);
     }
 
-    //public static string GetConnectionString(string connectionStringName)
-    //{
-    //    var basePath = AppDomain.CurrentDomain.BaseDirectory;
-    //    var directoryInfo = new DirectoryInfo(basePath);
-
-    //    while (directoryInfo != null && !File.Exists(Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json")))
-    //    {
-    //        directoryInfo = directoryInfo.Parent;
-    //    }
-
-    //    if (directoryInfo == null)
-    //    {
-    //        throw new FileNotFoundException("The configuration file 'appsettings.json' was not found in the project directory or any parent directories.");
-    //    }
-
-    //    var configPath = Path.Combine(directoryInfo.FullName, "CFMS.Api", "appsettings.json");
-
-    //    var config = new ConfigurationBuilder()
-    //        .SetBasePath(directoryInfo.FullName)
-    //        .AddJsonFile(configPath, optional: false, reloadOnChange: true)
-    //        .Build();
-
-    //    string? connectionString = config.GetConnectionString(connectionStringName);
-    //    if (string.IsNullOrEmpty(connectionString))
-    //    {
-    //        throw new InvalidOperationException($"Connection string '{connectionStringName}' is not found in the configuration.");
-    //    }
-
-    //    return connectionString;
-    //}
-
     public static string GetConnectionString(string connectionStringName)
     {
         string? connectionString = Environment.GetEnvironmentVariable($"ConnectionStrings__{connectionStringName}");
@@ -255,25 +243,25 @@ public partial class CfmsDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Assignment>()
+        modelBuilder.Entity<WarePermission>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
         .HasForeignKey(a => a.CreatedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Assignment>()
+        modelBuilder.Entity<WarePermission>()
         .HasOne(a => a.LastEditedByUser)
         .WithMany()
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Attendance>()
+        modelBuilder.Entity<Assignment>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
         .HasForeignKey(a => a.CreatedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Attendance>()
+        modelBuilder.Entity<Assignment>()
         .HasOne(a => a.LastEditedByUser)
         .WithMany()
         .HasForeignKey(a => a.LastEditedByUserId)
@@ -327,18 +315,6 @@ public partial class CfmsDbContext : DbContext
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<DailyTask>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<DailyTask>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
         modelBuilder.Entity<Equipment>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
@@ -375,42 +351,6 @@ public partial class CfmsDbContext : DbContext
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<FeedSchedule>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<FeedSchedule>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Flock>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Flock>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<FlockNutrition>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<FlockNutrition>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
         modelBuilder.Entity<Food>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
@@ -418,42 +358,6 @@ public partial class CfmsDbContext : DbContext
         .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Food>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<HarvestDetail>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<HarvestDetail>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<HarvestLog>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<HarvestLog>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<HarvestTask>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<HarvestTask>()
         .HasOne(a => a.LastEditedByUser)
         .WithMany()
         .HasForeignKey(a => a.LastEditedByUserId)
@@ -495,42 +399,6 @@ public partial class CfmsDbContext : DbContext
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Nutrition>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Nutrition>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Performance>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Performance>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Product>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Product>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
         modelBuilder.Entity<QuantityLog>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
@@ -550,42 +418,6 @@ public partial class CfmsDbContext : DbContext
         .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Request>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<RequestDetail>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<RequestDetail>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Salary>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Salary>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<StockReceipt>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<StockReceipt>()
         .HasOne(a => a.LastEditedByUser)
         .WithMany()
         .HasForeignKey(a => a.LastEditedByUserId)
@@ -615,30 +447,6 @@ public partial class CfmsDbContext : DbContext
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<TaskDetail>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<TaskDetail>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<TaskEvaluation>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<TaskEvaluation>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
         modelBuilder.Entity<TaskLog>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
@@ -646,30 +454,6 @@ public partial class CfmsDbContext : DbContext
         .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<TaskLog>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<VaccinationLog>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<VaccinationLog>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Vaccine>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Vaccine>()
         .HasOne(a => a.LastEditedByUser)
         .WithMany()
         .HasForeignKey(a => a.LastEditedByUserId)
@@ -687,18 +471,6 @@ public partial class CfmsDbContext : DbContext
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<WarehouseStock>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<WarehouseStock>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
         modelBuilder.Entity<WareTransaction>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
@@ -709,24 +481,6 @@ public partial class CfmsDbContext : DbContext
         .HasOne(a => a.LastEditedByUser)
         .WithMany()
         .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Flock>()
-        .HasOne(a => a.Breed)
-        .WithMany()
-        .HasForeignKey(a => a.BreedId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Flock>()
-        .HasOne(a => a.Purpose)
-        .WithMany()
-        .HasForeignKey(a => a.PurposeId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Request>()
-        .HasOne(a => a.ApprovedByNavigation)
-        .WithMany()
-        .HasForeignKey(a => a.ApprovedBy)
         .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Assignment>(entity =>
@@ -735,49 +489,24 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("Assignment");
 
-            entity.Property(e => e.AssignmentId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("assignmentId");
-            entity.Property(e => e.AssignedDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("assignedDate");
-            entity.Property(e => e.CompletedDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("completedDate");
-            entity.Property(e => e.DeadlineDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("deadlineDate");
-            entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.TaskId).HasColumnName("taskId");
-            entity.Property(e => e.UserId).HasColumnName("userId");
+            entity.Property(e => e.AssignmentId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.AssignedDate).HasColumnType("timestamp(6) without time zone");
+
+            entity.HasOne(d => d.AssignedTo).WithMany(p => p.Assignments)
+                .HasForeignKey(d => d.AssignedToId)
+                .HasConstraintName("Assignment_AssignedToId_fkey");
+
+            entity.HasOne(d => d.ShiftSchedule).WithMany(p => p.Assignments)
+                .HasForeignKey(d => d.ShiftScheduleId)
+                .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
 
             entity.HasOne(d => d.Task).WithMany(p => p.Assignments)
                 .HasForeignKey(d => d.TaskId)
                 .HasConstraintName("Assignment_taskId_fkey");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Assignments)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("Assignment_userId_fkey");
-        });
-
-        modelBuilder.Entity<Attendance>(entity =>
-        {
-            entity.HasKey(e => e.AttendanceId).HasName("Attendance_pkey");
-
-            entity.ToTable("Attendance");
-
-            entity.Property(e => e.AttendanceId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("attendanceId");
-            entity.Property(e => e.CheckIn).HasColumnName("checkIn");
-            entity.Property(e => e.CheckOut).HasColumnName("checkOut");
-            entity.Property(e => e.UserId).HasColumnName("userId");
-            entity.Property(e => e.WorkDate).HasColumnName("workDate");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Attendances)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("Attendance_userId_fkey");
+            entity.HasOne(d => d.TaskSchedule).WithMany(p => p.Assignments)
+                .HasForeignKey(d => d.TaskScheduleId)
+                .HasConstraintName("TaskSchedule_ChickenBatchId_fkey");
         });
 
         modelBuilder.Entity<BreedingArea>(entity =>
@@ -786,25 +515,14 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("BreedingArea");
 
-            entity.Property(e => e.BreedingAreaId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("breedingAreaId");
-            entity.Property(e => e.BreedingAreaCode)
-                .HasColumnType("character varying")
-                .HasColumnName("breedingAreaCode");
-            entity.Property(e => e.BreedingAreaName)
-                .HasColumnType("character varying")
-                .HasColumnName("breedingAreaName");
-            entity.Property(e => e.FarmId).HasColumnName("farmId");
-            entity.Property(e => e.Image)
-                .HasColumnType("character varying")
-                .HasColumnName("image");
-            entity.Property(e => e.MealsPerDay).HasColumnName("mealsPerDay");
-            entity.Property(e => e.Notes).HasColumnName("notes");
+            entity.Property(e => e.BreedingAreaId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.BreedingAreaCode).HasColumnType("character varying");
+            entity.Property(e => e.BreedingAreaName).HasColumnType("character varying");
+            entity.Property(e => e.ImageUrl).HasColumnType("character varying");
 
             entity.HasOne(d => d.Farm).WithMany(p => p.BreedingAreas)
                 .HasForeignKey(d => d.FarmId)
-                .HasConstraintName("BreedingArea_farmId_fkey");
+                .HasConstraintName("BreedingArea_FarmId_fkey");
         });
 
         modelBuilder.Entity<Category>(entity =>
@@ -813,24 +531,28 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("Category");
 
-            entity.Property(e => e.CategoryId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("categoryId");
-            entity.Property(e => e.CategoryName)
-                .HasColumnType("character varying")
-                .HasColumnName("categoryName");
-            entity.Property(e => e.CategoryCode)
-                .HasColumnType("character varying")
-                .HasColumnName("categoryCode");
-            entity.Property(e => e.CategoryType)
-                .HasConversion<int>()
-                .HasColumnType("int")
-                .HasColumnName("categoryType");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Status)
-                .HasConversion<int>()
-                .HasColumnType("int")
-                .HasColumnName("status");
+            entity.Property(e => e.CategoryId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.CategoryCode).HasColumnType("character varying");
+        });
+
+        modelBuilder.Entity<Chicken>(entity =>
+        {
+            entity.HasKey(e => e.ChickenId).HasName("Chicken_pkey");
+
+            entity.ToTable("Chicken");
+
+            entity.Property(e => e.ChickenId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ChickenCode).HasColumnType("character varying");
+            entity.Property(e => e.ChickenName).HasColumnType("character varying");
+            entity.Property(e => e.CreatedDate).HasColumnType("timestamp(6) without time zone");
+
+            entity.HasOne(d => d.ChickenBatch).WithMany(p => p.Chickens)
+                .HasForeignKey(d => d.ChickenBatchId)
+                .HasConstraintName("Chicken_ChickenId_fkey");
+
+            entity.HasOne(d => d.Purpose).WithMany(p => p.Chickens)
+                .HasForeignKey(d => d.PurposeId)
+                .HasConstraintName("Chicken_PurposeId_fkey");
         });
 
         modelBuilder.Entity<ChickenBatch>(entity =>
@@ -839,25 +561,14 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("ChickenBatch");
 
-            entity.Property(e => e.ChickenBatchId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("chickenBatchId");
-            entity.Property(e => e.ChickenCoopId).HasColumnName("chickenCoopId");
-            entity.Property(e => e.EndDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("endDate");
-            entity.Property(e => e.Name)
-                .HasColumnType("character varying")
-                .HasColumnName("name");
-            entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.StartDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("startDate");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.ChickenBatchId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ChickenBatchName).HasColumnType("character varying");
+            entity.Property(e => e.EndDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
 
             entity.HasOne(d => d.ChickenCoop).WithMany(p => p.ChickenBatches)
                 .HasForeignKey(d => d.ChickenCoopId)
-                .HasConstraintName("ChickenBatch_chickenCoopId_fkey");
+                .HasConstraintName("ChickenCoop_ChickenCoopId_fkey");
         });
 
         modelBuilder.Entity<ChickenCoop>(entity =>
@@ -866,31 +577,27 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("ChickenCoop");
 
-            entity.Property(e => e.ChickenCoopId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("chickenCoopId");
-            entity.Property(e => e.Area).HasColumnName("area");
-            entity.Property(e => e.BreedingAreaId).HasColumnName("breedingAreaId");
-            entity.Property(e => e.Capacity).HasColumnName("capacity");
-            entity.Property(e => e.ChickenCoopCode)
-                .HasColumnType("character varying")
-                .HasColumnName("chickenCoopCode");
-            entity.Property(e => e.ChickenCoopName)
-                .HasColumnType("character varying")
-                .HasColumnName("chickenCoopName");
-            entity.Property(e => e.Description)
-                .HasColumnType("character varying")
-                .HasColumnName("description");
-            entity.Property(e => e.PurposeId).HasColumnName("purposeId");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.ChickenCoopId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ChickenCoopCode).HasColumnType("character varying");
+            entity.Property(e => e.ChickenCoopName).HasColumnType("character varying");
+            entity.Property(e => e.Description).HasColumnType("character varying");
 
             entity.HasOne(d => d.BreedingArea).WithMany(p => p.ChickenCoops)
                 .HasForeignKey(d => d.BreedingAreaId)
-                .HasConstraintName("ChickenCoop_breedingAreaId_fkey");
+                .HasConstraintName("BreedingArea_BreedingAreaId_fkey");
+        });
 
-            entity.HasOne(d => d.Purpose).WithMany(p => p.ChickenCoops)
-                .HasForeignKey(d => d.PurposeId)
-                .HasConstraintName("ChickenCoop_purposeId_fkey");
+        modelBuilder.Entity<ChickenDetail>(entity =>
+        {
+            entity.HasKey(e => e.ChickenDetailId).HasName("ChickenDetail_pkey");
+
+            entity.ToTable("ChickenDetail");
+
+            entity.Property(e => e.ChickenDetailId).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenDetails)
+                .HasForeignKey(d => d.ChickenId)
+                .HasConstraintName("Chicken_ChickenId_fkey");
         });
 
         modelBuilder.Entity<CoopEquipment>(entity =>
@@ -899,83 +606,108 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("CoopEquipment");
 
-            entity.Property(e => e.CoopEquipmentId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("coopEquipmentId");
-            entity.Property(e => e.AssignedDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("assignedDate");
-            entity.Property(e => e.ChickenCoopId).HasColumnName("chickenCoopId");
-            entity.Property(e => e.EquipmentId).HasColumnName("equipmentId");
-            entity.Property(e => e.MaintainDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("maintainDate");
-            entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.CoopEquipmentId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.AssignedDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.LastMaintenanceDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.MaintenanceInterval).HasDefaultValue(30);
+            entity.Property(e => e.NextMaintenanceDate).HasColumnType("timestamp(6) without time zone");
 
             entity.HasOne(d => d.ChickenCoop).WithMany(p => p.CoopEquipments)
                 .HasForeignKey(d => d.ChickenCoopId)
-                .HasConstraintName("CoopEquipment_chickenCoopId_fkey");
+                .HasConstraintName("CoopEquipment_ChickenCoopId_fkey");
 
             entity.HasOne(d => d.Equipment).WithMany(p => p.CoopEquipments)
                 .HasForeignKey(d => d.EquipmentId)
-                .HasConstraintName("CoopEquipment_equipmentId_fkey");
-        });
-
-        modelBuilder.Entity<DailyTask>(entity =>
-        {
-            entity.HasKey(e => e.DTaskId).HasName("DailyTask_pkey");
-
-            entity.ToTable("DailyTask");
-
-            entity.Property(e => e.DTaskId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("dTaskId");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.ItemId).HasColumnName("itemId");
-            entity.Property(e => e.TaskDate).HasColumnName("taskDate");
-            entity.Property(e => e.TaskId).HasColumnName("taskId");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.DailyTasks)
-                .HasForeignKey(d => d.TaskId)
-                .HasConstraintName("DailyTask_taskId_fkey");
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("Equipment_EquipmentId_fkey");
         });
 
         modelBuilder.Entity<Equipment>(entity =>
         {
             entity.HasKey(e => e.EquipmentId).HasName("Equipment_pkey");
 
-            entity.HasIndex(e => e.ProductId, "Equipment_productId_key").IsUnique();
+            entity.Property(e => e.EquipmentId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.EquipmentCode).HasColumnType("character varying");
+            entity.Property(e => e.EquipmentName).HasColumnType("character varying");
+            entity.Property(e => e.Material).HasColumnType("character varying");
+            entity.Property(e => e.PurchaseDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.Usage).HasColumnType("character varying");
 
-            entity.Property(e => e.EquipmentId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("equipmentId");
-            entity.Property(e => e.Cost).HasColumnName("cost");
-            entity.Property(e => e.EndDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("endDate");
-            entity.Property(e => e.EquipmentCode)
-                .HasColumnType("character varying")
-                .HasColumnName("equipmentCode");
-            entity.Property(e => e.EquipmentName)
-                .HasColumnType("character varying")
-                .HasColumnName("equipmentName");
-            entity.Property(e => e.ProductId)
-                .IsRequired()
-                .HasColumnName("productId");
-            entity.Property(e => e.PurchaseDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("purchaseDate");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.Specifications)
-                .HasColumnType("character varying")
-                .HasColumnName("specifications");
-            entity.Property(e => e.StartDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("startDate");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.WarrantyPeriod).HasColumnName("warrantyPeriod");
+            entity.HasOne(d => d.EquipmentNavigation).WithOne(p => p.Equipment)
+                .HasForeignKey<Equipment>(d => d.EquipmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Equipment_EquipmentId_fkey");
+        });
+
+        modelBuilder.Entity<EvaluatedTarget>(entity =>
+        {
+            entity.HasKey(e => e.EvaluatedTargetId).HasName("EvaluatedTarget_pkey");
+
+            entity.ToTable("EvaluatedTarget");
+
+            entity.Property(e => e.EvaluatedTargetId).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.HasOne(d => d.Target).WithMany(p => p.EvaluatedTargets)
+                .HasForeignKey(d => d.TargetId)
+                .HasConstraintName("EvaluatedTarget_TargetId_fkey1");
+
+            entity.HasOne(d => d.TargetNavigation).WithMany(p => p.EvaluatedTargets)
+                .HasForeignKey(d => d.TargetId)
+                .HasConstraintName("EvaluatedTarget_TargetId_fkey");
+
+            entity.HasOne(d => d.TargetType).WithMany(p => p.EvaluatedTargets)
+                .HasForeignKey(d => d.TargetTypeId)
+                .HasConstraintName("EvaluatedTarget_TargetTypeId_fkey");
+        });
+
+        modelBuilder.Entity<EvaluationResult>(entity =>
+        {
+            entity.HasKey(e => e.EvaluationResultId).HasName("EvaluationResult_pkey");
+
+            entity.ToTable("EvaluationResult");
+
+            entity.Property(e => e.EvaluationResultId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.EvaluatedDate)
+                .HasColumnType("timestamp(6) without time zone")
+                .HasColumnName("EvaluatedDate ");
+
+            entity.HasOne(d => d.EvaluatedTarget).WithMany(p => p.EvaluationResults)
+                .HasForeignKey(d => d.EvaluatedTargetId)
+                .HasConstraintName("EvaluationResult_EvaluatedTargetId_fkey");
+
+            entity.HasOne(d => d.EvaluationTemplate).WithMany(p => p.EvaluationResults)
+                .HasForeignKey(d => d.EvaluationTemplateId)
+                .HasConstraintName("EvaluationResult_EvaluationTemplateId_fkey");
+        });
+
+        modelBuilder.Entity<EvaluationResultDetail>(entity =>
+        {
+            entity.HasKey(e => e.EvaluationResultDetailId).HasName("EvaluationResultDetail_pkey");
+
+            entity.ToTable("EvaluationResultDetail");
+
+            entity.Property(e => e.EvaluationResultDetailId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ActualValue).HasColumnType("character varying");
+            entity.Property(e => e.IsPass).HasDefaultValue(0);
+
+            entity.HasOne(d => d.EvaluationResult).WithMany(p => p.EvaluationResultDetails)
+                .HasForeignKey(d => d.EvaluationResultId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("EvaluationResultDetail_EvaluationResultId_fkey");
+        });
+
+        modelBuilder.Entity<EvaluationTemplate>(entity =>
+        {
+            entity.HasKey(e => e.EvaluationTemplateId).HasName("EvaluationTemplate_pkey");
+
+            entity.ToTable("EvaluationTemplate");
+
+            entity.Property(e => e.EvaluationTemplateId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.TemplateName).HasColumnType("character varying");
+
+            entity.HasOne(d => d.TemplateType).WithMany(p => p.EvaluationTemplates)
+                .HasForeignKey(d => d.TemplateTypeId)
+                .HasConstraintName("EvaluationTemplate_TemplateTypeId_fkey");
         });
 
         modelBuilder.Entity<Farm>(entity =>
@@ -984,29 +716,13 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("Farm");
 
-            entity.Property(e => e.FarmId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("farmId");
-            entity.Property(e => e.Address)
-                .HasColumnType("character varying")
-                .HasColumnName("address");
-            entity.Property(e => e.Area).HasColumnName("area");
-            entity.Property(e => e.FarmCode)
-                .HasColumnType("character varying")
-                .HasColumnName("farmCode");
-            entity.Property(e => e.FarmImage)
-                .HasColumnType("character varying")
-                .HasColumnName("farmImage");
-            entity.Property(e => e.FarmName)
-                .HasColumnType("character varying")
-                .HasColumnName("farmName");
-            entity.Property(e => e.PhoneNumber)
-                .HasColumnType("character varying")
-                .HasColumnName("phoneNumber");
-            entity.Property(e => e.Scale).HasColumnName("scale");
-            entity.Property(e => e.Website)
-                .HasColumnType("character varying")
-                .HasColumnName("website");
+            entity.Property(e => e.FarmId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Address).HasColumnType("character varying");
+            entity.Property(e => e.FarmCode).HasColumnType("character varying");
+            entity.Property(e => e.FarmName).HasColumnType("character varying");
+            entity.Property(e => e.ImageUrl).HasColumnType("character varying");
+            entity.Property(e => e.PhoneNumber).HasColumnType("character varying");
+            entity.Property(e => e.Website).HasColumnType("character varying");
         });
 
         modelBuilder.Entity<FarmEmployee>(entity =>
@@ -1015,121 +731,61 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("FarmEmployee");
 
-            entity.Property(e => e.FarmEmployeeId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("farmEmployeeId");
-            entity.Property(e => e.EmployeeId).HasColumnName("employeeId");
-            entity.Property(e => e.EndDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("endDate");
-            entity.Property(e => e.FarmId).HasColumnName("farmId");
-            entity.Property(e => e.FarmRole)
-                .HasConversion<int>()
-                .HasColumnType("int")
-                .HasColumnName("farmRole");
-            entity.Property(e => e.StartDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("startDate");
-            entity.Property(e => e.Status)
-                .HasConversion<int>()
-                .HasColumnType("int")
-                .HasColumnName("status");
-            entity.HasOne(d => d.Employee).WithMany(p => p.FarmEmployees)
-                .HasForeignKey(d => d.EmployeeId)
-                .HasConstraintName("FarmEmployee_employeeId_fkey");
+            entity.Property(e => e.FarmEmployeeId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.EndDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
 
             entity.HasOne(d => d.Farm).WithMany(p => p.FarmEmployees)
                 .HasForeignKey(d => d.FarmId)
-                .HasConstraintName("FarmEmployee_farmId_fkey");
+                .HasConstraintName("FarmEmployee_FarmId_fkey");
+
+            entity.HasOne(d => d.User).WithMany(p => p.FarmEmployees)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FarmEmployee_UserId_fkey");
         });
 
-        modelBuilder.Entity<FeedSchedule>(entity =>
+        modelBuilder.Entity<FeedLog>(entity =>
         {
-            entity.HasKey(e => e.FeedScheduleId).HasName("FeedSchedule_pkey");
+            entity.HasKey(e => e.FeedLogId).HasName("FeedLog_pkey");
 
-            entity.ToTable("FeedSchedule");
+            entity.ToTable("FeedLog");
 
-            entity.Property(e => e.FeedScheduleId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("feedScheduleId");
-            entity.Property(e => e.FeedAmount).HasColumnName("feedAmount");
-            entity.Property(e => e.FeedTime)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("feedTime");
-            entity.Property(e => e.Notes).HasColumnName("notes");
-        });
+            entity.Property(e => e.FeedLogId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.FeedingDate)
+                .HasColumnType("timestamp(6) without time zone")
+                .HasColumnName("FeedingDate  ");
+            entity.Property(e => e.Note).HasColumnType("character varying");
 
-        modelBuilder.Entity<Flock>(entity =>
-        {
-            entity.HasKey(e => e.FlockId).HasName("Flock_pkey");
-
-            entity.ToTable("Flock");
-
-            entity.Property(e => e.FlockId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("flockId");
-            entity.Property(e => e.AvgWeight).HasColumnName("avgWeight");
-            entity.Property(e => e.BreedId).HasColumnName("breedId");
-            entity.Property(e => e.ChickenBatchId).HasColumnName("chickenBatchId");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.EndDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("endDate");
-            entity.Property(e => e.Gender)
-                .HasColumnType("character varying")
-                .HasColumnName("gender");
-            entity.Property(e => e.LastHealthCheck)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("lastHealthCheck");
-            entity.Property(e => e.MortalityRate).HasColumnName("mortalityRate");
-            entity.Property(e => e.Name)
-                .HasColumnType("character varying")
-                .HasColumnName("name");
-            entity.Property(e => e.PurposeId).HasColumnName("purposeId");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.StartDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("startDate");
-            entity.Property(e => e.Status).HasColumnName("status");
-
-            entity.HasOne(d => d.Breed).WithMany(p => p.FlockBreeds)
-                .HasForeignKey(d => d.BreedId)
-                .HasConstraintName("Flock_breedId_fkey");
-
-            entity.HasOne(d => d.ChickenBatch).WithMany(p => p.Flocks)
+            entity.HasOne(d => d.ChickenBatch).WithMany(p => p.FeedLogs)
                 .HasForeignKey(d => d.ChickenBatchId)
-                .HasConstraintName("Flock_chickenBatchId_fkey");
+                .HasConstraintName("FeedLog_ChickenBatchId_fkey");
 
-            entity.HasOne(d => d.Purpose).WithMany(p => p.FlockPurposes)
-                .HasForeignKey(d => d.PurposeId)
-                .HasConstraintName("Flock_purposeId_fkey");
+            entity.HasOne(d => d.Task).WithMany(p => p.FeedLogs)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("FeedLog_TaskId_fkey");
+
+            entity.HasOne(d => d.Unit).WithMany(p => p.FeedLogs)
+                .HasForeignKey(d => d.UnitId)
+                .HasConstraintName("FeedLog_UnitId_fkey");
         });
 
-        modelBuilder.Entity<FlockNutrition>(entity =>
+        modelBuilder.Entity<FeedSession>(entity =>
         {
-            entity.HasKey(e => e.FlockNutritionId).HasName("FlockNutrition_pkey");
+            entity.HasKey(e => e.FeedSessionId).HasName("FeedSession_pkey");
 
-            entity.ToTable("FlockNutrition");
+            entity.ToTable("FeedSession");
 
-            entity.Property(e => e.FlockNutritionId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("flockNutritionId");
-            entity.Property(e => e.EndDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("endDate");
-            entity.Property(e => e.FlockId).HasColumnName("flockId");
-            entity.Property(e => e.NutritionId).HasColumnName("nutritionId");
-            entity.Property(e => e.StartDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("startDate");
+            entity.Property(e => e.FeedSessionId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.FeedingTime).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.Note).HasColumnType("character varying");
 
-            entity.HasOne(d => d.Flock).WithMany(p => p.FlockNutritions)
-                .HasForeignKey(d => d.FlockId)
-                .HasConstraintName("FlockNutrition_flockId_fkey");
+            entity.HasOne(d => d.NutritionPlan).WithMany(p => p.FeedSessions)
+                .HasForeignKey(d => d.NutritionPlanId)
+                .HasConstraintName("FeedSession_NutritionPlanId_fkey");
 
-            entity.HasOne(d => d.Nutrition).WithMany(p => p.FlockNutritions)
-                .HasForeignKey(d => d.NutritionId)
-                .HasConstraintName("FlockNutrition_nutritionId_fkey");
+            entity.HasOne(d => d.Unit).WithMany(p => p.FeedSessions)
+                .HasForeignKey(d => d.UnitId)
+                .HasConstraintName("FeedSession_UnitId_fkey");
         });
 
         modelBuilder.Entity<Food>(entity =>
@@ -1138,182 +794,215 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("Food");
 
-            entity.HasIndex(e => e.ProductId, "Food_productId_key").IsUnique();
+            entity.Property(e => e.FoodId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ExpiryDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.FoodCode).HasColumnType("character varying");
+            entity.Property(e => e.FoodName).HasColumnType("character varying");
+            entity.Property(e => e.Note).HasColumnType("character varying");
+            entity.Property(e => e.ProductionDate).HasColumnType("timestamp(6) without time zone");
 
-            entity.Property(e => e.FoodId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("foodId");
-            entity.Property(e => e.ExpiryDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("expiryDate");
-            entity.Property(e => e.Ingredients)
-                .HasColumnType("character varying")
-                .HasColumnName("ingredients");
-            entity.Property(e => e.Name)
-                .HasColumnType("character varying")
-                .HasColumnName("name");
-            entity.Property(e => e.Notes)
-                .HasColumnType("character varying")
-                .HasColumnName("notes");
-            entity.Property(e => e.ProductId)
-                .IsRequired()
-                .HasColumnName("productId");
-            entity.Property(e => e.ProductionDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("productionDate");
+            entity.HasOne(d => d.FoodNavigation).WithOne(p => p.Food)
+                .HasForeignKey<Food>(d => d.FoodId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Food_FoodId_fkey");
         });
 
-        modelBuilder.Entity<HarvestDetail>(entity =>
+        modelBuilder.Entity<GrowthBatch>(entity =>
         {
-            entity.HasKey(e => e.HarvestDetailId).HasName("HarvestDetail_pkey");
+            entity.HasKey(e => e.GrowthBatchId).HasName("GrowthBatch_pkey");
 
-            entity.ToTable("HarvestDetail");
+            entity.ToTable("GrowthBatch");
 
-            entity.Property(e => e.HarvestDetailId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("harvestDetailId");
-            entity.Property(e => e.HarvestLogId).HasColumnName("harvestLogId");
-            entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.TypeProductId).HasColumnName("typeProductId");
+            entity.Property(e => e.GrowthBatchId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.EndDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.Note).HasColumnType("character varying");
+            entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
 
-            entity.HasOne(d => d.HarvestLog).WithMany(p => p.HarvestDetails)
-                .HasForeignKey(d => d.HarvestLogId)
-                .HasConstraintName("HarvestDetail_harvestLogId_fkey");
+            entity.HasOne(d => d.ChickenBatch).WithMany(p => p.GrowthBatches)
+                .HasForeignKey(d => d.ChickenBatchId)
+                .HasConstraintName("GrowthBatch_ChickenBatchId_fkey");
 
-            entity.HasOne(d => d.TypeProduct).WithMany(p => p.HarvestDetails)
-                .HasForeignKey(d => d.TypeProductId)
-                .HasConstraintName("HarvestDetail_typeProductId_fkey");
+            entity.HasOne(d => d.GrowthStage).WithMany(p => p.GrowthBatches)
+                .HasForeignKey(d => d.GrowthStageId)
+                .HasConstraintName("GrowthBatch_GrowthStageId_fkey");
         });
 
-        modelBuilder.Entity<HarvestLog>(entity =>
+        modelBuilder.Entity<GrowthNutrition>(entity =>
         {
-            entity.HasKey(e => e.HarvestLogId).HasName("HarvestLog_pkey");
+            entity.HasKey(e => e.GrowthNutritionId).HasName("GrowthNutrition_pkey");
 
-            entity.ToTable("HarvestLog");
+            entity.ToTable("GrowthNutrition");
 
-            entity.Property(e => e.HarvestLogId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("harvestLogId");
-            entity.Property(e => e.ChickenCoopId).HasColumnName("chickenCoopId");
-            entity.Property(e => e.Date)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("date");
-            entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.Total).HasColumnName("total");
-            entity.Property(e => e.Type)
-                .HasColumnType("character varying")
-                .HasColumnName("type");
+            entity.Property(e => e.GrowthNutritionId).HasDefaultValueSql("gen_random_uuid()");
 
-            entity.HasOne(d => d.ChickenCoop).WithMany(p => p.HarvestLogs)
-                .HasForeignKey(d => d.ChickenCoopId)
-                .HasConstraintName("HarvestLog_chickenCoopId_fkey");
+            entity.HasOne(d => d.GrowthStage).WithMany(p => p.GrowthNutritions)
+                .HasForeignKey(d => d.GrowthStageId)
+                .HasConstraintName("GrowthNutrition_GrowthStageId_fkey");
+
+            entity.HasOne(d => d.NutritionPlan).WithMany(p => p.GrowthNutritions)
+                .HasForeignKey(d => d.NutritionPlanId)
+                .HasConstraintName("GrowthNutrition_NutritionPlanId_fkey");
         });
 
-        modelBuilder.Entity<HarvestProduct>(entity =>
+        modelBuilder.Entity<GrowthStage>(entity =>
         {
-            entity.HasKey(e => e.HarvestProductId).HasName("HarvestProduct_pkey");
+            entity.HasKey(e => e.GrowthStageId).HasName("GrowthStage_pkey");
 
-            entity.ToTable("HarvestProduct");
+            entity.ToTable("GrowthStage");
 
-            entity.HasIndex(e => e.ProductId, "HarvestProduct_productId_key").IsUnique();
+            entity.Property(e => e.GrowthStageId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Description).HasColumnType("character varying");
+            entity.Property(e => e.StageName).HasColumnType("character varying");
 
-            entity.Property(e => e.HarvestProductId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("harvestProductId");
-            entity.Property(e => e.HarvestProductName)
-                .HasColumnType("character varying")
-                .HasColumnName("harvestProductName");
-            entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.ProductId)
-                .IsRequired()
-                .HasColumnName("productId");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.UnitId).HasColumnName("unitId");
-
-            entity.HasOne(d => d.Unit).WithMany(p => p.HarvestProducts)
-                .HasForeignKey(d => d.UnitId)
-                .HasConstraintName("HarvestProduct_unitId_fkey");
-        });
-
-        modelBuilder.Entity<HarvestTask>(entity =>
-        {
-            entity.HasKey(e => e.HTaskId).HasName("HarvestTask_pkey");
-
-            entity.ToTable("HarvestTask");
-
-            entity.Property(e => e.HTaskId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("hTaskId");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.HarvestDate).HasColumnName("harvestDate");
-            entity.Property(e => e.HarvestType)
-                .HasColumnType("character varying")
-                .HasColumnName("harvestType");
-            entity.Property(e => e.QuantityTypeId).HasColumnName("quantityTypeId");
-            entity.Property(e => e.TaskId).HasColumnName("taskId");
-
-            entity.HasOne(d => d.QuantityType).WithMany(p => p.HarvestTasks)
-                .HasForeignKey(d => d.QuantityTypeId)
-                .HasConstraintName("HarvestTask_quantityTypeId_fkey");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.HarvestTasks)
-                .HasForeignKey(d => d.TaskId)
-                .HasConstraintName("HarvestTask_taskId_fkey");
+            entity.HasOne(d => d.ChickenTypeNavigation).WithMany(p => p.GrowthStages)
+                .HasForeignKey(d => d.ChickenType)
+                .HasConstraintName("GrowthStage_ChickenType_fkey");
         });
 
         modelBuilder.Entity<HealthLog>(entity =>
         {
-            entity.HasKey(e => e.HLogId).HasName("HealthLog_pkey");
+            entity.HasKey(e => e.HealthLogId).HasName("HealthLog_pkey");
 
             entity.ToTable("HealthLog");
 
-            entity.Property(e => e.HLogId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("hLogId");
-            entity.Property(e => e.EndDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("endDate");
-            entity.Property(e => e.FlockId).HasColumnName("flockId");
-            entity.Property(e => e.Humidity).HasColumnName("humidity");
-            entity.Property(e => e.Location)
-                .HasColumnType("character varying")
-                .HasColumnName("location");
-            entity.Property(e => e.Notes).HasColumnName("notes");
-            entity.Property(e => e.StaffId).HasColumnName("staffId");
-            entity.Property(e => e.StartDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("startDate");
-            entity.Property(e => e.Temperature).HasColumnName("temperature");
+            entity.Property(e => e.HealthLogId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.CheckedAt).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.EndDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.Location).HasColumnType("character varying");
+            entity.Property(e => e.Notes).HasColumnType("character varying");
+            entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
 
-            entity.HasOne(d => d.Flock).WithMany(p => p.HealthLogs)
-                .HasForeignKey(d => d.FlockId)
-                .HasConstraintName("HealthLog_flockId_fkey");
+            entity.HasOne(d => d.ChickenBatch).WithMany(p => p.HealthLogs)
+                .HasForeignKey(d => d.ChickenBatchId)
+                .HasConstraintName("HealthLog_ChickenBatchId_fkey");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.HealthLogs)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("HealthLog_TaskId_fkey");
         });
 
         modelBuilder.Entity<HealthLogDetail>(entity =>
         {
-            entity.HasKey(e => e.LogDetailId).HasName("HealthLogDetail_pkey");
+            entity.HasKey(e => e.HealthLogDetailId).HasName("HealthLogDetail_pkey");
 
             entity.ToTable("HealthLogDetail");
 
-            entity.Property(e => e.LogDetailId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("logDetailId");
-            entity.Property(e => e.CheckedAt)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("checkedAt");
-            entity.Property(e => e.CriteriaId).HasColumnName("criteriaId");
-            entity.Property(e => e.HLogId).HasColumnName("hLogId");
-            entity.Property(e => e.Result).HasColumnName("result");
+            entity.Property(e => e.HealthLogDetailId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Result).HasColumnType("character varying");
 
             entity.HasOne(d => d.Criteria).WithMany(p => p.HealthLogDetails)
                 .HasForeignKey(d => d.CriteriaId)
-                .HasConstraintName("HealthLogDetail_criteriaId_fkey");
+                .HasConstraintName("HealthLogDetail_CriteriaId_fkey");
 
-            entity.HasOne(d => d.HLog).WithMany(p => p.HealthLogDetails)
-                .HasForeignKey(d => d.HLogId)
-                .HasConstraintName("HealthLogDetail_hLogId_fkey");
+            entity.HasOne(d => d.HealthLog).WithMany(p => p.HealthLogDetails)
+                .HasForeignKey(d => d.HealthLogId)
+                .HasConstraintName("HealthLogDetail_HealthLogId_fkey");
+        });
+
+        modelBuilder.Entity<InventoryReceipt>(entity =>
+        {
+            entity.HasKey(e => e.InventoryReceiptId).HasName("InventoryReceipt_pkey");
+
+            entity.ToTable("InventoryReceipt");
+
+            entity.Property(e => e.InventoryReceiptId).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.HasOne(d => d.InventoryRequest).WithMany(p => p.InventoryReceipts)
+                .HasForeignKey(d => d.InventoryRequestId)
+                .HasConstraintName("InventoryReceipt_InventoryRequestId_fkey");
+
+            entity.HasOne(d => d.ReceiptType).WithMany(p => p.InventoryReceipts)
+                .HasForeignKey(d => d.ReceiptTypeId)
+                .HasConstraintName("InventoryReceipt_ReceiptTypeId_fkey");
+        });
+
+        modelBuilder.Entity<InventoryReceiptDetail>(entity =>
+        {
+            entity.HasKey(e => e.InventoryReceiptDetailId).HasName("InventoryReceiptDetail_pkey");
+
+            entity.ToTable("InventoryReceiptDetail");
+
+            entity.Property(e => e.InventoryReceiptDetailId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ActualDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.Note).HasColumnType("character varying");
+            entity.Property(e => e.Reason).HasColumnType("character varying");
+
+            entity.HasOne(d => d.InventoryReceipt).WithMany(p => p.InventoryReceiptDetails)
+                .HasForeignKey(d => d.InventoryReceiptId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("InventoryReceiptDetail_InventoryReceiptId_fkey");
+        });
+
+        modelBuilder.Entity<InventoryRequest>(entity =>
+        {
+            entity.HasKey(e => e.InventoryRequestId).HasName("InventoryRequest_pkey");
+
+            entity.ToTable("InventoryRequest");
+
+            entity.Property(e => e.InventoryRequestId).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.HasOne(d => d.InventoryRequestType).WithMany(p => p.InventoryRequests)
+                .HasForeignKey(d => d.InventoryRequestTypeId)
+                .HasConstraintName("InventoryRequest_InventoryRequestTypeId_fkey");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.InventoryRequests)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("InventoryRequest_RequestId_fkey");
+
+            entity.HasOne(d => d.WareFrom).WithMany(p => p.InventoryRequestWareFroms)
+                .HasForeignKey(d => d.WareFromId)
+                .HasConstraintName("InventoryRequest_WareFromId_fkey");
+
+            entity.HasOne(d => d.WareTo).WithMany(p => p.InventoryRequestWareTos)
+                .HasForeignKey(d => d.WareToId)
+                .HasConstraintName("InventoryRequest_WareToId_fkey");
+        });
+
+        modelBuilder.Entity<InventoryRequestDetail>(entity =>
+        {
+            entity.HasKey(e => e.InventoryRequestDetailId).HasName("InventoryRequestDetail_pkey");
+
+            entity.ToTable("InventoryRequestDetail");
+
+            entity.Property(e => e.InventoryRequestDetailId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ExpectedDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.Note).HasColumnType("character varying");
+            entity.Property(e => e.Reason).HasColumnType("character varying");
+
+            entity.HasOne(d => d.InventoryRequest).WithMany(p => p.InventoryRequestDetails)
+                .HasForeignKey(d => d.InventoryRequestId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("InventoryRequestDetail_InventoryRequestId_fkey");
+
+            entity.HasOne(d => d.Resource).WithMany(p => p.InventoryRequestDetails)
+                .HasForeignKey(d => d.ResourceId)
+                .HasConstraintName("InventoryRequestDetail_ResourceId_fkey");
+
+            entity.HasOne(d => d.Unit).WithMany(p => p.InventoryRequestDetails)
+                .HasForeignKey(d => d.UnitId)
+                .HasConstraintName("InventoryRequestDetail_UnitId_fkey");
+        });
+
+        modelBuilder.Entity<Medicine>(entity =>
+        {
+            entity.HasKey(e => e.MedicineId).HasName("Medicine_pkey");
+
+            entity.ToTable("Medicine");
+
+            entity.Property(e => e.MedicineId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ExpiryDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.ProductionDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.StorageCondition).HasColumnType("character varying");
+            entity.Property(e => e.Usage).HasColumnType("character varying");
+
+            entity.HasOne(d => d.Disease).WithMany(p => p.Medicines)
+                .HasForeignKey(d => d.DiseaseId)
+                .HasConstraintName("Medicine_DiseaseId_fkey");
+
+            entity.HasOne(d => d.MedicineNavigation).WithOne(p => p.Medicine)
+                .HasForeignKey<Medicine>(d => d.MedicineId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Medicine_MedicineId_fkey");
         });
 
         modelBuilder.Entity<Notification>(entity =>
@@ -1322,158 +1011,66 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("Notification");
 
-            entity.Property(e => e.NotificationId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("notificationId");
-            entity.Property(e => e.Content).HasColumnName("content");
-            entity.Property(e => e.IsRead).HasColumnName("isRead");
-            entity.Property(e => e.NotificationName)
-                .HasColumnType("character varying")
-                .HasColumnName("notificationName");
-            entity.Property(e => e.Type)
-                .HasColumnType("character varying")
-                .HasColumnName("type");
-            entity.Property(e => e.UserId).HasColumnName("userId");
+            entity.Property(e => e.NotificationId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.NotificationName).HasColumnType("character varying");
+
+            entity.HasOne(d => d.NotificationTypeNavigation).WithMany(p => p.Notifications)
+                .HasForeignKey(d => d.NotificationType)
+                .HasConstraintName("Notification_NotificationType_fkey");
 
             entity.HasOne(d => d.User).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("Notification_userId_fkey");
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("Notification_UserId_fkey");
         });
 
-        modelBuilder.Entity<Nutrition>(entity =>
+        modelBuilder.Entity<NutritionPlan>(entity =>
         {
-            entity.HasKey(e => e.NutritionId).HasName("Nutrition_pkey");
+            entity.HasKey(e => e.NutritionPlanId).HasName("NutritionPlan_pkey");
 
-            entity.ToTable("Nutrition");
+            entity.ToTable("NutritionPlan");
 
-            entity.Property(e => e.NutritionId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("nutritionId");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.DevelopmentStage)
-                .HasColumnType("character varying")
-                .HasColumnName("developmentStage");
-            entity.Property(e => e.FeedScheduleId).HasColumnName("feedScheduleId");
-            entity.Property(e => e.FoodId).HasColumnName("foodId");
-            entity.Property(e => e.Name)
-                .HasColumnType("character varying")
-                .HasColumnName("name");
-            entity.Property(e => e.TargetAudience)
-                .HasColumnType("character varying")
-                .HasColumnName("targetAudience");
+            entity.Property(e => e.NutritionPlanId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Description).HasColumnType("character varying");
+            entity.Property(e => e.Name).HasColumnType("character varying");
+            entity.Property(e => e.Target).HasColumnType("character varying");
+        });
 
-            entity.HasOne(d => d.FeedSchedule).WithMany(p => p.Nutritions)
-                .HasForeignKey(d => d.FeedScheduleId)
-                .HasConstraintName("Nutrition_feedScheduleId_fkey");
+        modelBuilder.Entity<NutritionPlanDetail>(entity =>
+        {
+            entity.HasKey(e => e.NutritionPlanDetailId).HasName("NutritionPlanDetail_pkey");
 
-            entity.HasOne(d => d.Food).WithMany(p => p.Nutritions)
+            entity.ToTable("NutritionPlanDetail");
+
+            entity.Property(e => e.NutritionPlanDetailId).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.HasOne(d => d.Food).WithMany(p => p.NutritionPlanDetails)
                 .HasForeignKey(d => d.FoodId)
-                .HasConstraintName("Nutrition_foodId_fkey");
-        });
+                .HasConstraintName("Food_FoodId_fkey");
 
-        modelBuilder.Entity<Performance>(entity =>
-        {
-            entity.HasKey(e => e.PerId).HasName("Performance_pkey");
+            entity.HasOne(d => d.NutritionPlan).WithMany(p => p.NutritionPlanDetails)
+                .HasForeignKey(d => d.NutritionPlanId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("NutritionPlanDetail_NutritionPlanId_fkey");
 
-            entity.ToTable("Performance");
-
-            entity.Property(e => e.PerId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("perId");
-            entity.Property(e => e.CompletedTask).HasColumnName("completedTask");
-            entity.Property(e => e.CompletionRate).HasColumnName("completionRate");
-            entity.Property(e => e.DelayTask).HasColumnName("delayTask");
-            entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.PerformanceRating).HasColumnName("performanceRating");
-            entity.Property(e => e.RangeTime)
-                .HasColumnType("character varying")
-                .HasColumnName("rangeTime");
-            entity.Property(e => e.TotalTask).HasColumnName("totalTask");
-            entity.Property(e => e.UserId).HasColumnName("userId");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Performances)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("Performance_userId_fkey");
-        });
-
-        modelBuilder.Entity<Product>(entity =>
-        {
-            entity.HasKey(e => e.ProductId).HasName("Product_pkey");
-
-            entity.ToTable("Product");
-
-            entity.Property(e => e.ProductId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("productId");
-            entity.Property(e => e.Package)
-                .HasColumnType("character varying")
-                .HasColumnName("package");
-            entity.Property(e => e.ProductTypeId).HasColumnName("productTypeId");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.Unit)
-                .HasColumnType("character varying")
-                .HasColumnName("unit");
-            entity.Property(e => e.Usage).HasColumnName("usage");
-
-            entity.HasOne(d => d.ProductNavigation).WithOne(p => p.Product)
-                .HasPrincipalKey<Equipment>(p => p.ProductId)
-                .HasForeignKey<Product>(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Product_productId_fkey1");
-
-            entity.HasOne(d => d.Product1).WithOne(p => p.Product)
-                .HasPrincipalKey<Food>(p => p.ProductId)
-                .HasForeignKey<Product>(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Product_productId_fkey3");
-
-            entity.HasOne(d => d.Product2).WithOne(p => p.Product)
-                .HasPrincipalKey<HarvestProduct>(p => p.ProductId)
-                .HasForeignKey<Product>(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Product_productId_fkey");
-
-            entity.HasOne(d => d.Product3).WithOne(p => p.Product)
-                .HasPrincipalKey<Vaccine>(p => p.ProductId)
-                .HasForeignKey<Product>(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Product_productId_fkey2");
-
-            entity.HasOne(d => d.ProductType).WithMany(p => p.Products)
-                .HasForeignKey(d => d.ProductTypeId)
-                .HasConstraintName("Product_productTypeId_fkey");
+            entity.HasOne(d => d.Unit).WithMany(p => p.NutritionPlanDetails)
+                .HasForeignKey(d => d.UnitId)
+                .HasConstraintName("NutritionPlanDetail_UnitId_fkey");
         });
 
         modelBuilder.Entity<QuantityLog>(entity =>
         {
-            entity.HasKey(e => e.QLogId).HasName("QuantityLog_pkey");
+            entity.HasKey(e => e.QuantityLogId).HasName("QuantityLog_pkey");
 
             entity.ToTable("QuantityLog");
 
-            entity.Property(e => e.QLogId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("qLogId");
-            entity.Property(e => e.FlockId).HasColumnName("flockId");
-            entity.Property(e => e.Img)
-                .HasColumnType("character varying")
-                .HasColumnName("img");
-            entity.Property(e => e.LogDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("logDate");
-            entity.Property(e => e.LogType)
-                .HasColumnType("character varying")
-                .HasColumnName("logType");
-            entity.Property(e => e.Notes).HasColumnName("notes");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.ReasonId).HasColumnName("reasonId");
+            entity.Property(e => e.QuantityLogId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Img).HasColumnType("character varying");
+            entity.Property(e => e.LogDate).HasColumnType("timestamp(6) without time zone");
 
-            entity.HasOne(d => d.Flock).WithMany(p => p.QuantityLogs)
-                .HasForeignKey(d => d.FlockId)
-                .HasConstraintName("QuantityLog_flockId_fkey");
-
-            entity.HasOne(d => d.Reason).WithMany(p => p.QuantityLogs)
-                .HasForeignKey(d => d.ReasonId)
-                .HasConstraintName("QuantityLog_reasonId_fkey");
+            entity.HasOne(d => d.ChickenBatch).WithMany(p => p.QuantityLogs)
+                .HasForeignKey(d => d.ChickenBatchId)
+                .HasConstraintName("QuantityLog_ChickenBatchId_fkey");
         });
 
         modelBuilder.Entity<Request>(entity =>
@@ -1482,272 +1079,64 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("Request");
 
-            entity.Property(e => e.RequestId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("requestId");
-            entity.Property(e => e.ApprovedAt)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("approvedAt");
-            entity.Property(e => e.ApprovedBy).HasColumnName("approvedBy");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.IsEmergency).HasColumnName("isEmergency");
-            entity.Property(e => e.RequestTypeId).HasColumnName("requestTypeId");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.RequestId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ApprovedAt).HasColumnType("timestamp(6) without time zone");
 
-            entity.HasOne(d => d.ApprovedByNavigation).WithMany(p => p.RequestApprovedByNavigations)
-                .HasForeignKey(d => d.ApprovedBy)
-                .HasConstraintName("Request_approvedBy_fkey");
+            entity.HasOne(d => d.ApprovedBy).WithMany(p => p.Requests)
+                .HasForeignKey(d => d.ApprovedById)
+                .HasConstraintName("Request_ApprovedById_fkey");
 
             entity.HasOne(d => d.RequestType).WithMany(p => p.Requests)
                 .HasForeignKey(d => d.RequestTypeId)
-                .HasConstraintName("Request_requestTypeId_fkey");
+                .HasConstraintName("Request_RequestTypeId_fkey");
         });
 
-        modelBuilder.Entity<RequestDetail>(entity =>
+        modelBuilder.Entity<Resource>(entity =>
         {
-            entity.HasKey(e => e.DetailId).HasName("RequestDetails_pkey");
+            entity.HasKey(e => e.ResourceId).HasName("Resource_pkey");
 
-            entity.Property(e => e.DetailId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("detailId");
-            entity.Property(e => e.ExpectedQuantity).HasColumnName("expectedQuantity");
-            entity.Property(e => e.ItemId).HasColumnName("itemId");
-            entity.Property(e => e.LocationFrom)
-                .HasColumnType("character varying")
-                .HasColumnName("locationFrom");
-            entity.Property(e => e.LocationTo)
-                .HasColumnType("character varying")
-                .HasColumnName("locationTo");
-            entity.Property(e => e.Price).HasColumnName("price");
-            entity.Property(e => e.RequestId).HasColumnName("requestId");
+            entity.ToTable("Resource");
 
-            entity.HasOne(d => d.Request).WithMany(p => p.RequestDetails)
-                .HasForeignKey(d => d.RequestId)
-                .HasConstraintName("RequestDetails_requestId_fkey");
+            entity.Property(e => e.ResourceId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Description).HasColumnType("character varying");
+
+            entity.HasOne(d => d.Package).WithMany(p => p.ResourcePackages)
+                .HasForeignKey(d => d.PackageId)
+                .HasConstraintName("Resource_PackageId_fkey");
+
+            entity.HasOne(d => d.ResourceType).WithMany(p => p.ResourceResourceTypes)
+                .HasForeignKey(d => d.ResourceTypeId)
+                .HasConstraintName("Resource_ResourceTypeId_fkey");
+
+            entity.HasOne(d => d.Unit).WithMany(p => p.ResourceUnits)
+                .HasForeignKey(d => d.UnitId)
+                .HasConstraintName("Resource_UnitId_fkey");
         });
 
-        modelBuilder.Entity<Salary>(entity =>
+        modelBuilder.Entity<ResourceSupplier>(entity =>
         {
-            entity.HasKey(e => e.SalaryId).HasName("Salary_pkey");
+            entity.HasKey(e => e.ResourceSupplierId).HasName("ResourceSupplier_pkey");
 
-            entity.ToTable("Salary");
+            entity.ToTable("ResourceSupplier");
 
-            entity.Property(e => e.SalaryId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("salaryId");
-            entity.Property(e => e.BasicSalary).HasColumnName("basicSalary");
-            entity.Property(e => e.Bonus).HasColumnName("bonus");
-            entity.Property(e => e.Deduction).HasColumnName("deduction");
-            entity.Property(e => e.Final).HasColumnName("final");
-            entity.Property(e => e.OverTimeHours).HasColumnName("overTimeHours");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.TotalHoursWorked).HasColumnName("totalHoursWorked");
-            entity.Property(e => e.UserId).HasColumnName("userId");
+            entity.Property(e => e.ResourceSupplierId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Description).HasColumnType("character varying");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Salaries)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("Salary_userId_fkey");
-        });
+            entity.HasOne(d => d.PackagePrice).WithMany(p => p.ResourceSupplierPackagePrices)
+                .HasForeignKey(d => d.PackagePriceId)
+                .HasConstraintName("ResourceSupplier_PackagePriceId_fkey");
 
-        modelBuilder.Entity<StockReceipt>(entity =>
-        {
-            entity.HasKey(e => e.StockRepId).HasName("StockReceipt_pkey");
+            entity.HasOne(d => d.Resource).WithMany(p => p.ResourceSuppliers)
+                .HasForeignKey(d => d.ResourceId)
+                .HasConstraintName("ResourceSupplier_ResourceId_fkey");
 
-            entity.ToTable("StockReceipt");
+            entity.HasOne(d => d.Supplier).WithMany(p => p.ResourceSupplierSuppliers)
+                .HasForeignKey(d => d.SupplierId)
+                .HasConstraintName("ResourceSupplier_SupplierId_fkey");
 
-            entity.Property(e => e.StockRepId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("stockRepId");
-            entity.Property(e => e.ActualQuantity).HasColumnName("actualQuantity");
-            entity.Property(e => e.DetailId).HasColumnName("detailId");
-            entity.Property(e => e.ItemType)
-                .HasColumnType("character varying")
-                .HasColumnName("itemType");
-            entity.Property(e => e.LocationFrom)
-                .HasColumnType("character varying")
-                .HasColumnName("locationFrom");
-            entity.Property(e => e.LocationTo)
-                .HasColumnType("character varying")
-                .HasColumnName("locationTo");
-            entity.Property(e => e.StockReceiptType)
-                .HasColumnType("character varying")
-                .HasColumnName("stockReceiptType");
-
-            entity.HasOne(d => d.Detail).WithMany(p => p.StockReceipts)
-                .HasForeignKey(d => d.DetailId)
-                .HasConstraintName("StockReceipt_detailId_fkey");
-        });
-
-        modelBuilder.Entity<SubCategory>(entity =>
-        {
-            entity.HasKey(e => e.SubCategoryId).HasName("SubCategory_pkey");
-
-            entity.ToTable("SubCategory");
-
-            entity.Property(e => e.SubCategoryId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("subCategoryId");
-            entity.Property(e => e.CategoryId).HasColumnName("categoryId");
-            entity.Property(e => e.CreatedDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("createdDate");
-            entity.Property(e => e.DataType)
-                .HasColumnType("character varying")
-                .HasColumnName("dataType");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.SubCategoryName)
-                .HasColumnType("character varying")
-                .HasColumnName("subCategoryName");
-
-            entity.HasOne(d => d.Category).WithMany(p => p.SubCategories)
-                .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("SubCategory_categoryId_fkey");
-        });
-
-        modelBuilder.Entity<Domain.Entities.Task>(entity =>
-        {
-            entity.HasKey(e => e.TaskId).HasName("Task_pkey");
-
-            entity.ToTable("Task");
-
-            entity.Property(e => e.TaskId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("taskId");
-            entity.Property(e => e.Location)
-                .HasColumnType("character varying")
-                .HasColumnName("location");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.TaskName)
-                .HasColumnType("character varying")
-                .HasColumnName("taskName");
-            entity.Property(e => e.TaskType)
-                .HasColumnType("character varying")
-                .HasColumnName("taskType");
-        });
-
-        modelBuilder.Entity<TaskDetail>(entity =>
-        {
-            entity.HasKey(e => e.TaskDetailId).HasName("TaskDetail_pkey");
-
-            entity.ToTable("TaskDetail");
-
-            entity.Property(e => e.TaskDetailId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("taskDetailId");
-            entity.Property(e => e.Note).HasColumnName("note");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.TaskLogId).HasColumnName("taskLogId");
-            entity.Property(e => e.TypeProductId).HasColumnName("typeProductId");
-
-            entity.HasOne(d => d.TaskLog).WithMany(p => p.TaskDetails)
-                .HasForeignKey(d => d.TaskLogId)
-                .HasConstraintName("TaskDetail_taskLogId_fkey");
-
-            entity.HasOne(d => d.TypeProduct).WithMany(p => p.TaskDetails)
-                .HasForeignKey(d => d.TypeProductId)
-                .HasConstraintName("TaskDetail_typeProductId_fkey");
-        });
-
-        modelBuilder.Entity<TaskEvaluation>(entity =>
-        {
-            entity.HasKey(e => e.TaskEvalId).HasName("TaskEvaluation_pkey");
-
-            entity.ToTable("TaskEvaluation");
-
-            entity.Property(e => e.TaskEvalId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("taskEvalId");
-            entity.Property(e => e.CategoryId).HasColumnName("categoryId");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.FailedCriteria).HasColumnName("failedCriteria");
-            entity.Property(e => e.OverallResult)
-                .HasColumnType("character varying")
-                .HasColumnName("overallResult");
-            entity.Property(e => e.PassedCriteria).HasColumnName("passedCriteria");
-            entity.Property(e => e.StaffName)
-                .HasColumnType("character varying")
-                .HasColumnName("staffName");
-            entity.Property(e => e.TaskId).HasColumnName("taskId");
-            entity.Property(e => e.TaskType)
-                .HasColumnType("character varying")
-                .HasColumnName("taskType");
-            entity.Property(e => e.TotalCriteria).HasColumnName("totalCriteria");
-
-            entity.HasOne(d => d.Category).WithMany(p => p.TaskEvaluations)
-                .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("TaskEvaluation_categoryId_fkey");
-
-            entity.HasOne(d => d.Task).WithMany(p => p.TaskEvaluations)
-                .HasForeignKey(d => d.TaskId)
-                .HasConstraintName("TaskEvaluation_taskId_fkey");
-        });
-
-        modelBuilder.Entity<TaskLog>(entity =>
-        {
-            entity.HasKey(e => e.TaskLogId).HasName("TaskLog_pkey");
-
-            entity.ToTable("TaskLog");
-
-            entity.Property(e => e.TaskLogId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("taskLogId");
-            entity.Property(e => e.ChickenCoopId).HasColumnName("chickenCoopId");
-            entity.Property(e => e.EndDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("endDate");
-            entity.Property(e => e.StartDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("startDate");
-            entity.Property(e => e.Type)
-                .HasColumnType("character varying")
-                .HasColumnName("type");
-
-            entity.HasOne(d => d.ChickenCoop).WithMany(p => p.TaskLogs)
-                .HasForeignKey(d => d.ChickenCoopId)
-                .HasConstraintName("TaskLog_chickenCoopId_fkey");
-        });
-
-        modelBuilder.Entity<User>(entity =>
-        {
-            entity.HasKey(e => e.UserId).HasName("User_pkey");
-
-            entity.ToTable("User");
-
-            entity.Property(e => e.UserId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("userId");
-            entity.Property(e => e.Address).HasColumnName("address");
-            entity.Property(e => e.Avatar)
-                .HasColumnType("character varying")
-                .HasColumnName("avatar");
-            entity.Property(e => e.Cccd)
-                .HasColumnType("character varying")
-                .HasColumnName("CCCD");
-            entity.Property(e => e.DateOfBirth)
-                .HasColumnName("dateOfBirth");
-            entity.Property(e => e.FullName)
-                .HasColumnType("character varying")
-                .HasColumnName("fullName");
-            entity.Property(e => e.Mail)
-                .HasColumnType("character varying")
-                .HasColumnName("mail");
-            entity.Property(e => e.HashedPassword)
-                .HasColumnType("character varying")
-                .HasColumnName("hashedPassword");
-            entity.Property(e => e.PhoneNumber)
-                .HasColumnType("character varying")
-                .HasColumnName("phoneNumber");
-            entity.Property(e => e.SystemRole)
-                .HasConversion<int>()
-                .HasColumnType("int")
-                .HasColumnName("systemRole");
-            entity.Property(e => e.CreatedDate)
-                .HasColumnName("createdDate");
-            entity.Property(e => e.Status)
-                .HasConversion<int>()
-                .HasColumnType("int")
-                .HasColumnName("status");
+            entity.HasOne(d => d.UnitPrice).WithMany(p => p.ResourceSupplierUnitPrices)
+                .HasForeignKey(d => d.UnitPriceId)
+                .HasConstraintName("ResourceSupplier_UnitPriceId_fkey");
         });
 
         modelBuilder.Entity<RevokedToken>(entity =>
@@ -1756,122 +1145,262 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("RevokedToken");
 
-            entity.Property(e => e.RevokedTokenId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("revokedTokenId");
+            entity.Property(e => e.RevokedTokenId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ExpiryDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.RevokedAt).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.Token).HasColumnType("character varying");
 
-            entity.Property(e => e.Token)
-                .HasColumnType("character varying")
-                .HasColumnName("token");
-
-            entity.Property(e => e.TokenType)
-                .HasColumnName("tokenType");
-
-            entity.Property(e => e.RevokedAt)
-                .HasColumnName("revokedAt");
-
-            entity.Property(e => e.ExpiryDate)
-                .HasColumnName("expiryDate");
-
-            entity.Property(e => e.UserId)
-                .HasColumnName("userId");
-
-            entity.HasOne(rt => rt.User).WithMany(u => u.RevokedTokens)
-                .HasForeignKey(rt => rt.UserId)
-                .HasConstraintName("RevokedToken_userId_fkey");
+            entity.HasOne(d => d.User).WithMany(p => p.RevokedTokens)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("RevokedToken_UserId_fkey");
         });
 
-
-        modelBuilder.Entity<VaccinationEmployee>(entity =>
+        modelBuilder.Entity<Shift>(entity =>
         {
-            entity.HasKey(e => e.VaccinationEmployeeId).HasName("VaccinationEmployee_pkey");
+            entity.HasKey(e => e.ShiftId).HasName("Shift_pkey");
 
-            entity.ToTable("VaccinationEmployee");
+            entity.ToTable("Shift");
 
-            entity.Property(e => e.VaccinationEmployeeId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("vaccinationEmployeeId");
-            entity.Property(e => e.Employee).HasColumnName("employee");
-            entity.Property(e => e.VaccinationLogId).HasColumnName("vaccinationLogId");
-
-            entity.HasOne(d => d.EmployeeNavigation).WithMany(p => p.VaccinationEmployees)
-                .HasForeignKey(d => d.Employee)
-                .HasConstraintName("VaccinationEmployee_employee_fkey");
-
-            entity.HasOne(d => d.VaccinationLog).WithMany(p => p.VaccinationEmployees)
-                .HasForeignKey(d => d.VaccinationLogId)
-                .HasConstraintName("VaccinationEmployee_vaccinationLogId_fkey");
+            entity.Property(e => e.ShiftId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.EndTime).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.ShiftName).HasColumnType("character varying");
+            entity.Property(e => e.StartTime).HasColumnType("timestamp(6) without time zone");
         });
 
-        modelBuilder.Entity<VaccinationLog>(entity =>
+        modelBuilder.Entity<ShiftSchedule>(entity =>
         {
-            entity.HasKey(e => e.VLogId).HasName("VaccinationLog_pkey");
+            entity.HasKey(e => e.ShiftScheduleId).HasName("ShiftSchedule_pkey");
 
-            entity.ToTable("VaccinationLog");
+            entity.ToTable("ShiftSchedule");
 
-            entity.Property(e => e.VLogId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("vLogId");
-            entity.Property(e => e.Dosage)
-                .HasColumnType("character varying")
-                .HasColumnName("dosage");
-            entity.Property(e => e.FlockId).HasColumnName("flockId");
-            entity.Property(e => e.Notes).HasColumnName("notes");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.Reaction).HasColumnName("reaction");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.VaccineId).HasColumnName("vaccineId");
+            entity.Property(e => e.ShiftScheduleId).HasDefaultValueSql("gen_random_uuid()");
 
-            entity.HasOne(d => d.Flock).WithMany(p => p.VaccinationLogs)
-                .HasForeignKey(d => d.FlockId)
-                .HasConstraintName("VaccinationLog_flockId_fkey");
-
-            entity.HasOne(d => d.Vaccine).WithMany(p => p.VaccinationLogs)
-                .HasForeignKey(d => d.VaccineId)
-                .HasConstraintName("VaccinationLog_vaccineId_fkey");
+            entity.HasOne(d => d.Shift).WithMany(p => p.ShiftSchedules)
+                .HasForeignKey(d => d.ShiftId)
+                .HasConstraintName("Shift_ShiftId_fkey");
         });
 
-        modelBuilder.Entity<Vaccine>(entity =>
+        modelBuilder.Entity<SubCategory>(entity =>
         {
-            entity.HasKey(e => e.VaccineId).HasName("Vaccine_pkey");
+            entity.HasKey(e => e.SubCategoryId).HasName("SubCategory_pkey");
 
-            entity.ToTable("Vaccine");
+            entity.ToTable("SubCategory");
 
-            entity.HasIndex(e => e.ProductId, "Vaccine_productId_key").IsUnique();
+            entity.Property(e => e.SubCategoryId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.DataType).HasColumnType("character varying");
+            entity.Property(e => e.SubCategoryName).HasColumnType("character varying");
 
-            entity.Property(e => e.VaccineId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("vaccineId");
-            entity.Property(e => e.BatchNumber)
+            entity.HasOne(d => d.Category).WithMany(p => p.SubCategories)
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("Category_CategoryId_fkey");
+        });
+
+        modelBuilder.Entity<Domain.Entities.Task>(entity =>
+        {
+            entity.HasKey(e => e.TaskId).HasName("Task_pkey");
+
+            entity.ToTable("Task");
+
+            entity.Property(e => e.TaskId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Description).HasColumnType("character varying");
+            entity.Property(e => e.TaskName).HasColumnType("character varying");
+
+            entity.HasOne(d => d.TaskType).WithMany(p => p.Tasks)
+                .HasForeignKey(d => d.TaskTypeId)
+                .HasConstraintName("Task_TaskTypeId_fkey");
+        });
+
+        modelBuilder.Entity<TaskHarvest>(entity =>
+        {
+            entity.HasKey(e => e.TaskHarvestId).HasName("TaskHarvest_pkey");
+
+            entity.ToTable("TaskHarvest");
+
+            entity.Property(e => e.TaskHarvestId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Quality).HasColumnType("character varying");
+
+            entity.HasOne(d => d.HarvestType).WithMany(p => p.TaskHarvests)
+                .HasForeignKey(d => d.HarvestTypeId)
+                .HasConstraintName("TaskHarvest_HarvestTypeId_fkey");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskHarvests)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("TaskHarvest_TaskId_fkey");
+        });
+
+        modelBuilder.Entity<TaskLocation>(entity =>
+        {
+            entity.HasKey(e => e.TaskLocationId).HasName("TaskLocation_pkey");
+
+            entity.ToTable("TaskLocation");
+
+            entity.Property(e => e.TaskLocationId).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.HasOne(d => d.LocationType).WithMany(p => p.TaskLocations)
+                .HasForeignKey(d => d.LocationTypeId)
+                .HasConstraintName("TaskLocation_LocationTypeId_fkey");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskLocations)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("TaskLocation_TaskId_fkey");
+        });
+
+        modelBuilder.Entity<TaskLog>(entity =>
+        {
+            entity.HasKey(e => e.TaskLogId).HasName("TaskLog_pkey");
+
+            entity.ToTable("TaskLog");
+
+            entity.Property(e => e.TaskLogId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.CompletedAt).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.Note).HasColumnType("character varying");
+
+            entity.HasOne(d => d.ChickenCoop).WithMany(p => p.TaskLogs)
+                .HasForeignKey(d => d.ChickenCoopId)
+                .HasConstraintName("TaskLog_ChickenCoopId_fkey");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskLogs)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("TaskLog_TaskId_fkey");
+        });
+
+        modelBuilder.Entity<TaskRequest>(entity =>
+        {
+            entity.HasKey(e => e.TaskRequestId).HasName("TaskRequest_pkey");
+
+            entity.ToTable("TaskRequest");
+
+            entity.Property(e => e.TaskRequestId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Description).HasColumnType("character varying");
+
+            entity.HasOne(d => d.Request).WithMany(p => p.TaskRequests)
+                .HasForeignKey(d => d.RequestId)
+                .HasConstraintName("TaskRequest_RequestId_fkey");
+
+            entity.HasOne(d => d.TaskType).WithMany(p => p.TaskRequests)
+                .HasForeignKey(d => d.TaskTypeId)
+                .HasConstraintName("TaskRequest_TaskTypeId_fkey");
+        });
+
+        modelBuilder.Entity<TaskResource>(entity =>
+        {
+            entity.HasKey(e => e.TaskResourceId).HasName("TaskResource_pkey");
+
+            entity.ToTable("TaskResource");
+
+            entity.Property(e => e.TaskResourceId).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.HasOne(d => d.ResourceType).WithMany(p => p.TaskResources)
+                .HasForeignKey(d => d.ResourceTypeId)
+                .HasConstraintName("TaskResource_ResourceTypeId_fkey");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskResources)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("TaskResource_TaskId_fkey");
+        });
+
+        modelBuilder.Entity<TaskSchedule>(entity =>
+        {
+            entity.HasKey(e => e.TaskScheduleId).HasName("TaskSchedule_pkey");
+
+            entity.ToTable("TaskSchedule");
+
+            entity.Property(e => e.TaskScheduleId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.LastWorkDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.NextWorkDate).HasColumnType("timestamp(6) without time zone");
+        });
+
+        modelBuilder.Entity<TemplateCriterion>(entity =>
+        {
+            entity.HasKey(e => e.TemplateCriteriaId).HasName("TemplateCriteria_pkey");
+
+            entity.Property(e => e.TemplateCriteriaId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ExpectedCondition).HasColumnType("character varying");
+            entity.Property(e => e.ExpectedUnit).HasColumnType("character varying");
+            entity.Property(e => e.ExpectedValue).HasColumnType("character varying");
+            entity.Property(e => e.TemplateName).HasColumnType("character varying");
+
+            entity.HasOne(d => d.Criteria).WithMany(p => p.TemplateCriteria)
+                .HasForeignKey(d => d.CriteriaId)
+                .HasConstraintName("TemplateCriteria_CriteriaId_fkey");
+
+            entity.HasOne(d => d.EvaluationTemplate).WithMany(p => p.TemplateCriteria)
+                .HasForeignKey(d => d.EvaluationTemplateId)
+                .HasConstraintName("TemplateCriteria_EvaluationTemplateId_fkey");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.UserId).HasName("User_pkey");
+
+            entity.ToTable("User");
+
+            entity.Property(e => e.UserId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Avatar).HasColumnType("character varying");
+            entity.Property(e => e.Cccd)
                 .HasColumnType("character varying")
-                .HasColumnName("batchNumber");
-            entity.Property(e => e.DiseaseId).HasColumnName("diseaseId");
-            entity.Property(e => e.Dosage)
-                .HasColumnType("character varying")
-                .HasColumnName("dosage");
-            entity.Property(e => e.ExpiryDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("expiryDate");
-            entity.Property(e => e.Instructions).HasColumnName("instructions");
-            entity.Property(e => e.Name)
-                .HasColumnType("character varying")
-                .HasColumnName("name");
-            entity.Property(e => e.Notes).HasColumnName("notes");
-            entity.Property(e => e.ProductId)
-                .IsRequired()
-                .HasColumnName("productId");
-            entity.Property(e => e.ProductionDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("productionDate");
-            entity.Property(e => e.SupplierId).HasColumnName("supplierId");
+                .HasColumnName("CCCD");
+            entity.Property(e => e.FullName).HasColumnType("character varying");
+            entity.Property(e => e.HashedPassword).HasColumnType("character varying");
+            entity.Property(e => e.Mail).HasColumnType("character varying");
+            entity.Property(e => e.PhoneNumber).HasColumnType("character varying");
+        });
 
-            entity.HasOne(d => d.Disease).WithMany(p => p.VaccineDiseases)
-                .HasForeignKey(d => d.DiseaseId)
-                .HasConstraintName("Vaccine_diseaseId_fkey");
+        modelBuilder.Entity<VaccineLog>(entity =>
+        {
+            entity.HasKey(e => e.VaccineLogId).HasName("VaccineLog_pkey");
 
-            entity.HasOne(d => d.Supplier).WithMany(p => p.VaccineSuppliers)
-                .HasForeignKey(d => d.SupplierId)
-                .HasConstraintName("Vaccine_supplierId_fkey");
+            entity.ToTable("VaccineLog");
+
+            entity.Property(e => e.VaccineLogId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Notes).HasColumnType("character varying");
+            entity.Property(e => e.Reaction).HasColumnType("character varying");
+
+            entity.HasOne(d => d.ChickenBatch).WithMany(p => p.VaccineLogs)
+                .HasForeignKey(d => d.ChickenBatchId)
+                .HasConstraintName("VaccineLog_ChickenBatchId_fkey");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.VaccineLogs)
+                .HasForeignKey(d => d.TaskId)
+                .HasConstraintName("VaccineLog_TaskId_fkey");
+        });
+
+        modelBuilder.Entity<WarePermission>(entity =>
+        {
+            entity.HasKey(e => e.PermissionId).HasName("WarePermission_pkey");
+
+            entity.ToTable("WarePermission");
+
+            entity.Property(e => e.PermissionId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.GrantedAt).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.PermissionLevel).HasDefaultValue(0);
+
+            entity.HasOne(d => d.User).WithMany(p => p.WarePermissions)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("WarePermission_UserId_fkey");
+
+            entity.HasOne(d => d.Ware).WithMany(p => p.WarePermissions)
+                .HasForeignKey(d => d.WareId)
+                .HasConstraintName("WarePermission_WareId_fkey");
+        });
+
+        modelBuilder.Entity<WareStock>(entity =>
+        {
+            entity.HasKey(e => e.WareStockId).HasName("WareStock_pkey");
+
+            entity.ToTable("WareStock");
+
+            entity.Property(e => e.WareStockId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Quantity).HasDefaultValue(0);
+
+            entity.HasOne(d => d.Resource).WithMany(p => p.WareStocks)
+                .HasForeignKey(d => d.ResourceId)
+                .HasConstraintName("WareStock_ResourceId_fkey");
+
+            entity.HasOne(d => d.Ware).WithMany(p => p.WareStocks)
+                .HasForeignKey(d => d.WareId)
+                .HasConstraintName("WareStock_WareId_fkey");
         });
 
         modelBuilder.Entity<WareTransaction>(entity =>
@@ -1880,29 +1409,25 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("WareTransaction");
 
-            entity.Property(e => e.TransactionId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("transactionId");
-            entity.Property(e => e.LocationFrom).HasColumnName("locationFrom");
-            entity.Property(e => e.LocationTo).HasColumnName("locationTo");
-            entity.Property(e => e.ProductId).HasColumnName("productId");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.Reason).HasColumnName("reason");
-            entity.Property(e => e.TransactionDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("transactionDate");
-            entity.Property(e => e.TransactionType)
-                .HasColumnType("character varying")
-                .HasColumnName("transactionType");
-            entity.Property(e => e.WareId).HasColumnName("wareId");
+            entity.Property(e => e.TransactionId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.BatchNumber).HasColumnType("character varying");
+            entity.Property(e => e.TransactionDate).HasColumnType("timestamp(6) without time zone");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.WareTransactions)
-                .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("WareTransaction_productId_fkey");
+            entity.HasOne(d => d.LocationFrom).WithMany(p => p.WareTransactionLocationFroms)
+                .HasForeignKey(d => d.LocationFromId)
+                .HasConstraintName("WareTransaction_LocationFromId_fkey");
 
-            entity.HasOne(d => d.Ware).WithMany(p => p.WareTransactions)
+            entity.HasOne(d => d.LocationTo).WithMany(p => p.WareTransactionLocationTos)
+                .HasForeignKey(d => d.LocationToId)
+                .HasConstraintName("WareTransaction_LocationToId_fkey");
+
+            entity.HasOne(d => d.TransactionTypeNavigation).WithMany(p => p.WareTransactions)
+                .HasForeignKey(d => d.TransactionType)
+                .HasConstraintName("WareTransaction_TransactionType_fkey");
+
+            entity.HasOne(d => d.Ware).WithMany(p => p.WareTransactionWares)
                 .HasForeignKey(d => d.WareId)
-                .HasConstraintName("WareTransaction_wareId_fkey");
+                .HasConstraintName("WareTransaction_WareId_fkey");
         });
 
         modelBuilder.Entity<Warehouse>(entity =>
@@ -1911,67 +1436,17 @@ public partial class CfmsDbContext : DbContext
 
             entity.ToTable("Warehouse");
 
-            entity.Property(e => e.WareId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("wareId");
-            entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.FarmId).HasColumnName("farmId");
-            entity.Property(e => e.MaxCapacity).HasColumnName("maxCapacity");
-            entity.Property(e => e.TotalQuantity).HasColumnName("totalQuantity");
-            entity.Property(e => e.TotalWeight).HasColumnName("totalWeight");
-            entity.Property(e => e.WarehouseName)
-                .HasColumnType("character varying")
-                .HasColumnName("warehouseName");
+            entity.Property(e => e.WareId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.Status).HasDefaultValue(1);
+            entity.Property(e => e.WarehouseName).HasColumnType("character varying");
 
             entity.HasOne(d => d.Farm).WithMany(p => p.Warehouses)
                 .HasForeignKey(d => d.FarmId)
-                .HasConstraintName("Warehouse_farmId_fkey");
-        });
+                .HasConstraintName("Warehouse_FarmId_fkey");
 
-        modelBuilder.Entity<WarehousePermission>(entity =>
-        {
-            entity.HasKey(e => e.PermissionId).HasName("WarehousePermission_pkey");
-
-            entity.ToTable("WarehousePermission");
-
-            entity.Property(e => e.PermissionId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("permissionId");
-            entity.Property(e => e.GrantedAt)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("grantedAt");
-            entity.Property(e => e.UserId).HasColumnName("userId");
-            entity.Property(e => e.WareId).HasColumnName("wareId");
-
-            entity.HasOne(d => d.User).WithMany(p => p.WarehousePermissions)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("WarehousePermission_userId_fkey");
-
-            entity.HasOne(d => d.Ware).WithMany(p => p.WarehousePermissions)
-                .HasForeignKey(d => d.WareId)
-                .HasConstraintName("WarehousePermission_wareId_fkey");
-        });
-
-        modelBuilder.Entity<WarehouseStock>(entity =>
-        {
-            entity.HasKey(e => e.WareStockId).HasName("WarehouseStock_pkey");
-
-            entity.ToTable("WarehouseStock");
-
-            entity.Property(e => e.WareStockId)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .HasColumnName("wareStockId");
-            entity.Property(e => e.ProductId).HasColumnName("productId");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.WareId).HasColumnName("wareId");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.WarehouseStocks)
-                .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("WarehouseStock_productId_fkey");
-
-            entity.HasOne(d => d.Ware).WithMany(p => p.WarehouseStocks)
-                .HasForeignKey(d => d.WareId)
-                .HasConstraintName("WarehouseStock_wareId_fkey");
+            entity.HasOne(d => d.StorageType).WithMany(p => p.Warehouses)
+                .HasForeignKey(d => d.StorageTypeId)
+                .HasConstraintName("Warehouse_StorageTypeId_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);

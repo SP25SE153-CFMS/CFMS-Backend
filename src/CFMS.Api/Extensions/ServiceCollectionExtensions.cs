@@ -7,8 +7,7 @@ using CFMS.Application.Mappings;
 using CFMS.Application.Services;
 using CFMS.Application.Services.Impl;
 using CFMS.Domain.Interfaces;
-
-using CFMS.Infrastructure.Persistence;
+using CFMS.Infrastructure;
 using CFMS.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

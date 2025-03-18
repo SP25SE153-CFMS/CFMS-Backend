@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace CFMS.Domain.Entities;
+
+public class TaskResource : EntityAudit
+{
+    public Guid TaskResourceId { get; set; }
+
+    public Guid TaskId { get; set; }
+
+    public Guid ResourceId { get; set; }
+
+    public Guid? ResourceTypeId { get; set; }
+
+    public int? Quantity { get; set; }
+
+    public Guid? UnitId { get; set; }
+
+    public virtual SubCategory? ResourceType { get; set; }
+
+    public virtual Task Task { get; set; } = null!;
+}
