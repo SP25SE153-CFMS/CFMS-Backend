@@ -15,11 +15,13 @@ public class ChickenCoop : EntityAudit
 
     public int? Area { get; set; }
 
-    public string? Status { get; set; }
+    public double? Density { get; set; }
+
+    public int? CurrentQuantity { get; set; }
 
     public string? Description { get; set; }
 
-    public Guid? PurposeId { get; set; }
+    public bool? Status { get; set; }
 
     public Guid? BreedingAreaId { get; set; }
 
@@ -28,10 +30,6 @@ public class ChickenCoop : EntityAudit
     public virtual ICollection<ChickenBatch> ChickenBatches { get; set; } = new List<ChickenBatch>();
 
     public virtual ICollection<CoopEquipment> CoopEquipments { get; set; } = new List<CoopEquipment>();
-
-    public virtual ICollection<HarvestLog> HarvestLogs { get; set; } = new List<HarvestLog>();
-
-    public virtual SubCategory? Purpose { get; set; }
 
     public virtual ICollection<TaskLog> TaskLogs { get; set; } = new List<TaskLog>();
 }

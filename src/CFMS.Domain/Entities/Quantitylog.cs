@@ -5,7 +5,9 @@ namespace CFMS.Domain.Entities;
 
 public class QuantityLog : EntityAudit
 {
-    public Guid QLogId { get; set; }
+    public Guid QuantityLogId { get; set; }
+
+    public Guid? ChickenBatchId { get; set; }
 
     public DateTime? LogDate { get; set; }
 
@@ -15,13 +17,7 @@ public class QuantityLog : EntityAudit
 
     public string? Img { get; set; }
 
-    public string? LogType { get; set; }
+    public int? LogType { get; set; }
 
-    public Guid? FlockId { get; set; }
-
-    public Guid? ReasonId { get; set; }
-
-    public virtual Flock? Flock { get; set; }
-
-    public virtual SubCategory? Reason { get; set; }
+    public virtual ChickenBatch? ChickenBatch { get; set; }
 }
