@@ -48,6 +48,7 @@ namespace CFMS.Application.Services.Impl
         }
 
         public DateTime? ToVietnamTime(DateTime utcDateTime)
+
         {
             if (utcDateTime.Kind == DateTimeKind.Unspecified)
             {
@@ -58,7 +59,7 @@ namespace CFMS.Application.Services.Impl
                 utcDateTime = utcDateTime.ToUniversalTime();
             }
 
-            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Ho_Chi_Minh");
             return TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, vietnamTimeZone);
         }
 

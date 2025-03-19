@@ -13,9 +13,28 @@ namespace CFMS.Application.Features.ChickenBatchFeat.Delete
             _unitOfWork = unitOfWork;
         }
 
-        public Task<BaseResponse<bool>> Handle(DeleteChickenBatchCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(DeleteChickenBatchCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.Id) && b.IsDeleted == false).FirstOrDefault();
+            if (existBatch == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
+            }
+
+            try
+            {
+                _unitOfWork.ChickenBatchRepository.Delete(existBatch);
+                var result = await _unitOfWork.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
+                }
+                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
+            }
+            catch (Exception ex)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+            }
         }
     }
 }

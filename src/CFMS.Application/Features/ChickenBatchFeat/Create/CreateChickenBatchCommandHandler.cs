@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
 
@@ -16,9 +17,28 @@ namespace CFMS.Application.Features.ChickenBatchFeat.Create
             _mapper = mapper;
         }
 
-        public Task<BaseResponse<bool>> Handle(CreateChickenBatchCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(CreateChickenBatchCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.ChickenCoopId) && c.IsDeleted == false).FirstOrDefault();
+            if (existCoop == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Chuồng không tồn tại");
+            }
+
+            try
+            {
+                _unitOfWork.ChickenBatchRepository.Insert(_mapper.Map<ChickenBatch>(request));
+                var result = await _unitOfWork.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return BaseResponse<bool>.SuccessResponse(message: "Tạo lứa thành công");
+                }
+                return BaseResponse<bool>.SuccessResponse(message: "Tạo lứa không thành công");
+            }
+            catch (Exception ex)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+            }
         }
     }
 }

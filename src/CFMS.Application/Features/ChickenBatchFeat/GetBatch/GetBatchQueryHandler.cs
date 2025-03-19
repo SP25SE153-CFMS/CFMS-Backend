@@ -14,9 +14,15 @@ namespace CFMS.Application.Features.ChickenBatchFeat.GetBatch
             _unitOfWork = unitOfWork;
         }
 
-        public Task<BaseResponse<ChickenBatch>> Handle(GetBatchQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<ChickenBatch>> Handle(GetBatchQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.Id) && b.IsDeleted == false).FirstOrDefault();
+            if (existBatch == null)
+            {
+                return BaseResponse<ChickenBatch>.FailureResponse(message: "Lứa không tồn tại");
+            }
+            return BaseResponse<ChickenBatch>.SuccessResponse(data: existBatch);
+
         }
     }
 }

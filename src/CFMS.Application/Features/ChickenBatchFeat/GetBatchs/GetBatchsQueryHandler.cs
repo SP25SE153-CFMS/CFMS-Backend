@@ -14,9 +14,10 @@ namespace CFMS.Application.Features.ChickenBatchFeat.GetBatchs
             _unitOfWork = unitOfWork;
         }
 
-        public Task<BaseResponse<IEnumerable<ChickenBatch>>> Handle(GetBatchsQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<IEnumerable<ChickenBatch>>> Handle(GetBatchsQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var batchs = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.IsDeleted == false);
+            return BaseResponse<IEnumerable<ChickenBatch>>.SuccessResponse(data: batchs);
         }
     }
 }
