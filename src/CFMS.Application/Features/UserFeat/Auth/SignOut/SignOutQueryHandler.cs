@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.UserFeat.Auth
+namespace CFMS.Application.Features.UserFeat.Auth.SignOut
 {
     public class SignOutQueryHandler : IRequestHandler<SignOutQuery, BaseResponse<string>>
     {

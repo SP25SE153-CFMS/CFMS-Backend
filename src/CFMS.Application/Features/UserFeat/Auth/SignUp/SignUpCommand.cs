@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.UserFeat.Auth
+namespace CFMS.Application.Features.UserFeat.Auth.SignUp
 {
     public class SignUpCommand : IRequest<BaseResponse<AuthResponse>>
     {

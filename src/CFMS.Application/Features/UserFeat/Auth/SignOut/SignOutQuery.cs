@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.UserFeat.Auth
+namespace CFMS.Application.Features.UserFeat.Auth.SignOut
 {
-    public class GetCurrentUserQuery : IRequest<BaseResponse<CurrentUserResponse>>
+    public class SignOutQuery : IRequest<BaseResponse<string>>
     {
-        public GetCurrentUserQuery()
+        public SignOutQuery()
         {
         }
     }
