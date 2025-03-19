@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CFMS.Domain.Enums.Roles
+{
+    public enum SystemRole
+	{
+		Admin = 2,
+		User = 1
+    }
+}

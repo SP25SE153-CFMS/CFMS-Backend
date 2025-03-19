@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class ChickenBatch
+public class ChickenBatch : EntityAudit
 {
     public Guid ChickenBatchId { get; set; }
 
     public Guid? ChickenCoopId { get; set; }
 
-    public string? Name { get; set; }
+    public string? ChickenBatchName { get; set; }
 
     public DateTime? StartDate { get; set; }
 
@@ -21,5 +21,15 @@ public partial class ChickenBatch
 
     public virtual ChickenCoop? ChickenCoop { get; set; }
 
-    public virtual ICollection<Flock> Flocks { get; set; } = new List<Flock>();
+    public virtual ICollection<Chicken> Chickens { get; set; } = new List<Chicken>();
+
+    public virtual ICollection<FeedLog> FeedLogs { get; set; } = new List<FeedLog>();
+
+    public virtual ICollection<GrowthBatch> GrowthBatches { get; set; } = new List<GrowthBatch>();
+
+    public virtual ICollection<HealthLog> HealthLogs { get; set; } = new List<HealthLog>();
+
+    public virtual ICollection<QuantityLog> QuantityLogs { get; set; } = new List<QuantityLog>();
+
+    public virtual ICollection<VaccineLog> VaccineLogs { get; set; } = new List<VaccineLog>();
 }

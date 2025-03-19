@@ -25,6 +25,12 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Create
                 return BaseResponse<bool>.FailureResponse(message: "Farm không tồn tại");
             }
 
+            var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaCode.Equals(request.BreedingAreaCode));
+            if (existBreedingArea == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Khu nuôi đã tồn tại");
+            }
+
             try
             {
                 _unitOfWork.BreedingAreaRepository.Insert(_mapper.Map<BreedingArea>(request));

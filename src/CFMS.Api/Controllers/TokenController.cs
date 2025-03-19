@@ -6,8 +6,6 @@ using System.Security.Claims;
 namespace CFMS.Api.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
     public class TokenController : BaseController
     {
         public TokenController(IMediator mediator) : base(mediator)
@@ -15,7 +13,7 @@ namespace CFMS.Api.Controllers
         }
 
         [HttpGet("admin")]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Policy = "AdminOnly")]
         public IActionResult AdminOnly()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

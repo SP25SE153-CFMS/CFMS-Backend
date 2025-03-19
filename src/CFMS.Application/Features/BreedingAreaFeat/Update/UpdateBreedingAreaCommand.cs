@@ -26,5 +26,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Update
         public string? Image { get; set; }
 
         public string? Notes { get; set; }
+
+        public double? Area { get; set; }
     }
 }

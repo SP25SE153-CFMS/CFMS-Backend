@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class Equipment
+public class Equipment : EntityAudit
 {
     public Guid EquipmentId { get; set; }
 
@@ -11,29 +11,19 @@ public partial class Equipment
 
     public string? EquipmentName { get; set; }
 
+    public string? Material { get; set; }
+
+    public string? Usage { get; set; }
+
+    public int? Warranty { get; set; }
+
+    public double? Size { get; set; }
+
+    public double? Weight { get; set; }
+
     public DateTime? PurchaseDate { get; set; }
-
-    public int? WarrantyPeriod { get; set; }
-
-    public string? Status { get; set; }
-
-    public double? Cost { get; set; }
-
-    public int? Quantity { get; set; }
-
-    public string? Specifications { get; set; }
-
-    public DateTime? StartDate { get; set; }
-
-    public DateTime? EndDate { get; set; }
-
-    public DateTime? CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-    public Guid? ProductId { get; set; }
 
     public virtual ICollection<CoopEquipment> CoopEquipments { get; set; } = new List<CoopEquipment>();
 
-    public virtual Product? Product { get; set; }
+    public virtual Resource EquipmentNavigation { get; set; } = null!;
 }

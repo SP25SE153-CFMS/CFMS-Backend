@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class CoopEquipment
+public class CoopEquipment : EntityAudit
 {
     public Guid CoopEquipmentId { get; set; }
 
@@ -15,7 +15,11 @@ public partial class CoopEquipment
 
     public DateTime? AssignedDate { get; set; }
 
-    public DateTime? MaintainDate { get; set; }
+    public DateTime? LastMaintenanceDate { get; set; }
+
+    public DateTime? NextMaintenanceDate { get; set; }
+
+    public int MaintenanceInterval { get; set; }
 
     public string? Status { get; set; }
 

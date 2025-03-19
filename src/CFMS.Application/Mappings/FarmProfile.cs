@@ -8,7 +8,6 @@ namespace CFMS.Application.Mappings
     {
         public FarmProfile()
         {
-            // Mapping from CreateFarmCommand to Farm entity
             CreateMap<CreateFarmCommand, Farm>();
         }
     }

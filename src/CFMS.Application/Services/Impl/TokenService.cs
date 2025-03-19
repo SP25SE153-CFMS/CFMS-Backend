@@ -1,12 +1,15 @@
-﻿using CFMS.Application.DTOs.Auth;
+﻿ using CFMS.Application.DTOs.Auth;
 using CFMS.Application.Services;
+using CFMS.Application.Services.Impl;
 using CFMS.Domain.Entities;
+using CFMS.Domain.Enums.Roles;
 using CFMS.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Task = System.Threading.Tasks.Task;
 
 public class TokenService : ITokenService
 {
@@ -14,13 +17,19 @@ public class TokenService : ITokenService
     private readonly string _refreshSecretKey;
     private readonly string _issuer;
     private readonly string _audience;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUserService _currentUserService;
+    private readonly IUtilityService _utilityService;
 
-    public TokenService(IConfiguration config)
+    public TokenService(IConfiguration config, IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IUtilityService utilityService)
     {
         _accessSecretKey = config["Jwt:AccessSecretKey"];
         _refreshSecretKey = config["Jwt:RefreshSecretKey"];
         _issuer = config["Jwt:Issuer"];
         _audience = config["Jwt:Audience"];
+        _unitOfWork = unitOfWork;
+        _currentUserService = currentUserService;
+        _utilityService = utilityService;
     }
 
     public string GenerateAccessToken(User user)
@@ -31,8 +40,8 @@ public class TokenService : ITokenService
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Role, user.RoleName.ToString().ToUpper()),
-            new Claim("IsRevoked", "false")
+            new Claim(ClaimTypes.Role, user.SystemRole.ToString().ToUpper()),
+            new Claim(ClaimTypes.Email, user.Mail.ToString())
         };
 
         var token = new JwtSecurityToken(
@@ -54,8 +63,8 @@ public class TokenService : ITokenService
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Role, user.RoleName.ToString().ToUpper()),
-            new Claim("RefreshToken", Guid.NewGuid().ToString())
+            new Claim(ClaimTypes.Role, user.SystemRole.ToString().ToUpper()),
+            new Claim(ClaimTypes.Email, user.Mail.ToString())
         };
 
         var token = new JwtSecurityToken(
@@ -69,14 +78,19 @@ public class TokenService : ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public AuthResponse RefreshAccessToken(string refreshToken)
+    public async Task<AuthResponse> RefreshAccessTokenAsync(RevokedToken token)
     {
         var handler = new JwtSecurityTokenHandler();
         var key = new SymmetricSecurityKey(Convert.FromBase64String(_refreshSecretKey));
 
         try
         {
-            var principal = handler.ValidateToken(refreshToken, new TokenValidationParameters
+            if (IsTokenExpired(token.Token) || IsTokenRevoked(token))
+            {
+                return null;
+            }
+
+            var principal = handler.ValidateToken(token.Token, new TokenValidationParameters
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
@@ -87,24 +101,47 @@ public class TokenService : ITokenService
                 IssuerSigningKey = key
             }, out SecurityToken validatedToken);
 
+            var jwtToken = validatedToken as JwtSecurityToken;
+            if (jwtToken == null) return null;
+
+            var expiryDateUnix = long.Parse(jwtToken.Claims.First(x => x.Type == "exp").Value);
+            var expiryDateTime = DateTimeOffset.FromUnixTimeSeconds(expiryDateUnix).UtcDateTime;
+
             var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
             var roleClaim = principal.FindFirst(ClaimTypes.Role);
+            var mailClaim = principal.FindFirst(ClaimTypes.Email);
 
             if (userIdClaim == null || roleClaim == null) return null;
 
             var user = new User
             {
-                UserId = Guid.Parse(userIdClaim.Value.ToString()),
-                RoleName = roleClaim.Value.ToString().ToUpper()
+                UserId = Guid.Parse(userIdClaim.Value),
+                //SystemRole = (SystemRole)Enum.Parse(typeof(SystemRole), roleClaim?.Value.ToUpper()),
+                Mail = mailClaim?.Value
             };
 
-            RevokeRefreshToken(refreshToken);
-
-            return new AuthResponse
+            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-                AccessToken = GenerateAccessToken(user),
-                RefreshToken = GenerateRefreshToken(user)
-            };
+                await RevokeRefreshTokenAsync(token);
+
+                var newRefreshToken = GenerateRefreshToken(user);
+
+                var newTokenEntry = new RevokedToken
+                {
+                    UserId = user.UserId,
+                    Token = newRefreshToken,
+                    RevokedAt = null,
+                    ExpiryDate = _utilityService.ToVietnamTime(GetExpiryDate(newRefreshToken) ?? default)
+                };
+
+                _unitOfWork.RevokedTokenRepository.Insert(newTokenEntry);
+
+                return new AuthResponse
+                {
+                    AccessToken = GenerateAccessToken(user),
+                    RefreshToken = newRefreshToken
+                };
+            });
         }
         catch
         {
@@ -112,29 +149,44 @@ public class TokenService : ITokenService
         }
     }
 
-    public bool RevokeRefreshToken(string refreshToken)
+    public bool IsTokenRevoked(RevokedToken token)
+    {
+        return token.RevokedAt != null && DateTime.UtcNow >= token.RevokedAt;
+    }
+
+    public async Task RevokeRefreshTokenAsync(RevokedToken token)
+    {
+        token.RevokedAt = DateTime.UtcNow;
+        _unitOfWork.RevokedTokenRepository.Update(token);
+    }
+
+    public DateTime? GetExpiryDate(string token)
+    {
+        var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+        var expiryDateUnix = long.Parse(jwtToken.Claims.First(x => x.Type == "exp").Value);
+        var expiryDateTime = DateTimeOffset.FromUnixTimeSeconds(expiryDateUnix).UtcDateTime;
+
+        return expiryDateTime;
+    }
+
+    public bool IsTokenExpired(string token)
     {
         var handler = new JwtSecurityTokenHandler();
-        var key = new SymmetricSecurityKey(Convert.FromBase64String(_refreshSecretKey));
         try
         {
-            var principal = handler.ValidateToken(refreshToken, new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateIssuerSigningKey = true,
-                ValidateLifetime = true,
-                ValidIssuer = _issuer,
-                ValidAudience = _audience,
-                IssuerSigningKey = key
-            }, out SecurityToken validatedToken);
-            var isRevokedClaim = principal.FindFirst("IsRevoked");
-            if (isRevokedClaim == null) return false;
-            return bool.Parse(isRevokedClaim.Value);
+            var jwtToken = handler.ReadJwtToken(token);
+
+            var expiryClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == "exp");
+            if (expiryClaim == null) return true;
+
+            var expiryDateUnix = long.Parse(expiryClaim.Value);
+            var expiryDateTime = DateTimeOffset.FromUnixTimeSeconds(expiryDateUnix).UtcDateTime;
+
+            return expiryDateTime < DateTime.UtcNow;
         }
         catch
         {
-            return false;
+            return true;
         }
     }
 }

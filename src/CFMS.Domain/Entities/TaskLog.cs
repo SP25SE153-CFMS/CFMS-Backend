@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class TaskLog
+public class TaskLog : EntityAudit
 {
     public Guid TaskLogId { get; set; }
 
-    public string? Type { get; set; }
+    public Guid? TaskId { get; set; }
 
     public Guid? ChickenCoopId { get; set; }
 
-    public DateTime? StartDate { get; set; }
+    public DateTime? CompletedAt { get; set; }
 
-    public DateTime? EndDate { get; set; }
+    public string? Note { get; set; }
 
     public virtual ChickenCoop? ChickenCoop { get; set; }
 
-    public virtual ICollection<TaskDetail> TaskDetails { get; set; } = new List<TaskDetail>();
+    public virtual Task? Task { get; set; }
 }
