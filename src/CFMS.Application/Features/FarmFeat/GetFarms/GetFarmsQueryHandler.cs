@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.FarmFeat.GetFarms
 
         public async Task<BaseResponse<IEnumerable<Farm>>> Handle(GetFarmsQuery request, CancellationToken cancellationToken)
         {
-            var farms = _unitOfWork.FarmRepository.Get();
+            var farms = _unitOfWork.FarmRepository.Get(filter: f => f.IsDeleted == false);
             return BaseResponse<IEnumerable<Farm>>.SuccessResponse(data: farms);
         }
     }

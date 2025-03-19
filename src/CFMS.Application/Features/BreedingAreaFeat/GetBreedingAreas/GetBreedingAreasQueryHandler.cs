@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.GetBreedingAreas
 
         public async Task<BaseResponse<IEnumerable<BreedingArea>>> Handle(GetBreedingAreasQuery request, CancellationToken cancellationToken)
         {
-            var breedingAreas = _unitOfWork.BreedingAreaRepository.Get();
+            var breedingAreas = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.IsDeleted == false);
             return BaseResponse<IEnumerable<BreedingArea>>.SuccessResponse(data: breedingAreas);
         }
     }

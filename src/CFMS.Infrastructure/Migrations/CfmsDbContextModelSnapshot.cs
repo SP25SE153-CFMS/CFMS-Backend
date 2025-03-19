@@ -228,9 +228,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime?>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid?>("PurposeId")
-                        .HasColumnType("uuid");
-
                     b.Property<int?>("Status")
                         .HasColumnType("integer");
 
@@ -245,8 +242,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("LastEditedByUserId");
-
-                    b.HasIndex("PurposeId");
 
                     b.ToTable("Chicken", (string)null);
                 });
@@ -355,6 +350,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime?>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<Guid?>("PurposeId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool?>("Status")
                         .HasColumnType("boolean");
 
@@ -366,6 +364,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("LastEditedByUserId");
+
+                    b.HasIndex("PurposeId");
 
                     b.ToTable("ChickenCoop", (string)null);
                 });
@@ -2955,18 +2955,11 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CFMS.Domain.Entities.SubCategory", "Purpose")
-                        .WithMany("Chickens")
-                        .HasForeignKey("PurposeId")
-                        .HasConstraintName("Chicken_PurposeId_fkey");
-
                     b.Navigation("ChickenBatch");
 
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("LastEditedByUser");
-
-                    b.Navigation("Purpose");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.ChickenBatch", b =>
@@ -3014,11 +3007,18 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("CFMS.Domain.Entities.SubCategory", "Purpose")
+                        .WithMany("ChickenCoops")
+                        .HasForeignKey("PurposeId")
+                        .HasConstraintName("Chicken_PurposeId_fkey");
+
                     b.Navigation("BreedingArea");
 
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("LastEditedByUser");
+
+                    b.Navigation("Purpose");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.ChickenDetail", b =>
@@ -4602,7 +4602,7 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.SubCategory", b =>
                 {
-                    b.Navigation("Chickens");
+                    b.Navigation("ChickenCoops");
 
                     b.Navigation("EvaluatedTargets");
 

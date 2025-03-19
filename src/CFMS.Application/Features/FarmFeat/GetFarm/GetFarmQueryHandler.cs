@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.FarmFeat.GetFarm
 
         public async Task<BaseResponse<Farm>> Handle(GetFarmQuery request, CancellationToken cancellationToken)
         {
-            var existFarm = _unitOfWork.FarmRepository.GetByID(request.Id);
+            var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existFarm == null)
             {
                 return BaseResponse<Farm>.FailureResponse(message: "Farm không tồn tại");

@@ -170,7 +170,6 @@ public partial class CfmsDbContext : DbContext
                 ((EntityAudit)entry.Entity).CreatedWhen = DateTime.UtcNow.ToLocalTime();
                 ((EntityAudit)entry.Entity).CreatedByUserId = currentUserId;
             }
-
             ((EntityAudit)entry.Entity).LastEditedWhen = DateTime.UtcNow.ToLocalTime();
             ((EntityAudit)entry.Entity).LastEditedByUserId = currentUserId;
         }
@@ -178,15 +177,6 @@ public partial class CfmsDbContext : DbContext
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        //foreach (var entry in ChangeTracker.Entries())
-        //{
-        //    if (entry is { State: EntityState.Deleted, Entity: ISoftDelete delete })
-        //    {
-        //        entry.State = EntityState.Modified;
-        //        delete.IsDeleted = true;
-        //        delete.DeletedWhen = DateTime.UtcNow;
-        //    }
-        //}
         OnBeforeSaving();
         return base.SaveChangesAsync(cancellationToken);
     }
@@ -231,7 +221,6 @@ public partial class CfmsDbContext : DbContext
 
         return connectionString;
     }
-
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -549,10 +538,6 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.ChickenBatch).WithMany(p => p.Chickens)
                 .HasForeignKey(d => d.ChickenBatchId)
                 .HasConstraintName("Chicken_ChickenId_fkey");
-
-            entity.HasOne(d => d.Purpose).WithMany(p => p.Chickens)
-                .HasForeignKey(d => d.PurposeId)
-                .HasConstraintName("Chicken_PurposeId_fkey");
         });
 
         modelBuilder.Entity<ChickenBatch>(entity =>
@@ -585,6 +570,10 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.BreedingArea).WithMany(p => p.ChickenCoops)
                 .HasForeignKey(d => d.BreedingAreaId)
                 .HasConstraintName("BreedingArea_BreedingAreaId_fkey");
+
+            entity.HasOne(d => d.Purpose).WithMany(p => p.ChickenCoops)
+                .HasForeignKey(d => d.PurposeId)
+                .HasConstraintName("Chicken_PurposeId_fkey");
         });
 
         modelBuilder.Entity<ChickenDetail>(entity =>

@@ -48,6 +48,7 @@ namespace CFMS.Application.Services.Impl
         }
 
         public DateTime? ToVietnamTime(DateTime utcDateTime)
+
         {
             if (utcDateTime.Kind == DateTimeKind.Unspecified)
             {
