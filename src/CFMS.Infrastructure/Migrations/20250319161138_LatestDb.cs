@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CFMS.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDatabase : Migration
+    public partial class LatestDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,6 +25,7 @@ namespace CFMS.Infrastructure.Migrations
                     Address = table.Column<string>(type: "text", nullable: true),
                     CCCD = table.Column<string>(type: "character varying", nullable: true),
                     SystemRole = table.Column<int>(type: "integer", nullable: true),
+                    GoogleId = table.Column<string>(type: "character varying", nullable: true),
                     HashedPassword = table.Column<string>(type: "character varying", nullable: true)
                 },
                 constraints: table =>
@@ -42,11 +43,11 @@ namespace CFMS.Infrastructure.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,11 +80,11 @@ namespace CFMS.Infrastructure.Migrations
                     Website = table.Column<string>(type: "character varying", nullable: true),
                     ImageUrl = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -111,11 +112,11 @@ namespace CFMS.Infrastructure.Migrations
                     Description = table.Column<string>(type: "character varying", nullable: true),
                     Target = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -141,8 +142,8 @@ namespace CFMS.Infrastructure.Migrations
                     RevokedTokenId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Token = table.Column<string>(type: "character varying", nullable: false),
                     TokenType = table.Column<int>(type: "integer", nullable: false),
-                    RevokedAt = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
-                    ExpiryDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    RevokedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ExpiryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -161,14 +162,14 @@ namespace CFMS.Infrastructure.Migrations
                 {
                     ShiftId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     ShiftName = table.Column<string>(type: "character varying", nullable: true),
-                    StartTime = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
-                    EndTime = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    StartTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EndTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -193,14 +194,14 @@ namespace CFMS.Infrastructure.Migrations
                 {
                     TaskScheduleId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Frequency = table.Column<int>(type: "integer", nullable: true),
-                    NextWorkDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
-                    LastWorkDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    NextWorkDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    LastWorkDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -230,11 +231,11 @@ namespace CFMS.Infrastructure.Migrations
                     DataType = table.Column<string>(type: "character varying", nullable: true),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -271,11 +272,11 @@ namespace CFMS.Infrastructure.Migrations
                     FarmId = table.Column<Guid>(type: "uuid", nullable: true),
                     Area = table.Column<double>(type: "double precision", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -306,16 +307,16 @@ namespace CFMS.Infrastructure.Migrations
                     FarmEmployeeId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     FarmId = table.Column<Guid>(type: "uuid", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: true),
                     FarmRole = table.Column<int>(type: "integer", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -352,11 +353,11 @@ namespace CFMS.Infrastructure.Migrations
                     ShiftId = table.Column<Guid>(type: "uuid", nullable: true),
                     Date = table.Column<DateOnly>(type: "date", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -388,11 +389,11 @@ namespace CFMS.Infrastructure.Migrations
                     TemplateName = table.Column<string>(type: "character varying", nullable: true),
                     TemplateTypeId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -422,16 +423,16 @@ namespace CFMS.Infrastructure.Migrations
                 {
                     FeedSessionId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     NutritionPlanId = table.Column<Guid>(type: "uuid", nullable: true),
-                    FeedingTime = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    FeedingTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     FeedAmount = table.Column<decimal>(type: "numeric", nullable: true),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
                     Note = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -471,11 +472,11 @@ namespace CFMS.Infrastructure.Migrations
                     MaxAgeWeek = table.Column<int>(type: "integer", nullable: true),
                     Description = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -510,11 +511,11 @@ namespace CFMS.Infrastructure.Migrations
                     IsRead = table.Column<bool>(type: "boolean", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -552,13 +553,13 @@ namespace CFMS.Infrastructure.Migrations
                     RequestTypeId = table.Column<Guid>(type: "uuid", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: true),
                     ApprovedById = table.Column<Guid>(type: "uuid", nullable: true),
-                    ApprovedAt = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    ApprovedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -598,11 +599,11 @@ namespace CFMS.Infrastructure.Migrations
                     PackageId = table.Column<Guid>(type: "uuid", nullable: true),
                     PackageSize = table.Column<decimal>(type: "numeric", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -645,11 +646,11 @@ namespace CFMS.Infrastructure.Migrations
                     TaskTypeId = table.Column<Guid>(type: "uuid", nullable: true),
                     Description = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -686,11 +687,11 @@ namespace CFMS.Infrastructure.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: true, defaultValue: 1),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -734,11 +735,11 @@ namespace CFMS.Infrastructure.Migrations
                     Status = table.Column<bool>(type: "boolean", nullable: true),
                     BreedingAreaId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -774,11 +775,11 @@ namespace CFMS.Infrastructure.Migrations
                     ExpectedUnit = table.Column<string>(type: "character varying", nullable: true),
                     ExpectedValue = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -815,11 +816,11 @@ namespace CFMS.Infrastructure.Migrations
                     NutritionPlanId = table.Column<Guid>(type: "uuid", nullable: true),
                     GrowthStageId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -858,11 +859,11 @@ namespace CFMS.Infrastructure.Migrations
                     Priority = table.Column<int>(type: "integer", nullable: true),
                     Description = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -903,13 +904,13 @@ namespace CFMS.Infrastructure.Migrations
                     Warranty = table.Column<int>(type: "integer", nullable: true),
                     Size = table.Column<double>(type: "double precision", nullable: true),
                     Weight = table.Column<double>(type: "double precision", nullable: true),
-                    PurchaseDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    PurchaseDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -942,14 +943,14 @@ namespace CFMS.Infrastructure.Migrations
                     FoodName = table.Column<string>(type: "character varying", nullable: true),
                     Note = table.Column<string>(type: "character varying", nullable: true),
                     FoodIngredientId = table.Column<Guid>(type: "uuid", nullable: true),
-                    ProductionDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
-                    ExpiryDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    ProductionDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ExpiryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -982,14 +983,14 @@ namespace CFMS.Infrastructure.Migrations
                     DosageForm = table.Column<string>(type: "text", nullable: true),
                     StorageCondition = table.Column<string>(type: "character varying", nullable: true),
                     DiseaseId = table.Column<Guid>(type: "uuid", nullable: true),
-                    ProductionDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
-                    ExpiryDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    ProductionDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ExpiryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1031,11 +1032,11 @@ namespace CFMS.Infrastructure.Migrations
                     PackagePriceId = table.Column<Guid>(type: "uuid", nullable: true),
                     PackageSizePrice = table.Column<decimal>(type: "numeric", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1081,17 +1082,17 @@ namespace CFMS.Infrastructure.Migrations
                     AssignmentId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     TaskId = table.Column<Guid>(type: "uuid", nullable: true),
                     AssignedToId = table.Column<Guid>(type: "uuid", nullable: true),
-                    AssignedDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    AssignedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     ShiftScheduleId = table.Column<Guid>(type: "uuid", nullable: true),
                     TaskScheduleId = table.Column<Guid>(type: "uuid", nullable: true),
                     Status = table.Column<string>(type: "text", nullable: true),
                     Note = table.Column<string>(type: "text", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1141,11 +1142,11 @@ namespace CFMS.Infrastructure.Migrations
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
                     Quality = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1184,11 +1185,11 @@ namespace CFMS.Infrastructure.Migrations
                     LocationTypeId = table.Column<Guid>(type: "uuid", nullable: true),
                     LocationId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1228,11 +1229,11 @@ namespace CFMS.Infrastructure.Migrations
                     Quantity = table.Column<int>(type: "integer", nullable: true),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1272,11 +1273,11 @@ namespace CFMS.Infrastructure.Migrations
                     WareFromId = table.Column<Guid>(type: "uuid", nullable: true),
                     WareToId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1323,13 +1324,13 @@ namespace CFMS.Infrastructure.Migrations
                     WareId = table.Column<Guid>(type: "uuid", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true),
                     PermissionLevel = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    GrantedAt = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    GrantedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1368,11 +1369,11 @@ namespace CFMS.Infrastructure.Migrations
                     Quantity = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1413,15 +1414,15 @@ namespace CFMS.Infrastructure.Migrations
                     BatchNumber = table.Column<string>(type: "character varying", nullable: true),
                     TransactionType = table.Column<Guid>(type: "uuid", nullable: true),
                     Reason = table.Column<string>(type: "text", nullable: true),
-                    TransactionDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    TransactionDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LocationFromId = table.Column<Guid>(type: "uuid", nullable: true),
                     LocationToId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1467,16 +1468,16 @@ namespace CFMS.Infrastructure.Migrations
                     ChickenBatchId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     ChickenCoopId = table.Column<Guid>(type: "uuid", nullable: true),
                     ChickenBatchName = table.Column<string>(type: "character varying", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Note = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1507,14 +1508,14 @@ namespace CFMS.Infrastructure.Migrations
                     TaskLogId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     TaskId = table.Column<Guid>(type: "uuid", nullable: true),
                     ChickenCoopId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CompletedAt = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    CompletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Note = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1551,18 +1552,18 @@ namespace CFMS.Infrastructure.Migrations
                     ChickenCoopId = table.Column<Guid>(type: "uuid", nullable: true),
                     EquipmentId = table.Column<Guid>(type: "uuid", nullable: true),
                     Quantity = table.Column<int>(type: "integer", nullable: true),
-                    AssignedDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
-                    LastMaintenanceDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
-                    NextMaintenanceDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    AssignedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    LastMaintenanceDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    NextMaintenanceDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     MaintenanceInterval = table.Column<int>(type: "integer", nullable: false, defaultValue: 30),
                     Status = table.Column<string>(type: "text", nullable: true),
                     Note = table.Column<string>(type: "text", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1603,11 +1604,11 @@ namespace CFMS.Infrastructure.Migrations
                     FoodWeight = table.Column<decimal>(type: "numeric", nullable: true),
                     ConsumptionRate = table.Column<decimal>(type: "numeric", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1653,11 +1654,11 @@ namespace CFMS.Infrastructure.Migrations
                     WareToId = table.Column<Guid>(type: "uuid", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1696,14 +1697,14 @@ namespace CFMS.Infrastructure.Migrations
                     ExpectedQuantity = table.Column<decimal>(type: "numeric", nullable: true),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
                     Reason = table.Column<string>(type: "character varying", nullable: true),
-                    ExpectedDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    ExpectedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Note = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1750,13 +1751,13 @@ namespace CFMS.Infrastructure.Migrations
                     Status = table.Column<int>(type: "integer", nullable: true),
                     PurposeId = table.Column<Guid>(type: "uuid", nullable: true),
                     ChickenBatchId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1791,17 +1792,17 @@ namespace CFMS.Infrastructure.Migrations
                 {
                     FeedLogId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     ChickenBatchId = table.Column<Guid>(type: "uuid", nullable: true),
-                    FeedingDate = table.Column<DateTime>(name: "FeedingDate  ", type: "timestamp(6) without time zone", nullable: true),
+                    FeedingDate = table.Column<DateTime>(name: "FeedingDate  ", type: "timestamp without time zone", nullable: true),
                     ActualFeedAmount = table.Column<decimal>(type: "numeric", nullable: true),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
                     TaskId = table.Column<Guid>(type: "uuid", nullable: true),
                     Note = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1842,19 +1843,19 @@ namespace CFMS.Infrastructure.Migrations
                     GrowthBatchId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     ChickenBatchId = table.Column<Guid>(type: "uuid", nullable: true),
                     GrowthStageId = table.Column<Guid>(type: "uuid", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     AvgWeight = table.Column<decimal>(type: "numeric", nullable: true),
                     MortalityRate = table.Column<decimal>(type: "numeric", nullable: true),
                     FeedConsumption = table.Column<decimal>(type: "numeric", nullable: true),
                     Note = table.Column<string>(type: "character varying", nullable: true),
                     Status = table.Column<bool>(type: "boolean", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1888,19 +1889,19 @@ namespace CFMS.Infrastructure.Migrations
                 columns: table => new
                 {
                     HealthLogId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    StartDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Notes = table.Column<string>(type: "character varying", nullable: true),
                     ChickenBatchId = table.Column<Guid>(type: "uuid", nullable: true),
                     TaskId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CheckedAt = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    CheckedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Location = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1935,17 +1936,17 @@ namespace CFMS.Infrastructure.Migrations
                 {
                     QuantityLogId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     ChickenBatchId = table.Column<Guid>(type: "uuid", nullable: true),
-                    LogDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    LogDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Notes = table.Column<string>(type: "text", nullable: true),
                     Quantity = table.Column<int>(type: "integer", nullable: true),
                     Img = table.Column<string>(type: "character varying", nullable: true),
                     LogType = table.Column<int>(type: "integer", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2005,14 +2006,14 @@ namespace CFMS.Infrastructure.Migrations
                     ActualQuantity = table.Column<decimal>(type: "numeric", nullable: true),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
                     Reason = table.Column<string>(type: "character varying", nullable: true),
-                    ActualDate = table.Column<DateTime>(type: "timestamp(6) without time zone", nullable: true),
+                    ActualDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Note = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2047,11 +2048,11 @@ namespace CFMS.Infrastructure.Migrations
                     Quantity = table.Column<int>(type: "integer", nullable: true),
                     Gender = table.Column<int>(type: "integer", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2083,11 +2084,11 @@ namespace CFMS.Infrastructure.Migrations
                     TargetTypeId = table.Column<Guid>(type: "uuid", nullable: true),
                     TargetId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2130,11 +2131,11 @@ namespace CFMS.Infrastructure.Migrations
                     CriteriaId = table.Column<Guid>(type: "uuid", nullable: true),
                     Result = table.Column<string>(type: "character varying", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2170,13 +2171,13 @@ namespace CFMS.Infrastructure.Migrations
                     EvaluationResultId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     EvaluationTemplateId = table.Column<Guid>(type: "uuid", nullable: true),
                     EvaluatedTargetId = table.Column<Guid>(type: "uuid", nullable: true),
-                    EvaluatedDate = table.Column<DateTime>(name: "EvaluatedDate ", type: "timestamp(6) without time zone", nullable: true),
+                    EvaluatedDate = table.Column<DateTime>(name: "EvaluatedDate ", type: "timestamp without time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2214,11 +2215,11 @@ namespace CFMS.Infrastructure.Migrations
                     ActualValue = table.Column<string>(type: "character varying", nullable: true),
                     IsPass = table.Column<int>(type: "integer", nullable: true, defaultValue: 0),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
