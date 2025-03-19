@@ -5,7 +5,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
 {
     public class UpdateCoopCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateCoopCommand(Guid id, string? chickenCoopCode, string? chickenCoopName, int? capacity, int? area, string? status, string? description, Guid? purposeId, Guid? breedingAreaId)
+        public UpdateCoopCommand(Guid id, string? chickenCoopCode, string? chickenCoopName, int? capacity, int? area, bool? status, string? description, Guid? purposeId, Guid? breedingAreaId)
         {
             Id = id;
             ChickenCoopCode = chickenCoopCode;
@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
 
         public int? Area { get; set; }
 
-        public string? Status { get; set; }
+        public bool? Status { get; set; }
 
         public string? Description { get; set; }
 

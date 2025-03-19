@@ -1,6 +1,9 @@
 ﻿using CFMS.Application.Features.UserFeat.Auth;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CFMS.Api.Controllers
@@ -36,6 +39,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetCurrentUser()
         {
             var response = await Send(new GetCurrentUserQuery());
+            return response;
+        }
+
+        [HttpPost("google-signin")]
+        public async Task<IActionResult> LoginWithGoogle([FromBody] SignInWithGoogleCommand command)
+        {
+            var response = await Send(command);
             return response;
         }
     }

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using CFMS.Domain.Enums.Roles;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -27,7 +30,14 @@ namespace CFMS.Api.Extensions
                             Convert.FromBase64String(configuration["Jwt:AccessSecretKey"])
                         )
                     };
-                });
+                })
+                .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+                   {
+                       options.ClientId = configuration["Authentication:Google:ClientId"];
+                       options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+                       options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
+                       options.CorrelationCookie.SameSite = SameSiteMode.None;
+                   });
 
             return services;
         }
@@ -36,8 +46,8 @@ namespace CFMS.Api.Extensions
         {
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, "ADMIN"));
-                options.AddPolicy("UserOrAdmin", policy => policy.RequireClaim(ClaimTypes.Role, "USER", "ADMIN"));
+                options.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, ((int)SystemRole.Admin).ToString()));
+                options.AddPolicy("UserOrAdmin", policy => policy.RequireClaim(ClaimTypes.Role, ((int)SystemRole.User).ToString(), ((int)SystemRole.Admin).ToString()));
             });
 
             return services;

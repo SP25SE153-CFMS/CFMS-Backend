@@ -1,6 +1,10 @@
 ﻿using CFMS.Application.Common;
 using CFMS.Domain.Interfaces;
-using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.ChickenCoopFeat.Update
 {
@@ -29,7 +33,6 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
                 existCoop.Area = request.Area;
                 existCoop.Capacity = request.Capacity;
                 existCoop.Status = request.Status;
-                existCoop.PurposeId = request.PurposeId;
                 existCoop.BreedingAreaId = request.BreedingAreaId;
                 _unitOfWork.ChickenCoopRepository.Update(existCoop);
                 var result = await _unitOfWork.SaveChangesAsync();

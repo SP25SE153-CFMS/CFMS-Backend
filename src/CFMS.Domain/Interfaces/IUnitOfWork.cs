@@ -12,49 +12,58 @@ namespace CFMS.Domain.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IGenericRepository<Assignment> AssignmentRepository { get; }
-        IGenericRepository<Attendance> AttendanceRepository { get; }
         IGenericRepository<BreedingArea> BreedingAreaRepository { get; }
         IGenericRepository<Category> CategoryRepository { get; }
+        IGenericRepository<Chicken> ChickenRepository { get; }
         IGenericRepository<ChickenBatch> ChickenBatchRepository { get; }
         IGenericRepository<ChickenCoop> ChickenCoopRepository { get; }
+        IGenericRepository<ChickenDetail> ChickenDetailRepository { get; }
         IGenericRepository<CoopEquipment> CoopEquipmentRepository { get; }
-        IGenericRepository<DailyTask> DailyTaskRepository { get; }
         IGenericRepository<Equipment> EquipmentRepository { get; }
+        IGenericRepository<EvaluatedTarget> EvaluatedTargetRepository { get; }
+        IGenericRepository<EvaluationResult> EvaluationResultRepository { get; }
+        IGenericRepository<EvaluationResultDetail> EvaluationResultDetailRepository { get; }
+        IGenericRepository<EvaluationTemplate> EvaluationTemplateRepository { get; }
         IGenericRepository<Farm> FarmRepository { get; }
         IGenericRepository<FarmEmployee> FarmEmployeeRepository { get; }
-        IGenericRepository<FeedSchedule> FeedScheduleRepository { get; }
-        IGenericRepository<Flock> FlockRepository { get; }
-        IGenericRepository<FlockNutrition> FlockNutritionRepository { get; }
+        IGenericRepository<FeedLog> FeedLogRepository { get; }
+        IGenericRepository<FeedSession> FeedSessionRepository { get; }
         IGenericRepository<Food> FoodRepository { get; }
-        IGenericRepository<HarvestDetail> HarvestDetailRepository { get; }
-        IGenericRepository<HarvestLog> HarvestLogRepository { get; }
-        IGenericRepository<HarvestProduct> HarvestProductRepository { get; }
-        IGenericRepository<HarvestTask> HarvestTaskRepository { get; }
+        IGenericRepository<GrowthBatch> GrowthBatchRepository { get; }
+        IGenericRepository<GrowthNutrition> GrowthNutritionRepository { get; }
+        IGenericRepository<GrowthStage> GrowthStageRepository { get; }
         IGenericRepository<HealthLog> HealthLogRepository { get; }
         IGenericRepository<HealthLogDetail> HealthLogDetailRepository { get; }
+        IGenericRepository<InventoryReceipt> InventoryReceiptRepository { get; }
+        IGenericRepository<InventoryReceiptDetail> InventoryReceiptDetailRepository { get; }
+        IGenericRepository<InventoryRequest> InventoryRequestRepository { get; }
+        IGenericRepository<InventoryRequestDetail> InventoryRequestDetailRepository { get; }
+        IGenericRepository<Medicine> MedicineRepository { get; }
         IGenericRepository<Notification> NotificationRepository { get; }
-        IGenericRepository<Nutrition> NutritionRepository { get; }
-        IGenericRepository<Performance> PerformanceRepository { get; }
-        IGenericRepository<Product> ProductRepository { get; }
+        IGenericRepository<NutritionPlan> NutritionPlanRepository { get; }
+        IGenericRepository<NutritionPlanDetail> NutritionPlanDetailRepository { get; }
         IGenericRepository<QuantityLog> QuantityLogRepository { get; }
         IGenericRepository<Request> RequestRepository { get; }
-        IGenericRepository<RequestDetail> RequestDetailRepository { get; }
-        IGenericRepository<Salary> SalaryRepository { get; }
-        IGenericRepository<StockReceipt> StockReceiptRepository { get; }
+        IGenericRepository<Resource> ResourceRepository { get; }
+        IGenericRepository<ResourceSupplier> ResourceSupplierRepository { get; }
+        IGenericRepository<RevokedToken> RevokedTokenRepository { get; }
+        IGenericRepository<Shift> ShiftRepository { get; }
+        IGenericRepository<ShiftSchedule> ShiftScheduleRepository { get; }
         IGenericRepository<SubCategory> SubCategoryRepository { get; }
-        IGenericRepository<Task> TaskRepository { get; }
-        IGenericRepository<TaskDetail> TaskDetailRepository { get; }
-        IGenericRepository<TaskEvaluation> TaskEvaluationRepository { get; }
+        IGenericRepository<Domain.Entities.Task> TaskRepository { get; }
+        IGenericRepository<TaskHarvest> TaskHarvestRepository { get; }
+        IGenericRepository<TaskLocation> TaskLocationRepository { get; }
         IGenericRepository<TaskLog> TaskLogRepository { get; }
+        IGenericRepository<TaskRequest> TaskRequestRepository { get; }
+        IGenericRepository<TaskResource> TaskResourceRepository { get; }
+        IGenericRepository<TaskSchedule> TaskScheduleRepository { get; }
+        IGenericRepository<TemplateCriterion> TemplateCriterionRepository { get; }
         IGenericRepository<User> UserRepository { get; }
-        IGenericRepository<VaccinationEmployee> VaccinationEmployeeRepository { get; }
-        IGenericRepository<VaccinationLog> VaccinationLogRepository { get; }
-        IGenericRepository<Vaccine> VaccineRepository { get; }
+        IGenericRepository<VaccineLog> VaccineLogRepository { get; }
+        IGenericRepository<WarePermission> WarePermissionRepository { get; }
+        IGenericRepository<WareStock> WareStockRepository { get; }
         IGenericRepository<WareTransaction> WareTransactionRepository { get; }
         IGenericRepository<Warehouse> WarehouseRepository { get; }
-        IGenericRepository<WarehousePermission> WarehousePermissionRepository { get; }
-        IGenericRepository<WarehouseStock> WarehouseStockRepository { get; }
-        IGenericRepository<RevokedToken> RevokedTokenRepository { get; }
 
         void Save();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

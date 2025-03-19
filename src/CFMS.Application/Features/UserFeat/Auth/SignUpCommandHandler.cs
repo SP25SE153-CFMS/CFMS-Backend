@@ -43,9 +43,9 @@ namespace CFMS.Application.Features.UserFeat.Auth
                 PhoneNumber = request.PhoneNumber,
                 Mail = request.Mail,
                 HashedPassword = _utilityService.HashPassword(request.Password),
-                SystemRole = SystemRole.User,
-                CreatedDate = DateOnly.FromDateTime(DateTime.Now),
-                Status = UserStatus.Active
+                SystemRole = (int)SystemRole.User,
+                //CreatedDate = DateOnly.FromDateTime(DateTime.Now),
+                Status = (int)UserStatus.Active
             };
 
             var authResponse = await _unitOfWork.ExecuteInTransactionAsync(async () =>
@@ -61,7 +61,7 @@ namespace CFMS.Application.Features.UserFeat.Auth
                     Token = refreshToken,
                     TokenType = (int)TokenType.RefreshToken,
                     UserId = user.UserId,
-                    ExpiryDate = _tokenService.GetExpiryDate(refreshToken)
+                    ExpiryDate = _utilityService.ToVietnamTime(_tokenService.GetExpiryDate(refreshToken))
                 };
 
                 _unitOfWork.RevokedTokenRepository.Insert(revokedToken);
