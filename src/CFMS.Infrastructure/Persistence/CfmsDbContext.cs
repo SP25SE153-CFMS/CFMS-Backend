@@ -11,18 +11,15 @@ namespace CFMS.Infrastructure;
 public partial class CfmsDbContext : DbContext
 {
     private readonly ICurrentUserService _currentUserService;
-    private readonly IUtilityService _utilityService;
 
     public CfmsDbContext()
     {
     }
 
-    public CfmsDbContext(DbContextOptions<CfmsDbContext> options, ICurrentUserService currentUserService, IUtilityService utilityService)
+    public CfmsDbContext(DbContextOptions<CfmsDbContext> options, ICurrentUserService currentUserService)
         : base(options)
     {
         _currentUserService = currentUserService;
-        _utilityService = utilityService;
-        _utilityService = utilityService;
     }
 
     public virtual DbSet<Assignment> Assignments { get; set; }
@@ -153,7 +150,7 @@ public partial class CfmsDbContext : DbContext
         {
             entry.State = EntityState.Modified;
             ((EntityAudit)entry.Entity).IsDeleted = true;
-            ((EntityAudit)entry.Entity).DeletedWhen = _utilityService.ToVietnamTime(DateTime.UtcNow);
+            ((EntityAudit)entry.Entity).DeletedWhen = DateTime.UtcNow.ToLocalTime();
             break;
         }
     }
@@ -170,11 +167,11 @@ public partial class CfmsDbContext : DbContext
         {
             if (entry.State == EntityState.Added)
             {
-                ((EntityAudit)entry.Entity).CreatedWhen = _utilityService.ToVietnamTime(DateTime.UtcNow);
+                ((EntityAudit)entry.Entity).CreatedWhen = DateTime.UtcNow.ToLocalTime();
                 ((EntityAudit)entry.Entity).CreatedByUserId = currentUserId;
             }
 
-            ((EntityAudit)entry.Entity).LastEditedWhen = _utilityService.ToVietnamTime(DateTime.UtcNow);
+            ((EntityAudit)entry.Entity).LastEditedWhen = DateTime.UtcNow.ToLocalTime();
             ((EntityAudit)entry.Entity).LastEditedByUserId = currentUserId;
         }
     }
@@ -1452,6 +1449,17 @@ public partial class CfmsDbContext : DbContext
                 .HasForeignKey(d => d.StorageTypeId)
                 .HasConstraintName("Warehouse_StorageTypeId_fkey");
         });
+
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            foreach (var property in entityType.GetProperties())
+            {
+                if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                {
+                    property.SetColumnType("timestamp without time zone");
+                }
+            }
+        }
 
         OnModelCreatingPartial(modelBuilder);
     }
