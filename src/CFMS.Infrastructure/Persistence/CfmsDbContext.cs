@@ -539,10 +539,6 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.ChickenBatch).WithMany(p => p.Chickens)
                 .HasForeignKey(d => d.ChickenBatchId)
                 .HasConstraintName("Chicken_ChickenId_fkey");
-
-            entity.HasOne(d => d.Purpose).WithMany(p => p.Chickens)
-                .HasForeignKey(d => d.PurposeId)
-                .HasConstraintName("Chicken_PurposeId_fkey");
         });
 
         modelBuilder.Entity<ChickenBatch>(entity =>
@@ -575,6 +571,10 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.BreedingArea).WithMany(p => p.ChickenCoops)
                 .HasForeignKey(d => d.BreedingAreaId)
                 .HasConstraintName("BreedingArea_BreedingAreaId_fkey");
+
+            entity.HasOne(d => d.Purpose).WithMany(p => p.ChickenCoops)
+                .HasForeignKey(d => d.PurposeId)
+                .HasConstraintName("Chicken_PurposeId_fkey");
         });
 
         modelBuilder.Entity<ChickenDetail>(entity =>

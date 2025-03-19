@@ -1,9 +1,6 @@
 ﻿using CFMS.Application.Features.UserFeat.Auth;
 using CFMS.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CFMS.Api.Controllers

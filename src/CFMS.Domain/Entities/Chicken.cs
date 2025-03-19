@@ -17,7 +17,6 @@ public class Chicken : EntityAudit
 
     public int? Status { get; set; }
 
-    public Guid? PurposeId { get; set; }
 
     public Guid? ChickenBatchId { get; set; }
 
@@ -28,6 +27,4 @@ public class Chicken : EntityAudit
     public virtual ICollection<ChickenDetail> ChickenDetails { get; set; } = new List<ChickenDetail>();
 
     public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
-
-    public virtual SubCategory? Purpose { get; set; }
 }

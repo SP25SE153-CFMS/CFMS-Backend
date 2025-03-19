@@ -29,6 +29,8 @@ namespace CFMS.Application.Features.FarmFeat.Update
                 existFarm.Address = request.Address;
                 existFarm.PhoneNumber = request.PhoneNumber;
                 existFarm.Scale = request.Scale;
+                existFarm.Website = request.Website;
+                existFarm.ImageUrl = request.ImageUrl;
 
                 _unitOfWork.FarmRepository.Update(existFarm);
                 var result = await _unitOfWork.SaveChangesAsync();

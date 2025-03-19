@@ -23,7 +23,11 @@ public class ChickenCoop : EntityAudit
 
     public bool? Status { get; set; }
 
+    public Guid? PurposeId { get; set; }
+
     public Guid? BreedingAreaId { get; set; }
+
+    public virtual SubCategory? Purpose { get; set; }
 
     public virtual BreedingArea? BreedingArea { get; set; }
 

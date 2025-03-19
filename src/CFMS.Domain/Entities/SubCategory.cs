@@ -21,7 +21,7 @@ public class SubCategory : EntityAudit
     [JsonIgnore]
     public virtual Category? Category { get; set; }
 
-    public virtual ICollection<Chicken> Chickens { get; set; } = new List<Chicken>();
+    public virtual ICollection<ChickenCoop> ChickenCoops { get; set; } = new List<ChickenCoop>();
 
     public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
 

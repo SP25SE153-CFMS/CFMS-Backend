@@ -27,6 +27,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Update
                 existBreedingArea.BreedingAreaCode = request.BreedingAreaCode;
                 existBreedingArea.Notes = request.Notes;
                 existBreedingArea.Area = request.Area;
+                existBreedingArea.ImageUrl = request.ImageUrl;
 
                 _unitOfWork.BreedingAreaRepository.Update(existBreedingArea);
                 var result = await _unitOfWork.SaveChangesAsync();

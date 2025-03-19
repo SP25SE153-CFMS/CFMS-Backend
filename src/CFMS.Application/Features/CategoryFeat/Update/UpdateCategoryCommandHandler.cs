@@ -24,8 +24,8 @@ namespace CFMS.Application.Features.CategoryFeat.Update
             try
             {
                 existCategory.CategoryCode = request.CategoryCode;
-                existCategory.CategoryType = request.CategoryType;
-                existCategory.Status = request.Status;
+                existCategory.CategoryType = (int)request.CategoryType;
+                existCategory.Status = (int)request.Status;
                 existCategory.Description = request.Description;
 
                 _unitOfWork.CategoryRepository.Update(existCategory);

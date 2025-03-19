@@ -5,7 +5,7 @@ namespace CFMS.Application.Features.CategoryFeat.AddSubCate
 {
     public class AddSubCateCommand : IRequest<BaseResponse<bool>>
     {
-        public AddSubCateCommand(string? subCategoryName, string? description, string? status, string? dataType, Guid? categoryId)
+        public AddSubCateCommand(string? subCategoryName, string? description, int? status, string? dataType, Guid? categoryId)
         {
             SubCategoryName = subCategoryName;
             Description = description;
@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.CategoryFeat.AddSubCate
 
         public string? Description { get; set; }
 
-        public string? Status { get; set; }
+        public int? Status { get; set; }
 
         public string? DataType { get; set; }
 
