@@ -31,6 +31,7 @@ namespace CFMS.Api.Extensions
                         )
                     };
                 })
+                .AddCookie()
                 .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
                    {
                        options.ClientId = configuration["Authentication:Google:ClientId"];
@@ -39,6 +40,7 @@ namespace CFMS.Api.Extensions
                        options.CorrelationCookie.SameSite = SameSiteMode.None;
                    });
 
+            AddAuthorizationPolicies(services);
             return services;
         }
 

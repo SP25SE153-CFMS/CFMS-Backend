@@ -17,6 +17,11 @@ namespace CFMS.Application.Services.Impl
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public ClaimsPrincipal? GetCurrentUser()
+        {
+            return _httpContextAccessor.HttpContext?.User;
+        }
+
         public string? GetUserId()
         {
             return _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

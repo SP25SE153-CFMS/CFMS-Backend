@@ -1,6 +1,8 @@
 ﻿using CFMS.Application.Common;
 using CFMS.Application.DTOs.Auth;
 using CFMS.Application.Services;
+using CFMS.Domain.Entities;
+using CFMS.Domain.Enums.Types;
 using CFMS.Domain.Interfaces;
 using MediatR;
 using System;
@@ -41,12 +43,29 @@ namespace CFMS.Application.Features.UserFeat.Auth
             }
 
             var accessToken = _tokenService.GenerateAccessToken(user);
-            var refreshToken = _unitOfWork.RevokedTokenRepository.Get(filter: x => x.UserId == user.UserId).FirstOrDefault().Token;
+            var revokedToken = _unitOfWork.RevokedTokenRepository.Get(
+                filter: x => x.UserId == user.UserId
+                && x.RevokedAt == null)
+                .FirstOrDefault();
+
+            if (revokedToken == null)
+            {
+                var refreshToken = _tokenService.GenerateRefreshToken(user);
+                revokedToken = new RevokedToken
+                {
+                    Token = refreshToken,
+                    TokenType = (int)TokenType.RefreshToken,
+                    UserId = user.UserId,
+                    ExpiryDate = _utilityService.ToVietnamTime(_tokenService.GetExpiryDate(refreshToken))
+                };
+                _unitOfWork.RevokedTokenRepository.Insert(revokedToken);
+                await _unitOfWork.SaveChangesAsync();
+            }
 
             var authResponse = new AuthResponse
             {
                 AccessToken = accessToken,
-                RefreshToken = refreshToken
+                RefreshToken = revokedToken.Token
             };
 
             return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "Đăng nhập thành công");

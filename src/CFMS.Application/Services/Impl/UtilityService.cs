@@ -1,4 +1,5 @@
 ﻿using CFMS.Domain.Enums.Types;
+using CFMS.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
