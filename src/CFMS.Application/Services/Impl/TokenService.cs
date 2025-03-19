@@ -1,5 +1,6 @@
-﻿using CFMS.Application.DTOs.Auth;
+﻿ using CFMS.Application.DTOs.Auth;
 using CFMS.Application.Services;
+using CFMS.Application.Services.Impl;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Enums.Roles;
 using CFMS.Domain.Interfaces;
@@ -17,14 +18,18 @@ public class TokenService : ITokenService
     private readonly string _issuer;
     private readonly string _audience;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUserService _currentUserService;
+    private readonly IUtilityService _utilityService;
 
-    public TokenService(IConfiguration config, IUnitOfWork unitOfWork)
+    public TokenService(IConfiguration config, IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IUtilityService utilityService)
     {
         _accessSecretKey = config["Jwt:AccessSecretKey"];
         _refreshSecretKey = config["Jwt:RefreshSecretKey"];
         _issuer = config["Jwt:Issuer"];
         _audience = config["Jwt:Audience"];
         _unitOfWork = unitOfWork;
+        _currentUserService = currentUserService;
+        _utilityService = utilityService;
     }
 
     public string GenerateAccessToken(User user)
@@ -126,7 +131,7 @@ public class TokenService : ITokenService
                     UserId = user.UserId,
                     Token = newRefreshToken,
                     RevokedAt = null,
-                    ExpiryDate = GetExpiryDate(newRefreshToken)
+                    ExpiryDate = _utilityService.ToVietnamTime(GetExpiryDate(newRefreshToken))
                 };
 
                 _unitOfWork.RevokedTokenRepository.Insert(newTokenEntry);

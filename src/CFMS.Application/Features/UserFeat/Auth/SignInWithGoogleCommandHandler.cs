@@ -74,12 +74,28 @@ namespace CFMS.Application.Features.UserFeat.Auth
                 }
 
                 var accessToken = _tokenService.GenerateAccessToken(user);
-                var existRefreshToken = _unitOfWork.RevokedTokenRepository.Get(filter: x => x.UserId == user.UserId).FirstOrDefault().Token;
+                var existRevokedToken = _unitOfWork.RevokedTokenRepository.Get(
+                    filter: x => x.UserId == user.UserId
+                    && x.RevokedAt == null)
+                    .FirstOrDefault();
 
+                if (existRevokedToken == null)
+                {
+                    var refreshToken = _tokenService.GenerateRefreshToken(user);
+                    existRevokedToken = new RevokedToken
+                    {
+                        Token = refreshToken,
+                        TokenType = (int)TokenType.RefreshToken,
+                        UserId = user.UserId,
+                        ExpiryDate = _utilityService.ToVietnamTime(_tokenService.GetExpiryDate(refreshToken))
+                    };
+                    _unitOfWork.RevokedTokenRepository.Insert(existRevokedToken);
+                    await _unitOfWork.SaveChangesAsync();
+                }
                 return new AuthResponse
                 {
                     AccessToken = accessToken,
-                    RefreshToken = existRefreshToken
+                    RefreshToken = existRevokedToken.Token
                 };
             });
 
