@@ -1345,6 +1345,7 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.HashedPassword).HasColumnType("character varying");
             entity.Property(e => e.Mail).HasColumnType("character varying");
             entity.Property(e => e.PhoneNumber).HasColumnType("character varying");
+            entity.Property(e => e.GoogleId).HasColumnType("character varying");
         });
 
         modelBuilder.Entity<VaccineLog>(entity =>

@@ -42,7 +42,7 @@ namespace CFMS.Api.Controllers
             return response;
         }
 
-        [HttpPost("google-login")]
+        [HttpPost("google-signin")]
         public async Task<IActionResult> LoginWithGoogle([FromBody] SignInWithGoogleCommand command)
         {
             var response = await Send(command);
