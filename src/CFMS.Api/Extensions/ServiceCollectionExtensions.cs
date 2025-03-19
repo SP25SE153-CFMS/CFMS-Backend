@@ -23,7 +23,6 @@ namespace CFMS.Api.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             //DbContext
-
             services.AddDbContext<CfmsDbContext>(options =>
                  options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
@@ -38,6 +37,9 @@ namespace CFMS.Api.Extensions
             {
                 config.RegisterServicesFromAssembly(typeof(CreateFarmCommandHandler).Assembly);
             });
+
+            //Cache
+            services.AddDistributedMemoryCache();
 
             //Behaviors
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(EventQueueBehavior<,>));

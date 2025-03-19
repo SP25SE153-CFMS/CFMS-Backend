@@ -2,6 +2,7 @@
 using CFMS.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace CFMS.Api.Controllers
 {
@@ -43,6 +44,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> LoginWithGoogle([FromBody] SignInWithGoogleCommand command)
         {
             var response = await Send(command);
+            return response;
+        }
+
+        [HttpPost("signout")]
+        public async Task<IActionResult> SignOut()
+        {
+            var response = await Send(new SignOutQuery());
             return response;
         }
     }
