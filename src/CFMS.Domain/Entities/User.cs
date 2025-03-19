@@ -25,6 +25,8 @@ public class User
 
     public int? SystemRole { get; set; }
 
+    public string? GoogleId { get; set; }
+
     public string? HashedPassword { get; set; }
 
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();

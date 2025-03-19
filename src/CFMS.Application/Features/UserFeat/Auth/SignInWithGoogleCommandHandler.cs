@@ -4,6 +4,7 @@ using CFMS.Application.Services;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Enums.Roles;
 using CFMS.Domain.Enums.Status;
+using CFMS.Domain.Enums.Types;
 using CFMS.Domain.Interfaces;
 using Google.Apis.Auth;
 using MediatR;
@@ -40,31 +41,47 @@ namespace CFMS.Application.Features.UserFeat.Auth
             if (payload == null)
                 throw new UnauthorizedAccessException("Invalid Google Token");
 
-            var user = _unitOfWork.UserRepository.Get(filter: u => u.Mail.Equals(payload.Email)).FirstOrDefault();
+            var user = _unitOfWork.UserRepository.Get(filter: u => u.GoogleId.Equals(payload.Subject)).FirstOrDefault();
 
-            if (user == null)
+            var authResponse = await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
-                user = new User
+                if (user == null)
                 {
-                    Mail = payload.Email,
-                    FullName = payload.Name,
-                    Avatar = payload.Picture,
-                    Status = (int)UserStatus.Active,
-                    SystemRole = (int)SystemRole.User,
+                    user = new User
+                    {
+                        Mail = payload.Email,
+                        FullName = payload.Name,
+                        Avatar = payload.Picture,
+                        Status = (int)UserStatus.Active,
+                        SystemRole = (int)SystemRole.User,
+                        GoogleId = payload.Subject
+                    };
+
+                    _unitOfWork.UserRepository.Insert(user);
+                    await _unitOfWork.SaveChangesAsync();
+
+                    var refreshToken = _tokenService.GenerateRefreshToken(user);
+                    var revokedToken = new RevokedToken
+                    {
+                        Token = refreshToken,
+                        TokenType = (int)TokenType.RefreshToken,
+                        UserId = user.UserId,
+                        ExpiryDate = _utilityService.ToVietnamTime(_tokenService.GetExpiryDate(refreshToken))
+                    };
+
+                    _unitOfWork.RevokedTokenRepository.Insert(revokedToken);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                var accessToken = _tokenService.GenerateAccessToken(user);
+                var existRefreshToken = _unitOfWork.RevokedTokenRepository.Get(filter: x => x.UserId == user.UserId).FirstOrDefault().Token;
+
+                return new AuthResponse
+                {
+                    AccessToken = accessToken,
+                    RefreshToken = existRefreshToken
                 };
-
-                _unitOfWork.UserRepository.Insert(user);
-                await _unitOfWork.SaveChangesAsync();
-            }
-
-            var accessToken = _tokenService.GenerateAccessToken(user);
-            var refreshToken = _tokenService.GenerateRefreshToken(user);
-
-            var authResponse = new AuthResponse
-            {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken
-            };
+            });
 
             return BaseResponse<AuthResponse>.SuccessResponse(authResponse, "Đăng nhập thành công");
         }
