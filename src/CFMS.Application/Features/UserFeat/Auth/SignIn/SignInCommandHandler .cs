@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.UserFeat.Auth
+namespace CFMS.Application.Features.UserFeat.Auth.SignIn
 {
     public class SignInCommandHandler : IRequestHandler<SignInCommand, BaseResponse<AuthResponse>>
     {
@@ -56,7 +56,7 @@ namespace CFMS.Application.Features.UserFeat.Auth
                     Token = refreshToken,
                     TokenType = (int)TokenType.RefreshToken,
                     UserId = user.UserId,
-                    ExpiryDate = _utilityService.ToVietnamTime(_tokenService.GetExpiryDate(refreshToken))
+                    ExpiryDate = _utilityService.ToVietnamTime(_tokenService.GetExpiryDate(refreshToken) ?? default)
                 };
                 _unitOfWork.RevokedTokenRepository.Insert(revokedToken);
                 await _unitOfWork.SaveChangesAsync();

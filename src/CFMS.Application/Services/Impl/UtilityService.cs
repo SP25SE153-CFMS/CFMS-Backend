@@ -3,6 +3,7 @@ using CFMS.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,10 +47,25 @@ namespace CFMS.Application.Services.Impl
             return $"{prefix}{_counters[type].ToString("D2")}";
         }
 
-        public DateTime ToVietnamTime(DateTime? utcDateTime)
+        public DateTime? ToVietnamTime(DateTime utcDateTime)
         {
+            if (utcDateTime.Kind == DateTimeKind.Unspecified)
+            {
+                utcDateTime = DateTime.SpecifyKind(utcDateTime, DateTimeKind.Utc);
+            }
+            else if (utcDateTime.Kind == DateTimeKind.Local)
+            {
+                utcDateTime = utcDateTime.ToUniversalTime();
+            }
+
             TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
-            return TimeZoneInfo.ConvertTimeFromUtc(utcDateTime ?? default, vietnamTimeZone);
+            return TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, vietnamTimeZone);
+        }
+
+        public string GenerateOTP()
+        {
+            int otp = RandomNumberGenerator.GetInt32(0, 1000000);
+            return otp.ToString("D6");
         }
     }
 }

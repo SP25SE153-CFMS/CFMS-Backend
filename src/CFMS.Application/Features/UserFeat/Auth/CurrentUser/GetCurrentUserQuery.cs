@@ -7,11 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.UserFeat.Auth
+namespace CFMS.Application.Features.UserFeat.Auth.CurrentUser
 {
-    public class SignInCommand : IRequest<BaseResponse<AuthResponse>>
+    public class GetCurrentUserQuery : IRequest<BaseResponse<CurrentUserResponse>>
     {
-        public string Mail { get; set; }
-        public string Password { get; set; }
+        public GetCurrentUserQuery()
+        {
+        }
     }
 }

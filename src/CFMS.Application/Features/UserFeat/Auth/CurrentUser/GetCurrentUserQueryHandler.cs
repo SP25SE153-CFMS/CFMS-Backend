@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.UserFeat.Auth
+namespace CFMS.Application.Features.UserFeat.Auth.CurrentUser
 {
     public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, BaseResponse<CurrentUserResponse>>
     {

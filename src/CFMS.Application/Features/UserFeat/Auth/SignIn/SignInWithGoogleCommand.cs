@@ -7,12 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.UserFeat.Auth
+namespace CFMS.Application.Features.UserFeat.Auth.SignIn
 {
-    public class SignOutQuery : IRequest<BaseResponse<string>>
+    public class SignInWithGoogleCommand : IRequest<BaseResponse<AuthResponse>>
     {
-        public SignOutQuery()
-        {
-        }
+        public string IdToken { get; set; }
     }
 }

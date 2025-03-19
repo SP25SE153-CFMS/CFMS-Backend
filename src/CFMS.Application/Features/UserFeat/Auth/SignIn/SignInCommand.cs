@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.UserFeat.Auth
+namespace CFMS.Application.Features.UserFeat.Auth.SignIn
 {
-    public class RefreshTokenCommand : IRequest<BaseResponse<AuthResponse>>
+    public class SignInCommand : IRequest<BaseResponse<AuthResponse>>
     {
-        public string RefreshToken { get; set; }
+        public string Mail { get; set; }
+        public string Password { get; set; }
     }
 }
