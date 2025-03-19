@@ -131,7 +131,7 @@ public class TokenService : ITokenService
                     UserId = user.UserId,
                     Token = newRefreshToken,
                     RevokedAt = null,
-                    ExpiryDate = _utilityService.ToVietnamTime(GetExpiryDate(newRefreshToken))
+                    ExpiryDate = _utilityService.ToVietnamTime(GetExpiryDate(newRefreshToken) ?? default)
                 };
 
                 _unitOfWork.RevokedTokenRepository.Insert(newTokenEntry);

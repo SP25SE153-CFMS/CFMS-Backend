@@ -1,13 +1,12 @@
 ﻿using CFMS.Application.Common;
 using CFMS.Application.DTOs.Auth;
-using CFMS.Application.Features.UserFeat.Auth;
 using CFMS.Application.Services;
 using CFMS.Domain.Interfaces;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.UserFeat.Auth
+namespace CFMS.Application.Features.UserFeat.Auth.RefreshToken
 {
     public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, BaseResponse<AuthResponse>>
     {

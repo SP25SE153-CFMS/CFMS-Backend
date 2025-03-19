@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.UserFeat.Auth
+namespace CFMS.Application.Features.UserFeat.Auth.RefreshToken
 {
-    public class SignInWithGoogleCommand : IRequest<BaseResponse<AuthResponse>>
+    public class RefreshTokenCommand : IRequest<BaseResponse<AuthResponse>>
     {
-        public string IdToken { get; set; }
+        public string RefreshToken { get; set; }
     }
 }
