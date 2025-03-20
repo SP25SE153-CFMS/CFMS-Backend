@@ -30,6 +30,18 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
                 return BaseResponse<bool>.FailureResponse(message: "Code đã tồn tại");
             }
 
+            var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaId.Equals(request.BreedingAreaId) && ba.IsDeleted == false).FirstOrDefault();
+            if (existBreedingArea == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Khu nuôi không tồn tại");
+            }
+
+            var existPurpose = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.PurposeId) && s.IsDeleted == false).FirstOrDefault();
+            if (existPurpose == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Mục đích nuôi không tồn tại");
+            }
+
             try
             {
                 _unitOfWork.ChickenCoopRepository.Insert(_mapper.Map<ChickenCoop>(request));
