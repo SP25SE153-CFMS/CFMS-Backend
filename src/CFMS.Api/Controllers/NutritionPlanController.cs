@@ -1,0 +1,52 @@
+﻿using CFMS.Application.Features.NutritionPlanFeat.Create;
+using CFMS.Application.Features.NutritionPlanFeat.Delete;
+using CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlan;
+using CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlans;
+using CFMS.Application.Features.NutritionPlanFeat.Update;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CFMS.Api.Controllers
+{
+    public class NutritionPlanController : BaseController
+    {
+        public NutritionPlanController(IMediator mediator) : base(mediator)
+        {
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var result = await Send(new GetNutritionPlansQuery());
+            return result;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var result = await Send(new GetNutritionPlanQuery(id));
+            return result;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateNutritionPlanCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateNutritionPlanCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await Send(new DeleteNutritionPlanCommand(id));
+            return result;
+        }
+    }
+}
