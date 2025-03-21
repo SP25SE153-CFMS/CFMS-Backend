@@ -38,7 +38,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -50,7 +50,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Note")
@@ -105,7 +105,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -123,7 +123,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Notes")
@@ -157,7 +157,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -172,7 +172,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("Status")
@@ -210,7 +210,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -225,7 +225,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("Status")
@@ -262,7 +262,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -277,7 +277,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Note")
@@ -326,7 +326,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("CurrentQuantity")
@@ -347,7 +347,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("PurposeId")
@@ -383,7 +383,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -398,7 +398,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("Quantity")
@@ -435,7 +435,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -450,7 +450,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("LastMaintenanceDate")
@@ -497,7 +497,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -515,7 +515,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Material")
@@ -556,7 +556,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -568,7 +568,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("TargetId")
@@ -601,7 +601,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -623,7 +623,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("EvaluationResultId")
@@ -653,7 +653,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -673,7 +673,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("EvaluationResultDetailId")
@@ -698,7 +698,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -710,7 +710,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("TemplateName")
@@ -747,7 +747,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -768,7 +768,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("PhoneNumber")
@@ -800,7 +800,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -821,7 +821,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("StartDate")
@@ -863,7 +863,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -879,7 +879,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Note")
@@ -917,7 +917,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -935,7 +935,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Note")
@@ -971,7 +971,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -995,7 +995,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Note")
@@ -1030,7 +1030,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1051,7 +1051,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<decimal?>("MortalityRate")
@@ -1090,7 +1090,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1105,7 +1105,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("NutritionPlanId")
@@ -1138,7 +1138,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1153,7 +1153,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("MaxAgeWeek")
@@ -1193,7 +1193,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1208,7 +1208,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Location")
@@ -1247,7 +1247,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("CriteriaId")
@@ -1265,7 +1265,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Result")
@@ -1295,7 +1295,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1310,7 +1310,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("ReceiptTypeId")
@@ -1355,7 +1355,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1370,7 +1370,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Note")
@@ -1407,7 +1407,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1422,7 +1422,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("RequestId")
@@ -1462,7 +1462,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1483,7 +1483,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Note")
@@ -1524,7 +1524,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1545,7 +1545,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("ProductionDate")
@@ -1582,7 +1582,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1597,7 +1597,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NotificationName")
@@ -1633,7 +1633,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1648,7 +1648,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
@@ -1680,7 +1680,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1698,7 +1698,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("NutritionPlanId")
@@ -1736,7 +1736,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1751,7 +1751,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("LogDate")
@@ -1794,7 +1794,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1806,7 +1806,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("RequestTypeId")
@@ -1839,7 +1839,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1854,7 +1854,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("PackageId")
@@ -1895,7 +1895,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -1910,7 +1910,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("PackagePriceId")
@@ -1990,7 +1990,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -2005,7 +2005,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ShiftName")
@@ -2034,7 +2034,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateOnly?>("Date")
@@ -2049,7 +2049,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("ShiftId")
@@ -2080,7 +2080,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("DataType")
@@ -2098,7 +2098,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("Status")
@@ -2129,7 +2129,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -2144,7 +2144,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("TaskName")
@@ -2175,7 +2175,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -2190,7 +2190,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Quality")
@@ -2229,7 +2229,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -2241,7 +2241,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("LocationId")
@@ -2283,7 +2283,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -2295,7 +2295,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Note")
@@ -2328,7 +2328,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -2343,7 +2343,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("Priority")
@@ -2379,7 +2379,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -2391,7 +2391,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("Quantity")
@@ -2433,7 +2433,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -2448,7 +2448,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("LastWorkDate")
@@ -2477,7 +2477,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("CriteriaId")
@@ -2504,7 +2504,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("TemplateName")
@@ -2613,7 +2613,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -2628,7 +2628,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("PermissionLevel")
@@ -2666,7 +2666,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -2678,7 +2678,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Quantity")
@@ -2722,7 +2722,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedWhen")
@@ -2734,7 +2734,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("LocationFromId")
@@ -2792,7 +2792,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CreatedWhen")
+                    b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<double?>("CurrentCapacity")
@@ -2813,7 +2813,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("LastEditedWhen")
+                    b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<double?>("MaxCapacity")

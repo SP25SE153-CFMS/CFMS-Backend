@@ -1,4 +1,5 @@
-﻿using CFMS.Application.Features.ChickenBatchFeat.Create;
+﻿using CFMS.Application.Features.ChickenBatchFeat.AddGrowthStage;
+using CFMS.Application.Features.ChickenBatchFeat.Create;
 using CFMS.Application.Features.ChickenBatchFeat.Delete;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatch;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatchs;
@@ -46,6 +47,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await Send(new DeleteChickenBatchCommand(id));
+            return result;
+        }
+
+        [HttpPost("add-growthstage")]
+        public async Task<IActionResult> AddGrowthStage(AddGrowthStageCommand command)
+        {
+            var result = await Send(command);
             return result;
         }
     }
