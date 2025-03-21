@@ -1,0 +1,47 @@
+﻿using CFMS.Application.Common;
+using CFMS.Domain.Interfaces;
+using MediatR;
+
+namespace CFMS.Application.Features.ChickenFeat.Update
+{
+    public class UpdateChickenCommandHandler : IRequestHandler<UpdateChickenCommand, BaseResponse<bool>>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public UpdateChickenCommandHandler(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        public async Task<BaseResponse<bool>> Handle(UpdateChickenCommand request, CancellationToken cancellationToken)
+        {
+            var existChicken = _unitOfWork.ChickenRepository.Get(filter: c => c.ChickenId.Equals(request.Id) == false).FirstOrDefault();
+            if (existChicken == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Gà không tồn tại");
+            }
+
+            try
+            {
+                existChicken.ChickenCode = request.ChickenCode;
+                existChicken.ChickenName = request.ChickenName;
+                existChicken.TotalQuantity = request.TotalQuantity;
+                existChicken.Status = request.Status;
+                existChicken.Description = request.Description;
+                existChicken.ChickenBatchId = request.ChickenBatchId;
+
+                _unitOfWork.ChickenRepository.Update(existChicken);
+                var result = await _unitOfWork.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
+                }
+                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+            }
+            catch (Exception ex)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+            }
+        }
+    }
+}

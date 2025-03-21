@@ -17,7 +17,6 @@ public class Chicken : EntityAudit
 
     public int? Status { get; set; }
 
-
     public Guid? ChickenBatchId { get; set; }
 
     public DateTime? CreatedDate { get; set; }
