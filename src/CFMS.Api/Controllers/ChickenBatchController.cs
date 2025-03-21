@@ -15,15 +15,15 @@ namespace CFMS.Api.Controllers
         {
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("Coop/{coopId}")]
+        public async Task<IActionResult> GetBatchs(Guid coopId)
         {
-            var result = await Send(new GetBatchsQuery());
+            var result = await Send(new GetBatchsQuery(coopId));
             return result;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> GetBatch(Guid id)
         {
             var result = await Send(new GetBatchQuery(id));
             return result;

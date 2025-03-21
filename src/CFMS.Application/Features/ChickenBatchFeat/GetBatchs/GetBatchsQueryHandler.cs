@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.GetBatchs
 
         public async Task<BaseResponse<IEnumerable<ChickenBatch>>> Handle(GetBatchsQuery request, CancellationToken cancellationToken)
         {
-            var batchs = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.IsDeleted == false);
+            var batchs = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.IsDeleted == false && b.ChickenCoopId.Equals(request.CoopId));
             return BaseResponse<IEnumerable<ChickenBatch>>.SuccessResponse(data: batchs);
         }
     }
