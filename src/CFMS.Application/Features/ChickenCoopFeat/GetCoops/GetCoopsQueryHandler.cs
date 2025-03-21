@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.GetCoops
 
         public async Task<BaseResponse<IEnumerable<ChickenCoop>>> Handle(GetCoopsQuery request, CancellationToken cancellationToken)
         {
-            var coops = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.IsDeleted == false);
+            var coops = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.IsDeleted == false && c.BreedingAreaId.Equals(request.BreedingAreaId));
             return BaseResponse<IEnumerable<ChickenCoop>>.SuccessResponse(data: coops);
         }
     }
