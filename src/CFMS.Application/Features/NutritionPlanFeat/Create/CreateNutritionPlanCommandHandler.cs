@@ -21,7 +21,34 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
         {
             try
             {
+                var chickens = _unitOfWork.ChickenRepository.Get(filter: c => request.ChickenList.Contains(c.ChickenId)).ToList();
+                var missingIds = request.ChickenList.Except(chickens.Select(c => c.ChickenId)).ToList();
+
+                if (missingIds.Any())
+                {
+                    return BaseResponse<bool>.FailureResponse($"Các ID gà không tồn tại: {string.Join(", ", missingIds)}");
+                }
+
+                var nutritionPlan = _mapper.Map<NutritionPlan>(request);
+                nutritionPlan.Chickens = chickens;
+
                 _unitOfWork.NutritionPlanRepository.Insert(_mapper.Map<NutritionPlan>(request));
+
+                await _unitOfWork.SaveChangesAsync();
+
+                var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name)).FirstOrDefault();
+
+                var nutritionPlanDetails = request.NutritionPlanDetails.Select(detail => new NutritionPlanDetail
+                {
+                    NutritionPlanId = existNutritionPlan.NutritionPlanId,
+                    FoodId = detail.FoodId,
+                    UnitId = detail.UnitId,
+                    FoodWeight = detail.FoodWeight,
+                    ConsumptionRate = detail.ConsumptionRate
+                }).ToList() ?? new List<NutritionPlanDetail>();
+
+                _unitOfWork.NutritionPlanDetailRepository.InsertRange(nutritionPlanDetails);
+
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
@@ -31,7 +58,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: ex.Message);
             }
         }
     }

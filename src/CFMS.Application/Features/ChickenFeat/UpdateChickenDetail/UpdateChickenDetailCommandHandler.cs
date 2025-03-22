@@ -21,7 +21,7 @@ namespace CFMS.Application.Features.ChickenFeat.UpdateChickenDetail
                 return BaseResponse<bool>.FailureResponse(message: "Gà không tồn tại");
             }
 
-            var existDetail = _unitOfWork.ChickenDetailRepository.Get(filter: d => d.ChickenDetailId.Equals(request.ChickenDetailId) && d.IsDeleted == false).FirstOrDefault();
+            var existDetail = _unitOfWork.ChickenDetailRepository.Get(filter: d => d.ChickenDetailId.Equals(request.ChickenDetailId)).FirstOrDefault();
             if (existDetail == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Detail không tồn tại");

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class NutritionPlanDetail : EntityAudit
+public partial class NutritionPlanDetail
 {
     public Guid NutritionPlanDetailId { get; set; }
 
@@ -15,7 +15,7 @@ public partial class NutritionPlanDetail : EntityAudit
 
     public decimal? FoodWeight { get; set; }
 
-    public decimal? ConsumptionRate { get; set; }
+    public decimal? ConsumptionRate { get; set; } 
 
     public virtual Food? Food { get; set; }
 

@@ -64,6 +64,8 @@ namespace CFMS.Infrastructure.Repositories
         private GenericRepository<WareStock> wareStockRepository;
         private GenericRepository<WareTransaction> wareTransactionRepository;
         private GenericRepository<Warehouse> warehouseRepository;
+        private GenericRepository<SystemConfig> systemConfigRepository;
+        private GenericRepository<Supplier> supplierRepository;
 
         public UnitOfWork(CfmsDbContext _context)
         {
@@ -123,6 +125,8 @@ namespace CFMS.Infrastructure.Repositories
         public IGenericRepository<VaccineLog> VaccineLogRepository => vaccineLogRepository ??= new GenericRepository<VaccineLog>(context);
         public IGenericRepository<WarePermission> WarePermissionRepository => warePermissionRepository ??= new GenericRepository<WarePermission>(context);
         public IGenericRepository<WareStock> WareStockRepository => wareStockRepository ??= new GenericRepository<WareStock>(context);
+        public IGenericRepository<Supplier> SupplierRepository => supplierRepository ??= new GenericRepository<Supplier>(context);
+        public IGenericRepository<SystemConfig> SystemConfigRepository => systemConfigRepository ??= new GenericRepository<SystemConfig>(context);
 
         public void Save()
         {
