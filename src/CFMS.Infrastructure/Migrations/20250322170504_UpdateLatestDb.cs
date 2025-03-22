@@ -1719,29 +1719,11 @@ namespace CFMS.Infrastructure.Migrations
                     FoodId = table.Column<Guid>(type: "uuid", nullable: true),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
                     FoodWeight = table.Column<decimal>(type: "numeric", nullable: true),
-                    ConsumptionRate = table.Column<decimal>(type: "numeric", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    ConsumptionRate = table.Column<decimal>(type: "numeric", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("NutritionPlanDetail_pkey", x => x.NutritionPlanDetailId);
-                    table.ForeignKey(
-                        name: "FK_NutritionPlanDetail_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_NutritionPlanDetail_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "NutritionPlanDetail_FoodId_fkey",
                         column: x => x.FoodId,
@@ -1814,29 +1796,11 @@ namespace CFMS.Infrastructure.Migrations
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
                     Reason = table.Column<string>(type: "character varying", nullable: true),
                     ExpectedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    Note = table.Column<string>(type: "character varying", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Note = table.Column<string>(type: "character varying", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("InventoryRequestDetail_pkey", x => x.InventoryRequestDetailId);
-                    table.ForeignKey(
-                        name: "FK_InventoryRequestDetail_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InventoryRequestDetail_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "InventoryRequestDetail_InventoryRequestId_fkey",
                         column: x => x.InventoryRequestId,
@@ -2139,29 +2103,11 @@ namespace CFMS.Infrastructure.Migrations
                     ActualQuantity = table.Column<decimal>(type: "numeric", nullable: true),
                     ActualDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Note = table.Column<string>(type: "character varying", nullable: true),
-                    BatchNumber = table.Column<int>(type: "integer", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    BatchNumber = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("InventoryReceiptDetail_pkey", x => x.InventoryReceiptDetailId);
-                    table.ForeignKey(
-                        name: "FK_InventoryReceiptDetail_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InventoryReceiptDetail_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "InventoryReceiptDetail_InventoryReceiptId_fkey",
                         column: x => x.InventoryReceiptId,
@@ -2178,13 +2124,7 @@ namespace CFMS.Infrastructure.Migrations
                     ChickenId = table.Column<Guid>(type: "uuid", nullable: true),
                     Weight = table.Column<decimal>(type: "numeric", nullable: true),
                     Quantity = table.Column<int>(type: "integer", nullable: true),
-                    Gender = table.Column<int>(type: "integer", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Gender = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2194,39 +2134,27 @@ namespace CFMS.Infrastructure.Migrations
                         column: x => x.ChickenId,
                         principalTable: "Chicken",
                         principalColumn: "ChickenId");
-                    table.ForeignKey(
-                        name: "FK_ChickenDetail_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ChickenDetail_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChickenNutrition",
+                name: "ChickenNutritionPlan",
                 columns: table => new
                 {
-                    ChickenId = table.Column<Guid>(type: "uuid", nullable: false),
-                    NutritionPlanId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ChickensChickenId = table.Column<Guid>(type: "uuid", nullable: false),
+                    NutritionPlansNutritionPlanId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChickenNutrition", x => new { x.ChickenId, x.NutritionPlanId });
+                    table.PrimaryKey("PK_ChickenNutritionPlan", x => new { x.ChickensChickenId, x.NutritionPlansNutritionPlanId });
                     table.ForeignKey(
-                        name: "FK_ChickenNutrition_Chicken_ChickenId",
-                        column: x => x.ChickenId,
+                        name: "FK_ChickenNutritionPlan_Chicken_ChickensChickenId",
+                        column: x => x.ChickensChickenId,
                         principalTable: "Chicken",
                         principalColumn: "ChickenId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ChickenNutrition_NutritionPlan_NutritionPlanId",
-                        column: x => x.NutritionPlanId,
+                        name: "FK_ChickenNutritionPlan_NutritionPlan_NutritionPlansNutritionP~",
+                        column: x => x.NutritionPlansNutritionPlanId,
                         principalTable: "NutritionPlan",
                         principalColumn: "NutritionPlanId",
                         onDelete: ReferentialAction.Cascade);
@@ -2285,29 +2213,11 @@ namespace CFMS.Infrastructure.Migrations
                     HealthLogDetailId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     HealthLogId = table.Column<Guid>(type: "uuid", nullable: true),
                     CriteriaId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Result = table.Column<string>(type: "character varying", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Result = table.Column<string>(type: "character varying", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("HealthLogDetail_pkey", x => x.HealthLogDetailId);
-                    table.ForeignKey(
-                        name: "FK_HealthLogDetail_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_HealthLogDetail_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "HealthLogDetail_CriteriaId_fkey",
                         column: x => x.CriteriaId,
@@ -2370,13 +2280,7 @@ namespace CFMS.Infrastructure.Migrations
                     EvaluationResultDetailId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     EvaluationResultId = table.Column<Guid>(type: "uuid", nullable: true),
                     ActualValue = table.Column<string>(type: "character varying", nullable: true),
-                    IsPass = table.Column<int>(type: "integer", nullable: true, defaultValue: 0),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    IsPass = table.Column<int>(type: "integer", nullable: true, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -2386,18 +2290,6 @@ namespace CFMS.Infrastructure.Migrations
                         column: x => x.EvaluationResultId,
                         principalTable: "EvaluationResult",
                         principalColumn: "EvaluationResultId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EvaluationResultDetail_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EvaluationResultDetail_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -2522,19 +2414,9 @@ namespace CFMS.Infrastructure.Migrations
                 column: "ChickenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChickenDetail_CreatedByUserId",
-                table: "ChickenDetail",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ChickenDetail_LastEditedByUserId",
-                table: "ChickenDetail",
-                column: "LastEditedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ChickenNutrition_NutritionPlanId",
-                table: "ChickenNutrition",
-                column: "NutritionPlanId");
+                name: "IX_ChickenNutritionPlan_NutritionPlansNutritionPlanId",
+                table: "ChickenNutritionPlan",
+                column: "NutritionPlansNutritionPlanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CoopEquipment_ChickenCoopId",
@@ -2617,19 +2499,9 @@ namespace CFMS.Infrastructure.Migrations
                 column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EvaluationResultDetail_CreatedByUserId",
-                table: "EvaluationResultDetail",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_EvaluationResultDetail_EvaluationResultId",
                 table: "EvaluationResultDetail",
                 column: "EvaluationResultId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EvaluationResultDetail_LastEditedByUserId",
-                table: "EvaluationResultDetail",
-                column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EvaluationTemplate_CreatedByUserId",
@@ -2807,11 +2679,6 @@ namespace CFMS.Infrastructure.Migrations
                 column: "TaskId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HealthLogDetail_CreatedByUserId",
-                table: "HealthLogDetail",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_HealthLogDetail_CriteriaId",
                 table: "HealthLogDetail",
                 column: "CriteriaId");
@@ -2820,11 +2687,6 @@ namespace CFMS.Infrastructure.Migrations
                 name: "IX_HealthLogDetail_HealthLogId",
                 table: "HealthLogDetail",
                 column: "HealthLogId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HealthLogDetail_LastEditedByUserId",
-                table: "HealthLogDetail",
-                column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InventoryReceipt_CreatedByUserId",
@@ -2847,19 +2709,9 @@ namespace CFMS.Infrastructure.Migrations
                 column: "ReceiptTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InventoryReceiptDetail_CreatedByUserId",
-                table: "InventoryReceiptDetail",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_InventoryReceiptDetail_InventoryReceiptId",
                 table: "InventoryReceiptDetail",
                 column: "InventoryReceiptId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InventoryReceiptDetail_LastEditedByUserId",
-                table: "InventoryReceiptDetail",
-                column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InventoryRequest_CreatedByUserId",
@@ -2892,19 +2744,9 @@ namespace CFMS.Infrastructure.Migrations
                 column: "WareToId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InventoryRequestDetail_CreatedByUserId",
-                table: "InventoryRequestDetail",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_InventoryRequestDetail_InventoryRequestId",
                 table: "InventoryRequestDetail",
                 column: "InventoryRequestId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InventoryRequestDetail_LastEditedByUserId",
-                table: "InventoryRequestDetail",
-                column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InventoryRequestDetail_ResourceId",
@@ -2957,19 +2799,9 @@ namespace CFMS.Infrastructure.Migrations
                 column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NutritionPlanDetail_CreatedByUserId",
-                table: "NutritionPlanDetail",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_NutritionPlanDetail_FoodId",
                 table: "NutritionPlanDetail",
                 column: "FoodId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NutritionPlanDetail_LastEditedByUserId",
-                table: "NutritionPlanDetail",
-                column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NutritionPlanDetail_NutritionPlanId",
@@ -3407,7 +3239,7 @@ namespace CFMS.Infrastructure.Migrations
                 name: "ChickenDetail");
 
             migrationBuilder.DropTable(
-                name: "ChickenNutrition");
+                name: "ChickenNutritionPlan");
 
             migrationBuilder.DropTable(
                 name: "CoopEquipment");

@@ -18,14 +18,12 @@ namespace CFMS.Domain.Interfaces
             bool noTracking = false);
 
         T GetByID(object id);
-
         void Insert(T entity);
-
         bool Delete(object id);
-
         void Delete(T entityToDelete);
         void DeleteRange(IEnumerable<T> entities);
         bool Update(object id, T entityToUpdate);
         void Update(T entityToUpdate);
+        bool InsertRange(IEnumerable<T> entities);
     }
 }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250322133756_UpdateLatestDb")]
+    [Migration("20250322170504_UpdateLatestDb")]
     partial class UpdateLatestDb
     {
         /// <inheritdoc />
@@ -408,26 +408,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid?>("ChickenId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CreatedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedWhen")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedWhen")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<int?>("Gender")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastEditedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastEditedWhen")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("Quantity")
                         .HasColumnType("integer");
@@ -439,10 +421,6 @@ namespace CFMS.Infrastructure.Migrations
                         .HasName("ChickenDetail_pkey");
 
                     b.HasIndex("ChickenId");
-
-                    b.HasIndex("CreatedByUserId");
-
-                    b.HasIndex("LastEditedByUserId");
 
                     b.ToTable("ChickenDetail", (string)null);
                 });
@@ -690,40 +668,18 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("ActualValue")
                         .HasColumnType("character varying");
 
-                    b.Property<Guid>("CreatedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedWhen")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedWhen")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<Guid?>("EvaluationResultId")
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<int?>("IsPass")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(0);
 
-                    b.Property<Guid>("LastEditedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastEditedWhen")
-                        .HasColumnType("timestamp without time zone");
-
                     b.HasKey("EvaluationResultDetailId")
                         .HasName("EvaluationResultDetail_pkey");
 
-                    b.HasIndex("CreatedByUserId");
-
                     b.HasIndex("EvaluationResultId");
-
-                    b.HasIndex("LastEditedByUserId");
 
                     b.ToTable("EvaluationResultDetail", (string)null);
                 });
@@ -1285,29 +1241,11 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<Guid>("CreatedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedWhen")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<Guid?>("CriteriaId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("DeletedWhen")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<Guid?>("HealthLogId")
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastEditedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastEditedWhen")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Result")
                         .HasColumnType("character varying");
@@ -1315,13 +1253,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasKey("HealthLogDetailId")
                         .HasName("HealthLogDetail_pkey");
 
-                    b.HasIndex("CreatedByUserId");
-
                     b.HasIndex("CriteriaId");
 
                     b.HasIndex("HealthLogId");
-
-                    b.HasIndex("LastEditedByUserId");
 
                     b.ToTable("HealthLogDetail", (string)null);
                 });
@@ -1392,26 +1326,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<int?>("BatchNumber")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("CreatedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedWhen")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedWhen")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<Guid?>("InventoryReceiptId")
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastEditedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastEditedWhen")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Note")
                         .HasColumnType("character varying");
@@ -1419,11 +1335,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasKey("InventoryReceiptDetailId")
                         .HasName("InventoryReceiptDetail_pkey");
 
-                    b.HasIndex("CreatedByUserId");
-
                     b.HasIndex("InventoryReceiptId");
-
-                    b.HasIndex("LastEditedByUserId");
 
                     b.ToTable("InventoryReceiptDetail", (string)null);
                 });
@@ -1490,15 +1402,6 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<Guid>("CreatedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedWhen")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedWhen")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<DateTime?>("ExpectedDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -1507,15 +1410,6 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<Guid?>("InventoryRequestId")
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastEditedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastEditedWhen")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Note")
                         .HasColumnType("character varying");
@@ -1532,11 +1426,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasKey("InventoryRequestDetailId")
                         .HasName("InventoryRequestDetail_pkey");
 
-                    b.HasIndex("CreatedByUserId");
-
                     b.HasIndex("InventoryRequestId");
-
-                    b.HasIndex("LastEditedByUserId");
 
                     b.HasIndex("ResourceId");
 
@@ -1705,29 +1595,11 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<decimal?>("ConsumptionRate")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("CreatedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedWhen")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedWhen")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<Guid?>("FoodId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal?>("FoodWeight")
                         .HasColumnType("numeric");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastEditedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastEditedWhen")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("NutritionPlanId")
                         .HasColumnType("uuid");
@@ -1738,11 +1610,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasKey("NutritionPlanDetailId")
                         .HasName("NutritionPlanDetail_pkey");
 
-                    b.HasIndex("CreatedByUserId");
-
                     b.HasIndex("FoodId");
-
-                    b.HasIndex("LastEditedByUserId");
 
                     b.HasIndex("NutritionPlanId");
 
@@ -3024,19 +2892,19 @@ namespace CFMS.Infrastructure.Migrations
                     b.ToTable("Warehouse", (string)null);
                 });
 
-            modelBuilder.Entity("ChickenNutrition", b =>
+            modelBuilder.Entity("ChickenNutritionPlan", b =>
                 {
-                    b.Property<Guid>("ChickenId")
+                    b.Property<Guid>("ChickensChickenId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("NutritionPlanId")
+                    b.Property<Guid>("NutritionPlansNutritionPlanId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("ChickenId", "NutritionPlanId");
+                    b.HasKey("ChickensChickenId", "NutritionPlansNutritionPlanId");
 
-                    b.HasIndex("NutritionPlanId");
+                    b.HasIndex("NutritionPlansNutritionPlanId");
 
-                    b.ToTable("ChickenNutrition");
+                    b.ToTable("ChickenNutritionPlan");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.Assignment", b =>
@@ -3237,23 +3105,7 @@ namespace CFMS.Infrastructure.Migrations
                         .HasForeignKey("ChickenId")
                         .HasConstraintName("ChickenDetail_ChickenId_fkey");
 
-                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
-                        .WithMany()
-                        .HasForeignKey("LastEditedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Chicken");
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("LastEditedByUser");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.CoopEquipment", b =>
@@ -3407,29 +3259,13 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.EvaluationResultDetail", b =>
                 {
-                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CFMS.Domain.Entities.EvaluationResult", "EvaluationResult")
                         .WithMany("EvaluationResultDetails")
                         .HasForeignKey("EvaluationResultId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("EvaluationResultDetail_EvaluationResultId_fkey");
 
-                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
-                        .WithMany()
-                        .HasForeignKey("LastEditedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CreatedByUser");
-
                     b.Navigation("EvaluationResult");
-
-                    b.Navigation("LastEditedByUser");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.EvaluationTemplate", b =>
@@ -3738,12 +3574,6 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.HealthLogDetail", b =>
                 {
-                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("CFMS.Domain.Entities.SubCategory", "Criteria")
                         .WithMany("HealthLogDetails")
                         .HasForeignKey("CriteriaId")
@@ -3754,19 +3584,9 @@ namespace CFMS.Infrastructure.Migrations
                         .HasForeignKey("HealthLogId")
                         .HasConstraintName("HealthLogDetail_HealthLogId_fkey");
 
-                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
-                        .WithMany()
-                        .HasForeignKey("LastEditedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("CreatedByUser");
-
                     b.Navigation("Criteria");
 
                     b.Navigation("HealthLog");
-
-                    b.Navigation("LastEditedByUser");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.InventoryReceipt", b =>
@@ -3805,29 +3625,13 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.InventoryReceiptDetail", b =>
                 {
-                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CFMS.Domain.Entities.InventoryReceipt", "InventoryReceipt")
                         .WithMany("InventoryReceiptDetails")
                         .HasForeignKey("InventoryReceiptId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("InventoryReceiptDetail_InventoryReceiptId_fkey");
 
-                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
-                        .WithMany()
-                        .HasForeignKey("LastEditedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CreatedByUser");
-
                     b.Navigation("InventoryReceipt");
-
-                    b.Navigation("LastEditedByUser");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.InventoryRequest", b =>
@@ -3879,23 +3683,11 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.InventoryRequestDetail", b =>
                 {
-                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CFMS.Domain.Entities.InventoryRequest", "InventoryRequest")
                         .WithMany("InventoryRequestDetails")
                         .HasForeignKey("InventoryRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("InventoryRequestDetail_InventoryRequestId_fkey");
-
-                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
-                        .WithMany()
-                        .HasForeignKey("LastEditedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("CFMS.Domain.Entities.Resource", "Resource")
                         .WithMany("InventoryRequestDetails")
@@ -3907,11 +3699,7 @@ namespace CFMS.Infrastructure.Migrations
                         .HasForeignKey("UnitId")
                         .HasConstraintName("InventoryRequestDetail_UnitId_fkey");
 
-                    b.Navigation("CreatedByUser");
-
                     b.Navigation("InventoryRequest");
-
-                    b.Navigation("LastEditedByUser");
 
                     b.Navigation("Resource");
 
@@ -4000,22 +3788,10 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.NutritionPlanDetail", b =>
                 {
-                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CFMS.Domain.Entities.Food", "Food")
                         .WithMany("NutritionPlanDetails")
                         .HasForeignKey("FoodId")
                         .HasConstraintName("NutritionPlanDetail_FoodId_fkey");
-
-                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
-                        .WithMany()
-                        .HasForeignKey("LastEditedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("CFMS.Domain.Entities.NutritionPlan", "NutritionPlan")
                         .WithMany("NutritionPlanDetails")
@@ -4028,11 +3804,7 @@ namespace CFMS.Infrastructure.Migrations
                         .HasForeignKey("UnitId")
                         .HasConstraintName("NutritionPlanDetail_UnitId_fkey");
 
-                    b.Navigation("CreatedByUser");
-
                     b.Navigation("Food");
-
-                    b.Navigation("LastEditedByUser");
 
                     b.Navigation("NutritionPlan");
 
@@ -4756,17 +4528,17 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("StorageType");
                 });
 
-            modelBuilder.Entity("ChickenNutrition", b =>
+            modelBuilder.Entity("ChickenNutritionPlan", b =>
                 {
                     b.HasOne("CFMS.Domain.Entities.Chicken", null)
                         .WithMany()
-                        .HasForeignKey("ChickenId")
+                        .HasForeignKey("ChickensChickenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CFMS.Domain.Entities.NutritionPlan", null)
                         .WithMany()
-                        .HasForeignKey("NutritionPlanId")
+                        .HasForeignKey("NutritionPlansNutritionPlanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

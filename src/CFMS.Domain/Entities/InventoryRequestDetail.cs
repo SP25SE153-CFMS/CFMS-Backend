@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class InventoryRequestDetail : EntityAudit
+public partial class InventoryRequestDetail
 {
     public Guid InventoryRequestDetailId { get; set; }
 

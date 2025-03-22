@@ -370,18 +370,6 @@ public partial class CfmsDbContext : DbContext
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<HealthLogDetail>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<HealthLogDetail>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
         modelBuilder.Entity<Notification>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
@@ -566,20 +554,20 @@ public partial class CfmsDbContext : DbContext
                 .HasConstraintName("Chicken_ChickenBatchId_fkey");
         });
 
-        modelBuilder.Entity<Chicken>()
-            .HasMany(c => c.NutritionPlans)
-            .WithMany(n => n.Chickens)
-            .UsingEntity<Dictionary<string, object>>(
-                "ChickenNutrition",
-                j => j.HasOne<NutritionPlan>()
-                      .WithMany()
-                      .HasForeignKey("NutritionPlanId")
-                      .OnDelete(DeleteBehavior.Cascade),
-                j => j.HasOne<Chicken>()
-                      .WithMany()
-                      .HasForeignKey("ChickenId")
-                      .OnDelete(DeleteBehavior.Cascade)
-            );
+        //modelBuilder.Entity<Chicken>()
+        //    .HasMany(c => c.NutritionPlans)
+        //    .WithMany(n => n.Chickens)
+        //    .UsingEntity<Dictionary<string, object>>(
+        //        "ChickenNutrition",
+        //        j => j.HasOne<NutritionPlan>()
+        //              .WithMany()
+        //              .HasForeignKey("NutritionPlanId")
+        //              .OnDelete(DeleteBehavior.Cascade),
+        //        j => j.HasOne<Chicken>()
+        //              .WithMany()
+        //              .HasForeignKey("ChickenId")
+        //              .OnDelete(DeleteBehavior.Cascade)
+        //    );
 
         modelBuilder.Entity<ChickenBatch>(entity =>
         {

@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.NutritionPlan;
 using CFMS.Domain.Entities;
 using MediatR;
 
@@ -6,20 +7,20 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Update
 {
     public class UpdateNutritionPlanCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateNutritionPlanCommand(Guid id, string? name, string? description, List<string> chickensList)
+        public UpdateNutritionPlanCommand(string? name, string? description, List<Guid>? chickenList, List<NutritionPlanDetailDto> nutritionPlanDetails, Guid nutritionPlanId)
         {
-            Id = id;
+
             Name = name;
             Description = description;
-            ChickensList = chickensList;
+            ChickenList = chickenList;
+            NutritionPlanDetails = nutritionPlanDetails;
+            NutritionPlanId = nutritionPlanId;
         }
 
-        public Guid Id { get; set; }
-
+        public Guid NutritionPlanId { get; set; }
         public string? Name { get; set; }
-
         public string? Description { get; set; }
-
-        public List<string> ChickensList { get; set; }
+        public List<Guid>? ChickenList { get; set; }
+        public List<NutritionPlanDetailDto>? NutritionPlanDetails { get; set; }
     }
 }

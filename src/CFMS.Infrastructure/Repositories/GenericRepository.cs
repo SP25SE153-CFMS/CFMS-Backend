@@ -93,7 +93,7 @@ namespace CFMS.Infrastructure.Repositories
             _dbSet.Remove(entityToDelete);
         }
 
-        public void DeleteRange(IEnumerable<TEntity> entities)
+        public virtual void DeleteRange(IEnumerable<TEntity> entities)
         {
             foreach (var entity in entities)
             {
@@ -114,6 +114,14 @@ namespace CFMS.Infrastructure.Repositories
             }
             _dbSet.Attach(entityToUpdate);
             _context.Entry(entityToUpdate).State = EntityState.Modified;
+        }
+
+        public virtual bool InsertRange(IEnumerable<TEntity> entities)
+        {
+            if (entities == null || !entities.Any()) return false;
+
+            _dbSet.AddRange(entities);
+            return true;
         }
     }
 }
