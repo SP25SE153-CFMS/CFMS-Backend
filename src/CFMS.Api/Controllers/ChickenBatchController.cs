@@ -1,9 +1,12 @@
-﻿using CFMS.Application.Features.ChickenBatchFeat.AddGrowthStage;
+﻿using CFMS.Application.Features.ChickenBatchFeat.AddChicken;
+using CFMS.Application.Features.ChickenBatchFeat.AddGrowthStage;
 using CFMS.Application.Features.ChickenBatchFeat.Create;
 using CFMS.Application.Features.ChickenBatchFeat.Delete;
+using CFMS.Application.Features.ChickenBatchFeat.DeleteGrowthBatch;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatch;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatchs;
 using CFMS.Application.Features.ChickenBatchFeat.Update;
+using CFMS.Application.Features.ChickenBatchFeat.UpdateGrowthBatch;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,6 +55,27 @@ namespace CFMS.Api.Controllers
 
         [HttpPost("add-growthstage")]
         public async Task<IActionResult> AddGrowthStage(AddGrowthStageCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPut("update-growthstage")]
+        public async Task<IActionResult> UpdateGrowthStage(UpdateGrowthBatchCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpDelete("delete-growthstage")]
+        public async Task<IActionResult> DeleteGrowthStage(DeleteGrowthBatchCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPost("add-chicken")]
+        public async Task<IActionResult> AddChicken(AddChickenCommand command)
         {
             var result = await Send(command);
             return result;
