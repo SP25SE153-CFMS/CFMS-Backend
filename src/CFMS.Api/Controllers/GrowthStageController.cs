@@ -1,8 +1,11 @@
-﻿using CFMS.Application.Features.GrowthStageFeat.Create;
+﻿using CFMS.Application.Features.GrowthStageFeat.AddNutritionPlan;
+using CFMS.Application.Features.GrowthStageFeat.Create;
 using CFMS.Application.Features.GrowthStageFeat.Delete;
+using CFMS.Application.Features.GrowthStageFeat.DeleteNutritionPlan;
 using CFMS.Application.Features.GrowthStageFeat.GetStage;
 using CFMS.Application.Features.GrowthStageFeat.GetStages;
 using CFMS.Application.Features.GrowthStageFeat.Update;
+using CFMS.Application.Features.NutritionPlanFeat.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +49,20 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await Send(new DeleteStageCommand(id));
+            return result;
+        }
+
+        [HttpPost("add-nutritionplan")]
+        public async Task<IActionResult> AddNutritionPlan(AddNutritionPlanCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPost("delete-nutritionplan")]
+        public async Task<IActionResult> DeleteNutritionPlan(DeleteNutritionPlanCommand command)
+        {
+            var result = await Send(command);
             return result;
         }
     }
