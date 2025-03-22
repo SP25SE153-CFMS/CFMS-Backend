@@ -39,12 +39,12 @@ namespace CFMS.Application.Services.Impl
 
         public bool? IsAdmin()
         {
-            return _httpContextAccessor.HttpContext?.User.IsInRole(SystemRole.Admin.ToString());
+            return _httpContextAccessor.HttpContext?.User.IsInRole(GeneralRole.ADMIN_ROLE.ToString());
         }
 
         public bool? IsUser()
         {
-            return _httpContextAccessor.HttpContext?.User.IsInRole(SystemRole.User.ToString());
+            return _httpContextAccessor.HttpContext?.User.IsInRole(GeneralRole.USER_ROLE.ToString());
         }
     }
 }

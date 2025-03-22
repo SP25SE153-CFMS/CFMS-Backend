@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class Farm : EntityAudit
+public partial class Farm : EntityAudit
 {
     public Guid FarmId { get; set; }
 
@@ -13,7 +13,7 @@ public class Farm : EntityAudit
 
     public string? Address { get; set; }
 
-    public double? Area { get; set; }
+    public decimal? Area { get; set; }
 
     public int? Scale { get; set; }
 

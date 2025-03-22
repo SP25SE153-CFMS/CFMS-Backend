@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class Chicken : EntityAudit
+public partial class Chicken : EntityAudit
 {
     public Guid ChickenId { get; set; }
 
@@ -24,6 +24,8 @@ public class Chicken : EntityAudit
     public virtual ChickenBatch? ChickenBatch { get; set; }
 
     public virtual ICollection<ChickenDetail> ChickenDetails { get; set; } = new List<ChickenDetail>();
+
+    public virtual ICollection<NutritionPlan> NutritionPlans { get; set; } = new List<NutritionPlan>();
 
     public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
 }

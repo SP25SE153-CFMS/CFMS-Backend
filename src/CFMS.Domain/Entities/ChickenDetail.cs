@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class ChickenDetail : EntityAudit
+public partial class ChickenDetail : EntityAudit
 {
     public Guid ChickenDetailId { get; set; }
 

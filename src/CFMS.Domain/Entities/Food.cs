@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class Food : EntityAudit
+public partial class Food : EntityAudit
 {
     public Guid FoodId { get; set; }
 
@@ -12,8 +12,6 @@ public class Food : EntityAudit
     public string? FoodName { get; set; }
 
     public string? Note { get; set; }
-
-    public Guid? FoodIngredientId { get; set; }
 
     public DateTime? ProductionDate { get; set; }
 

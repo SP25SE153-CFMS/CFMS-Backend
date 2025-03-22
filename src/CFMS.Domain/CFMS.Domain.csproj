@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Enums\Roles\SystemRole.cs" />
+    <None Include="Enums\Roles\GeneralRole.cs" />
   </ItemGroup>
 
   <ItemGroup>

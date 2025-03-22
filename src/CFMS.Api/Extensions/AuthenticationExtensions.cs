@@ -48,8 +48,8 @@ namespace CFMS.Api.Extensions
         {
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, ((int)SystemRole.Admin).ToString()));
-                options.AddPolicy("UserOrAdmin", policy => policy.RequireClaim(ClaimTypes.Role, ((int)SystemRole.User).ToString(), ((int)SystemRole.Admin).ToString()));
+                options.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, ((int)GeneralRole.ADMIN_ROLE).ToString()));
+                options.AddPolicy("UserOrAdmin", policy => policy.RequireClaim(ClaimTypes.Role, ((int)GeneralRole.USER_ROLE).ToString(), ((int)GeneralRole.ADMIN_ROLE).ToString()));
             });
 
             return services;

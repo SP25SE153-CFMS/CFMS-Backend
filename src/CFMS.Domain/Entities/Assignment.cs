@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class Assignment : EntityAudit
+public partial class Assignment : EntityAudit
 {
     public Guid AssignmentId { get; set; }
 
@@ -17,7 +17,7 @@ public class Assignment : EntityAudit
 
     public Guid? TaskScheduleId { get; set; }
 
-    public string? Status { get; set; }
+    public int? Status { get; set; }
 
     public string? Note { get; set; }
 

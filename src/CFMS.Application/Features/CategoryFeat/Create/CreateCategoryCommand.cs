@@ -7,20 +7,20 @@ namespace CFMS.Application.Features.CategoryFeat.Create
 {
     public class CreateCategoryCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateCategoryCommand(CategoryType? categoryType, string? categoryCode, string? description, CategoryStatus? status)
+        public CreateCategoryCommand(string? categoryType, string? categoryName, string? description, int? status)
         {
             CategoryType = categoryType;
-            CategoryCode = categoryCode;
+            CategoryName = categoryName;
             Description = description;
             Status = status;
         }
 
-        public CategoryType? CategoryType { get; set; }
+        public string? CategoryType { get; set; }
 
-        public string? CategoryCode { get; set; }
+        public string? CategoryName { get; set; }
 
         public string? Description { get; set; }
 
-        public CategoryStatus? Status { get; set; }
+        public int? Status { get; set; }
     }
 }

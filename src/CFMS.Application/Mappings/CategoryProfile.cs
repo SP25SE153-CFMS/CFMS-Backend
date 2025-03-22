@@ -35,24 +35,24 @@ namespace CFMS.Application.Mappings
             //    }));
         }
 
-        private string GetCategoryName(CategoryType? categoryType)
-        {
-            if (categoryType.HasValue && CategoryDictionary.CategoryType.TryGetValue((int)categoryType.Value, out string categoryTypeName))
-            {
-                return categoryTypeName;
-            }
+        //private string GetCategoryName(CategoryType? categoryType)
+        //{
+        //    if (categoryType.HasValue && CategoryDictionary.CategoryType.TryGetValue((int)categoryType.Value, out string categoryTypeName))
+        //    {
+        //        return categoryTypeName;
+        //    }
 
-            return "Không xác định";
-        }
+        //    return "Không xác định";
+        //}
 
-        private string GetCategoryStatus(CategoryStatus? categoryStatus)
-        {
-            if (categoryStatus.HasValue && CategoryDictionary.CategoryStatus.TryGetValue((int)categoryStatus.Value, out string categoryStatusName))
-            {
-                return categoryStatusName;
-            }
+        //private string GetCategoryStatus(StorageStatus? categoryStatus)
+        //{
+        //    if (categoryStatus.HasValue && CategoryDictionary.CategoryStatus.TryGetValue((int)categoryStatus.Value, out string categoryStatusName))
+        //    {
+        //        return categoryStatusName;
+        //    }
 
-            return "Không xác định";
-        }
+        //    return "Không xác định";
+        //}
     }
 }

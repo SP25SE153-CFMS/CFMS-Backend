@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class Category : EntityAudit
+public partial class Category : EntityAudit
 {
     public Guid CategoryId { get; set; }
 
-    public int? CategoryType { get; set; }
+    public string? CategoryName { get; set; }
 
-    public string? CategoryCode { get; set; }
+    public string? CategoryType { get; set; }
 
     public string? Description { get; set; }
 

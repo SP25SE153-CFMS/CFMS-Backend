@@ -9,7 +9,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Services
+namespace CFMS.Application.Services.Impl
 {
     public class MailService : IMailService
     {

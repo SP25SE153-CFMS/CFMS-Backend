@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CFMS.Domain.Enums.Status
 {
-    public enum CategoryStatus
+    public enum StorageStatus
     {
-        Available = 2,
-        Hidden = 1,
-        OutOfStock = 0
+        EXPIRED = 2,
+        AVAILABLE = 1,
+        OUT_OF_STOCK = 0
     }
 }
