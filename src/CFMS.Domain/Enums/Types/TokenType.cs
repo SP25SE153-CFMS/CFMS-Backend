@@ -8,7 +8,7 @@ namespace CFMS.Domain.Enums.Types
 {
     public enum TokenType
     {
-        AccessToken = 2,
-        RefreshToken = 1
+        ACCESS_TOKEN = 2,
+        REFRESH_TOKEN = 1
     }
 }

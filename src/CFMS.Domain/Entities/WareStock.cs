@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class WareStock : EntityAudit
+public partial class WareStock : EntityAudit
 {
     public Guid WareStockId { get; set; }
 

@@ -23,8 +23,8 @@ namespace CFMS.Application.Features.CategoryFeat.Update
 
             try
             {
-                existCategory.CategoryCode = request.CategoryCode;
-                existCategory.CategoryType = (int)request.CategoryType;
+                existCategory.CategoryName = request.CategoryName;
+                existCategory.CategoryType = request.CategoryType;
                 existCategory.Status = (int)request.Status;
                 existCategory.Description = request.Description;
 

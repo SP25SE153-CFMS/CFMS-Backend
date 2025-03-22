@@ -7,10 +7,10 @@ namespace CFMS.Application.Features.CategoryFeat.Update
 {
     public class UpdateCategoryCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateCategoryCommand(CategoryType? categoryType, string? categoryCode, string? description, CategoryStatus? status, Guid categoryId)
+        public UpdateCategoryCommand(string? categoryType, string? categoryName, string? description, int? status, Guid categoryId)
         {
             CategoryType = categoryType;
-            CategoryCode = categoryCode;
+            CategoryName = categoryName;
             Description = description;
             Status = status;
             CategoryId = categoryId;
@@ -18,12 +18,12 @@ namespace CFMS.Application.Features.CategoryFeat.Update
 
         public Guid CategoryId { get; set; }
 
-        public CategoryType? CategoryType { get; set; }
+        public string? CategoryType { get; set; }
 
-        public string? CategoryCode { get; set; }
+        public string? CategoryName { get; set; }
 
         public string? Description { get; set; }
 
-        public CategoryStatus? Status { get; set; }
+        public int? Status { get; set; }
     }
 }

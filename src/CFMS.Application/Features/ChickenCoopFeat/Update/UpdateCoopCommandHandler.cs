@@ -27,7 +27,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
                 existCoop.ChickenCoopCode = request.ChickenCoopCode;
                 existCoop.CurrentQuantity = request.CurrentQuantity;
                 existCoop.Description = request.Description;
-                existCoop.Capacity = request.Capacity;
+                existCoop.MaxQuantity = request.MaxQuantity;
                 existCoop.Density = request.Density;
                 existCoop.Status = request.Status;
                 existCoop.Area = request.Area;

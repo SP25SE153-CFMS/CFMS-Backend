@@ -40,7 +40,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddGrowthStage
                     MortalityRate = request.MortalityRate,
                     FeedConsumption = request.FeedConsumption,
                     Note = request.Note,
-                    Status = true
+                    Status = 1
                 });
 
                 _unitOfWork.ChickenBatchRepository.Update(existBatch);

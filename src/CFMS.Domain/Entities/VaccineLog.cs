@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class VaccineLog
+public partial class VaccineLog : EntityAudit
 {
     public Guid VaccineLogId { get; set; }
 
     public string? Notes { get; set; }
 
-    public bool? Status { get; set; }
+    public int? Status { get; set; }
 
     public string? Reaction { get; set; }
 

@@ -33,7 +33,7 @@ namespace CFMS.Application.Features.UserFeat.Update
 
         public string? Cccd { get; set; }
 
-        public SystemRole? SystemRole { get; set; }
+        public GeneralRole? SystemRole { get; set; }
 
         public string? Password { get; set; }
     }

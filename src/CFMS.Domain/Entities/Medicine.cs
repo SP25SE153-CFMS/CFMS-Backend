@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class Medicine : EntityAudit
+public partial class Medicine : EntityAudit
 {
     public Guid MedicineId { get; set; }
 

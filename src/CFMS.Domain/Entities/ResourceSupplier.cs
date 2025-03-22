@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class ResourceSupplier : EntityAudit
+public partial class ResourceSupplier : EntityAudit
 {
     public Guid ResourceSupplierId { get; set; }
 
@@ -25,7 +25,7 @@ public class ResourceSupplier : EntityAudit
 
     public virtual Resource? Resource { get; set; }
 
-    public virtual SubCategory? Supplier { get; set; }
+    public virtual Supplier? Supplier { get; set; }
 
     public virtual SubCategory? UnitPrice { get; set; }
 }

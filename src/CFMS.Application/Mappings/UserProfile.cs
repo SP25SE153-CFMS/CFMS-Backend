@@ -23,7 +23,7 @@ namespace CFMS.Application.Mappings
                 //.ForMember(dest => dest.Status, opt => opt.MapFrom(src => GetUserStatusName(src.Status)));
         }
 
-        private string GetSystemRoleName(SystemRole? systemRole)
+        private string GetSystemRoleName(GeneralRole? systemRole)
         {
             if (systemRole.HasValue && RoleDictionary.SystemRole.TryGetValue((int)systemRole.Value, out string roleName))
             {

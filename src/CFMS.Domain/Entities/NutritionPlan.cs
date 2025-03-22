@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class NutritionPlan : EntityAudit
+public partial class NutritionPlan : EntityAudit
 {
     public Guid NutritionPlanId { get; set; }
 
@@ -11,7 +11,7 @@ public class NutritionPlan : EntityAudit
 
     public string? Description { get; set; }
 
-    public string? Target { get; set; }
+    public virtual ICollection<Chicken> Chickens { get; set; } = new List<Chicken>();
 
     public virtual ICollection<FeedSession> FeedSessions { get; set; } = new List<FeedSession>();
 

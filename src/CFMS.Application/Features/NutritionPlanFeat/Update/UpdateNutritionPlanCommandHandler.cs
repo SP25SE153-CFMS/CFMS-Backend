@@ -26,7 +26,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Update
             {
                 existPlan.Description = request.Description;
                 existPlan.Name = request.Name;
-                existPlan.Target = request.Target;
+                //existPlan.Chickens = request.ChickensList;
 
                 _unitOfWork.NutritionPlanRepository.Update(existPlan);
                 var result = await _unitOfWork.SaveChangesAsync();

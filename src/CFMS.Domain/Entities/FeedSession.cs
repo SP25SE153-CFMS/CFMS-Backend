@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class FeedSession : EntityAudit
+public partial class FeedSession : EntityAudit
 {
     public Guid FeedSessionId { get; set; }
 

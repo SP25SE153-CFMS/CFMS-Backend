@@ -3,6 +3,7 @@ using CFMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.ComponentModel.DataAnnotations;
 using Task = CFMS.Domain.Entities.Task;
+using CFMS.Infrastructure.Persistence;
 
 namespace CFMS.Infrastructure.Repositories
 {

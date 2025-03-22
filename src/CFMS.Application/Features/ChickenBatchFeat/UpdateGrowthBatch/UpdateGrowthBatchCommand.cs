@@ -5,7 +5,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.UpdateGrowthBatch
 {
     public class UpdateGrowthBatchCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateGrowthBatchCommand(Guid growthBatchId, DateTime? startDate, DateTime? endDate, decimal? avgWeight, decimal? mortalityRate, decimal? feedConsumption, string? note, bool? status)
+        public UpdateGrowthBatchCommand(Guid growthBatchId, DateTime? startDate, DateTime? endDate, decimal? avgWeight, decimal? mortalityRate, decimal? feedConsumption, string? note, int? status)
         {
             GrowthBatchId = growthBatchId;
             StartDate = startDate;
@@ -31,6 +31,6 @@ namespace CFMS.Application.Features.ChickenBatchFeat.UpdateGrowthBatch
 
         public string? Note { get; set; }
 
-        public bool? Status { get; set; }
+        public int? Status { get; set; }
     }
 }

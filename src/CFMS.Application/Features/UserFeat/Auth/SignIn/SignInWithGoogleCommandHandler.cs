@@ -52,8 +52,8 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
                         Mail = payload.Email,
                         FullName = payload.Name,
                         Avatar = payload.Picture,
-                        Status = (int)UserStatus.Active,
-                        SystemRole = (int)SystemRole.User,
+                        Status = (int)UserStatus.ACTIVE_STATUS,
+                        SystemRole = (int)GeneralRole.USER_ROLE,
                         GoogleId = payload.Subject
                     };
 
@@ -64,7 +64,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
                     var revokedToken = new RevokedToken
                     {
                         Token = refreshToken,
-                        TokenType = (int)TokenType.RefreshToken,
+                        TokenType = (int)TokenType.REFRESH_TOKEN,
                         UserId = user.UserId,
                         ExpiryDate = _utilityService.ToVietnamTime(_tokenService.GetExpiryDate(refreshToken) ?? default)
                     };
@@ -85,7 +85,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
                     existRevokedToken = new RevokedToken
                     {
                         Token = refreshToken,
-                        TokenType = (int)TokenType.RefreshToken,
+                        TokenType = (int)TokenType.REFRESH_TOKEN,
                         UserId = user.UserId,
                         ExpiryDate = _utilityService.ToVietnamTime(_tokenService.GetExpiryDate(refreshToken) ?? default)
                     };
