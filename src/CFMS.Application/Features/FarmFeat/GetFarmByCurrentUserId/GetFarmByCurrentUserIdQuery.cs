@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.FarmFeat.GetFarmByCurrentUserId
 {
-    public class GetFarmByCurrentUserIdQuery : IRequest<BaseResponse<Farm>>
+    public class GetFarmByCurrentUserIdQuery : IRequest<BaseResponse<IEnumerable<Farm>>>
     {
         public GetFarmByCurrentUserIdQuery(Guid userId)
         {

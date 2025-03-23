@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.FarmFeat.GetFarmByUserId
 {
-    public class GetFarmByUserIdQueryHandler : IRequestHandler<GetFarmByUserIdQuery, BaseResponse<Farm>>
+    public class GetFarmByUserIdQueryHandler : IRequestHandler<GetFarmByUserIdQuery, BaseResponse<IEnumerable<Farm>>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -20,16 +20,16 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmByUserId
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponse<Farm>> Handle(GetFarmByUserIdQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<IEnumerable<Farm>>> Handle(GetFarmByUserIdQuery request, CancellationToken cancellationToken)
         {
             var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(request.UserId)).FirstOrDefault();
-            var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.CreatedByUserId.Equals(existUser.UserId) && f.IsDeleted == false).FirstOrDefault();
+            var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.CreatedByUserId.Equals(existUser.UserId) && f.IsDeleted == false, includeProperties: "BreedingAreas").ToList();
             if (existFarm == null)
             {
-                return BaseResponse<Farm>.FailureResponse(message: "Farm không tồn tại");
+                return BaseResponse<IEnumerable<Farm>>.FailureResponse(message: "Farm không tồn tại");
             }
 
-            return BaseResponse<Farm>.SuccessResponse(data: existFarm);
+            return BaseResponse<IEnumerable<Farm>>.SuccessResponse(data: existFarm);
         }
     }
 }

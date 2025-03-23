@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -21,6 +22,7 @@ public partial class Chicken : EntityAudit
 
     public Guid? ChickenBatchId { get; set; }
 
+    [JsonIgnore]
     public virtual ChickenBatch? ChickenBatch { get; set; }
 
     public virtual ICollection<ChickenDetail> ChickenDetails { get; set; } = new List<ChickenDetail>();
