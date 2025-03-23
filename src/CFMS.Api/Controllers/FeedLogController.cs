@@ -14,15 +14,15 @@ namespace CFMS.Api.Controllers
         {
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("Batch/{batchId}")]
+        public async Task<IActionResult> GetFeedLogs(Guid batchId)
         {
-            var result = await Send(new GetFeedLogsQuery());
+            var result = await Send(new GetFeedLogsQuery(batchId));
             return result;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> GetFeedLog(Guid id)
         {
             var result = await Send(new GetFeedLogQuery(id));
             return result;
