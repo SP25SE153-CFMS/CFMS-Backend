@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class Notification : EntityAudit
+public partial class Notification
 {
     public Guid NotificationId { get; set; }
 

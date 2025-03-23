@@ -19,7 +19,9 @@ public partial class SubCategory : EntityAudit
 
     public virtual Category? Category { get; set; }
 
-    public virtual ICollection<ChickenCoop> ChickenCoops { get; set; } = new List<ChickenCoop>();
+    public virtual ICollection<ChickenCoop> ChickenCoopDensityUnits { get; set; } = new List<ChickenCoop>();
+
+    public virtual ICollection<ChickenCoop> ChickenCoopPurposes { get; set; } = new List<ChickenCoop>();
 
     public virtual ICollection<Chicken> Chickens { get; set; } = new List<Chicken>();
 

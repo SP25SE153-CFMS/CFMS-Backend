@@ -11,7 +11,7 @@ public partial class NutritionPlan : EntityAudit
 
     public string? Description { get; set; }
 
-    public virtual ICollection<Chicken> Chickens { get; set; } = new List<Chicken>();
+    public virtual ICollection<ChickenNutrition> ChickenNutritions { get; set; } = new List<ChickenNutrition>();
 
     public virtual ICollection<FeedSession> FeedSessions { get; set; } = new List<FeedSession>();
 

@@ -21,22 +21,40 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
         {
             try
             {
+                var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) && p.IsDeleted == false).FirstOrDefault();
+
+                if (existNutritionPlan != null)
+                {
+                    return BaseResponse<bool>.FailureResponse($"Tên đã tồn tại");
+                }
+
                 var chickens = _unitOfWork.ChickenRepository.Get(filter: c => request.ChickenList.Contains(c.ChickenId)).ToList();
                 var missingIds = request.ChickenList.Except(chickens.Select(c => c.ChickenId)).ToList();
 
                 if (missingIds.Any())
                 {
-                    return BaseResponse<bool>.FailureResponse($"Các ID gà không tồn tại: {string.Join(", ", missingIds)}");
+                    return BaseResponse<bool>.FailureResponse($"Không tồn tại loại gà nào");
                 }
 
-                var nutritionPlan = _mapper.Map<NutritionPlan>(request);
-                nutritionPlan.Chickens = chickens;
+                var nutritionPlan = new NutritionPlan
+                {
+                    Name = request.Name,
+                    Description = request.Description
+                };
 
-                _unitOfWork.NutritionPlanRepository.Insert(_mapper.Map<NutritionPlan>(request));
+                _unitOfWork.NutritionPlanRepository.Insert(nutritionPlan);
 
                 await _unitOfWork.SaveChangesAsync();
 
-                var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name)).FirstOrDefault();
+                var nutritionPlanChickens = chickens.Select(chicken => new ChickenNutrition
+                {
+                    NutritionPlanId = nutritionPlan.NutritionPlanId,
+                    ChickenId = chicken.ChickenId
+                }).ToList();
+
+                _unitOfWork.ChickenNutritionRepository.InsertRange(nutritionPlanChickens);
+
+                existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) & p.IsDeleted == false).FirstOrDefault();
 
                 var nutritionPlanDetails = request.NutritionPlanDetails.Select(detail => new NutritionPlanDetail
                 {
@@ -45,7 +63,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
                     UnitId = detail.UnitId,
                     FoodWeight = detail.FoodWeight,
                     ConsumptionRate = detail.ConsumptionRate
-                }).ToList() ?? new List<NutritionPlanDetail>();
+                }).ToList();
 
                 _unitOfWork.NutritionPlanDetailRepository.InsertRange(nutritionPlanDetails);
 

@@ -33,9 +33,9 @@ public partial class Warehouse : EntityAudit
 
     public virtual SubCategory? StorageType { get; set; }
 
-    public virtual ICollection<SystemConfig> SystemConfigs { get; set; } = new List<SystemConfig>();
-
     public virtual ICollection<TaskLocation> TaskLocations { get; set; } = new List<TaskLocation>();
+
+    public virtual SystemConfig Ware { get; set; } = null!;
 
     public virtual ICollection<WarePermission> WarePermissions { get; set; } = new List<WarePermission>();
 

@@ -1,11 +1,13 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.Chicken;
+using CFMS.Application.DTOs.NutritionPlan;
 using MediatR;
 
 namespace CFMS.Application.Features.ChickenFeat.Create
 {
     public class CreateChickenCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateChickenCommand(string? chickenCode, string? chickenName, int? totalQuantity, string? description, int? status, Guid? chickenBatchId)
+        public CreateChickenCommand(string? chickenCode, string? chickenName, int? totalQuantity, string? description, int? status, Guid? chickenBatchId, List<ChickenDetailDto>? chickenDetails)
         {
             ChickenCode = chickenCode;
             ChickenName = chickenName;
@@ -13,6 +15,7 @@ namespace CFMS.Application.Features.ChickenFeat.Create
             Description = description;
             Status = status;
             ChickenBatchId = chickenBatchId;
+            ChickenDetails = chickenDetails;
         }
 
         public string? ChickenCode { get; set; }
@@ -26,5 +29,9 @@ namespace CFMS.Application.Features.ChickenFeat.Create
         public int? Status { get; set; }
 
         public Guid? ChickenBatchId { get; set; }
+
+        public string? UserId { get; set; }
+
+        public List<ChickenDetailDto>? ChickenDetails { get; set; }
     }
 }

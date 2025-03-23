@@ -15,7 +15,7 @@ public partial class NutritionPlanDetail
 
     public decimal? FoodWeight { get; set; }
 
-    public decimal? ConsumptionRate { get; set; } 
+    public decimal? ConsumptionRate { get; set; }
 
     public virtual Food? Food { get; set; }
 

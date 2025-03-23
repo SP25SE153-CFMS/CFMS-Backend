@@ -8,7 +8,8 @@ namespace CFMS.Application.Mappings
     {
         public ChickenProfile()
         {
-            CreateMap<CreateChickenCommand, Chicken>();
+            CreateMap<CreateChickenCommand, Chicken>()
+                .ForMember(dest => dest.ChickenDetails, opt => opt.Ignore());
         }
     }
 }

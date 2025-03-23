@@ -25,16 +25,31 @@ namespace CFMS.Application.Features.ChickenFeat.Create
                 return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
             }
 
-            var existChicken = _unitOfWork.ChickenRepository.Get(c => c.ChickenCode.Equals(request.ChickenCode) && c.IsDeleted == false).FirstOrDefault();
+            var existChicken = _unitOfWork.ChickenRepository.Get(c => c.ChickenCode.Equals(request.ChickenCode) || c.ChickenName.Equals(request.ChickenName) && c.IsDeleted == false).FirstOrDefault();
             if (existChicken != null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Code đã được sử dụng");
+                return BaseResponse<bool>.FailureResponse(message: "Tên hoặc Code đã được sử dụng");
             }
 
             try
             {
                 _unitOfWork.ChickenRepository.Insert(_mapper.Map<Chicken>(request));
+                await _unitOfWork.SaveChangesAsync();
+
+                existChicken = _unitOfWork.ChickenRepository.Get(filter: p => p.ChickenName.Equals(request.ChickenName) && p.IsDeleted == false).FirstOrDefault();
+
+                var chickenDetails = request.ChickenDetails.Select(detail => new ChickenDetail
+                {
+                    ChickenId = existChicken.ChickenId,
+                    Weight = detail.Weight,
+                    Quantity = detail.Quantity,
+                    Gender = detail.Gender
+                }).ToList() ?? new List<ChickenDetail>();
+
+                _unitOfWork.ChickenDetailRepository.InsertRange(chickenDetails);
+
                 var result = await _unitOfWork.SaveChangesAsync();
+
                 if (result > 0)
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
