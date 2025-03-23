@@ -20,7 +20,6 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
     {
         try
         {
-            // 1. Kiểm tra NutritionPlan có tồn tại không
             var nutritionPlan = _unitOfWork.NutritionPlanRepository
                 .Get(filter: p => p.NutritionPlanId == request.NutritionPlanId && p.IsDeleted == false)
                 .FirstOrDefault();
@@ -30,14 +29,12 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
                 return BaseResponse<bool>.FailureResponse($"Chế độ dinh dưỡng không tồn tại");
             }
 
-            // 2. Cập nhật thông tin NutritionPlan
             nutritionPlan.Name = request.Name ?? nutritionPlan.Name;
             nutritionPlan.Description = request.Description ?? nutritionPlan.Description;
 
             _unitOfWork.NutritionPlanRepository.Update(nutritionPlan);
             await _unitOfWork.SaveChangesAsync();
 
-            // 3. Cập nhật danh sách ChickenNutrition nếu có thay đổi
             if (request.ChickenList != null)
             {
                 var chickens = _unitOfWork.ChickenRepository

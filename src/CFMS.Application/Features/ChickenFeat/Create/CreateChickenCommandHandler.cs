@@ -33,10 +33,21 @@ namespace CFMS.Application.Features.ChickenFeat.Create
 
             try
             {
-                _unitOfWork.ChickenRepository.Insert(_mapper.Map<Chicken>(request));
+                var newChicken = new Chicken
+                {
+                    ChickenCode = request.ChickenCode,
+                    ChickenName = request.ChickenName,
+                    TotalQuantity = request.TotalQuantity,
+                    Description = request.Description,
+                    Status = request.Status,
+                    ChickenTypeId = request.ChickenTypeId,
+                    ChickenBatchId = request.ChickenBatchId
+                };
+
+                _unitOfWork.ChickenRepository.Insert(newChicken);
                 await _unitOfWork.SaveChangesAsync();
 
-                existChicken = _unitOfWork.ChickenRepository.Get(filter: p => p.ChickenName.Equals(request.ChickenName) && p.IsDeleted == false).FirstOrDefault();
+                existChicken = _unitOfWork.ChickenRepository.Get(filter: p => p.ChickenCode.Equals(request.ChickenCode) && p.IsDeleted == false).FirstOrDefault();
 
                 var chickenDetails = request.ChickenDetails.Select(detail => new ChickenDetail
                 {

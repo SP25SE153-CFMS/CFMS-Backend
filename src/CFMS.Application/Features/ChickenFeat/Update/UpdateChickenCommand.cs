@@ -1,11 +1,12 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.Chicken;
 using MediatR;
 
 namespace CFMS.Application.Features.ChickenFeat.Update
 {
     public class UpdateChickenCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateChickenCommand(Guid id, string? chickenCode, string? chickenName, int? totalQuantity, string? description, int? status, Guid? chickenBatchId)
+        public UpdateChickenCommand(Guid id, string? chickenCode, string? chickenName, int? totalQuantity, string? description, int? status, Guid? chickenBatchId, Guid? chickenTypeId, List<ChickenDetailDto>? chickenDetails)
         {
             Id = id;
             ChickenCode = chickenCode;
@@ -14,6 +15,8 @@ namespace CFMS.Application.Features.ChickenFeat.Update
             Description = description;
             Status = status;
             ChickenBatchId = chickenBatchId;
+            ChickenTypeId = chickenTypeId;
+            ChickenDetails = chickenDetails;
         }
 
         public Guid Id { get; set; }
@@ -29,5 +32,9 @@ namespace CFMS.Application.Features.ChickenFeat.Update
         public int? Status { get; set; }
 
         public Guid? ChickenBatchId { get; set; }
+
+        public Guid? ChickenTypeId { get; set; }
+
+        public List<ChickenDetailDto>? ChickenDetails { get; set; }
     }
 }
