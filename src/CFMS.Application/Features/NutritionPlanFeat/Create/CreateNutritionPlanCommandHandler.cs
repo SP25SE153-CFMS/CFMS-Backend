@@ -21,6 +21,13 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
         {
             try
             {
+                var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) && p.IsDeleted == false).FirstOrDefault();
+
+                if (existNutritionPlan != null)
+                {
+                    return BaseResponse<bool>.FailureResponse($"Tên đã tồn tại");
+                }
+
                 var chickens = _unitOfWork.ChickenRepository.Get(filter: c => request.ChickenList.Contains(c.ChickenId)).ToList();
                 var missingIds = request.ChickenList.Except(chickens.Select(c => c.ChickenId)).ToList();
 
@@ -36,7 +43,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
 
                 await _unitOfWork.SaveChangesAsync();
 
-                var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name)).FirstOrDefault();
+                existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) & p.IsDeleted == false).FirstOrDefault();
 
                 var nutritionPlanDetails = request.NutritionPlanDetails.Select(detail => new NutritionPlanDetail
                 {

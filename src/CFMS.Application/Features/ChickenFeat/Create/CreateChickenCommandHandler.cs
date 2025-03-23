@@ -34,7 +34,22 @@ namespace CFMS.Application.Features.ChickenFeat.Create
             try
             {
                 _unitOfWork.ChickenRepository.Insert(_mapper.Map<Chicken>(request));
+                await _unitOfWork.SaveChangesAsync();
+
+                existChicken = _unitOfWork.ChickenRepository.Get(filter: p => p.ChickenName.Equals(request.ChickenName) && p.IsDeleted == false).FirstOrDefault();
+
+                var chickenDetails = request.ChickenDetails.Select(detail => new ChickenDetail
+                {
+                    ChickenId = existChicken.ChickenId,
+                    Weight = detail.Weight,
+                    Quantity = detail.Quantity,
+                    Gender = detail.Gender
+                }).ToList() ?? new List<ChickenDetail>();
+
+                _unitOfWork.ChickenDetailRepository.InsertRange(chickenDetails);
+
                 var result = await _unitOfWork.SaveChangesAsync();
+
                 if (result > 0)
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
