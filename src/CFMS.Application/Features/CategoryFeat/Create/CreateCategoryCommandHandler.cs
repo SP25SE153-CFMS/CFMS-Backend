@@ -21,6 +21,12 @@ namespace CFMS.Application.Features.CategoryFeat.Create
         {
             try
             {
+                var existCategory = _unitOfWork.CategoryRepository.Get(filter: c => (c.CategoryName.Equals(request.CategoryName) || c.CategoryType.Equals(request.CategoryType)) && c.IsDeleted == false).FirstOrDefault();
+                if (existCategory != null)
+                {
+                    return BaseResponse<bool>.FailureResponse(message: "Name hoặc Type đã tồn tại");
+                }
+
                 _unitOfWork.CategoryRepository.Insert(_mapper.Map<Category>(request));
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
