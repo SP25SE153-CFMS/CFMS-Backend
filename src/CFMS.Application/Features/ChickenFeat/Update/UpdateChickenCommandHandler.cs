@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
 
@@ -15,7 +16,7 @@ namespace CFMS.Application.Features.ChickenFeat.Update
 
         public async Task<BaseResponse<bool>> Handle(UpdateChickenCommand request, CancellationToken cancellationToken)
         {
-            var existChicken = _unitOfWork.ChickenRepository.Get(filter: c => c.ChickenId.Equals(request.Id) == false).FirstOrDefault();
+            var existChicken = _unitOfWork.ChickenRepository.Get(filter: c => c.ChickenId.Equals(request.Id) && c.IsDeleted == false).FirstOrDefault();
             if (existChicken == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Gà không tồn tại");
@@ -29,6 +30,25 @@ namespace CFMS.Application.Features.ChickenFeat.Update
                 existChicken.Status = request.Status;
                 existChicken.Description = request.Description;
                 existChicken.ChickenBatchId = request.ChickenBatchId;
+                existChicken.ChickenTypeId = request.ChickenTypeId;
+
+                var chickenDetails = request.ChickenDetails.Select(detail => new ChickenDetail
+                {
+                    ChickenId = existChicken.ChickenId,
+                    Weight = detail.Weight,
+                    Quantity = detail.Quantity,
+                    Gender = detail.Gender
+                }).ToList() ?? new List<ChickenDetail>();
+
+                var existingDetails = _unitOfWork.ChickenDetailRepository
+                      .Get(filter: d => d.ChickenId == existChicken.ChickenId)
+                      .ToList();
+
+                _unitOfWork.ChickenDetailRepository.DeleteRange(existingDetails);
+                await _unitOfWork.SaveChangesAsync();
+
+                existChicken.ChickenDetails.Clear();
+                existChicken.ChickenDetails = chickenDetails;
 
                 _unitOfWork.ChickenRepository.Update(existChicken);
                 var result = await _unitOfWork.SaveChangesAsync();
