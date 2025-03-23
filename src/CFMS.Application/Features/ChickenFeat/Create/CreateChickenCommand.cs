@@ -7,7 +7,7 @@ namespace CFMS.Application.Features.ChickenFeat.Create
 {
     public class CreateChickenCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateChickenCommand(string? chickenCode, string? chickenName, int? totalQuantity, string? description, int? status, Guid? chickenBatchId, List<ChickenDetailDto>? chickenDetailDetails)
+        public CreateChickenCommand(string? chickenCode, string? chickenName, int? totalQuantity, string? description, int? status, Guid? chickenBatchId, List<ChickenDetailDto>? chickenDetails)
         {
             ChickenCode = chickenCode;
             ChickenName = chickenName;
@@ -15,7 +15,7 @@ namespace CFMS.Application.Features.ChickenFeat.Create
             Description = description;
             Status = status;
             ChickenBatchId = chickenBatchId;
-            ChickenDetailDetails = chickenDetailDetails;
+            ChickenDetails = chickenDetails;
         }
 
         public string? ChickenCode { get; set; }

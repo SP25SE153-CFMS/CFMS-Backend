@@ -1,4 +1,5 @@
-﻿using CFMS.Application.Common;
+﻿using AutoMapper;
+using CFMS.Application.Common;
 using CFMS.Application.Features.NutritionPlanFeat.Update;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
@@ -7,52 +8,77 @@ using MediatR;
 public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutritionPlanCommand, BaseResponse<bool>>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public UpdateNutritionPlanCommandHandler(IUnitOfWork unitOfWork)
+    public UpdateNutritionPlanCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<BaseResponse<bool>> Handle(UpdateNutritionPlanCommand request, CancellationToken cancellationToken)
     {
-        var existPlan = _unitOfWork.NutritionPlanRepository
-            .Get(filter: p => p.NutritionPlanId.Equals(request.NutritionPlanId) && p.IsDeleted == false)
-            .FirstOrDefault();
-
-        if (existPlan == null)
-        {
-            return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
-        }
-
         try
         {
-            existPlan.Description = request.Description;
-            existPlan.Name = request.Name;
+            // 1. Kiểm tra NutritionPlan có tồn tại không
+            var nutritionPlan = _unitOfWork.NutritionPlanRepository
+                .Get(filter: p => p.NutritionPlanId == request.NutritionPlanId && p.IsDeleted == false)
+                .FirstOrDefault();
 
-            if (request.ChickenList != null && request.ChickenList.Any())
+            if (nutritionPlan == null)
+            {
+                return BaseResponse<bool>.FailureResponse($"Chế độ dinh dưỡng không tồn tại");
+            }
+
+            // 2. Cập nhật thông tin NutritionPlan
+            nutritionPlan.Name = request.Name ?? nutritionPlan.Name;
+            nutritionPlan.Description = request.Description ?? nutritionPlan.Description;
+
+            _unitOfWork.NutritionPlanRepository.Update(nutritionPlan);
+            await _unitOfWork.SaveChangesAsync();
+
+            // 3. Cập nhật danh sách ChickenNutrition nếu có thay đổi
+            if (request.ChickenList != null)
             {
                 var chickens = _unitOfWork.ChickenRepository
-                    .Get(c => request.ChickenList.Contains(c.ChickenId))
+                    .Get(filter: c => request.ChickenList.Contains(c.ChickenId))
                     .ToList();
 
-                existPlan.Chickens.Clear();
-                existPlan.Chickens = chickens;
+                var missingIds = request.ChickenList.Except(chickens.Select(c => c.ChickenId)).ToList();
+                if (missingIds.Any())
+                {
+                    return BaseResponse<bool>.FailureResponse($"Một số loại gà không tồn tại trong hệ thống");
+                }
+
+                var existingChickenNutritions = _unitOfWork.ChickenNutritionRepository
+                    .Get(filter: cn => cn.NutritionPlanId == request.NutritionPlanId)
+                    .ToList();
+
+                _unitOfWork.ChickenNutritionRepository.DeleteRange(existingChickenNutritions);
+                await _unitOfWork.SaveChangesAsync();
+
+                var newChickenNutritions = chickens.Select(chicken => new ChickenNutrition
+                {
+                    NutritionPlanId = nutritionPlan.NutritionPlanId,
+                    ChickenId = chicken.ChickenId
+                }).ToList();
+
+                _unitOfWork.ChickenNutritionRepository.InsertRange(newChickenNutritions);
+                await _unitOfWork.SaveChangesAsync();
             }
 
-            var existingDetails = _unitOfWork.NutritionPlanDetailRepository
-                .Get(filter: d => d.NutritionPlanId == existPlan.NutritionPlanId)
-                .ToList();
-
-            if (existingDetails.Any())
+            if (request.NutritionPlanDetails != null)
             {
+                var existingDetails = _unitOfWork.NutritionPlanDetailRepository
+                    .Get(filter: d => d.NutritionPlanId == request.NutritionPlanId)
+                    .ToList();
+
                 _unitOfWork.NutritionPlanDetailRepository.DeleteRange(existingDetails);
-            }
+                await _unitOfWork.SaveChangesAsync();
 
-            if (request.NutritionPlanDetails != null && request.NutritionPlanDetails.Any())
-            {
                 var newDetails = request.NutritionPlanDetails.Select(detail => new NutritionPlanDetail
                 {
-                    NutritionPlanId = existPlan.NutritionPlanId,
+                    NutritionPlanId = nutritionPlan.NutritionPlanId,
                     FoodId = detail.FoodId,
                     UnitId = detail.UnitId,
                     FoodWeight = detail.FoodWeight,
@@ -60,20 +86,15 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
                 }).ToList();
 
                 _unitOfWork.NutritionPlanDetailRepository.InsertRange(newDetails);
+                await _unitOfWork.SaveChangesAsync();
             }
 
-            _unitOfWork.NutritionPlanRepository.Update(existPlan);
-            var result = await _unitOfWork.SaveChangesAsync();
-
-            if (result > 0)
-            {
-                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
-            }
-            return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+            return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
         }
         catch (Exception ex)
         {
-            return BaseResponse<bool>.FailureResponse(message: $"Có lỗi xảy ra: {ex.Message}");
+            return BaseResponse<bool>.FailureResponse(message: $"Lỗi khi cập nhật: {ex.Message}");
         }
     }
+
 }

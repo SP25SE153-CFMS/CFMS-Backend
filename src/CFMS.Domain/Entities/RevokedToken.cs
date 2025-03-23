@@ -9,7 +9,7 @@ public partial class RevokedToken
 
     public string Token { get; set; } = null!;
 
-    public int? TokenType { get; set; }
+    public int TokenType { get; set; }
 
     public DateTime? RevokedAt { get; set; }
 

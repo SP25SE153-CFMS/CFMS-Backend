@@ -24,7 +24,7 @@ namespace CFMS.Infrastructure.Migrations
                     Status = table.Column<int>(type: "integer", nullable: true, defaultValue: 1),
                     Address = table.Column<string>(type: "text", nullable: true),
                     CCCD = table.Column<string>(type: "character varying", nullable: true),
-                    GoogleId = table.Column<string>(type: "text", nullable: true),
+                    GoogleId = table.Column<string>(type: "character varying", nullable: true),
                     SystemRole = table.Column<int>(type: "integer", nullable: true),
                     HashedPassword = table.Column<string>(type: "character varying", nullable: true)
                 },
@@ -112,29 +112,11 @@ namespace CFMS.Infrastructure.Migrations
                     NotificationType = table.Column<string>(type: "character varying", nullable: true),
                     Content = table.Column<string>(type: "text", nullable: true),
                     IsRead = table.Column<int>(type: "integer", nullable: true, defaultValue: 0),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("Notification_pkey", x => x.NotificationId);
-                    table.ForeignKey(
-                        name: "FK_Notification_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Notification_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "Notification_UserId_fkey",
                         column: x => x.UserId,
@@ -180,7 +162,7 @@ namespace CFMS.Infrastructure.Migrations
                 {
                     RevokedTokenId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Token = table.Column<string>(type: "character varying", nullable: false),
-                    TokenType = table.Column<int>(type: "int", nullable: true),
+                    TokenType = table.Column<int>(type: "integer", nullable: false),
                     RevokedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     ExpiryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true)
@@ -427,29 +409,11 @@ namespace CFMS.Infrastructure.Migrations
                 {
                     ShiftScheduleId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     ShiftId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Date = table.Column<DateOnly>(type: "date", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Date = table.Column<DateOnly>(type: "date", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("ShiftSchedule_pkey", x => x.ShiftScheduleId);
-                    table.ForeignKey(
-                        name: "FK_ShiftSchedule_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ShiftSchedule_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "ShiftSchedule_ShiftId_fkey",
                         column: x => x.ShiftId,
@@ -769,8 +733,8 @@ namespace CFMS.Infrastructure.Migrations
                     CurrentQuantity = table.Column<int>(type: "integer", nullable: true),
                     Description = table.Column<string>(type: "character varying", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: true, defaultValue: 1),
-                    BreedingAreaId = table.Column<Guid>(type: "uuid", nullable: true),
                     PurposeId = table.Column<Guid>(type: "uuid", nullable: true),
+                    BreedingAreaId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -792,7 +756,7 @@ namespace CFMS.Infrastructure.Migrations
                         principalTable: "SubCategory",
                         principalColumn: "SubCategoryId");
                     table.ForeignKey(
-                        name: "FK_ChickenCoop_SubCategory_PurposeId",
+                        name: "ChickenCoop_PurposeId_fkey",
                         column: x => x.PurposeId,
                         principalTable: "SubCategory",
                         principalColumn: "SubCategoryId");
@@ -904,29 +868,11 @@ namespace CFMS.Infrastructure.Migrations
                     RequestId = table.Column<Guid>(type: "uuid", nullable: true),
                     TaskTypeId = table.Column<Guid>(type: "uuid", nullable: true),
                     Priority = table.Column<int>(type: "integer", nullable: true),
-                    Description = table.Column<string>(type: "character varying", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Description = table.Column<string>(type: "character varying", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("TaskRequest_pkey", x => x.TaskRequestId);
-                    table.ForeignKey(
-                        name: "FK_TaskRequest_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TaskRequest_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "TaskRequest_RequestId_fkey",
                         column: x => x.RequestId,
@@ -1202,29 +1148,11 @@ namespace CFMS.Infrastructure.Migrations
                     HarvestTypeId = table.Column<Guid>(type: "uuid", nullable: true),
                     Quantity = table.Column<int>(type: "integer", nullable: true),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Quality = table.Column<string>(type: "character varying", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Quality = table.Column<string>(type: "character varying", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("TaskHarvest_pkey", x => x.TaskHarvestId);
-                    table.ForeignKey(
-                        name: "FK_TaskHarvest_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TaskHarvest_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "TaskHarvest_HarvestTypeId_fkey",
                         column: x => x.HarvestTypeId,
@@ -1387,29 +1315,11 @@ namespace CFMS.Infrastructure.Migrations
                     WareId = table.Column<Guid>(type: "uuid", nullable: true),
                     ResourceId = table.Column<Guid>(type: "uuid", nullable: true),
                     Quantity = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    UnitId = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    UnitId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("WareStock_pkey", x => x.WareStockId);
-                    table.ForeignKey(
-                        name: "FK_WareStock_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WareStock_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "WareStock_ResourceId_fkey",
                         column: x => x.ResourceId,
@@ -1429,15 +1339,14 @@ namespace CFMS.Infrastructure.Migrations
                     TransactionId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     WareId = table.Column<Guid>(type: "uuid", nullable: true),
                     ResourceId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    Quantity = table.Column<int>(type: "integer", nullable: true),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
-                    BatchNumber = table.Column<int>(type: "int", nullable: true),
-                    TransactionType = table.Column<int>(type: "int", nullable: true),
-                    Reason = table.Column<string>(type: "character varying", nullable: true),
+                    BatchNumber = table.Column<int>(type: "integer", nullable: true),
+                    TransactionType = table.Column<Guid>(type: "uuid", nullable: true),
+                    Reason = table.Column<string>(type: "text", nullable: true),
                     TransactionDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     LocationFromId = table.Column<Guid>(type: "uuid", nullable: true),
                     LocationToId = table.Column<Guid>(type: "uuid", nullable: true),
-                    SubCategoryId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -1448,11 +1357,6 @@ namespace CFMS.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("WareTransaction_pkey", x => x.TransactionId);
-                    table.ForeignKey(
-                        name: "FK_WareTransaction_SubCategory_SubCategoryId",
-                        column: x => x.SubCategoryId,
-                        principalTable: "SubCategory",
-                        principalColumn: "SubCategoryId");
                     table.ForeignKey(
                         name: "FK_WareTransaction_User_CreatedByUserId",
                         column: x => x.CreatedByUserId,
@@ -1475,6 +1379,11 @@ namespace CFMS.Infrastructure.Migrations
                         column: x => x.LocationToId,
                         principalTable: "Warehouse",
                         principalColumn: "WareId");
+                    table.ForeignKey(
+                        name: "WareTransaction_TransactionType_fkey",
+                        column: x => x.TransactionType,
+                        principalTable: "SubCategory",
+                        principalColumn: "SubCategoryId");
                     table.ForeignKey(
                         name: "WareTransaction_WareId_fkey",
                         column: x => x.WareId,
@@ -1524,82 +1433,17 @@ namespace CFMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SystemConfig",
-                columns: table => new
-                {
-                    SystemConfigId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    SettingName = table.Column<string>(type: "character varying", nullable: true),
-                    SettingValue = table.Column<decimal>(type: "numeric", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    EffectedDateFrom = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    EffectedDateTo = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    EntityType = table.Column<string>(type: "character varying", nullable: true),
-                    EntityId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Status = table.Column<int>(type: "integer", nullable: true, defaultValue: 1),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("SystemConfig_pkey", x => x.SystemConfigId);
-                    table.ForeignKey(
-                        name: "FK_SystemConfig_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SystemConfig_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "SystemConfig_EntityId_fkey",
-                        column: x => x.EntityId,
-                        principalTable: "ChickenCoop",
-                        principalColumn: "ChickenCoopId");
-                    table.ForeignKey(
-                        name: "SystemConfig_EntityId_fkey1",
-                        column: x => x.EntityId,
-                        principalTable: "Warehouse",
-                        principalColumn: "WareId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TaskLocation",
                 columns: table => new
                 {
                     TaskLocationId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     TaskId = table.Column<Guid>(type: "uuid", nullable: true),
                     LocationType = table.Column<string>(type: "character varying", nullable: true),
-                    LocationId = table.Column<Guid>(type: "uuid", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    LocationId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("TaskLocation_pkey", x => x.TaskLocationId);
-                    table.ForeignKey(
-                        name: "FK_TaskLocation_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TaskLocation_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "TaskLocation_LocationId_fkey",
                         column: x => x.LocationId,
@@ -1749,6 +1593,7 @@ namespace CFMS.Infrastructure.Migrations
                     InventoryReceiptId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     InventoryRequestId = table.Column<Guid>(type: "uuid", nullable: true),
                     ReceiptTypeId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ReceiptCodeNumber = table.Column<string>(type: "character varying", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: true, defaultValue: 1),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
@@ -1829,9 +1674,8 @@ namespace CFMS.Infrastructure.Migrations
                     TotalQuantity = table.Column<int>(type: "integer", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: true, defaultValue: 1),
+                    ChickenTypeId = table.Column<Guid>(type: "uuid", nullable: true),
                     ChickenBatchId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    SubCategoryId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -1848,8 +1692,8 @@ namespace CFMS.Infrastructure.Migrations
                         principalTable: "ChickenBatch",
                         principalColumn: "ChickenBatchId");
                     table.ForeignKey(
-                        name: "FK_Chicken_SubCategory_SubCategoryId",
-                        column: x => x.SubCategoryId,
+                        name: "Chicken_ChickenTypeId_fkey",
+                        column: x => x.ChickenTypeId,
                         principalTable: "SubCategory",
                         principalColumn: "SubCategoryId");
                     table.ForeignKey(
@@ -2137,26 +1981,44 @@ namespace CFMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChickenNutritionPlan",
+                name: "ChickenNutrition",
                 columns: table => new
                 {
-                    ChickensChickenId = table.Column<Guid>(type: "uuid", nullable: false),
-                    NutritionPlansNutritionPlanId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ChickenNutritionId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    NutritionPlanId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ChickenId = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChickenNutritionPlan", x => new { x.ChickensChickenId, x.NutritionPlansNutritionPlanId });
+                    table.PrimaryKey("ChickenNutrition_pkey", x => x.ChickenNutritionId);
                     table.ForeignKey(
-                        name: "FK_ChickenNutritionPlan_Chicken_ChickensChickenId",
-                        column: x => x.ChickensChickenId,
+                        name: "ChickenNutrition_ChickenId_fkey",
+                        column: x => x.ChickenId,
                         principalTable: "Chicken",
                         principalColumn: "ChickenId",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "ChickenNutrition_NutritionPlanId_fkey",
+                        column: x => x.NutritionPlanId,
+                        principalTable: "NutritionPlan",
+                        principalColumn: "NutritionPlanId");
+                    table.ForeignKey(
+                        name: "FK_ChickenNutrition_User_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ChickenNutritionPlan_NutritionPlan_NutritionPlansNutritionP~",
-                        column: x => x.NutritionPlansNutritionPlanId,
-                        principalTable: "NutritionPlan",
-                        principalColumn: "NutritionPlanId",
+                        name: "FK_ChickenNutrition_User_LastEditedByUserId",
+                        column: x => x.LastEditedByUserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -2204,6 +2066,63 @@ namespace CFMS.Infrastructure.Migrations
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SystemConfig",
+                columns: table => new
+                {
+                    SystemConfigId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    SettingName = table.Column<string>(type: "character varying", nullable: true),
+                    SettingValue = table.Column<decimal>(type: "numeric", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    EffectedDateFrom = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EffectedDateTo = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EntityType = table.Column<string>(type: "character varying", nullable: true),
+                    EntityId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: true, defaultValue: 1),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("SystemConfig_pkey", x => x.SystemConfigId);
+                    table.ForeignKey(
+                        name: "ChickenCoop_ChickenCoopId_fkey",
+                        column: x => x.EntityId,
+                        principalTable: "ChickenCoop",
+                        principalColumn: "ChickenCoopId");
+                    table.ForeignKey(
+                        name: "Chicken_ChickenId_fkey",
+                        column: x => x.EntityId,
+                        principalTable: "Chicken",
+                        principalColumn: "ChickenId");
+                    table.ForeignKey(
+                        name: "FK_SystemConfig_User_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SystemConfig_User_LastEditedByUserId",
+                        column: x => x.LastEditedByUserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "Task_TaskId_fkey",
+                        column: x => x.EntityId,
+                        principalTable: "Task",
+                        principalColumn: "TaskId");
+                    table.ForeignKey(
+                        name: "Warehouse_WareId_fkey",
+                        column: x => x.EntityId,
+                        principalTable: "Warehouse",
+                        principalColumn: "WareId");
                 });
 
             migrationBuilder.CreateTable(
@@ -2354,6 +2273,11 @@ namespace CFMS.Infrastructure.Migrations
                 column: "ChickenBatchId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Chicken_ChickenTypeId",
+                table: "Chicken",
+                column: "ChickenTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Chicken_CreatedByUserId",
                 table: "Chicken",
                 column: "CreatedByUserId");
@@ -2362,11 +2286,6 @@ namespace CFMS.Infrastructure.Migrations
                 name: "IX_Chicken_LastEditedByUserId",
                 table: "Chicken",
                 column: "LastEditedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Chicken_SubCategoryId",
-                table: "Chicken",
-                column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChickenBatch_ChickenCoopId",
@@ -2414,9 +2333,24 @@ namespace CFMS.Infrastructure.Migrations
                 column: "ChickenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChickenNutritionPlan_NutritionPlansNutritionPlanId",
-                table: "ChickenNutritionPlan",
-                column: "NutritionPlansNutritionPlanId");
+                name: "IX_ChickenNutrition_ChickenId",
+                table: "ChickenNutrition",
+                column: "ChickenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChickenNutrition_CreatedByUserId",
+                table: "ChickenNutrition",
+                column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChickenNutrition_LastEditedByUserId",
+                table: "ChickenNutrition",
+                column: "LastEditedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChickenNutrition_NutritionPlanId",
+                table: "ChickenNutrition",
+                column: "NutritionPlanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CoopEquipment_ChickenCoopId",
@@ -2774,16 +2708,6 @@ namespace CFMS.Infrastructure.Migrations
                 column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notification_CreatedByUserId",
-                table: "Notification",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Notification_LastEditedByUserId",
-                table: "Notification",
-                column: "LastEditedByUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Notification_UserId",
                 table: "Notification",
                 column: "UserId");
@@ -2919,16 +2843,6 @@ namespace CFMS.Infrastructure.Migrations
                 column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShiftSchedule_CreatedByUserId",
-                table: "ShiftSchedule",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ShiftSchedule_LastEditedByUserId",
-                table: "ShiftSchedule",
-                column: "LastEditedByUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ShiftSchedule_ShiftId",
                 table: "ShiftSchedule",
                 column: "ShiftId");
@@ -2966,7 +2880,8 @@ namespace CFMS.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_SystemConfig_EntityId",
                 table: "SystemConfig",
-                column: "EntityId");
+                column: "EntityId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_SystemConfig_LastEditedByUserId",
@@ -2989,34 +2904,14 @@ namespace CFMS.Infrastructure.Migrations
                 column: "TaskTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TaskHarvest_CreatedByUserId",
-                table: "TaskHarvest",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TaskHarvest_HarvestTypeId",
                 table: "TaskHarvest",
                 column: "HarvestTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TaskHarvest_LastEditedByUserId",
-                table: "TaskHarvest",
-                column: "LastEditedByUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TaskHarvest_TaskId",
                 table: "TaskHarvest",
                 column: "TaskId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskLocation_CreatedByUserId",
-                table: "TaskLocation",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskLocation_LastEditedByUserId",
-                table: "TaskLocation",
-                column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskLocation_LocationId",
@@ -3047,16 +2942,6 @@ namespace CFMS.Infrastructure.Migrations
                 name: "IX_TaskLog_TaskId",
                 table: "TaskLog",
                 column: "TaskId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskRequest_CreatedByUserId",
-                table: "TaskRequest",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskRequest_LastEditedByUserId",
-                table: "TaskRequest",
-                column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskRequest_RequestId",
@@ -3179,16 +3064,6 @@ namespace CFMS.Infrastructure.Migrations
                 column: "WareId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WareStock_CreatedByUserId",
-                table: "WareStock",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WareStock_LastEditedByUserId",
-                table: "WareStock",
-                column: "LastEditedByUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_WareStock_ResourceId",
                 table: "WareStock",
                 column: "ResourceId");
@@ -3219,9 +3094,9 @@ namespace CFMS.Infrastructure.Migrations
                 column: "LocationToId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WareTransaction_SubCategoryId",
+                name: "IX_WareTransaction_TransactionType",
                 table: "WareTransaction",
-                column: "SubCategoryId");
+                column: "TransactionType");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WareTransaction_WareId",
@@ -3239,7 +3114,7 @@ namespace CFMS.Infrastructure.Migrations
                 name: "ChickenDetail");
 
             migrationBuilder.DropTable(
-                name: "ChickenNutritionPlan");
+                name: "ChickenNutrition");
 
             migrationBuilder.DropTable(
                 name: "CoopEquipment");

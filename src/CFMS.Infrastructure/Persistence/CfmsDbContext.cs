@@ -10,13 +10,13 @@ namespace CFMS.Infrastructure.Persistence;
 
 public partial class CfmsDbContext : DbContext
 {
-    private readonly ICurrentUserService _currentUserService;
+    private readonly ICurrentUserService? _currentUserService;
 
     public CfmsDbContext()
     {
     }
 
-    public CfmsDbContext(DbContextOptions<CfmsDbContext> options, ICurrentUserService currentUserService)
+    public CfmsDbContext(DbContextOptions<CfmsDbContext> options, ICurrentUserService? currentUserService)
         : base(options)
     {
         _currentUserService = currentUserService;
@@ -35,8 +35,6 @@ public partial class CfmsDbContext : DbContext
     public virtual DbSet<ChickenCoop> ChickenCoops { get; set; }
 
     public virtual DbSet<ChickenDetail> ChickenDetails { get; set; }
-
-    //public virtual DbSet<ChickenNutrition> ChickenNutritions { get; set; }
 
     public virtual DbSet<CoopEquipment> CoopEquipments { get; set; }
 
@@ -370,18 +368,6 @@ public partial class CfmsDbContext : DbContext
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Notification>()
-        .HasOne(a => a.CreatedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.CreatedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Notification>()
-        .HasOne(a => a.LastEditedByUser)
-        .WithMany()
-        .HasForeignKey(a => a.LastEditedByUserId)
-        .OnDelete(DeleteBehavior.Restrict);
-
         modelBuilder.Entity<QuantityLog>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
@@ -546,28 +532,22 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.ChickenId).HasDefaultValueSql("gen_random_uuid()");
             entity.Property(e => e.ChickenCode).HasColumnType("character varying");
             entity.Property(e => e.ChickenName).HasColumnType("character varying");
-            entity.Property(e => e.CreatedDate).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.Status).HasDefaultValue(1);
 
             entity.HasOne(d => d.ChickenBatch).WithMany(p => p.Chickens)
                 .HasForeignKey(d => d.ChickenBatchId)
                 .HasConstraintName("Chicken_ChickenBatchId_fkey");
-        });
 
-        //modelBuilder.Entity<Chicken>()
-        //    .HasMany(c => c.NutritionPlans)
-        //    .WithMany(n => n.Chickens)
-        //    .UsingEntity<Dictionary<string, object>>(
-        //        "ChickenNutrition",
-        //        j => j.HasOne<NutritionPlan>()
-        //              .WithMany()
-        //              .HasForeignKey("NutritionPlanId")
-        //              .OnDelete(DeleteBehavior.Cascade),
-        //        j => j.HasOne<Chicken>()
-        //              .WithMany()
-        //              .HasForeignKey("ChickenId")
-        //              .OnDelete(DeleteBehavior.Cascade)
-        //    );
+            entity.HasOne(e => e.ChickenNavigation)
+                .WithOne(c => c.Chicken)
+                .HasForeignKey<SystemConfig>(e => e.EntityId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Chicken_ChickenId_fkey");
+
+            entity.HasOne(d => d.ChickenType).WithMany(p => p.Chickens)
+                    .HasForeignKey(d => d.ChickenTypeId)
+                    .HasConstraintName("Chicken_ChickenTypeId_fkey");
+        });
 
         modelBuilder.Entity<ChickenBatch>(entity =>
         {
@@ -603,9 +583,19 @@ public partial class CfmsDbContext : DbContext
                 .HasForeignKey(d => d.BreedingAreaId)
                 .HasConstraintName("ChickenCoop_BreedingAreaId_fkey");
 
-            entity.HasOne(d => d.DensityUnit).WithMany(p => p.ChickenCoops)
+            entity.HasOne(e => e.ChickenCoopNavigation)
+                .WithOne(c => c.ChickenCoop)
+                .HasForeignKey<SystemConfig>(e => e.EntityId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("ChickenCoop_ChickenCoopId_fkey");
+
+            entity.HasOne(d => d.DensityUnit).WithMany(p => p.ChickenCoopDensityUnits)
                 .HasForeignKey(d => d.DensityUnitId)
                 .HasConstraintName("ChickenCoop_DensityUnitId_fkey");
+
+            entity.HasOne(d => d.Purpose).WithMany(p => p.ChickenCoopPurposes)
+                .HasForeignKey(d => d.PurposeId)
+                .HasConstraintName("ChickenCoop_PurposeId_fkey");
         });
 
         modelBuilder.Entity<ChickenDetail>(entity =>
@@ -621,23 +611,23 @@ public partial class CfmsDbContext : DbContext
                 .HasConstraintName("ChickenDetail_ChickenId_fkey");
         });
 
-        //modelBuilder.Entity<ChickenNutrition>(entity =>
-        //{
-        //    entity.HasKey(e => e.ChickenNutritionId).HasName("ChickenNutrition_pkey");
+        modelBuilder.Entity<ChickenNutrition>(entity =>
+        {
+            entity.HasKey(e => e.ChickenNutritionId).HasName("ChickenNutrition_pkey");
 
-        //    entity.ToTable("ChickenNutrition");
+            entity.ToTable("ChickenNutrition");
 
-        //    entity.Property(e => e.ChickenNutritionId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ChickenNutritionId).HasDefaultValueSql("gen_random_uuid()");
 
-        //    entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenNutritions)
-        //        .HasForeignKey(d => d.ChickenId)
-        //        .OnDelete(DeleteBehavior.SetNull)
-        //        .HasConstraintName("ChickenNutrition_ChickenId_fkey");
+            entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenNutritions)
+                .HasForeignKey(d => d.ChickenId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("ChickenNutrition_ChickenId_fkey");
 
-        //    entity.HasOne(d => d.NutritionPlan).WithMany(p => p.ChickenNutritions)
-        //        .HasForeignKey(d => d.NutritionPlanId)
-        //        .HasConstraintName("ChickenNutrition_NutritionPlanId_fkey");
-        //});
+            entity.HasOne(d => d.NutritionPlan).WithMany(p => p.ChickenNutritions)
+                .HasForeignKey(d => d.NutritionPlanId)
+                .HasConstraintName("ChickenNutrition_NutritionPlanId_fkey");
+        });
 
         modelBuilder.Entity<CoopEquipment>(entity =>
         {
@@ -958,6 +948,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("InventoryReceipt");
 
             entity.Property(e => e.InventoryReceiptId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.ReceiptCodeNumber).HasColumnType("character varying");
             entity.Property(e => e.Status).HasDefaultValue(1);
 
             entity.HasOne(d => d.InventoryRequest).WithMany(p => p.InventoryReceipts)
@@ -1201,7 +1192,6 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.ExpiryDate).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.RevokedAt).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.Token).HasColumnType("character varying");
-            entity.Property(e => e.TokenType).HasColumnType("int");
 
             entity.HasOne(d => d.User).WithMany(p => p.RevokedTokens)
                 .HasForeignKey(d => d.UserId)
@@ -1278,14 +1268,6 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.EntityType).HasColumnType("character varying");
             entity.Property(e => e.SettingName).HasColumnType("character varying");
             entity.Property(e => e.Status).HasDefaultValue(1);
-
-            entity.HasOne(d => d.Entity).WithMany(p => p.SystemConfigs)
-                .HasForeignKey(d => d.EntityId)
-                .HasConstraintName("SystemConfig_EntityId_fkey");
-
-            entity.HasOne(d => d.EntityNavigation).WithMany(p => p.SystemConfigs)
-                .HasForeignKey(d => d.EntityId)
-                .HasConstraintName("SystemConfig_EntityId_fkey1");
         });
 
         modelBuilder.Entity<Domain.Entities.Task>(entity =>
@@ -1297,6 +1279,12 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.TaskId).HasDefaultValueSql("gen_random_uuid()");
             entity.Property(e => e.Description).HasColumnType("character varying");
             entity.Property(e => e.TaskName).HasColumnType("character varying");
+
+            entity.HasOne(e => e.TaskNavigation)
+                .WithOne(c => c.Task)
+                .HasForeignKey<SystemConfig>(e => e.EntityId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Task_TaskId_fkey");
 
             entity.HasOne(d => d.TaskType).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.TaskTypeId)
@@ -1442,6 +1430,7 @@ public partial class CfmsDbContext : DbContext
                 .HasColumnType("character varying")
                 .HasColumnName("CCCD");
             entity.Property(e => e.FullName).HasColumnType("character varying");
+            entity.Property(e => e.GoogleId).HasColumnType("character varying");
             entity.Property(e => e.HashedPassword).HasColumnType("character varying");
             entity.Property(e => e.Mail).HasColumnType("character varying");
             entity.Property(e => e.PhoneNumber).HasColumnType("character varying");
@@ -1511,11 +1500,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("WareTransaction");
 
             entity.Property(e => e.TransactionId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.BatchNumber).HasColumnType("int");
             entity.Property(e => e.TransactionDate).HasColumnType("timestamp(6) without time zone");
-            entity.Property(e => e.Reason).HasColumnType("character varying");
-            entity.Property(e => e.Quantity).HasColumnType("int");
-            entity.Property(e => e.TransactionType).HasColumnType("int");
 
             entity.HasOne(d => d.LocationFrom).WithMany(p => p.WareTransactionLocationFroms)
                 .HasForeignKey(d => d.LocationFromId)
@@ -1524,6 +1509,10 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.LocationTo).WithMany(p => p.WareTransactionLocationTos)
                 .HasForeignKey(d => d.LocationToId)
                 .HasConstraintName("WareTransaction_LocationToId_fkey");
+
+            entity.HasOne(d => d.TransactionTypeNavigation).WithMany(p => p.WareTransactions)
+                .HasForeignKey(d => d.TransactionType)
+                .HasConstraintName("WareTransaction_TransactionType_fkey");
 
             entity.HasOne(d => d.Ware).WithMany(p => p.WareTransactionWares)
                 .HasForeignKey(d => d.WareId)
@@ -1547,6 +1536,12 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.StorageType).WithMany(p => p.Warehouses)
                 .HasForeignKey(d => d.StorageTypeId)
                 .HasConstraintName("Warehouse_StorageTypeId_fkey");
+
+            entity.HasOne(e => e.Ware)
+                .WithOne(c => c.Warehouse)
+                .HasForeignKey<SystemConfig>(e => e.EntityId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Warehouse_WareId_fkey");
         });
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())

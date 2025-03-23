@@ -17,15 +17,19 @@ public partial class Chicken : EntityAudit
 
     public int? Status { get; set; }
 
-    public Guid? ChickenBatchId { get; set; }
+    public Guid? ChickenTypeId { get; set; }
 
-    public DateTime? CreatedDate { get; set; }
+    public Guid? ChickenBatchId { get; set; }
 
     public virtual ChickenBatch? ChickenBatch { get; set; }
 
     public virtual ICollection<ChickenDetail> ChickenDetails { get; set; } = new List<ChickenDetail>();
 
-    public virtual ICollection<NutritionPlan> NutritionPlans { get; set; } = new List<NutritionPlan>();
+    public virtual SystemConfig ChickenNavigation { get; set; } = null!;
+
+    public virtual ICollection<ChickenNutrition> ChickenNutritions { get; set; } = new List<ChickenNutrition>();
+
+    public virtual SubCategory? ChickenType { get; set; }
 
     public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
 }

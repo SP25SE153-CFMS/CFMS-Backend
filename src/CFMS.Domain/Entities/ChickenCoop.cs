@@ -25,23 +25,23 @@ public partial class ChickenCoop : EntityAudit
 
     public int? Status { get; set; }
 
-    public Guid? BreedingAreaId { get; set; }
-
     public Guid? PurposeId { get; set; }
+
+    public Guid? BreedingAreaId { get; set; }
 
     public virtual BreedingArea? BreedingArea { get; set; }
 
     public virtual ICollection<ChickenBatch> ChickenBatches { get; set; } = new List<ChickenBatch>();
 
+    public virtual SystemConfig ChickenCoopNavigation { get; set; } = null!;
+
     public virtual ICollection<CoopEquipment> CoopEquipments { get; set; } = new List<CoopEquipment>();
 
     public virtual SubCategory? DensityUnit { get; set; }
 
-    public virtual ICollection<SystemConfig> SystemConfigs { get; set; } = new List<SystemConfig>();
+    public virtual SubCategory? Purpose { get; set; }
 
     public virtual ICollection<TaskLocation> TaskLocations { get; set; } = new List<TaskLocation>();
 
     public virtual ICollection<TaskLog> TaskLogs { get; set; } = new List<TaskLog>();
-
-    public virtual SubCategory? Purpose { get; set; }
 }

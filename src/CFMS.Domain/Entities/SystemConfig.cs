@@ -23,7 +23,11 @@ public partial class SystemConfig : EntityAudit
 
     public int? Status { get; set; }
 
-    public virtual ChickenCoop? Entity { get; set; }
+    public virtual Chicken? Chicken { get; set; }
 
-    public virtual Warehouse? EntityNavigation { get; set; }
+    public virtual ChickenCoop? ChickenCoop { get; set; }
+
+    public virtual Task? Task { get; set; }
+
+    public virtual Warehouse? Warehouse { get; set; }
 }

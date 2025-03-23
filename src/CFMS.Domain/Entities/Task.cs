@@ -27,6 +27,8 @@ public partial class Task : EntityAudit
 
     public virtual ICollection<TaskLog> TaskLogs { get; set; } = new List<TaskLog>();
 
+    public virtual SystemConfig TaskNavigation { get; set; } = null!;
+
     public virtual ICollection<TaskResource> TaskResources { get; set; } = new List<TaskResource>();
 
     public virtual SubCategory? TaskType { get; set; }
