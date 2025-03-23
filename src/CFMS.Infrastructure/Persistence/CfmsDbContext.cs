@@ -1254,6 +1254,7 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.PhoneNumber).HasColumnType("character varying");
             entity.Property(e => e.Status).HasDefaultValue(1);
             entity.Property(e => e.SupplierCode).HasColumnType("character varying");
+            entity.Property(e => e.SupplierName).HasColumnType("character varying");
         });
 
         modelBuilder.Entity<SystemConfig>(entity =>

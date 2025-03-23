@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.FarmFeat.GetFarm
             var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmId.Equals(request.Id) && f.IsDeleted == false, includeProperties: "BreedingAreas").FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<Farm>.FailureResponse(message: "Farm không tồn tại");
+                return BaseResponse<Farm>.FailureResponse(message: "Trang trại không tồn tại");
             }
             return BaseResponse<Farm>.SuccessResponse(data: existFarm);
         }

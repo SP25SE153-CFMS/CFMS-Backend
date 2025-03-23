@@ -3,9 +3,9 @@ using MediatR;
 
 namespace CFMS.Application.Features.GrowthStageFeat.AddNutritionPlan
 {
-    public class AddNutritionPlanCommand : IRequest<BaseResponse<bool>>
+    public class AddStageCommand : IRequest<BaseResponse<bool>>
     {
-        public AddNutritionPlanCommand(Guid nutritionPlanId, Guid growthStageId)
+        public AddStageCommand(Guid nutritionPlanId, Guid growthStageId)
         {
             NutritionPlanId = nutritionPlanId;
             GrowthStageId = growthStageId;

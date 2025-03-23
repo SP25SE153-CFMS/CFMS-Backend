@@ -48,19 +48,19 @@ namespace CFMS.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var result = await Send(new DeleteStageCommand(id));
+            var result = await Send(new Application.Features.GrowthStageFeat.Delete.DeleteStageCommand(id));
             return result;
         }
 
         [HttpPost("add-nutritionplan")]
-        public async Task<IActionResult> AddNutritionPlan(AddNutritionPlanCommand command)
+        public async Task<IActionResult> AddNutritionPlan(AddStageCommand command)
         {
             var result = await Send(command);
             return result;
         }
 
         [HttpPost("delete-nutritionplan")]
-        public async Task<IActionResult> DeleteNutritionPlan(DeleteNutritionPlanCommand command)
+        public async Task<IActionResult> DeleteNutritionPlan(Application.Features.GrowthStageFeat.DeleteNutritionPlan.DeleteStageCommand command)
         {
             var result = await Send(command);
             return result;

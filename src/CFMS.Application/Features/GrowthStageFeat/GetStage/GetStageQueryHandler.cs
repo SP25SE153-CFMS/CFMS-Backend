@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.GetStage
             var existStage = _unitOfWork.GrowthStageRepository.Get(filter: s => s.GrowthStageId.Equals(request.StageId) && s.IsDeleted == false).FirstOrDefault();
             if (existStage == null)
             {
-                return BaseResponse<GrowthStage>.FailureResponse(message: "Stage không tồn tại");
+                return BaseResponse<GrowthStage>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
             }
             return BaseResponse<GrowthStage>.SuccessResponse(data: existStage);
         }

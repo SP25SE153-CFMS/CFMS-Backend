@@ -19,13 +19,13 @@ namespace CFMS.Application.Features.CategoryFeat.AddSubCate
             var existCategory = _unitOfWork.SubCategoryRepository.Get(filter: c => (c.SubCategoryName.Equals(request.SubCategoryName)) && c.IsDeleted == false).FirstOrDefault();
             if (existCategory != null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Name đã tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Tên danh mục đã tồn tại");
             }
 
             var existCate = _unitOfWork.CategoryRepository.Get(filter: c => c.IsDeleted == false).FirstOrDefault();
             if (existCate == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Category không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Loại danh mục không tồn tại");
             }
 
             try
@@ -42,13 +42,13 @@ namespace CFMS.Application.Features.CategoryFeat.AddSubCate
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return BaseResponse<bool>.SuccessResponse(message: "Tạo Subcate thành công");
+                    return BaseResponse<bool>.SuccessResponse(message: "Tạo danh mục thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Tạo Subcate không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Tạo  danh mục không thành công");
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

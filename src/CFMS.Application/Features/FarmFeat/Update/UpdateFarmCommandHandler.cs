@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.FarmFeat.Update
             var existFarm = _unitOfWork.FarmRepository.GetByID(request.FarmId);
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Farm không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
             try
@@ -42,7 +42,7 @@ namespace CFMS.Application.Features.FarmFeat.Update
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

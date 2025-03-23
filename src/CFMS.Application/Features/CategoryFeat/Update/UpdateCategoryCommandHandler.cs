@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.CategoryFeat.Update
             var existCategory = _unitOfWork.CategoryRepository.Get(filter: c => c.CategoryId.Equals(request.CategoryId) && c.IsDeleted == false).FirstOrDefault();
             if (existCategory == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Category không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Danh mục không tồn tại");
             }
 
             try

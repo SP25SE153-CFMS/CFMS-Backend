@@ -4,16 +4,16 @@ using MediatR;
 
 namespace CFMS.Application.Features.GrowthStageFeat.DeleteNutritionPlan
 {
-    public class DeleteNutritionPlanCommandHandler : IRequestHandler<DeleteNutritionPlanCommand, BaseResponse<bool>>
+    public class DeleteStageCommandHandler : IRequestHandler<DeleteStageCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteNutritionPlanCommandHandler(IUnitOfWork unitOfWork)
+        public DeleteStageCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponse<bool>> Handle(DeleteNutritionPlanCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(DeleteStageCommand request, CancellationToken cancellationToken)
         {
             var existGrowthStage = _unitOfWork.GrowthStageRepository.Get(filter: s => s.GrowthStageId.Equals(request.GrowthStageId) && s.IsDeleted == false).FirstOrDefault();
             if (existGrowthStage == null)
@@ -41,7 +41,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.DeleteNutritionPlan
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

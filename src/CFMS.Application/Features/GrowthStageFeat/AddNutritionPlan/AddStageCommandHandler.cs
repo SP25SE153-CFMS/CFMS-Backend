@@ -5,16 +5,16 @@ using MediatR;
 
 namespace CFMS.Application.Features.GrowthStageFeat.AddNutritionPlan
 {
-    public class AddNutritionPlanCommandHandler : IRequestHandler<AddNutritionPlanCommand, BaseResponse<bool>>
+    public class AddStageCommandHandler : IRequestHandler<AddStageCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddNutritionPlanCommandHandler(IUnitOfWork unitOfWork)
+        public AddStageCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponse<bool>> Handle(AddNutritionPlanCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(AddStageCommand request, CancellationToken cancellationToken)
         {
             var existGrowthStage = _unitOfWork.GrowthStageRepository.Get(filter: gt => gt.GrowthStageId.Equals(request.GrowthStageId) && gt.IsDeleted == false).FirstOrDefault();
             if (existGrowthStage == null)
@@ -46,7 +46,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.AddNutritionPlan
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

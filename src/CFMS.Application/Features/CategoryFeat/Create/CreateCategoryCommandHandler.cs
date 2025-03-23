@@ -24,20 +24,20 @@ namespace CFMS.Application.Features.CategoryFeat.Create
                 var existCategory = _unitOfWork.CategoryRepository.Get(filter: c => (c.CategoryName.Equals(request.CategoryName) || c.CategoryType.Equals(request.CategoryType)) && c.IsDeleted == false).FirstOrDefault();
                 if (existCategory != null)
                 {
-                    return BaseResponse<bool>.FailureResponse(message: "Name hoặc Type đã tồn tại");
+                    return BaseResponse<bool>.FailureResponse(message: "Tên hoặc loại danh mục đã tồn tại");
                 }
 
                 _unitOfWork.CategoryRepository.Insert(_mapper.Map<Category>(request));
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return BaseResponse<bool>.SuccessResponse(message: "Tạo Category thành công");
+                    return BaseResponse<bool>.SuccessResponse(message: "Tạo danh mục thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Tạo Category không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Tạo danh mục không thành công");
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

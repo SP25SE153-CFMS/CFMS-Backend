@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.DeleteGrowthBatch
             var existGrowthBatch = _unitOfWork.GrowthBatchRepository.Get(filter: gb => gb.GrowthBatchId.Equals(request.GrowthBatchId) && gb.IsDeleted == false).FirstOrDefault();
             if (existGrowthBatch == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "GrowthBatch không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
             }
 
             try
@@ -41,7 +41,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.DeleteGrowthBatch
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

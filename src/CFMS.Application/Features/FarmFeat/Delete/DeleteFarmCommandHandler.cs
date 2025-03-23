@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.FarmFeat.Delete
             var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Farm không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
             try
@@ -33,7 +33,7 @@ namespace CFMS.Application.Features.FarmFeat.Delete
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

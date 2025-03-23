@@ -3,9 +3,9 @@ using MediatR;
 
 namespace CFMS.Application.Features.GrowthStageFeat.DeleteNutritionPlan
 {
-    public class DeleteNutritionPlanCommand : IRequest<BaseResponse<bool>>
+    public class DeleteStageCommand : IRequest<BaseResponse<bool>>
     {
-        public DeleteNutritionPlanCommand(Guid growthNutritionId, Guid growthStageId)
+        public DeleteStageCommand(Guid growthNutritionId, Guid growthStageId)
         {
             GrowthNutritionId = growthNutritionId;
             GrowthStageId = growthStageId;

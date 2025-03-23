@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.ChickenFeat.UpdateChickenDetail
             var existDetail = _unitOfWork.ChickenDetailRepository.Get(filter: d => d.ChickenDetailId.Equals(request.ChickenDetailId)).FirstOrDefault();
             if (existDetail == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Detail không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Chi tiết của gà không tồn tại");
             }
 
             try
@@ -43,7 +43,7 @@ namespace CFMS.Application.Features.ChickenFeat.UpdateChickenDetail
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

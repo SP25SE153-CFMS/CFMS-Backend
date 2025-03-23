@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
             var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.Id) && c.IsDeleted == false).FirstOrDefault();
             if (existCoop == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Chuồng không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Chuồng gà không tồn tại");
             }
 
             try
@@ -44,7 +44,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }
