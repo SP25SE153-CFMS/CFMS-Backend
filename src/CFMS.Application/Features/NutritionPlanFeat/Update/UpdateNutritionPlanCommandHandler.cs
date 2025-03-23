@@ -90,7 +90,7 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
         }
         catch (Exception ex)
         {
-            return BaseResponse<bool>.FailureResponse(message: $"Lỗi khi cập nhật: {ex.Message}");
+            return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
         }
     }
 

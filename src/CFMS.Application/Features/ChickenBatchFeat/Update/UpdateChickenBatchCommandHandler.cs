@@ -40,7 +40,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.Update
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: ex.Message);
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

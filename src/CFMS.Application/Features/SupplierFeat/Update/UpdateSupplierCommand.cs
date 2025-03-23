@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.SupplierFeat.Create
-{ 
-    public class CreateSupplierCommand : IRequest<BaseResponse<bool>>
+namespace CFMS.Application.Features.SupplierFeat.Update
+{
+    public class UpdateSupplierCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateSupplierCommand(string? supplierName, string? supplierCode, string? address, string? phoneNumber, string? bankAccount, int? status)
+        public UpdateSupplierCommand(string? supplierName, string? supplierCode, string? address, string? phoneNumber, string? bankAccount, int? status, Guid supplierId)
         {
             SupplierName = supplierName;
             SupplierCode = supplierCode;
@@ -18,7 +18,10 @@ namespace CFMS.Application.Features.SupplierFeat.Create
             PhoneNumber = phoneNumber;
             BankAccount = bankAccount;
             Status = status;
+            SupplierId = supplierId;
         }
+
+        public Guid SupplierId { get; set; }
 
         public string? SupplierName { get; set; }
 

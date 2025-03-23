@@ -27,7 +27,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
             var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopCode.Equals(request.ChickenCoopCode) && c.IsDeleted == false).FirstOrDefault();
             if (existCoop != null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Code đã tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Mã chuồng gà đã tồn tại");
             }
 
             var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaId.Equals(request.BreedingAreaId) && ba.IsDeleted == false).FirstOrDefault();
@@ -54,7 +54,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

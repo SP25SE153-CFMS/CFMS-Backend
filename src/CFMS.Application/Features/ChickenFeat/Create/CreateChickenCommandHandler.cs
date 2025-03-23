@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.ChickenFeat.Create
             var existChicken = _unitOfWork.ChickenRepository.Get(c => c.ChickenCode.Equals(request.ChickenCode) || c.ChickenName.Equals(request.ChickenName) && c.IsDeleted == false).FirstOrDefault();
             if (existChicken != null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Tên hoặc Code đã được sử dụng");
+                return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã loại gà đã được sử dụng");
             }
 
             try
@@ -69,7 +69,7 @@ namespace CFMS.Application.Features.ChickenFeat.Create
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

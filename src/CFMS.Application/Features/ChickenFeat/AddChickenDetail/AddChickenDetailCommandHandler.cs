@@ -42,7 +42,7 @@ namespace CFMS.Application.Features.ChickenFeat.AddChickenDetail
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

@@ -76,7 +76,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: ex.Message);
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

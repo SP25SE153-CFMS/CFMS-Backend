@@ -30,9 +30,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\UserFeat\GetUsers\" />
     <Folder Include="Features\UserFeat\Delete\" />
     <Folder Include="Features\UserFeat\Update\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Features\SupplierFeat\Update\UpdateSupplierCommandHandler.cs" />
   </ItemGroup>
 
 </Project>
