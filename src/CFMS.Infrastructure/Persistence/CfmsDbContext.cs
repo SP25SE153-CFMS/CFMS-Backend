@@ -854,10 +854,10 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("GrowthBatch");
 
             entity.Property(e => e.GrowthBatchId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.EndDate).HasColumnType("timestamp(6) without time zone");
-            entity.Property(e => e.Note).HasColumnType("character varying");
-            entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
-            entity.Property(e => e.Status).HasDefaultValue(1);
+            //entity.Property(e => e.EndDate).HasColumnType("timestamp(6) without time zone");
+            //entity.Property(e => e.Note).HasColumnType("character varying");
+            //entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
+            //entity.Property(e => e.Status).HasDefaultValue(1);
 
             entity.HasOne(d => d.ChickenBatch).WithMany(p => p.GrowthBatches)
                 .HasForeignKey(d => d.ChickenBatchId)

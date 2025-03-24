@@ -1055,9 +1055,6 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<decimal?>("AvgWeight")
-                        .HasColumnType("numeric");
-
                     b.Property<Guid?>("ChickenBatchId")
                         .HasColumnType("uuid");
 
@@ -1070,12 +1067,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedWhen")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<decimal?>("FeedConsumption")
-                        .HasColumnType("numeric");
-
                     b.Property<Guid?>("GrowthStageId")
                         .HasColumnType("uuid");
 
@@ -1087,20 +1078,6 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<decimal?>("MortalityRate")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("character varying");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int?>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(1);
 
                     b.HasKey("GrowthBatchId")
                         .HasName("GrowthBatch_pkey");
@@ -1197,6 +1174,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<int?>("MinAgeWeek")
                         .HasColumnType("integer");
+
+                    b.Property<string>("StageCode")
+                        .HasColumnType("text");
 
                     b.Property<string>("StageName")
                         .HasColumnType("character varying");
@@ -1583,6 +1563,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("character varying");
 
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -1594,6 +1577,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("character varying");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("NutritionPlanId")
                         .HasName("NutritionPlan_pkey");
@@ -1611,9 +1597,6 @@ namespace CFMS.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
-
-                    b.Property<decimal?>("ConsumptionRate")
-                        .HasColumnType("numeric");
 
                     b.Property<Guid?>("FoodId")
                         .HasColumnType("uuid");
@@ -2047,9 +2030,6 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("character varying");
-
-                    b.Property<Guid?>("ResourceSupplierId")
-                        .HasColumnType("uuid");
 
                     b.Property<int?>("Status")
                         .ValueGeneratedOnAdd()

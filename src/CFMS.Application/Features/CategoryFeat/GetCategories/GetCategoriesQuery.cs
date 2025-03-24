@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CFMS.Application.Features.CategoryFeat.GetCategories
 {
-    public class GetCategoriesQuery : IRequest<BaseResponse<IEnumerable<CategoryResponse>>>
+    public class GetCategoriesQuery : IRequest<BaseResponse<IEnumerable<Category>>>
     {
     }
 }

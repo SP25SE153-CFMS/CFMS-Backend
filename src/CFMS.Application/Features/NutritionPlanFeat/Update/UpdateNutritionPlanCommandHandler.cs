@@ -78,8 +78,7 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
                     NutritionPlanId = nutritionPlan.NutritionPlanId,
                     FoodId = detail.FoodId,
                     UnitId = detail.UnitId,
-                    FoodWeight = detail.FoodWeight,
-                    ConsumptionRate = detail.ConsumptionRate
+                    FoodWeight = detail.FoodWeight
                 }).ToList();
 
                 _unitOfWork.NutritionPlanDetailRepository.InsertRange(newDetails);

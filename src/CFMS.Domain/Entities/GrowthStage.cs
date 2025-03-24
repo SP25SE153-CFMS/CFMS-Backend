@@ -9,6 +9,8 @@ public partial class GrowthStage : EntityAudit
 
     public string? StageName { get; set; }
 
+    public string? StageCode { get; set; }
+
     public Guid? ChickenType { get; set; }
 
     public int? MinAgeWeek { get; set; }

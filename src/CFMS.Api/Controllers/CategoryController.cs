@@ -29,6 +29,13 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
+        [HttpGet("categoryId/{id}")]
+        public async Task<IActionResult> GetByCategoryId(Guid id)
+        {
+            var result = await Send(new GetCategoryQuery(id));
+            return result;
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(CreateCategoryCommand command)
         {
