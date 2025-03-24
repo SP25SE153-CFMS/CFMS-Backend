@@ -11,11 +11,5 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmByCurrentUserId
 {
     public class GetFarmByCurrentUserIdQuery : IRequest<BaseResponse<IEnumerable<Farm>>>
     {
-        public GetFarmByCurrentUserIdQuery(Guid userId)
-        {
-            UserId = userId;
-        }
-
-        public Guid UserId { get; set; }
     }
 }

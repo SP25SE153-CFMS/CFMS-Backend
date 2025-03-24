@@ -23,7 +23,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Delete
 
             try
             {
-                _unitOfWork.FarmRepository.Delete(existBreeding);
+                _unitOfWork.BreedingAreaRepository.Delete(existBreeding);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
