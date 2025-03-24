@@ -7,7 +7,7 @@ using MediatR;
 
 namespace CFMS.Application.Features.CategoryFeat.GetCategories
 {
-    public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, BaseResponse<IEnumerable<CategoryResponse>>>
+    public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, BaseResponse<IEnumerable<Category>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -18,10 +18,10 @@ namespace CFMS.Application.Features.CategoryFeat.GetCategories
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse<IEnumerable<CategoryResponse>>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<IEnumerable<Category>>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
         {
-            var categories = _unitOfWork.CategoryRepository.Get(filter: c => c.IsDeleted == false).Select(c => _mapper.Map<CategoryResponse>(c));
-            return BaseResponse<IEnumerable<CategoryResponse>>.SuccessResponse(data: categories);
+            var categories = _unitOfWork.CategoryRepository.Get(filter: c => c.IsDeleted == false, includeProperties: "SubCategories").ToList();
+            return BaseResponse<IEnumerable<Category>>.SuccessResponse(data: categories);
         }
     }
 }

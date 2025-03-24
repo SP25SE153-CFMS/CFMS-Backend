@@ -25,8 +25,8 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmByCurrentUserId
         public async Task<BaseResponse<IEnumerable<Farm>>> Handle(GetFarmByCurrentUserIdQuery request, CancellationToken cancellationToken)
         {
             var currentUser = _currentUserService.GetUserId();
-            var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.CreatedByUserId.Equals(currentUser) && f.IsDeleted == false, includeProperties: "BreedingAreas").ToList();
-            if (existFarm == null)
+            var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.CreatedByUserId.ToString().Equals(currentUser) && f.IsDeleted == false, includeProperties: "BreedingAreas").ToList();
+            if (existFarm == null)  
             {
                 return BaseResponse<IEnumerable<Farm>>.FailureResponse(message: "Trang trại không tồn tại");
             }

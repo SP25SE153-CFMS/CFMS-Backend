@@ -53,26 +53,26 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpPost("add-growthstage")]
-        public async Task<IActionResult> AddGrowthStage(AddGrowthStageCommand command)
-        {
-            var result = await Send(command);
-            return result;
-        }
+        //[HttpPost("add-growthstage")]
+        //public async Task<IActionResult> AddGrowthStage(AddGrowthStageCommand command)
+        //{
+        //    var result = await Send(command);
+        //    return result;
+        //}
 
-        [HttpPut("update-growthstage")]
-        public async Task<IActionResult> UpdateGrowthStage(UpdateGrowthBatchCommand command)
-        {
-            var result = await Send(command);
-            return result;
-        }
+        //[HttpPut("update-growthstage")]
+        //public async Task<IActionResult> UpdateGrowthStage(UpdateGrowthBatchCommand command)
+        //{
+        //    var result = await Send(command);
+        //    return result;
+        //}
 
-        [HttpDelete("delete-growthstage")]
-        public async Task<IActionResult> DeleteGrowthStage(DeleteGrowthBatchCommand command)
-        {
-            var result = await Send(command);
-            return result;
-        }
+        //[HttpDelete("delete-growthstage")]
+        //public async Task<IActionResult> DeleteGrowthStage(DeleteGrowthBatchCommand command)
+        //{
+        //    var result = await Send(command);
+        //    return result;
+        //}
 
         [HttpPost("add-chicken")]
         public async Task<IActionResult> AddChicken(AddChickenCommand command)

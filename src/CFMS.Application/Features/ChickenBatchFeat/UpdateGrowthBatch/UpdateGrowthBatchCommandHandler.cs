@@ -23,12 +23,12 @@ namespace CFMS.Application.Features.ChickenBatchFeat.UpdateGrowthBatch
 
             try
             {
-                existGrowthBatch.StartDate = request.StartDate;
-                existGrowthBatch.EndDate = request.EndDate;
-                existGrowthBatch.AvgWeight = request.AvgWeight;
-                existGrowthBatch.MortalityRate = request.MortalityRate;
-                existGrowthBatch.Note = request.Note;
-                existGrowthBatch.Status = request.Status;
+                //existGrowthBatch.StartDate = request.StartDate;
+                //existGrowthBatch.EndDate = request.EndDate;
+                //existGrowthBatch.AvgWeight = request.AvgWeight;
+                //existGrowthBatch.MortalityRate = request.MortalityRate;
+                //existGrowthBatch.Note = request.Note;
+                //existGrowthBatch.Status = request.Status;
 
                 _unitOfWork.GrowthBatchRepository.Update(existGrowthBatch);
                 var result = await _unitOfWork.SaveChangesAsync();

@@ -11,6 +11,10 @@ public partial class NutritionPlan : EntityAudit
 
     public string? Description { get; set; }
 
+    public DateTime? StartDate { get; set; }
+
+    public DateTime? EndDate { get; set; }
+
     public virtual ICollection<ChickenNutrition> ChickenNutritions { get; set; } = new List<ChickenNutrition>();
 
     public virtual ICollection<FeedSession> FeedSessions { get; set; } = new List<FeedSession>();

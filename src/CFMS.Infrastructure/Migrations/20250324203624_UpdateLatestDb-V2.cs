@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CFMS.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateLatestDb : Migration
+    public partial class UpdateLatestDbV2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -132,6 +132,8 @@ namespace CFMS.Infrastructure.Migrations
                     NutritionPlanId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Name = table.Column<string>(type: "character varying", nullable: true),
                     Description = table.Column<string>(type: "character varying", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -215,7 +217,7 @@ namespace CFMS.Infrastructure.Migrations
                 columns: table => new
                 {
                     SupplierId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    ResourceSupplierId = table.Column<Guid>(type: "uuid", nullable: true),
+                    SupplierName = table.Column<string>(type: "character varying", nullable: true),
                     SupplierCode = table.Column<string>(type: "character varying", nullable: true),
                     Address = table.Column<string>(type: "character varying", nullable: true),
                     PhoneNumber = table.Column<string>(type: "character varying", nullable: true),
@@ -508,6 +510,7 @@ namespace CFMS.Infrastructure.Migrations
                 {
                     GrowthStageId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     StageName = table.Column<string>(type: "character varying", nullable: true),
+                    StageCode = table.Column<string>(type: "text", nullable: true),
                     ChickenType = table.Column<Guid>(type: "uuid", nullable: true),
                     MinAgeWeek = table.Column<int>(type: "integer", nullable: true),
                     MaxAgeWeek = table.Column<int>(type: "integer", nullable: true),
@@ -1562,8 +1565,7 @@ namespace CFMS.Infrastructure.Migrations
                     NutritionPlanId = table.Column<Guid>(type: "uuid", nullable: true),
                     FoodId = table.Column<Guid>(type: "uuid", nullable: true),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
-                    FoodWeight = table.Column<decimal>(type: "numeric", nullable: true),
-                    ConsumptionRate = table.Column<decimal>(type: "numeric", nullable: true)
+                    FoodWeight = table.Column<decimal>(type: "numeric", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1767,13 +1769,6 @@ namespace CFMS.Infrastructure.Migrations
                     GrowthBatchId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     ChickenBatchId = table.Column<Guid>(type: "uuid", nullable: true),
                     GrowthStageId = table.Column<Guid>(type: "uuid", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    AvgWeight = table.Column<decimal>(type: "numeric", nullable: true),
-                    MortalityRate = table.Column<decimal>(type: "numeric", nullable: true),
-                    FeedConsumption = table.Column<decimal>(type: "numeric", nullable: true),
-                    Note = table.Column<string>(type: "character varying", nullable: true),
-                    Status = table.Column<int>(type: "integer", nullable: true, defaultValue: 1),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),

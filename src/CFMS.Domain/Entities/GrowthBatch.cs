@@ -11,19 +11,19 @@ public partial class GrowthBatch : EntityAudit
 
     public Guid? GrowthStageId { get; set; }
 
-    public DateTime? StartDate { get; set; }
+    //public DateTime? StartDate { get; set; }
 
-    public DateTime? EndDate { get; set; }
+    //public DateTime? EndDate { get; set; }
 
-    public decimal? AvgWeight { get; set; }
+    //public decimal? AvgWeight { get; set; }
 
-    public decimal? MortalityRate { get; set; }
+    //public decimal? MortalityRate { get; set; }
 
-    public decimal? FeedConsumption { get; set; }
+    //public decimal? FeedConsumption { get; set; }
 
-    public string? Note { get; set; }
+    //public string? Note { get; set; }
 
-    public int? Status { get; set; }
+    //public int? Status { get; set; }
 
     public virtual ChickenBatch? ChickenBatch { get; set; }
 
