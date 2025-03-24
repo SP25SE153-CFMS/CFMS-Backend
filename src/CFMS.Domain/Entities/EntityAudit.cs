@@ -12,12 +12,12 @@ namespace CFMS.Domain.Entities
 
         public User CreatedByUser { get; set; }
 
-        public DateTime? CreatedWhen { get; set; }
+        public DateTime CreatedWhen { get; set; }
 
         public Guid LastEditedByUserId { get; set; }
 
         public User LastEditedByUser { get; set; }
 
-        public DateTime? LastEditedWhen { get; set; }
+        public DateTime LastEditedWhen { get; set; }
     }
 }

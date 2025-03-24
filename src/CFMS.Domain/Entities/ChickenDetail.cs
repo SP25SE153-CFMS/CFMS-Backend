@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class ChickenDetail : EntityAudit
+public partial class ChickenDetail
 {
     public Guid ChickenDetailId { get; set; }
 
@@ -15,5 +16,6 @@ public class ChickenDetail : EntityAudit
 
     public int? Gender { get; set; }
 
+    [JsonIgnore]
     public virtual Chicken? Chicken { get; set; }
 }

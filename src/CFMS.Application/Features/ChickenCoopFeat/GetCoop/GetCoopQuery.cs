@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CFMS.Application.Common;
+using CFMS.Domain.Entities;
+using MediatR;
 
 namespace CFMS.Application.Features.ChickenCoopFeat.GetCoop
 {
-    internal class GetCoopQuery
+    public class GetCoopQuery : IRequest<BaseResponse<ChickenCoop>>
     {
+        public GetCoopQuery(Guid id)
+        {
+            Id = id;
+        }
+
+        public Guid Id { get; set; }
     }
 }

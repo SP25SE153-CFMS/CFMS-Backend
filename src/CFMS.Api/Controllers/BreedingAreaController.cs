@@ -14,15 +14,15 @@ namespace CFMS.Api.Controllers
         {
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("Farm/{farmId}")]
+        public async Task<IActionResult> GetBreedingAreas(Guid farmId)
         {
-            var result = await Send(new GetBreedingAreasQuery());
+            var result = await Send(new GetBreedingAreasQuery(farmId));
             return result;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> GetBreedingArea(Guid id)
         {
             var result = await Send(new GetBreedingAreaQuery(id));
             return result;

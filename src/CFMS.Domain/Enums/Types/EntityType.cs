@@ -8,10 +8,7 @@ namespace CFMS.Domain.Enums.Types
 {
     public enum EntityType
     {
-        Farm,
-        Product,
-        ChickenCoop,
-        Equipment,
-        BreedingArea
+        COOP,
+        STORAGE
     }
 }

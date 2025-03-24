@@ -54,7 +54,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
                 revokedToken = new RevokedToken
                 {
                     Token = refreshToken,
-                    TokenType = (int)TokenType.RefreshToken,
+                    TokenType = (int)TokenType.REFRESH_TOKEN,
                     UserId = user.UserId,
                     ExpiryDate = _utilityService.ToVietnamTime(_tokenService.GetExpiryDate(refreshToken) ?? default)
                 };

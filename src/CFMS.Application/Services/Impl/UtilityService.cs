@@ -21,33 +21,34 @@ namespace CFMS.Application.Services.Impl
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
 
-        private Dictionary<EntityType, int> _counters = new()
-        {
-            { EntityType.Farm, 0 },
-            { EntityType.Product, 0 },
-            { EntityType.ChickenCoop, 0 },
-            { EntityType.Equipment, 0 },
-            { EntityType.BreedingArea, 0 }
-        };
+        //private Dictionary<EntityType, int> _counters = new()
+        //{
+        //    { EntityType.Farm, 0 },
+        //    { EntityType.Product, 0 },
+        //    { EntityType.ChickenCoop, 0 },
+        //    { EntityType.Equipment, 0 },
+        //    { EntityType.BreedingArea, 0 }
+        //};
 
-        public string GenerateCode(EntityType type)
-        {
-            _counters[type]++;
+        //public string GenerateCode(EntityType type)
+        //{
+        //    _counters[type]++;
 
-            string prefix = type switch
-            {
-                EntityType.Farm => "FARM",
-                EntityType.Product => "PROD",
-                EntityType.ChickenCoop => "COOP",
-                EntityType.Equipment => "EQUIP",
-                EntityType.BreedingArea => "BREED",
-                _ => "DEF"
-            };
+        //    string prefix = type switch
+        //    {
+        //        EntityType.Farm => "FARM",
+        //        EntityType.Product => "PROD",
+        //        EntityType.ChickenCoop => "COOP",
+        //        EntityType.Equipment => "EQUIP",
+        //        EntityType.BreedingArea => "BREED",
+        //        _ => "DEF"
+        //    };
 
-            return $"{prefix}{_counters[type].ToString("D2")}";
-        }
+        //    return $"{prefix}{_counters[type].ToString("D2")}";
+        //}
 
         public DateTime? ToVietnamTime(DateTime utcDateTime)
+
         {
             if (utcDateTime.Kind == DateTimeKind.Unspecified)
             {
@@ -58,7 +59,7 @@ namespace CFMS.Application.Services.Impl
                 utcDateTime = utcDateTime.ToUniversalTime();
             }
 
-            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Ho_Chi_Minh");
             return TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, vietnamTimeZone);
         }
 

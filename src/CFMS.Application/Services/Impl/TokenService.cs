@@ -48,7 +48,7 @@ public class TokenService : ITokenService
             _issuer,
             _audience,
             claims,
-            expires: DateTime.UtcNow.AddMinutes(15),
+            expires: DateTime.UtcNow.AddYears(1),
             signingCredentials: creds
         );
 
@@ -131,7 +131,7 @@ public class TokenService : ITokenService
                     UserId = user.UserId,
                     Token = newRefreshToken,
                     RevokedAt = null,
-                    ExpiryDate = _utilityService.ToVietnamTime(GetExpiryDate(newRefreshToken) ?? default)
+                    ExpiryDate = GetExpiryDate(newRefreshToken)
                 };
 
                 _unitOfWork.RevokedTokenRepository.Insert(newTokenEntry);

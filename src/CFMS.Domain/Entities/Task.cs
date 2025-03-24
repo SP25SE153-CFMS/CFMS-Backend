@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class Task : EntityAudit
+public partial class Task : EntityAudit
 {
     public Guid TaskId { get; set; }
 
@@ -26,6 +26,8 @@ public class Task : EntityAudit
     public virtual ICollection<TaskLocation> TaskLocations { get; set; } = new List<TaskLocation>();
 
     public virtual ICollection<TaskLog> TaskLogs { get; set; } = new List<TaskLog>();
+
+    public virtual SystemConfig TaskNavigation { get; set; } = null!;
 
     public virtual ICollection<TaskResource> TaskResources { get; set; } = new List<TaskResource>();
 

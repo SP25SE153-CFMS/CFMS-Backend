@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class TemplateCriterion : EntityAudit
+public partial class TemplateCriterion : EntityAudit
 {
     public Guid TemplateCriteriaId { get; set; }
 

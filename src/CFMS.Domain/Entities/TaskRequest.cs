@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class TaskRequest : EntityAudit
+public partial class TaskRequest
 {
     public Guid TaskRequestId { get; set; }
 

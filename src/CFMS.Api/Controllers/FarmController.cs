@@ -1,6 +1,7 @@
 ﻿using CFMS.Application.Features.FarmFeat.Create;
 using CFMS.Application.Features.FarmFeat.Delete;
 using CFMS.Application.Features.FarmFeat.GetFarm;
+using CFMS.Application.Features.FarmFeat.GetFarmByUserId;
 using CFMS.Application.Features.FarmFeat.GetFarms;
 using CFMS.Application.Features.FarmFeat.Update;
 using MediatR;
@@ -25,6 +26,20 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Get(Guid id)
         {
             var result = await Send(new GetFarmQuery(id));
+            return result;
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetByUserId(Guid userId)
+        {
+            var result = await Send(new GetFarmByUserIdQuery(userId));
+            return result;
+        }
+
+        [HttpGet("currentUser")]
+        public async Task<IActionResult> GetByCurrentUserId(Guid userId)
+        {
+            var result = await Send(new GetFarmQuery(userId));
             return result;
         }
 

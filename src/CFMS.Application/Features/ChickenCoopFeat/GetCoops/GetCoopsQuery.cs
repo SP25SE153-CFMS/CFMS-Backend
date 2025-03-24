@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CFMS.Application.Common;
+using CFMS.Domain.Entities;
+using MediatR;
 
 namespace CFMS.Application.Features.ChickenCoopFeat.GetCoops
 {
-    internal class GetCoopsQuery
+    public class GetCoopsQuery : IRequest<BaseResponse<IEnumerable<ChickenCoop>>>
     {
+        public GetCoopsQuery(Guid breedingAreaId)
+        {
+            BreedingAreaId = breedingAreaId;
+        }
+
+        public Guid BreedingAreaId { get; set; }
     }
 }

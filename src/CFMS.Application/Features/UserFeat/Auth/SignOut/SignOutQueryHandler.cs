@@ -54,8 +54,8 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignOut
             });
 
             var user = _currentUserService.GetUserId();
-            var requiredRevokedToken = _unitOfWork.RevokedTokenRepository.Get(filter: x => user.Equals(x.UserId.ToString())).FirstOrDefault();
-            requiredRevokedToken.RevokedAt = _utilityService.ToVietnamTime(DateTime.UtcNow);
+            var requiredRevokedToken = _unitOfWork.RevokedTokenRepository.Get(filter: x => user.Equals(x.UserId.ToString()) && x.RevokedAt == null).FirstOrDefault();
+            requiredRevokedToken.RevokedAt = DateTime.UtcNow.ToLocalTime();
             _unitOfWork.RevokedTokenRepository.Update(requiredRevokedToken);
             await _unitOfWork.SaveChangesAsync();
 

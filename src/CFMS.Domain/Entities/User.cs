@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class User
+public partial class User
 {
     public Guid UserId { get; set; }
 
@@ -23,9 +23,9 @@ public class User
 
     public string? Cccd { get; set; }
 
-    public int? SystemRole { get; set; }
-
     public string? GoogleId { get; set; }
+
+    public int? SystemRole { get; set; }
 
     public string? HashedPassword { get; set; }
 

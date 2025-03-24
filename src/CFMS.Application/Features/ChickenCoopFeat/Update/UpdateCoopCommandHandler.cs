@@ -1,14 +1,10 @@
 ﻿using CFMS.Application.Common;
 using CFMS.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace CFMS.Application.Features.ChickenCoopFeat.Update
 {
-    internal class UpdateCoopCommandHandler
+    public class UpdateCoopCommandHandler : IRequestHandler<UpdateCoopCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -22,18 +18,22 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
             var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.Id) && c.IsDeleted == false).FirstOrDefault();
             if (existCoop == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Chuồng không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Chuồng gà không tồn tại");
             }
 
             try
             {
-                existCoop.Description = request.Description;
                 existCoop.ChickenCoopName = request.ChickenCoopName;
                 existCoop.ChickenCoopCode = request.ChickenCoopCode;
-                existCoop.Area = request.Area;
-                existCoop.Capacity = request.Capacity;
+                existCoop.CurrentQuantity = request.CurrentQuantity;
+                existCoop.Description = request.Description;
+                existCoop.MaxQuantity = request.MaxQuantity;
+                existCoop.Density = request.Density;
                 existCoop.Status = request.Status;
+                existCoop.Area = request.Area;
+                existCoop.PurposeId = request.PurposeId;
                 existCoop.BreedingAreaId = request.BreedingAreaId;
+
                 _unitOfWork.ChickenCoopRepository.Update(existCoop);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
@@ -44,7 +44,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

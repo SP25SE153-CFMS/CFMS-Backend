@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.FarmFeat.Update
             var existFarm = _unitOfWork.FarmRepository.GetByID(request.FarmId);
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Farm không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
             try
@@ -29,6 +29,8 @@ namespace CFMS.Application.Features.FarmFeat.Update
                 existFarm.Address = request.Address;
                 existFarm.PhoneNumber = request.PhoneNumber;
                 existFarm.Scale = request.Scale;
+                existFarm.Website = request.Website;
+                existFarm.ImageUrl = request.ImageUrl;
 
                 _unitOfWork.FarmRepository.Update(existFarm);
                 var result = await _unitOfWork.SaveChangesAsync();
@@ -40,7 +42,7 @@ namespace CFMS.Application.Features.FarmFeat.Update
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

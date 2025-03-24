@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class Shift : EntityAudit
+public partial class Shift : EntityAudit
 {
     public Guid ShiftId { get; set; }
 

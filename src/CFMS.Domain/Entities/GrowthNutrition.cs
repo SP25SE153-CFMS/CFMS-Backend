@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class GrowthNutrition : EntityAudit
+public partial class GrowthNutrition : EntityAudit
 {
     public Guid GrowthNutritionId { get; set; }
 

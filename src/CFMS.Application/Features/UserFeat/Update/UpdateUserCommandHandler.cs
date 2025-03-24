@@ -48,7 +48,7 @@ namespace CFMS.Application.Features.UserFeat.Update
                     return BaseResponse<bool>.FailureResponse("Mật khẩu mới không được trùng với mật khẩu cũ");
                 }
 
-                if (_currentUserService.GetUserRole().Equals(SystemRole.Admin))
+                if (_currentUserService.GetUserRole().Equals(GeneralRole.ADMIN_ROLE))
                 {
                     existUser.SystemRole = !string.IsNullOrEmpty(request.SystemRole.ToString()) ? (int)request.SystemRole : existUser.SystemRole;
                     existUser.Status = !string.IsNullOrEmpty(request.Status.ToString()) ? (int)request.Status : existUser.Status;

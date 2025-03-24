@@ -27,6 +27,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Update
                 existBreedingArea.BreedingAreaCode = request.BreedingAreaCode;
                 existBreedingArea.Notes = request.Notes;
                 existBreedingArea.Area = request.Area;
+                existBreedingArea.ImageUrl = request.ImageUrl;
 
                 _unitOfWork.BreedingAreaRepository.Update(existBreedingArea);
                 var result = await _unitOfWork.SaveChangesAsync();
@@ -38,7 +39,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Update
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
             }
         }
     }

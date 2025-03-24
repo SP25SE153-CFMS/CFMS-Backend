@@ -64,6 +64,9 @@ namespace CFMS.Domain.Interfaces
         IGenericRepository<WareStock> WareStockRepository { get; }
         IGenericRepository<WareTransaction> WareTransactionRepository { get; }
         IGenericRepository<Warehouse> WarehouseRepository { get; }
+        IGenericRepository<Supplier> SupplierRepository { get; }
+        IGenericRepository<SystemConfig> SystemConfigRepository { get; }
+        IGenericRepository<ChickenNutrition> ChickenNutritionRepository { get; }
 
         void Save();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

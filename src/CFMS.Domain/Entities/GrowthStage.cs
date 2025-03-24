@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class GrowthStage : EntityAudit
+public partial class GrowthStage : EntityAudit
 {
     public Guid GrowthStageId { get; set; }
 

@@ -3,6 +3,7 @@ using CFMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.ComponentModel.DataAnnotations;
 using Task = CFMS.Domain.Entities.Task;
+using CFMS.Infrastructure.Persistence;
 
 namespace CFMS.Infrastructure.Repositories
 {
@@ -63,6 +64,9 @@ namespace CFMS.Infrastructure.Repositories
         private GenericRepository<WareStock> wareStockRepository;
         private GenericRepository<WareTransaction> wareTransactionRepository;
         private GenericRepository<Warehouse> warehouseRepository;
+        private GenericRepository<SystemConfig> systemConfigRepository;
+        private GenericRepository<Supplier> supplierRepository;
+        private GenericRepository<ChickenNutrition> chickenNutritionRepository;
 
         public UnitOfWork(CfmsDbContext _context)
         {
@@ -122,6 +126,9 @@ namespace CFMS.Infrastructure.Repositories
         public IGenericRepository<VaccineLog> VaccineLogRepository => vaccineLogRepository ??= new GenericRepository<VaccineLog>(context);
         public IGenericRepository<WarePermission> WarePermissionRepository => warePermissionRepository ??= new GenericRepository<WarePermission>(context);
         public IGenericRepository<WareStock> WareStockRepository => wareStockRepository ??= new GenericRepository<WareStock>(context);
+        public IGenericRepository<Supplier> SupplierRepository => supplierRepository ??= new GenericRepository<Supplier>(context);
+        public IGenericRepository<SystemConfig> SystemConfigRepository => systemConfigRepository ??= new GenericRepository<SystemConfig>(context);
+        public IGenericRepository<ChickenNutrition> ChickenNutritionRepository => chickenNutritionRepository ??= new GenericRepository<ChickenNutrition>(context);
 
         public void Save()
         {

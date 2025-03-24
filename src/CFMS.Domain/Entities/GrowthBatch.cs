@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class GrowthBatch : EntityAudit
+public partial class GrowthBatch : EntityAudit
 {
     public Guid GrowthBatchId { get; set; }
 
@@ -23,7 +23,7 @@ public class GrowthBatch : EntityAudit
 
     public string? Note { get; set; }
 
-    public bool? Status { get; set; }
+    public int? Status { get; set; }
 
     public virtual ChickenBatch? ChickenBatch { get; set; }
 

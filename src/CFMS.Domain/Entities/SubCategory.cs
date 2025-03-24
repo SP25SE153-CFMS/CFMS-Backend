@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class SubCategory : EntityAudit
+public partial class SubCategory : EntityAudit
 {
     public Guid SubCategoryId { get; set; }
 
@@ -19,7 +19,15 @@ public class SubCategory : EntityAudit
 
     public virtual Category? Category { get; set; }
 
+    public virtual ICollection<ChickenCoop> ChickenCoopDensityUnits { get; set; } = new List<ChickenCoop>();
+
+    public virtual ICollection<ChickenCoop> ChickenCoopPurposes { get; set; } = new List<ChickenCoop>();
+
     public virtual ICollection<Chicken> Chickens { get; set; } = new List<Chicken>();
+
+    public virtual ICollection<Equipment> EquipmentSizeUnits { get; set; } = new List<Equipment>();
+
+    public virtual ICollection<Equipment> EquipmentWeightUnits { get; set; } = new List<Equipment>();
 
     public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
 
@@ -41,8 +49,6 @@ public class SubCategory : EntityAudit
 
     public virtual ICollection<Medicine> Medicines { get; set; } = new List<Medicine>();
 
-    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
-
     public virtual ICollection<NutritionPlanDetail> NutritionPlanDetails { get; set; } = new List<NutritionPlanDetail>();
 
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
@@ -53,15 +59,11 @@ public class SubCategory : EntityAudit
 
     public virtual ICollection<ResourceSupplier> ResourceSupplierPackagePrices { get; set; } = new List<ResourceSupplier>();
 
-    public virtual ICollection<ResourceSupplier> ResourceSupplierSuppliers { get; set; } = new List<ResourceSupplier>();
-
     public virtual ICollection<ResourceSupplier> ResourceSupplierUnitPrices { get; set; } = new List<ResourceSupplier>();
 
     public virtual ICollection<Resource> ResourceUnits { get; set; } = new List<Resource>();
 
     public virtual ICollection<TaskHarvest> TaskHarvests { get; set; } = new List<TaskHarvest>();
-
-    public virtual ICollection<TaskLocation> TaskLocations { get; set; } = new List<TaskLocation>();
 
     public virtual ICollection<TaskRequest> TaskRequests { get; set; } = new List<TaskRequest>();
 
