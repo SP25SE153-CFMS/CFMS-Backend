@@ -7,13 +7,19 @@ using CFMS.Application.Features.UserFeat.Auth.SignIn;
 using CFMS.Application.Features.UserFeat.Auth.RefreshToken;
 using CFMS.Application.Features.UserFeat.Auth.CurrentUser;
 using CFMS.Application.Features.UserFeat.Auth.SignOut;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
+using CFMS.Application.Services;
 
 namespace CFMS.Api.Controllers
 {
     public class AuthController : BaseController
     {
-        public AuthController(IMediator mediator, ICurrentUserService currentUserService) : base(mediator)
+        private readonly ITokenService _tokenService;
+
+        public AuthController(IMediator mediator, ICurrentUserService currentUserService, ITokenService tokenService) : base(mediator)
         {
+            _tokenService = tokenService;
         }
 
         [HttpPost("signup")]
@@ -44,10 +50,17 @@ namespace CFMS.Api.Controllers
             return response;
         }
 
-        [HttpPost("google-signin")]
-        public async Task<IActionResult> LoginWithGoogle([FromBody] SignInWithGoogleCommand command)
+        [HttpGet("google-signin")]
+        public async Task<IActionResult> GoogleLogin()
         {
-            var response = await Send(command);
+            var googleAuthUrl = await _mediator.Send(new GoogleAuthProfileQuery());
+            return Redirect(googleAuthUrl.Data);
+        }
+
+        [HttpGet("google-callback")]
+        public async Task<IActionResult> SignInWithGoogle([FromQuery] string code)
+        {
+            var response = await Send(new SignInWithGoogleCommand { AuthorizationCode = code });
             return response;
         }
 

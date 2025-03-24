@@ -1,5 +1,4 @@
 ﻿using CFMS.Application.Common;
-using CFMS.Application.DTOs.Auth;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.UserFeat.Auth.SignIn
 {
-    public class SignInWithGoogleCommand : IRequest<BaseResponse<AuthResponse>>
+    public class GoogleAuthProfileQuery : IRequest<BaseResponse<string>>
     {
-        public string AuthorizationCode { get; set; }
-        //public string IdToken { get; set; }
+        public GoogleAuthProfileQuery()
+        {
+        }
     }
 }
