@@ -9,6 +9,7 @@ using CFMS.Domain.Interfaces;
 using Google.Apis.Auth;
 using MediatR;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,23 +24,43 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
         private readonly IUtilityService _utilityService;
         private readonly ITokenService _tokenService;
         private readonly IConfiguration _configuration;
+        private readonly HttpClient _httpClient;
 
-        public SignInWithGoogleCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, IUtilityService utilityService, IConfiguration configuration)
+        public SignInWithGoogleCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, IUtilityService utilityService, IConfiguration configuration, HttpClient httpClient)
         {
             _unitOfWork = unitOfWork;
             _tokenService = tokenService;
             _utilityService = utilityService;
             _configuration = configuration;
+            _httpClient = httpClient;
         }
 
         public async Task<BaseResponse<AuthResponse>> Handle(SignInWithGoogleCommand request, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrEmpty(request.AuthorizationCode))
+                return BaseResponse<AuthResponse>.FailureResponse("Thiếu mã xác thực");
+
+            var tokenRequest = new Dictionary<string, string>
+        {
+            { "code", request.AuthorizationCode },
+            { "client_id", _configuration["Authentication:Google:ClientId"] },
+            { "client_secret", _configuration["Authentication:Google:ClientSecret"] },
+            { "redirect_uri", _configuration["Authentication:Google:RedirectUri"] },
+            { "grant_type", "authorization_code" }
+        };
+
+            var tokenResponse = await _httpClient.PostAsync("https://oauth2.googleapis.com/token", new FormUrlEncodedContent(tokenRequest));
+            if (!tokenResponse.IsSuccessStatusCode)
+                return BaseResponse<AuthResponse>.FailureResponse("Thất bại trong việc chuyển đổi mã xác thực sang token");
+
+            var tokenData = JsonConvert.DeserializeObject<GoogleTokenResponse>(await tokenResponse.Content.ReadAsStringAsync());
+
             var googleClientId = _configuration["Authentication:Google:ClientId"];
-            var payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken,
+            var payload = await GoogleJsonWebSignature.ValidateAsync(tokenData.IdToken,
                 new GoogleJsonWebSignature.ValidationSettings { Audience = new[] { googleClientId } });
 
             if (payload == null)
-                throw new UnauthorizedAccessException("Invalid Google Token");
+                throw new UnauthorizedAccessException("Token của google không hợp lệ");
 
             var user = _unitOfWork.UserRepository.Get(filter: u => u.GoogleId.Equals(payload.Subject)).FirstOrDefault();
 

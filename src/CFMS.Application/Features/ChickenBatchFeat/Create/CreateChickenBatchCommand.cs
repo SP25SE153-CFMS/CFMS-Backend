@@ -5,12 +5,10 @@ namespace CFMS.Application.Features.ChickenBatchFeat.Create
 {
     public class CreateChickenBatchCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateChickenBatchCommand(Guid? chickenCoopId, string? chickenBatchName, DateTime? startDate, DateTime? endDate, string? note, int? status)
+        public CreateChickenBatchCommand(Guid? chickenCoopId, string? chickenBatchName, string? note, int? status)
         {
             ChickenCoopId = chickenCoopId;
             ChickenBatchName = chickenBatchName;
-            StartDate = startDate;
-            EndDate = endDate;
             Note = note;
             Status = status;
         }
@@ -19,9 +17,9 @@ namespace CFMS.Application.Features.ChickenBatchFeat.Create
 
         public string? ChickenBatchName { get; set; }
 
-        public DateTime? StartDate { get; set; }
+        //public DateTime? StartDate { get; set; }
 
-        public DateTime? EndDate { get; set; }
+        //public DateTime? EndDate { get; set; }
 
         public string? Note { get; set; }
 

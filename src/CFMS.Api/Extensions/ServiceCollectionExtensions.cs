@@ -27,8 +27,9 @@ namespace CFMS.Api.Extensions
             services.AddDbContext<CfmsDbContext>(options =>
                  options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-            //HttpContext
+            //Http
             services.AddHttpContextAccessor();
+            services.AddHttpClient();
 
             //Mappers
             services.AddAutoMapper(typeof(FarmProfile));
