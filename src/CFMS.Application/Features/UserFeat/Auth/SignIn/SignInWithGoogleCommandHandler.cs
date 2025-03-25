@@ -8,6 +8,7 @@ using CFMS.Domain.Enums.Types;
 using CFMS.Domain.Interfaces;
 using Google.Apis.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -25,18 +26,26 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
         private readonly ITokenService _tokenService;
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SignInWithGoogleCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, IUtilityService utilityService, IConfiguration configuration, HttpClient httpClient)
+        public SignInWithGoogleCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, IUtilityService utilityService, IConfiguration configuration, HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _tokenService = tokenService;
             _utilityService = utilityService;
             _configuration = configuration;
             _httpClient = httpClient;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<BaseResponse<AuthResponse>> Handle(SignInWithGoogleCommand request, CancellationToken cancellationToken)
         {
+            var storedState = _httpContextAccessor.HttpContext.Request.Cookies["oauth_state"];
+            if (storedState != request.State)
+            {
+                return BaseResponse<AuthResponse>.FailureResponse("Trạng thái xác thực không hợp lệ");
+            }
+
             if (string.IsNullOrEmpty(request.AuthorizationCode))
                 return BaseResponse<AuthResponse>.FailureResponse("Thiếu mã xác thực");
 

@@ -1,5 +1,6 @@
 ﻿using CFMS.Application.DTOs.Auth;
 using CFMS.Domain.Entities;
+using System.Security.Claims;
 
 namespace CFMS.Application.Services
 {
@@ -12,5 +13,6 @@ namespace CFMS.Application.Services
         DateTime? GetExpiryDate(string token);
         bool IsTokenExpired(string token);
         System.Threading.Tasks.Task RevokeRefreshTokenAsync(RevokedToken token);
+        Task<string> GenerateJwtTokenGoogle(ClaimsPrincipal user);
     }
 }

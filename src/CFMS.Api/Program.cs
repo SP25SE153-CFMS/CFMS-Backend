@@ -12,17 +12,22 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseSwaggerDocumentation();
+app.UseSwaggerDocumentation(); 
 
-//Add middlewares
-app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseCorsPolicy(); 
+
+app.UseAuthentication(); 
+
+app.UseMiddleware<ErrorHandlingMiddleware>(); 
 app.UseMiddleware<JwtBlacklistMiddleware>();
-
-app.UseCorsPolicy();
-
-app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
 app.Run();
+
