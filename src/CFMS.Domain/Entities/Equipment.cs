@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -29,6 +30,7 @@ public partial class Equipment : EntityAudit
 
     public virtual ICollection<CoopEquipment> CoopEquipments { get; set; } = new List<CoopEquipment>();
 
+    [JsonIgnore]
     public virtual Resource EquipmentNavigation { get; set; } = null!;
 
     public virtual SubCategory? SizeUnit { get; set; }

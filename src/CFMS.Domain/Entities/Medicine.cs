@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -21,5 +22,6 @@ public partial class Medicine : EntityAudit
 
     public virtual SubCategory? Disease { get; set; }
 
+    [JsonIgnore]
     public virtual Resource MedicineNavigation { get; set; } = null!;
 }

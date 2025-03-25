@@ -3,6 +3,7 @@ using CFMS.Application.Features.CategoryFeat.Create;
 using CFMS.Application.Features.CategoryFeat.Delete;
 using CFMS.Application.Features.CategoryFeat.GetCategories;
 using CFMS.Application.Features.CategoryFeat.GetCategory;
+using CFMS.Application.Features.CategoryFeat.GetCategoryByType;
 using CFMS.Application.Features.CategoryFeat.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetByCategoryId(Guid id)
         {
             var result = await Send(new GetCategoryQuery(id));
+            return result;
+        }        
+        
+        [HttpGet("categoryType/{type}")]
+        public async Task<IActionResult> GetByCategoryByType(string type)
+        {
+            var result = await Send(new GetCategoryByTypeQuery(type));
             return result;
         }
 

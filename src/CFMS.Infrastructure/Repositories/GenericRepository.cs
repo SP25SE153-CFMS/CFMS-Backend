@@ -58,6 +58,47 @@ namespace CFMS.Infrastructure.Repositories
             return query.ToList();
         }
 
+        public virtual IEnumerable<TEntity> Get(
+           Expression<Func<TEntity, bool>> filter = null,
+           Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+           int? pageIndex = null,
+           int? pageSize = null,
+           bool noTracking = false,
+           params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            if (noTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (pageIndex.HasValue && pageSize.HasValue)
+            {
+                int validPageIndex = pageIndex.Value > 0 ? pageIndex.Value - 1 : 0;
+                int validPageSize = pageSize.Value > 0 ? pageSize.Value : 10;
+
+                query = query.Skip(validPageIndex * validPageSize).Take(validPageSize);
+            }
+
+            return query.ToList();
+        }
+
         public virtual TEntity GetByID(object id)
         {
             return _dbSet.Find(id);

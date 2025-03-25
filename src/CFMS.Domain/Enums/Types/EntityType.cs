@@ -8,7 +8,10 @@ namespace CFMS.Domain.Enums.Types
 {
     public enum EntityType
     {
-        COOP,
-        STORAGE
+        COOP_TYPE,
+        STORAGE_TYPE,
+        FOOD_TYPE,
+        EQUIPMENT_TYPE,
+        MEDICINE_TYPE
     }
 }
