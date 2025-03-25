@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -17,6 +18,7 @@ public partial class Food : EntityAudit
 
     public DateTime? ExpiryDate { get; set; }
 
+    [JsonIgnore]
     public virtual Resource FoodNavigation { get; set; } = null!;
 
     public virtual ICollection<NutritionPlanDetail> NutritionPlanDetails { get; set; } = new List<NutritionPlanDetail>();

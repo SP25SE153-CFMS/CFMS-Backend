@@ -30,6 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\ResourceFeat\Delete\" />
+    <Folder Include="Features\ResourceFeat\Update\" />
     <Folder Include="Features\UserFeat\Delete\" />
     <Folder Include="Features\UserFeat\Update\" />
   </ItemGroup>

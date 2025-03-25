@@ -13,5 +13,6 @@ namespace CFMS.Domain.Interfaces
         bool VerifyPassword(string password, string hashedPassword);
         //string GenerateCode(EntityType type);
         DateTime? ToVietnamTime(DateTime utcDateTime);
+        string CapitalizeFirstLetter(string input);
     }
 }

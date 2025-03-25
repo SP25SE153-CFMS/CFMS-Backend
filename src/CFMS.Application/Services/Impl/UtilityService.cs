@@ -68,5 +68,11 @@ namespace CFMS.Application.Services.Impl
             int otp = RandomNumberGenerator.GetInt32(0, 1000000);
             return otp.ToString("D6");
         }
+
+        public string CapitalizeFirstLetter(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return input;
+            return char.ToUpper(input[0]) + input.Substring(1).ToLower();
+        }
     }
 }
