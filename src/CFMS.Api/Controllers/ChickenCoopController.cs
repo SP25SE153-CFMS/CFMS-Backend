@@ -1,8 +1,11 @@
-﻿using CFMS.Application.Features.ChickenCoopFeat.Create;
+﻿using CFMS.Application.Features.ChickenCoopFeat.AddCoopEquipment;
+using CFMS.Application.Features.ChickenCoopFeat.Create;
 using CFMS.Application.Features.ChickenCoopFeat.Delete;
+using CFMS.Application.Features.ChickenCoopFeat.DeleteCoopEquipment;
 using CFMS.Application.Features.ChickenCoopFeat.GetCoop;
 using CFMS.Application.Features.ChickenCoopFeat.GetCoops;
 using CFMS.Application.Features.ChickenCoopFeat.Update;
+using CFMS.Application.Features.ChickenCoopFeat.UpdateCoopEquipment;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +49,27 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await Send(new DeleteCoopCommand(id));
+            return result;
+        }
+
+        [HttpPost("add-coopequipment")]
+        public async Task<IActionResult> AddCoopEquipment(AddCoopEquipmentCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPut("update-coopequipment")]
+        public async Task<IActionResult> UpdateCoopEquipment(UpdateCoopEquipmentCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpDelete("delete-coopequipment")]
+        public async Task<IActionResult> DeleteCoopEquipment(DeleteCoopEquipmentCommand command)
+        {
+            var result = await Send(command);
             return result;
         }
     }
