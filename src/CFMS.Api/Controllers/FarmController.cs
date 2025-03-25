@@ -1,10 +1,13 @@
-﻿using CFMS.Application.Features.FarmFeat.Create;
+﻿using CFMS.Application.Features.FarmFeat.AddFarmEmployee;
+using CFMS.Application.Features.FarmFeat.Create;
 using CFMS.Application.Features.FarmFeat.Delete;
+using CFMS.Application.Features.FarmFeat.DeleteFarmEmployee;
 using CFMS.Application.Features.FarmFeat.GetFarm;
 using CFMS.Application.Features.FarmFeat.GetFarmByCurrentUserId;
 using CFMS.Application.Features.FarmFeat.GetFarmByUserId;
 using CFMS.Application.Features.FarmFeat.GetFarms;
 using CFMS.Application.Features.FarmFeat.Update;
+using CFMS.Application.Features.FarmFeat.UpdateFarmEmployee;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -62,6 +65,27 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await Send(new DeleteFarmCommand(id));
+            return result;
+        }
+
+        [HttpPost("add-employee")]
+        public async Task<IActionResult> AddFarmEmployee(AddFarmEmployeeCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPut("update-employee")]
+        public async Task<IActionResult> UpdateFarmEmployee(UpdateFarmEmployeeCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPut("delete-employee")]
+        public async Task<IActionResult> DeleteFarmEmployee(DeleteFarmEmployeeCommand command)
+        {
+            var result = await Send(command);
             return result;
         }
     }
