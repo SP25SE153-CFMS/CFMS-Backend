@@ -1,4 +1,4 @@
-using CFMS.Application.Behaviors;
+﻿using CFMS.Application.Behaviors;
 using CFMS.Application.Common;
 using CFMS.Application.DTOs.Auth;
 using CFMS.Application.Events;

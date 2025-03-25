@@ -4,11 +4,13 @@ using CFMS.Application.Services.Impl;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Enums.Roles;
 using CFMS.Domain.Interfaces;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using Task = System.Threading.Tasks.Task;
 
 public class TokenService : ITokenService
@@ -188,5 +190,35 @@ public class TokenService : ITokenService
         {
             return true;
         }
+    }
+
+    public async Task<string> GenerateJwtTokenGoogle(ClaimsPrincipal user)
+    {
+        var issuer = _issuer;
+        var audience = _audience;
+        var key = Encoding.ASCII.GetBytes(_accessSecretKey);
+        var securityKey = new SymmetricSecurityKey(key);
+        var creds = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        var claims = new List<Claim>
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.FindFirstValue(ClaimTypes.NameIdentifier)),
+            new Claim(JwtRegisteredClaimNames.Email, user.FindFirstValue(ClaimTypes.Email)),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Role, GeneralRole.USER_ROLE.ToString())
+        };
+
+        var identity = new ClaimsIdentity(claims);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = identity,
+            Expires = DateTime.UtcNow.AddDays(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        var tokenString = tokenHandler.WriteToken(token);
+
+        return tokenString;
     }
 }

@@ -10,6 +10,11 @@ using CFMS.Application.Features.UserFeat.Auth.SignOut;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
 using CFMS.Application.Services;
+using Microsoft.AspNetCore.Identity;
+using CFMS.Application.DTOs.Auth;
+using System.Text.Json;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CFMS.Api.Controllers
 {
@@ -17,7 +22,7 @@ namespace CFMS.Api.Controllers
     {
         private readonly ITokenService _tokenService;
 
-        public AuthController(IMediator mediator, ICurrentUserService currentUserService, ITokenService tokenService) : base(mediator)
+        public AuthController(IMediator mediator, ITokenService tokenService) : base(mediator)
         {
             _tokenService = tokenService;
         }
@@ -58,11 +63,48 @@ namespace CFMS.Api.Controllers
         }
 
         [HttpGet("google-callback")]
-        public async Task<IActionResult> SignInWithGoogle([FromQuery] string code)
+        public async Task<IActionResult> SignInWithGoogle([FromQuery] string code, [FromQuery] string state)
         {
-            var response = await Send(new SignInWithGoogleCommand { AuthorizationCode = code });
+            var response = await Send(new SignInWithGoogleCommand
+            {
+                AuthorizationCode = code,
+                State = state
+            });
             return response;
         }
+
+        //[HttpGet("signin-google")]
+        //public IActionResult SignInGoogle()
+        //{
+        //    var properties = new AuthenticationProperties { RedirectUri = "api/Auth/google-callback" };
+
+
+        //    return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        //}
+
+        //[HttpGet("google-callback")]
+        //public async Task<IActionResult> GoogleCallback()
+        //{
+        //    var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        //    if (!result.Succeeded)
+        //    {
+        //        return BadRequest("Google authentication failed");
+        //    }
+
+        //    var token = _tokenService.GenerateJwtTokenGoogle(result.Principal);
+        //    var tokenString = token.Result;
+        //    //return Ok(tokenString);
+
+        //    Response.Cookies.Append("auth_token", tokenString, new CookieOptions
+        //    {
+        //        HttpOnly = true, // Không cho JavaScript đọc
+        //        Secure = true,   // Chỉ hoạt động trên HTTPS
+        //        SameSite = SameSiteMode.Strict
+        //    });
+        //    return Redirect("https://nextintern.tech/dashboard");
+
+        //}
 
         [HttpPost("signout")]
         public async Task<IActionResult> SignOut()
