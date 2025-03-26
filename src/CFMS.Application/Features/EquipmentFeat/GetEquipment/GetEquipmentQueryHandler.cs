@@ -1,7 +1,14 @@
-﻿using CFMS.Application.Common;
+using CFMS.Application.Common;
+using CFMS.Application.Features.FoodFeat.GetFood;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 
 namespace CFMS.Application.Features.EquipmentFeat.GetEquipment
 {
@@ -16,12 +23,13 @@ namespace CFMS.Application.Features.EquipmentFeat.GetEquipment
 
         public async Task<BaseResponse<Equipment>> Handle(GetEquipmentQuery request, CancellationToken cancellationToken)
         {
-            var existEquip = _unitOfWork.EquipmentRepository.Get(filter: e => e.EquipmentId.Equals(request.EquipmentId) && e.IsDeleted == false).FirstOrDefault();
-            if (existEquip == null)
+            var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: f => f.EquipmentId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
+            if (existEquipment == null)
             {
                 return BaseResponse<Equipment>.FailureResponse(message: "Trang thiết bị không tồn tại");
             }
-            return BaseResponse<Equipment>.SuccessResponse(data: existEquip);
+
+            return BaseResponse<Equipment>.SuccessResponse(data: existEquipment);
         }
     }
 }

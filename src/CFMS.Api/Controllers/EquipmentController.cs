@@ -1,8 +1,9 @@
-﻿using CFMS.Application.Features.EquipmentFeat.Create;
-using CFMS.Application.Features.EquipmentFeat.Delete;
+using CFMS.Application.Features.EquipmentFeat.Create;
 using CFMS.Application.Features.EquipmentFeat.GetEquipment;
 using CFMS.Application.Features.EquipmentFeat.GetEquipments;
 using CFMS.Application.Features.EquipmentFeat.Update;
+using CFMS.Application.Features.EquipmentFeat.Delete;
+
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,14 +16,15 @@ namespace CFMS.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetEquipments()
         {
             var result = await Send(new GetEquipmentsQuery());
             return result;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+
+        public async Task<IActionResult> GetEquipment(Guid id)
         {
             var result = await Send(new GetEquipmentQuery(id));
             return result;

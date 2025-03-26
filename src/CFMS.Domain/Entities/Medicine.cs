@@ -8,6 +8,10 @@ public partial class Medicine : EntityAudit
 {
     public Guid MedicineId { get; set; }
 
+    public string? MedicineCode { get; set; }
+
+    public string? MedicineName { get; set; }
+
     public string? Usage { get; set; }
 
     public string? DosageForm { get; set; }
@@ -22,6 +26,6 @@ public partial class Medicine : EntityAudit
 
     public virtual SubCategory? Disease { get; set; }
 
-    [JsonIgnore]
-    public virtual Resource MedicineNavigation { get; set; } = null!;
+    //[JsonIgnore]
+    //public virtual Resource MedicineNavigation { get; set; } = null!;
 }

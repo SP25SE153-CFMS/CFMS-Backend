@@ -3,13 +3,17 @@ using CFMS.Application.Common;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.EquipmentFeat.Create
 {
     public class CreateEquipmentCommandHandler : IRequestHandler<CreateEquipmentCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
-
         private readonly IMapper _mapper;
 
         public CreateEquipmentCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
@@ -20,39 +24,19 @@ namespace CFMS.Application.Features.EquipmentFeat.Create
 
         public async Task<BaseResponse<bool>> Handle(CreateEquipmentCommand request, CancellationToken cancellationToken)
         {
-            var existEquip = _unitOfWork.EquipmentRepository.Get(filter: e => e.EquipmentCode.Equals(request.EquipmentCode) && e.IsDeleted == false).FirstOrDefault();
-            if (existEquip == null)
+            var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: s => s.EquipmentCode.Equals(request.EquipmentCode) || s.EquipmentName.Equals(request.EquipmentName)).FirstOrDefault();
+            if (existEquipment != null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Code đã tồn tại");
+                return BaseResponse<bool>.FailureResponse("Tên hoặc mã trang thiết bị đã tồn tại");
             }
 
-            var existSizeUnit = _unitOfWork.SubCategoryRepository.Get(filter: u => u.SubCategoryId.Equals(request.SizeUnitId) && u.IsDeleted == false).FirstOrDefault();
-            if (existSizeUnit == null)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "SizeUnit không tồn tại");
+            var equipment = _mapper.Map<Equipment>(request);
+            _unitOfWork.EquipmentRepository.Insert(equipment);
+            var result = await _unitOfWork.SaveChangesAsync();
 
-            }
-
-            var existWeightUnit = _unitOfWork.SubCategoryRepository.Get(filter: u => u.SubCategoryId.Equals(request.WeightUnitId) && u.IsDeleted == false).FirstOrDefault();
-            if (existWeightUnit == null)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "WeightUnit không tồn tại");
-            }
-
-            try
-            {
-                _unitOfWork.EquipmentRepository.Insert(_mapper.Map<Equipment>(request));
-                var result = await _unitOfWork.SaveChangesAsync();
-                if (result > 0)
-                {
-                    return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
-                }
-                return BaseResponse<bool>.FailureResponse(message: "Thêm không thành công");
-            }
-            catch (Exception ex)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
-            }
+            return result > 0
+                ? BaseResponse<bool>.SuccessResponse("Thêm trang thiết bị thành công")
+                : BaseResponse<bool>.FailureResponse("Thêm thất bại");
         }
     }
 }

@@ -1,4 +1,4 @@
-using CFMS.Application.Common;
+﻿using CFMS.Application.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -6,12 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-namespace CFMS.Application.Features.EquipmentFeat.Delete
+namespace CFMS.Application.Features.MedicineFeat.Delete
 {
-    public class DeleteEquipmentCommand : IRequest<BaseResponse<bool>>
+    public class DeleteMedicineCommand : IRequest<BaseResponse<bool>>
     {
-        public DeleteEquipmentCommand(Guid id)
+        public DeleteMedicineCommand(Guid id)
         {
             Id = id;
         }

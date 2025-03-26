@@ -1,15 +1,21 @@
-﻿using CFMS.Application.Common;
+using CFMS.Application.Common;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.EquipmentFeat.Update
 {
     public class UpdateEquipmentCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateEquipmentCommand(string? equipmentCode, string? equipmentName, string? material, string? usage, int? warranty, decimal? size, Guid? sizeUnitId, decimal? weight, Guid? weightUnitId, DateTime? purchaseDate, Guid equipmentId)
+        public UpdateEquipmentCommand(Guid equipmentId, string? equipmentCode, string? equipmentName, Guid? materialId, string? usage, int? warranty, decimal? size, Guid? sizeUnitId, decimal? weight, Guid? weightUnitId, DateTime? purchaseDate)
         {
+            EquipmentId = equipmentId;
             EquipmentCode = equipmentCode;
             EquipmentName = equipmentName;
-            Material = material;
+            MaterialId = materialId;
             Usage = usage;
             Warranty = warranty;
             Size = size;
@@ -17,7 +23,6 @@ namespace CFMS.Application.Features.EquipmentFeat.Update
             Weight = weight;
             WeightUnitId = weightUnitId;
             PurchaseDate = purchaseDate;
-            EquipmentId = equipmentId;
         }
 
         public Guid EquipmentId { get; set; }
@@ -26,7 +31,7 @@ namespace CFMS.Application.Features.EquipmentFeat.Update
 
         public string? EquipmentName { get; set; }
 
-        public string? Material { get; set; }
+        public Guid? MaterialId { get; set; }
 
         public string? Usage { get; set; }
 
@@ -41,5 +46,6 @@ namespace CFMS.Application.Features.EquipmentFeat.Update
         public Guid? WeightUnitId { get; set; }
 
         public DateTime? PurchaseDate { get; set; }
+
     }
 }

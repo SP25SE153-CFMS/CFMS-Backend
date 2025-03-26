@@ -1,4 +1,4 @@
-using CFMS.Application.Common;
+﻿using CFMS.Application.Common;
 using CFMS.Domain.Entities;
 using MediatR;
 using System;
@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.EquipmentFeat.GetEquipment
+namespace CFMS.Application.Features.MedicineFeat.GetMedicine
 {
-    public class GetEquipmentQuery : IRequest<BaseResponse<Equipment>>
+    public class GetMedicineQuery : IRequest<BaseResponse<Medicine>>
     {
-        public GetEquipmentQuery(Guid id)
+        public GetMedicineQuery(Guid id)
         {
             Id = id;
         }
