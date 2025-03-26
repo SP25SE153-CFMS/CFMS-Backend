@@ -21,7 +21,7 @@ namespace CFMS.Application.Features.MedicineFeat.Update
 
         public async Task<BaseResponse<bool>> Handle(UpdateMedicineCommand request, CancellationToken cancellationToken)
         {
-            var existMedicine = _unitOfWork.MedicineRepository.GetByID(request.MedicineId);
+            var existMedicine = _unitOfWork.MedicineRepository.Get(filter: s => s.MedicineId.Equals(request.MedicineId) && s.IsDeleted == false).FirstOrDefault();
             if (existMedicine == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Dược phẩm không tồn tại");

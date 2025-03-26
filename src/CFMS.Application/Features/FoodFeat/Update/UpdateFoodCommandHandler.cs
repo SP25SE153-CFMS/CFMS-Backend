@@ -21,7 +21,7 @@ namespace CFMS.Application.Features.FoodFeat.Update
 
         public async Task<BaseResponse<bool>> Handle(UpdateFoodCommand request, CancellationToken cancellationToken)
         {
-            var existFood = _unitOfWork.FoodRepository.GetByID(request.FoodId);
+            var existFood = _unitOfWork.FoodRepository.Get(filter: f => f.FoodId.Equals(request.FoodId) && f.IsDeleted == false).FirstOrDefault();
             if (existFood == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Thực phẩm không tồn tại");

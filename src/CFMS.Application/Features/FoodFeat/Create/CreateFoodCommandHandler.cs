@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.FoodFeat.Create
 
         public async Task<BaseResponse<bool>> Handle(CreateFoodCommand request, CancellationToken cancellationToken)
         {
-            var existFood = _unitOfWork.FoodRepository.Get(filter: s => s.FoodCode.Equals(request.FoodCode) || s.FoodName.Equals(request.FoodName)).FirstOrDefault();
+            var existFood = _unitOfWork.FoodRepository.Get(filter: s => s.FoodCode.Equals(request.FoodCode) || s.FoodName.Equals(request.FoodName) && s.IsDeleted == false).FirstOrDefault();
             if (existFood != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên hoặc mã thực phẩm đã tồn tại");
