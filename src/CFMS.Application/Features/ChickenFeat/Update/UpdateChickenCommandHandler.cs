@@ -29,7 +29,6 @@ namespace CFMS.Application.Features.ChickenFeat.Update
                 existChicken.TotalQuantity = request.TotalQuantity;
                 existChicken.Status = request.Status;
                 existChicken.Description = request.Description;
-                existChicken.ChickenBatchId = request.ChickenBatchId;
                 existChicken.ChickenTypeId = request.ChickenTypeId;
 
                 var chickenDetails = request.ChickenDetails.Select(detail => new ChickenDetail

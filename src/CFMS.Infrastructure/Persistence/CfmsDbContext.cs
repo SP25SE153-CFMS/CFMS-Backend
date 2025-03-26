@@ -60,8 +60,6 @@ public partial class CfmsDbContext : DbContext
 
     public virtual DbSet<GrowthBatch> GrowthBatches { get; set; }
 
-    public virtual DbSet<GrowthNutrition> GrowthNutritions { get; set; }
-
     public virtual DbSet<GrowthStage> GrowthStages { get; set; }
 
     public virtual DbSet<HealthLog> HealthLogs { get; set; }
@@ -534,10 +532,6 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.ChickenName).HasColumnType("character varying");
             entity.Property(e => e.Status).HasDefaultValue(1);
 
-            entity.HasOne(d => d.ChickenBatch).WithMany(p => p.Chickens)
-                .HasForeignKey(d => d.ChickenBatchId)
-                .HasConstraintName("Chicken_ChickenBatchId_fkey");
-
             entity.HasOne(e => e.ChickenNavigation)
                 .WithOne(c => c.Chicken)
                 .HasForeignKey<SystemConfig>(e => e.EntityId)
@@ -560,6 +554,10 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.EndDate).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.Status).HasDefaultValue(1);
+
+            entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenBatches)
+                .HasForeignKey(d => d.ChickenId)
+                .HasConstraintName("Chicken_ChickenId_fkey");
 
             entity.HasOne(d => d.ChickenCoop).WithMany(p => p.ChickenBatches)
                 .HasForeignKey(d => d.ChickenCoopId)
@@ -609,24 +607,6 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenDetails)
                 .HasForeignKey(d => d.ChickenId)
                 .HasConstraintName("ChickenDetail_ChickenId_fkey");
-        });
-
-        modelBuilder.Entity<ChickenNutrition>(entity =>
-        {
-            entity.HasKey(e => e.ChickenNutritionId).HasName("ChickenNutrition_pkey");
-
-            entity.ToTable("ChickenNutrition");
-
-            entity.Property(e => e.ChickenNutritionId).HasDefaultValueSql("gen_random_uuid()");
-
-            entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenNutritions)
-                .HasForeignKey(d => d.ChickenId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("ChickenNutrition_ChickenId_fkey");
-
-            entity.HasOne(d => d.NutritionPlan).WithMany(p => p.ChickenNutritions)
-                .HasForeignKey(d => d.NutritionPlanId)
-                .HasConstraintName("ChickenNutrition_NutritionPlanId_fkey");
         });
 
         modelBuilder.Entity<CoopEquipment>(entity =>
@@ -854,10 +834,10 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("GrowthBatch");
 
             entity.Property(e => e.GrowthBatchId).HasDefaultValueSql("gen_random_uuid()");
-            //entity.Property(e => e.EndDate).HasColumnType("timestamp(6) without time zone");
-            //entity.Property(e => e.Note).HasColumnType("character varying");
-            //entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
-            //entity.Property(e => e.Status).HasDefaultValue(1);
+            entity.Property(e => e.EndDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.Note).HasColumnType("character varying");
+            entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.Status).HasDefaultValue(1);
 
             entity.HasOne(d => d.ChickenBatch).WithMany(p => p.GrowthBatches)
                 .HasForeignKey(d => d.ChickenBatchId)
@@ -867,23 +847,6 @@ public partial class CfmsDbContext : DbContext
                 .HasForeignKey(d => d.GrowthStageId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("GrowthBatch_GrowthStageId_fkey");
-        });
-
-        modelBuilder.Entity<GrowthNutrition>(entity =>
-        {
-            entity.HasKey(e => e.GrowthNutritionId).HasName("GrowthNutrition_pkey");
-
-            entity.ToTable("GrowthNutrition");
-
-            entity.Property(e => e.GrowthNutritionId).HasDefaultValueSql("gen_random_uuid()");
-
-            entity.HasOne(d => d.GrowthStage).WithMany(p => p.GrowthNutritions)
-                .HasForeignKey(d => d.GrowthStageId)
-                .HasConstraintName("GrowthNutrition_GrowthStageId_fkey");
-
-            entity.HasOne(d => d.NutritionPlan).WithMany(p => p.GrowthNutritions)
-                .HasForeignKey(d => d.NutritionPlanId)
-                .HasConstraintName("GrowthNutrition_NutritionPlanId_fkey");
         });
 
         modelBuilder.Entity<GrowthStage>(entity =>
@@ -899,6 +862,10 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.ChickenTypeNavigation).WithMany(p => p.GrowthStages)
                 .HasForeignKey(d => d.ChickenType)
                 .HasConstraintName("GrowthStage_ChickenType_fkey");
+
+            entity.HasOne(d => d.NutritionPlan).WithMany(p => p.GrowthStages)
+                .HasForeignKey(d => d.NutritionPlanId)
+                .HasConstraintName("NutritionPlan_NutritionPlanId_fkey");
         });
 
         modelBuilder.Entity<HealthLog>(entity =>

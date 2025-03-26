@@ -30,7 +30,6 @@ namespace CFMS.Domain.Interfaces
         IGenericRepository<FeedSession> FeedSessionRepository { get; }
         IGenericRepository<Food> FoodRepository { get; }
         IGenericRepository<GrowthBatch> GrowthBatchRepository { get; }
-        IGenericRepository<GrowthNutrition> GrowthNutritionRepository { get; }
         IGenericRepository<GrowthStage> GrowthStageRepository { get; }
         IGenericRepository<HealthLog> HealthLogRepository { get; }
         IGenericRepository<HealthLogDetail> HealthLogDetailRepository { get; }
@@ -66,7 +65,6 @@ namespace CFMS.Domain.Interfaces
         IGenericRepository<Warehouse> WarehouseRepository { get; }
         IGenericRepository<Supplier> SupplierRepository { get; }
         IGenericRepository<SystemConfig> SystemConfigRepository { get; }
-        IGenericRepository<ChickenNutrition> ChickenNutritionRepository { get; }
 
         void Save();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

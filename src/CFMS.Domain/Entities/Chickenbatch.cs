@@ -20,10 +20,12 @@ public partial class ChickenBatch : EntityAudit
 
     public int? Status { get; set; }
 
+    public Guid? ChickenId { get; set; }
+
     [JsonIgnore]
     public virtual ChickenCoop? ChickenCoop { get; set; }
 
-    public virtual ICollection<Chicken> Chickens { get; set; } = new List<Chicken>();
+    public virtual Chicken? Chicken { get; set; }
 
     public virtual ICollection<FeedLog> FeedLogs { get; set; } = new List<FeedLog>();
 

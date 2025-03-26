@@ -19,9 +19,11 @@ public partial class GrowthStage : EntityAudit
 
     public string? Description { get; set; }
 
+    public Guid? NutritionPlanId { get; set; }
+
+    public virtual NutritionPlan? NutritionPlan { get; set; }
+
     public virtual SubCategory? ChickenTypeNavigation { get; set; }
 
     public virtual ICollection<GrowthBatch> GrowthBatches { get; set; } = new List<GrowthBatch>();
-
-    public virtual ICollection<GrowthNutrition> GrowthNutritions { get; set; } = new List<GrowthNutrition>();
 }

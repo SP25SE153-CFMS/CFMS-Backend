@@ -41,7 +41,6 @@ namespace CFMS.Application.Features.ChickenFeat.Create
                     Description = request.Description,
                     Status = request.Status,
                     ChickenTypeId = request.ChickenTypeId,
-                    ChickenBatchId = request.ChickenBatchId
                 };
 
                 _unitOfWork.ChickenRepository.Insert(newChicken);

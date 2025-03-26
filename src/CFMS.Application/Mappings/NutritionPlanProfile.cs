@@ -9,7 +9,7 @@ namespace CFMS.Application.Mappings
         public NutritionPlanProfile()
         {
             CreateMap<CreateNutritionPlanCommand, NutritionPlan>()
-                 .ForMember(dest => dest.ChickenNutritions, opt => opt.Ignore())
+                 //.ForMember(dest => dest.ChickenNutritions, opt => opt.Ignore())
                  .ForMember(dest => dest.NutritionPlanDetails, opt => opt.Ignore());
         }
     }

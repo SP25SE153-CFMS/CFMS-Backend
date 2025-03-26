@@ -20,16 +20,12 @@ public partial class Chicken : EntityAudit
 
     public Guid? ChickenTypeId { get; set; }
 
-    public Guid? ChickenBatchId { get; set; }
-
     [JsonIgnore]
-    public virtual ChickenBatch? ChickenBatch { get; set; }
+    public virtual ICollection<ChickenBatch> ChickenBatches { get; set; } = new List<ChickenBatch>();
 
     public virtual ICollection<ChickenDetail> ChickenDetails { get; set; } = new List<ChickenDetail>();
 
     public virtual SystemConfig ChickenNavigation { get; set; } = null!;
-
-    public virtual ICollection<ChickenNutrition> ChickenNutritions { get; set; } = new List<ChickenNutrition>();
 
     public virtual SubCategory? ChickenType { get; set; }
 
