@@ -35,17 +35,17 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
             _unitOfWork.NutritionPlanRepository.Update(nutritionPlan);
             await _unitOfWork.SaveChangesAsync();
 
-            if (request.ChickenList != null)
-            {
-                var chickens = _unitOfWork.ChickenRepository
-                    .Get(filter: c => request.ChickenList.Contains(c.ChickenId))
-                    .ToList();
+            //if (request.ChickenList != null)
+            //{
+            //    var chickens = _unitOfWork.ChickenRepository
+            //        .Get(filter: c => request.ChickenList.Contains(c.ChickenId))
+            //        .ToList();
 
-                var missingIds = request.ChickenList.Except(chickens.Select(c => c.ChickenId)).ToList();
-                if (missingIds.Any())
-                {
-                    return BaseResponse<bool>.FailureResponse($"Một số loại gà không tồn tại trong hệ thống");
-                }
+            //    var missingIds = request.ChickenList.Except(chickens.Select(c => c.ChickenId)).ToList();
+            //    if (missingIds.Any())
+            //    {
+            //        return BaseResponse<bool>.FailureResponse($"Một số loại gà không tồn tại trong hệ thống");
+            //    }
 
                 //var existingChickenNutritions = _unitOfWork.ChickenNutritionRepository
                 //    .Get(filter: cn => cn.NutritionPlanId == request.NutritionPlanId)
@@ -62,7 +62,7 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
 
                 //_unitOfWork.ChickenNutritionRepository.InsertRange(newChickenNutritions);
                 //await _unitOfWork.SaveChangesAsync();
-            }
+            //}
 
             if (request.NutritionPlanDetails != null)
             {
