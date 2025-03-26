@@ -1,8 +1,10 @@
 ﻿using CFMS.Application.Features.ChickenBatchFeat.AddChicken;
 using CFMS.Application.Features.ChickenBatchFeat.AddGrowthStage;
+using CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog;
 using CFMS.Application.Features.ChickenBatchFeat.Create;
 using CFMS.Application.Features.ChickenBatchFeat.Delete;
 using CFMS.Application.Features.ChickenBatchFeat.DeleteGrowthBatch;
+using CFMS.Application.Features.ChickenBatchFeat.DeleteQuantityLog;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatch;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatchs;
 using CFMS.Application.Features.ChickenBatchFeat.Update;
@@ -76,6 +78,20 @@ namespace CFMS.Api.Controllers
 
         [HttpPost("add-chicken")]
         public async Task<IActionResult> AddChicken(AddChickenCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPost("add-quantitylog")]
+        public async Task<IActionResult> AddQuantityLog(AddQuantityLogCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpDelete("delete-quantitylog")]
+        public async Task<IActionResult> DeleteQuantityLog(DeleteQuantityLogCommand command)
         {
             var result = await Send(command);
             return result;

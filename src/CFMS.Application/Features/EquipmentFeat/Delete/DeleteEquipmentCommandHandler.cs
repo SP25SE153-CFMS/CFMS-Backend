@@ -1,4 +1,4 @@
-﻿using CFMS.Application.Common;
+using CFMS.Application.Common;
 using CFMS.Application.Features.FoodFeat.Delete;
 using CFMS.Domain.Interfaces;
 using MediatR;
@@ -21,25 +21,31 @@ namespace CFMS.Application.Features.EquipmentFeat.Delete
 
         public async Task<BaseResponse<bool>> Handle(DeleteEquipmentCommand request, CancellationToken cancellationToken)
         {
+
             var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: f => f.EquipmentId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existEquipment == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Thực phẩm không tồn tại");
+
             }
 
             try
             {
+
                 _unitOfWork.EquipmentRepository.Delete(existEquipment);
+
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
+
                 return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra:" + ex.Message);
+
             }
         }
     }

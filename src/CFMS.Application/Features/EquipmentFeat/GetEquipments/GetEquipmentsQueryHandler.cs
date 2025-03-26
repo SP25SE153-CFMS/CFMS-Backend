@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using CFMS.Application.Common;
 using CFMS.Application.Features.FoodFeat.GetFoods;
 using CFMS.Domain.Entities;

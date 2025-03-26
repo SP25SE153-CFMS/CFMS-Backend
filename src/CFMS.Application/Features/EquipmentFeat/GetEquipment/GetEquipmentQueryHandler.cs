@@ -1,4 +1,4 @@
-﻿using CFMS.Application.Common;
+using CFMS.Application.Common;
 using CFMS.Application.Features.FoodFeat.GetFood;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace CFMS.Application.Features.EquipmentFeat.GetEquipment
 {

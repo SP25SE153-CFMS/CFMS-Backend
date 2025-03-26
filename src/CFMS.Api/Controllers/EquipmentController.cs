@@ -1,11 +1,9 @@
-﻿using CFMS.Application.Features.EquipmentFeat.Create;
+using CFMS.Application.Features.EquipmentFeat.Create;
 using CFMS.Application.Features.EquipmentFeat.GetEquipment;
 using CFMS.Application.Features.EquipmentFeat.GetEquipments;
 using CFMS.Application.Features.EquipmentFeat.Update;
-using CFMS.Application.Features.FoodFeat.Create;
-using CFMS.Application.Features.FoodFeat.GetFood;
-using CFMS.Application.Features.FoodFeat.GetFoods;
-using CFMS.Application.Features.FoodFeat.Update;
+using CFMS.Application.Features.EquipmentFeat.Delete;
+
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +23,7 @@ namespace CFMS.Api.Controllers
         }
 
         [HttpGet("{id}")]
+
         public async Task<IActionResult> GetEquipment(Guid id)
         {
             var result = await Send(new GetEquipmentQuery(id));
@@ -42,6 +41,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Update(UpdateEquipmentCommand command)
         {
             var result = await Send(command);
+            return result;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await Send(new DeleteEquipmentCommand(id));
             return result;
         }
     }
