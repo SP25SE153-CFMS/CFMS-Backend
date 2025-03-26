@@ -22,7 +22,7 @@ namespace CFMS.Application.Features.CategoryFeat.AddSubCate
                 return BaseResponse<bool>.FailureResponse(message: "Tên danh mục đã tồn tại");
             }
 
-            var existCate = _unitOfWork.CategoryRepository.Get(filter: c => c.IsDeleted == false).FirstOrDefault();
+            var existCate = _unitOfWork.CategoryRepository.Get(filter: c => c.CategoryId.Equals(request.CategoryId) & c.IsDeleted == false).FirstOrDefault();
             if (existCate == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Loại danh mục không tồn tại");
