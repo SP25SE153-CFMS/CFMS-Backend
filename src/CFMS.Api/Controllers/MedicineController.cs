@@ -1,9 +1,4 @@
-﻿using CFMS.Application.Features.FoodFeat.Create;
-using CFMS.Application.Features.FoodFeat.Delete;
-using CFMS.Application.Features.FoodFeat.GetFood;
-using CFMS.Application.Features.FoodFeat.GetFoods;
-using CFMS.Application.Features.FoodFeat.Update;
-using CFMS.Application.Features.MedicineFeat.Create;
+﻿using CFMS.Application.Features.MedicineFeat.Create;
 using CFMS.Application.Features.MedicineFeat.Delete;
 using CFMS.Application.Features.MedicineFeat.GetMedicine;
 using CFMS.Application.Features.MedicineFeat.GetMedicines;

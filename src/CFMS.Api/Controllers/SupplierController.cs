@@ -1,8 +1,4 @@
-﻿using CFMS.Application.Features.ChickenCoopFeat.GetCoop;
-using CFMS.Application.Features.ChickenFeat.Create;
-using CFMS.Application.Features.ChickenFeat.Delete;
-using CFMS.Application.Features.ChickenFeat.Update;
-using CFMS.Application.Features.SupplierFeat.Create;
+﻿using CFMS.Application.Features.SupplierFeat.Create;
 using CFMS.Application.Features.SupplierFeat.Delete;
 using CFMS.Application.Features.SupplierFeat.GetSupplier;
 using CFMS.Application.Features.SupplierFeat.GetSuppliers;

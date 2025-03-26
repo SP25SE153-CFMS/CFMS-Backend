@@ -1,9 +1,4 @@
-﻿using CFMS.Application.Features.SupplierFeat.Create;
-using CFMS.Application.Features.SupplierFeat.Delete;
-using CFMS.Application.Features.SupplierFeat.GetSupplier;
-using CFMS.Application.Features.SupplierFeat.GetSuppliers;
-using CFMS.Application.Features.SupplierFeat.Update;
-using CFMS.Application.Features.WarehouseFeat.Create;
+﻿using CFMS.Application.Features.WarehouseFeat.Create;
 using CFMS.Application.Features.WarehouseFeat.Delete;
 using CFMS.Application.Features.WarehouseFeat.GetWare;
 using CFMS.Application.Features.WarehouseFeat.GetWares;

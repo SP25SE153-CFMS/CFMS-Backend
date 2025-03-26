@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -31,5 +32,6 @@ public partial class Farm : EntityAudit
 
     public virtual ICollection<FarmEmployee> FarmEmployees { get; set; } = new List<FarmEmployee>();
 
+    [JsonIgnore]
     public virtual ICollection<Warehouse> Warehouses { get; set; } = new List<Warehouse>();
 }
