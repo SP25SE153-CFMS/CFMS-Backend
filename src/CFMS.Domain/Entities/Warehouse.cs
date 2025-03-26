@@ -9,7 +9,7 @@ public partial class Warehouse : EntityAudit
 
     public Guid? FarmId { get; set; }
 
-    public Guid? StorageTypeId { get; set; }
+    public Guid? ResourceTypeId { get; set; }
 
     public string? WarehouseName { get; set; }
 
@@ -31,7 +31,7 @@ public partial class Warehouse : EntityAudit
 
     public virtual ICollection<InventoryRequest> InventoryRequestWareTos { get; set; } = new List<InventoryRequest>();
 
-    public virtual SubCategory? StorageType { get; set; }
+    public virtual SubCategory? ResourceType { get; set; }
 
     public virtual ICollection<TaskLocation> TaskLocations { get; set; } = new List<TaskLocation>();
 

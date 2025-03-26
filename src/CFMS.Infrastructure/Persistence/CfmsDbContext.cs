@@ -1504,9 +1504,9 @@ public partial class CfmsDbContext : DbContext
                 .HasForeignKey(d => d.FarmId)
                 .HasConstraintName("Warehouse_FarmId_fkey");
 
-            entity.HasOne(d => d.StorageType).WithMany(p => p.Warehouses)
-                .HasForeignKey(d => d.StorageTypeId)
-                .HasConstraintName("Warehouse_StorageTypeId_fkey");
+            entity.HasOne(d => d.ResourceType).WithMany(p => p.Warehouses)
+                .HasForeignKey(d => d.ResourceTypeId)
+                .HasConstraintName("Warehouse_ResourceTypeId_fkey");
 
             entity.HasOne(e => e.Ware)
                 .WithOne(c => c.Warehouse)

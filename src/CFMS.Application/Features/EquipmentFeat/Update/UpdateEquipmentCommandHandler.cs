@@ -27,6 +27,24 @@ namespace CFMS.Application.Features.EquipmentFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Trang thiết bị không tồn tại");
             }
 
+            var existNameCode = _unitOfWork.EquipmentRepository.Get(filter: s => s.EquipmentCode.Equals(request.EquipmentCode) || s.EquipmentName.Equals(request.EquipmentName) && s.IsDeleted == false).FirstOrDefault();
+            if (existEquipment != null)
+            {
+                return BaseResponse<bool>.FailureResponse("Tên hoặc mã trang thiết bị đã tồn tại");
+            }
+
+            var existSizeUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.SizeUnitId) && s.IsDeleted == false).FirstOrDefault();
+            if (existEquipment == null)
+            {
+                return BaseResponse<bool>.FailureResponse("Đơn vị đo kích cỡ không tồn tại");
+            }
+
+            var existWeightUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.WeightUnitId) && s.IsDeleted == false).FirstOrDefault();
+            if (existEquipment == null)
+            {
+                return BaseResponse<bool>.FailureResponse("Đơn vị đo khối lượng không tồn tại");
+            }
+
             try
             {
                 existEquipment.EquipmentName = request.EquipmentName;
