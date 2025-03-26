@@ -1,10 +1,14 @@
-﻿using CFMS.Application.Features.ResourceFeat.GetResource;
+﻿using CFMS.Application.Features.ResourceFeat.Create;
+using CFMS.Application.Features.ResourceFeat.Delete;
+using CFMS.Application.Features.ResourceFeat.GetResource;
 using CFMS.Application.Features.ResourceFeat.GetResources;
+using CFMS.Application.Features.ResourceFeat.Update;
 using CFMS.Application.Features.UserFeat.Delete;
 using CFMS.Application.Features.UserFeat.GetUser;
 using CFMS.Application.Features.UserFeat.GetUsers;
 using CFMS.Application.Features.UserFeat.Update;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CFMS.Api.Controllers
@@ -29,18 +33,25 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        //[HttpPut]
-        //public async Task<IActionResult> Update(UpdateUserCommand command)
-        //{
-        //    var result = await Send(command);
-        //    return result;
-        //}
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateResourceCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(Guid id)
-        //{
-        //    var result = await Send(new DeleteUserCommand(id));
-        //    return result;
-        //}
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateResourceCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await Send(new DeleteResourceCommand(id));
+            return result;
+        }
     }
 }

@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.ResourceFeat.Create
+namespace CFMS.Application.Features.ResourceFeat.Update
 {
-    public class CreateResourceCommand : IRequest<BaseResponse<bool>>
+    public class UpdateResourceCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateResourceCommand(string? resourceTypeId, string? description, Guid? unitId, Guid? packageId, decimal? packageSize, Guid? foodId, Guid? equipmentId, Guid? medicineId)
+        public UpdateResourceCommand(Guid resourceId, Guid? resourceTypeId, string? description, Guid? unitId, Guid? packageId, decimal? packageSize, Guid? foodId, Guid? equipmentId, Guid? medicineId)
         {
+            ResourceId = resourceId;
             ResourceTypeId = resourceTypeId;
             Description = description;
             UnitId = unitId;
@@ -22,7 +23,9 @@ namespace CFMS.Application.Features.ResourceFeat.Create
             MedicineId = medicineId;
         }
 
-        public string? ResourceTypeId { get; set; }
+        public Guid ResourceId { get; set; }
+
+        public Guid? ResourceTypeId { get; set; }
 
         public string? Description { get; set; }
 
@@ -33,9 +36,9 @@ namespace CFMS.Application.Features.ResourceFeat.Create
         public decimal? PackageSize { get; set; }
 
         public Guid? FoodId { get; set; }
-        
+
         public Guid? EquipmentId { get; set; }
-        
+
         public Guid? MedicineId { get; set; }
     }
 }
