@@ -1,8 +1,10 @@
 ﻿using CFMS.Application.Features.FoodFeat.Create;
+using CFMS.Application.Features.FoodFeat.Delete;
 using CFMS.Application.Features.FoodFeat.GetFood;
 using CFMS.Application.Features.FoodFeat.GetFoods;
 using CFMS.Application.Features.FoodFeat.Update;
 using CFMS.Application.Features.MedicineFeat.Create;
+using CFMS.Application.Features.MedicineFeat.Delete;
 using CFMS.Application.Features.MedicineFeat.GetMedicine;
 using CFMS.Application.Features.MedicineFeat.GetMedicines;
 using CFMS.Application.Features.MedicineFeat.Update;
@@ -40,6 +42,13 @@ namespace CFMS.Api.Controllers
 
         [HttpPut]
         public async Task<IActionResult> Update(UpdateMedicineCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(DeleteMedicineCommand command)
         {
             var result = await Send(command);
             return result;

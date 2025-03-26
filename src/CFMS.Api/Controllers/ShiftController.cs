@@ -3,45 +3,46 @@ using CFMS.Application.Features.FoodFeat.Delete;
 using CFMS.Application.Features.FoodFeat.GetFood;
 using CFMS.Application.Features.FoodFeat.GetFoods;
 using CFMS.Application.Features.FoodFeat.Update;
-using CFMS.Application.Features.SupplierFeat.Create;
-using CFMS.Application.Features.SupplierFeat.GetSupplier;
-using CFMS.Application.Features.SupplierFeat.GetSuppliers;
-using CFMS.Application.Features.SupplierFeat.Update;
+using CFMS.Application.Features.ShiftFeat.Create;
+using CFMS.Application.Features.ShiftFeat.Delete;
+using CFMS.Application.Features.ShiftFeat.GetShift;
+using CFMS.Application.Features.ShiftFeat.GetShifts;
+using CFMS.Application.Features.ShiftFeat.Update;
 using CFMS.Application.Features.WarehouseFeat.Delete;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CFMS.Api.Controllers
 {
-    public class FoodController : BaseController
+    public class ShiftController : BaseController
     {
-        public FoodController(IMediator mediator) : base(mediator)
+        public ShiftController(IMediator mediator) : base(mediator)
         {
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFoods()
+        public async Task<IActionResult> GetShifts()
         {
-            var result = await Send(new GetFoodsQuery());
+            var result = await Send(new GetShiftsQuery());
             return result;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetFood(Guid id)
+        public async Task<IActionResult> GetShift(Guid id)
         {
-            var result = await Send(new GetFoodQuery(id));
+            var result = await Send(new GetShiftQuery(id));
             return result;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateFoodCommand command)
+        public async Task<IActionResult> Create(CreateShiftCommand command)
         {
             var result = await Send(command);
             return result;
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UpdateFoodCommand command)
+        public async Task<IActionResult> Update(UpdateShiftCommand command)
         {
             var result = await Send(command);
             return result;
@@ -50,7 +51,7 @@ namespace CFMS.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var result = await Send(new DeleteFoodCommand(id));
+            var result = await Send(new DeleteShiftCommand(id));
             return result;
         }
     }
