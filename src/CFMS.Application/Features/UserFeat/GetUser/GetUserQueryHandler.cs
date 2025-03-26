@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.UserFeat.GetUser
 
         public async Task<BaseResponse<UserResponse>> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var existUser = _unitOfWork.UserRepository.GetByID(request.UserId);
+            var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(request.UserId)).FirstOrDefault();
             if (existUser == null)
             {
                 return BaseResponse<UserResponse>.FailureResponse("Người dùng không tồn tại");

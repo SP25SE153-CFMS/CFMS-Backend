@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.MedicineFeat.Create
 
         public async Task<BaseResponse<bool>> Handle(CreateMedicineCommand request, CancellationToken cancellationToken)
         {
-            var existFood = _unitOfWork.MedicineRepository.Get(filter: s => s.MedicineCode.Equals(request.MedicineCode) || s.MedicineName.Equals(request.MedicineName)).FirstOrDefault();
+            var existFood = _unitOfWork.MedicineRepository.Get(filter: s => s.MedicineCode.Equals(request.MedicineCode) || s.MedicineName.Equals(request.MedicineName) && s.IsDeleted == false).FirstOrDefault();
             if (existFood != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên hoặc mã dược phẩm đã tồn tại");

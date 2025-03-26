@@ -25,10 +25,22 @@ namespace CFMS.Application.Features.EquipmentFeat.Create
 
         public async Task<BaseResponse<bool>> Handle(CreateEquipmentCommand request, CancellationToken cancellationToken)
         {
-            var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: s => s.EquipmentCode.Equals(request.EquipmentCode) || s.EquipmentName.Equals(request.EquipmentName)).FirstOrDefault();
+            var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: s => s.EquipmentCode.Equals(request.EquipmentCode) || s.EquipmentName.Equals(request.EquipmentName) && s.IsDeleted == false).FirstOrDefault();
             if (existEquipment != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên hoặc mã trang thiết bị đã tồn tại");
+            }
+
+            var existSizeUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.SizeUnitId) && s.IsDeleted == false).FirstOrDefault();
+            if (existEquipment == null)
+            {
+                return BaseResponse<bool>.FailureResponse("Đơn vị đo kích cỡ không tồn tại");
+            }
+
+            var existWeightUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.WeightUnitId) && s.IsDeleted == false).FirstOrDefault();
+            if (existEquipment == null)
+            {
+                return BaseResponse<bool>.FailureResponse("Đơn vị đo khối lượng không tồn tại");
             }
 
             var equipment = _mapper.Map<Equipment>(request);

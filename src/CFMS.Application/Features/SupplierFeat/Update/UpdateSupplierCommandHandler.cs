@@ -21,7 +21,7 @@ namespace CFMS.Application.Features.SupplierFeat.Update
 
         public async Task<BaseResponse<bool>> Handle(UpdateSupplierCommand request, CancellationToken cancellationToken)
         {
-            var existSupplier = _unitOfWork.SupplierRepository.GetByID(request.SupplierId);
+            var existSupplier = _unitOfWork.SupplierRepository.Get(filter: s => s.SupplierId.Equals(request.SupplierId) && s.IsDeleted == false).FirstOrDefault();
             if (existSupplier == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Nhà cung cấp không tồn tại");

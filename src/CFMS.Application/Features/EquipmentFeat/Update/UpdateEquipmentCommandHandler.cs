@@ -21,7 +21,7 @@ namespace CFMS.Application.Features.EquipmentFeat.Update
 
         public async Task<BaseResponse<bool>> Handle(UpdateEquipmentCommand request, CancellationToken cancellationToken)
         {
-            var existEquipment = _unitOfWork.EquipmentRepository.GetByID(request.EquipmentId);
+            var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: e => e.EquipmentId.Equals(request.EquipmentId) && e.IsDeleted == false).FirstOrDefault();
             if (existEquipment == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Trang thiết bị không tồn tại");
