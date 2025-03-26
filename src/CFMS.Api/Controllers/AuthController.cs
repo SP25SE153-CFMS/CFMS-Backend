@@ -62,6 +62,7 @@ namespace CFMS.Api.Controllers
             return Redirect(googleAuthUrl.Data);
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("google-callback")]
         public async Task<IActionResult> SignInWithGoogle([FromQuery] string code, [FromQuery] string state)
         {
@@ -72,39 +73,6 @@ namespace CFMS.Api.Controllers
             });
             return response;
         }
-
-        //[HttpGet("signin-google")]
-        //public IActionResult SignInGoogle()
-        //{
-        //    var properties = new AuthenticationProperties { RedirectUri = "api/Auth/google-callback" };
-
-
-        //    return Challenge(properties, GoogleDefaults.AuthenticationScheme);
-        //}
-
-        //[HttpGet("google-callback")]
-        //public async Task<IActionResult> GoogleCallback()
-        //{
-        //    var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-        //    if (!result.Succeeded)
-        //    {
-        //        return BadRequest("Google authentication failed");
-        //    }
-
-        //    var token = _tokenService.GenerateJwtTokenGoogle(result.Principal);
-        //    var tokenString = token.Result;
-        //    //return Ok(tokenString);
-
-        //    Response.Cookies.Append("auth_token", tokenString, new CookieOptions
-        //    {
-        //        HttpOnly = true, // Không cho JavaScript đọc
-        //        Secure = true,   // Chỉ hoạt động trên HTTPS
-        //        SameSite = SameSiteMode.Strict
-        //    });
-        //    return Redirect("https://nextintern.tech/dashboard");
-
-        //}
 
         [HttpPost("signout")]
         public async Task<IActionResult> SignOut()
