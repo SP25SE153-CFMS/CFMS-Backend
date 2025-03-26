@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250326203348_UpdateLatestDb-V4")]
-    partial class UpdateLatestDbV4
+    [Migration("20250326221216_UpdateLatestDb-V5")]
+    partial class UpdateLatestDbV5
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -2719,13 +2719,13 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<decimal?>("MaxWeight")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("ResourceTypeId")
+                        .HasColumnType("uuid");
+
                     b.Property<int?>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(1);
-
-                    b.Property<Guid?>("StorageTypeId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("WarehouseName")
                         .HasColumnType("character varying");
@@ -2739,7 +2739,7 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasIndex("LastEditedByUserId");
 
-                    b.HasIndex("StorageTypeId");
+                    b.HasIndex("ResourceTypeId");
 
                     b.ToTable("Warehouse", (string)null);
                 });
@@ -4251,10 +4251,10 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CFMS.Domain.Entities.SubCategory", "StorageType")
+                    b.HasOne("CFMS.Domain.Entities.SubCategory", "ResourceType")
                         .WithMany("Warehouses")
-                        .HasForeignKey("StorageTypeId")
-                        .HasConstraintName("Warehouse_StorageTypeId_fkey");
+                        .HasForeignKey("ResourceTypeId")
+                        .HasConstraintName("Warehouse_ResourceTypeId_fkey");
 
                     b.Navigation("CreatedByUser");
 
@@ -4262,7 +4262,7 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Navigation("LastEditedByUser");
 
-                    b.Navigation("StorageType");
+                    b.Navigation("ResourceType");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.BreedingArea", b =>

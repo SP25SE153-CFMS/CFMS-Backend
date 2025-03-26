@@ -32,6 +32,27 @@ namespace CFMS.Application.Features.ResourceFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Hàng hoá không tồn tại");
             }
 
+            var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.ResourceTypeId) && s.IsDeleted == false).FirstOrDefault();
+
+            if (existResourceType != null)
+            {
+                return BaseResponse<bool>.FailureResponse("Loại hàng hoá không tồn tại");
+            }
+
+            var existUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.UnitId) && s.IsDeleted == false).FirstOrDefault();
+
+            if (existUnit != null)
+            {
+                return BaseResponse<bool>.FailureResponse("Đơn vị đo không tồn tại");
+            }
+
+            var existPackage = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.PackageId) && s.IsDeleted == false).FirstOrDefault();
+
+            if (existPackage != null)
+            {
+                return BaseResponse<bool>.FailureResponse("Loại đóng gói không tồn tại");
+            }
+
             try
             {
                 existResource.ResourceTypeId = request.ResourceTypeId;
