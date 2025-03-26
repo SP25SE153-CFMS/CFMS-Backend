@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.ResourceFeat.Create
 {
-    class CreateResourceCommandHandler
+    public class CreateResourceCommandHandler
     {
     }
 }
