@@ -1,16 +1,15 @@
 ﻿using CFMS.Application.Common;
 using CFMS.Domain.Entities;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.ChickenFeat.GetChickens
 {
     public class GetChickensQuery : IRequest<BaseResponse<IEnumerable<Chicken>>>
     {
-        public GetChickensQuery(Guid chickenBatchId)
-        {
-            ChickenBatchId = chickenBatchId;
-        }
-
-        public Guid ChickenBatchId { get; set; }
     }
 }

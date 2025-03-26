@@ -21,15 +21,15 @@ namespace CFMS.Application.Features.GrowthStageFeat.DeleteNutritionPlan
                 return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
             }
 
-            var existGrowthNutrition = _unitOfWork.GrowthNutritionRepository.Get(filter: n => n.GrowthNutritionId.Equals(request.GrowthNutritionId) && n.IsDeleted == false).FirstOrDefault();
-            if (existGrowthNutrition == null)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
-            }
+            //var existGrowthNutrition = _unitOfWork.GrowthNutritionRepository.Get(filter: n => n.GrowthNutritionId.Equals(request.GrowthNutritionId) && n.IsDeleted == false).FirstOrDefault();
+            //if (existGrowthNutrition == null)
+            //{
+            //    return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
+            //}
 
             try
             {
-                existGrowthStage.GrowthNutritions.Remove(existGrowthNutrition);
+                //existGrowthStage.GrowthNutritions.Remove(existGrowthNutrition);
 
                 _unitOfWork.GrowthStageRepository.Update(existGrowthStage);
                 var result = await _unitOfWork.SaveChangesAsync();

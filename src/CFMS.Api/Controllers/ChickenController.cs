@@ -1,6 +1,7 @@
 ﻿using CFMS.Application.Features.ChickenCoopFeat.GetCoop;
 using CFMS.Application.Features.ChickenFeat.Create;
 using CFMS.Application.Features.ChickenFeat.Delete;
+using CFMS.Application.Features.ChickenFeat.GetChickenByBatchId;
 using CFMS.Application.Features.ChickenFeat.GetChickens;
 using CFMS.Application.Features.ChickenFeat.Update;
 using MediatR;
@@ -15,9 +16,17 @@ namespace CFMS.Api.Controllers
         }
 
         [HttpGet("Batch/{batchId}")]
-        public async Task<IActionResult> GetChickens(Guid batchId)
+        public async Task<IActionResult> GetChickenByBatchId(Guid batchId)
         {
-            var result = await Send(new GetChickensQuery(batchId));
+            var result = await Send(new GetChickenByBatchIdQuery(batchId));
+            return result;
+        }
+
+
+        [HttpGet("")]
+        public async Task<IActionResult> GetChickens()
+        {
+            var result = await Send(new GetChickensQuery());
             return result;
         }
 

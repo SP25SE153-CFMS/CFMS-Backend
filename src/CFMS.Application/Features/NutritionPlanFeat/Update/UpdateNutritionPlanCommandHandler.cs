@@ -47,21 +47,21 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
                     return BaseResponse<bool>.FailureResponse($"Một số loại gà không tồn tại trong hệ thống");
                 }
 
-                var existingChickenNutritions = _unitOfWork.ChickenNutritionRepository
-                    .Get(filter: cn => cn.NutritionPlanId == request.NutritionPlanId)
-                    .ToList();
+                //var existingChickenNutritions = _unitOfWork.ChickenNutritionRepository
+                //    .Get(filter: cn => cn.NutritionPlanId == request.NutritionPlanId)
+                //    .ToList();
 
-                _unitOfWork.ChickenNutritionRepository.DeleteRange(existingChickenNutritions);
-                await _unitOfWork.SaveChangesAsync();
+                //_unitOfWork.ChickenNutritionRepository.DeleteRange(existingChickenNutritions);
+                //await _unitOfWork.SaveChangesAsync();
 
-                var newChickenNutritions = chickens.Select(chicken => new ChickenNutrition
-                {
-                    NutritionPlanId = nutritionPlan.NutritionPlanId,
-                    ChickenId = chicken.ChickenId
-                }).ToList();
+                //var newChickenNutritions = chickens.Select(chicken => new ChickenNutrition
+                //{
+                //    NutritionPlanId = nutritionPlan.NutritionPlanId,
+                //    ChickenId = chicken.ChickenId
+                //}).ToList();
 
-                _unitOfWork.ChickenNutritionRepository.InsertRange(newChickenNutritions);
-                await _unitOfWork.SaveChangesAsync();
+                //_unitOfWork.ChickenNutritionRepository.InsertRange(newChickenNutritions);
+                //await _unitOfWork.SaveChangesAsync();
             }
 
             if (request.NutritionPlanDetails != null)

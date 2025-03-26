@@ -30,7 +30,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddChicken
             try
             {
                 //thêm quantity log
-                existBatch.Chickens.Add(existChicken);
+                existBatch.Chicken = existChicken;
 
                 _unitOfWork.ChickenBatchRepository.Update(existBatch);
                 var result = await _unitOfWork.SaveChangesAsync();

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Entities\GrowthStage.cs~RF2fb5f2c0.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Enums\Roles\GeneralRole.cs" />
   </ItemGroup>
 

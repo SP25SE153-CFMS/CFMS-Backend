@@ -30,7 +30,6 @@ namespace CFMS.Infrastructure.Repositories
         private GenericRepository<FeedSession> feedSessionRepository;
         private GenericRepository<Food> foodRepository;
         private GenericRepository<GrowthBatch> growthBatchRepository;
-        private GenericRepository<GrowthNutrition> growthNutritionRepository;
         private GenericRepository<GrowthStage> growthStageRepository;
         private GenericRepository<HealthLog> healthLogRepository;
         private GenericRepository<HealthLogDetail> healthLogDetailRepository;
@@ -66,7 +65,6 @@ namespace CFMS.Infrastructure.Repositories
         private GenericRepository<Warehouse> warehouseRepository;
         private GenericRepository<SystemConfig> systemConfigRepository;
         private GenericRepository<Supplier> supplierRepository;
-        private GenericRepository<ChickenNutrition> chickenNutritionRepository;
 
         public UnitOfWork(CfmsDbContext _context)
         {
@@ -92,7 +90,6 @@ namespace CFMS.Infrastructure.Repositories
         public IGenericRepository<FeedSession> FeedSessionRepository => feedSessionRepository ??= new GenericRepository<FeedSession>(context);
         public IGenericRepository<Food> FoodRepository => foodRepository ??= new GenericRepository<Food>(context);
         public IGenericRepository<GrowthBatch> GrowthBatchRepository => growthBatchRepository ??= new GenericRepository<GrowthBatch>(context);
-        public IGenericRepository<GrowthNutrition> GrowthNutritionRepository => growthNutritionRepository ??= new GenericRepository<GrowthNutrition>(context);
         public IGenericRepository<GrowthStage> GrowthStageRepository => growthStageRepository ??= new GenericRepository<GrowthStage>(context);
         public IGenericRepository<HealthLog> HealthLogRepository => healthLogRepository ??= new GenericRepository<HealthLog>(context);
         public IGenericRepository<HealthLogDetail> HealthLogDetailRepository => healthLogDetailRepository ??= new GenericRepository<HealthLogDetail>(context);
@@ -128,7 +125,6 @@ namespace CFMS.Infrastructure.Repositories
         public IGenericRepository<WareStock> WareStockRepository => wareStockRepository ??= new GenericRepository<WareStock>(context);
         public IGenericRepository<Supplier> SupplierRepository => supplierRepository ??= new GenericRepository<Supplier>(context);
         public IGenericRepository<SystemConfig> SystemConfigRepository => systemConfigRepository ??= new GenericRepository<SystemConfig>(context);
-        public IGenericRepository<ChickenNutrition> ChickenNutritionRepository => chickenNutritionRepository ??= new GenericRepository<ChickenNutrition>(context);
 
         public void Save()
         {

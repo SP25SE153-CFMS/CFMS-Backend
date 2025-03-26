@@ -46,13 +46,13 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
 
                 await _unitOfWork.SaveChangesAsync();
 
-                var nutritionPlanChickens = chickens.Select(chicken => new ChickenNutrition
-                {
-                    NutritionPlanId = nutritionPlan.NutritionPlanId,
-                    ChickenId = chicken.ChickenId
-                }).ToList();
+                //var nutritionPlanChickens = chickens.Select(chicken => new ChickenNutrition
+                //{
+                //    NutritionPlanId = nutritionPlan.NutritionPlanId,
+                //    ChickenId = chicken.ChickenId
+                //}).ToList();
 
-                _unitOfWork.ChickenNutritionRepository.InsertRange(nutritionPlanChickens);
+                //_unitOfWork.ChickenNutritionRepository.InsertRange(nutritionPlanChickens);
 
                 existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) & p.IsDeleted == false).FirstOrDefault();
 
