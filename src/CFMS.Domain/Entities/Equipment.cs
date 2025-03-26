@@ -12,7 +12,7 @@ public partial class Equipment : EntityAudit
 
     public string? EquipmentName { get; set; }
 
-    public string? Material { get; set; }
+    public Guid? MaterialId { get; set; }
 
     public string? Usage { get; set; }
 
@@ -30,10 +30,12 @@ public partial class Equipment : EntityAudit
 
     public virtual ICollection<CoopEquipment> CoopEquipments { get; set; } = new List<CoopEquipment>();
 
-    [JsonIgnore]
-    public virtual Resource EquipmentNavigation { get; set; } = null!;
+    //[JsonIgnore]
+    //public virtual Resource EquipmentNavigation { get; set; } = null!;
 
     public virtual SubCategory? SizeUnit { get; set; }
+
+    public virtual SubCategory? Material { get; set; }
 
     public virtual SubCategory? WeightUnit { get; set; }
 }

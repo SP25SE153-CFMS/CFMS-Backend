@@ -639,14 +639,13 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.EquipmentId).HasDefaultValueSql("gen_random_uuid()");
             entity.Property(e => e.EquipmentCode).HasColumnType("character varying");
             entity.Property(e => e.EquipmentName).HasColumnType("character varying");
-            entity.Property(e => e.Material).HasColumnType("character varying");
             entity.Property(e => e.PurchaseDate).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.Usage).HasColumnType("character varying");
-
-            entity.HasOne(d => d.EquipmentNavigation).WithOne(p => p.Equipment)
-                .HasForeignKey<Equipment>(d => d.EquipmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Equipment_EquipmentId_fkey");
+            
+            //entity.HasOne(d => d.EquipmentNavigation).WithOne(p => p.Equipment)
+            //    .HasForeignKey<Equipment>(d => d.EquipmentId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("Equipment_EquipmentId_fkey");
 
             entity.HasOne(d => d.SizeUnit).WithMany(p => p.EquipmentSizeUnits)
                 .HasForeignKey(d => d.SizeUnitId)
@@ -655,6 +654,10 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.WeightUnit).WithMany(p => p.EquipmentWeightUnits)
                 .HasForeignKey(d => d.WeightUnitId)
                 .HasConstraintName("Equipment_WeightUnitId_fkey");
+
+            entity.HasOne(d => d.Material).WithMany(p => p.EquipmentMaterials)
+                .HasForeignKey(d => d.MaterialId)
+                .HasConstraintName("Equipment_MaterialId_fkey");
         });
 
         modelBuilder.Entity<EvaluatedTarget>(entity =>
@@ -1010,10 +1013,10 @@ public partial class CfmsDbContext : DbContext
                 .HasForeignKey(d => d.DiseaseId)
                 .HasConstraintName("Medicine_DiseaseId_fkey");
 
-            entity.HasOne(d => d.MedicineNavigation).WithOne(p => p.Medicine)
-                .HasForeignKey<Medicine>(d => d.MedicineId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Medicine_MedicineId_fkey");
+            //entity.HasOne(d => d.MedicineNavigation).WithOne(p => p.Medicine)
+            //    .HasForeignKey<Medicine>(d => d.MedicineId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("Medicine_MedicineId_fkey");
         });
 
         modelBuilder.Entity<Notification>(entity =>

@@ -37,6 +37,9 @@ public partial class SubCategory : EntityAudit
     public virtual ICollection<Equipment> EquipmentWeightUnits { get; set; } = new List<Equipment>();
 
     [JsonIgnore]
+    public virtual ICollection<Equipment> EquipmentMaterials { get; set; } = new List<Equipment>();
+
+    [JsonIgnore]
     public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
 
     [JsonIgnore]

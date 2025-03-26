@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250326174002_UpdateLatestDb-V4")]
+    [Migration("20250326203348_UpdateLatestDb-V4")]
     partial class UpdateLatestDbV4
     {
         /// <inheritdoc />
@@ -523,8 +523,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Material")
-                        .HasColumnType("character varying");
+                    b.Property<Guid?>("MaterialId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("PurchaseDate")
                         .HasColumnType("timestamp without time zone");
@@ -553,6 +553,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("LastEditedByUserId");
+
+                    b.HasIndex("MaterialId");
 
                     b.HasIndex("SizeUnitId");
 
@@ -763,6 +765,12 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<decimal?>("Latitude")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal?>("Longitude")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("character varying");
@@ -1429,6 +1437,12 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("MedicineCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MedicineName")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("ProductionDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -1713,9 +1727,13 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasIndex("CreatedByUserId");
 
+                    b.HasIndex("EquipmentId");
+
                     b.HasIndex("FoodId");
 
                     b.HasIndex("LastEditedByUserId");
+
+                    b.HasIndex("MedicineId");
 
                     b.HasIndex("PackageId");
 
@@ -2973,17 +2991,16 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CFMS.Domain.Entities.Resource", "EquipmentNavigation")
-                        .WithOne("Equipment")
-                        .HasForeignKey("CFMS.Domain.Entities.Equipment", "EquipmentId")
-                        .IsRequired()
-                        .HasConstraintName("Equipment_EquipmentId_fkey");
-
                     b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
                         .WithMany()
                         .HasForeignKey("LastEditedByUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("CFMS.Domain.Entities.SubCategory", "Material")
+                        .WithMany("EquipmentMaterials")
+                        .HasForeignKey("MaterialId")
+                        .HasConstraintName("Equipment_MaterialId_fkey");
 
                     b.HasOne("CFMS.Domain.Entities.SubCategory", "SizeUnit")
                         .WithMany("EquipmentSizeUnits")
@@ -2997,9 +3014,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Navigation("CreatedByUser");
 
-                    b.Navigation("EquipmentNavigation");
-
                     b.Navigation("LastEditedByUser");
+
+                    b.Navigation("Material");
 
                     b.Navigation("SizeUnit");
 
@@ -3514,19 +3531,11 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CFMS.Domain.Entities.Resource", "MedicineNavigation")
-                        .WithOne("Medicine")
-                        .HasForeignKey("CFMS.Domain.Entities.Medicine", "MedicineId")
-                        .IsRequired()
-                        .HasConstraintName("Medicine_MedicineId_fkey");
-
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("Disease");
 
                     b.Navigation("LastEditedByUser");
-
-                    b.Navigation("MedicineNavigation");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.Notification", b =>
@@ -3652,6 +3661,10 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CFMS.Domain.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId");
+
                     b.HasOne("CFMS.Domain.Entities.Food", "Food")
                         .WithMany()
                         .HasForeignKey("FoodId");
@@ -3661,6 +3674,10 @@ namespace CFMS.Infrastructure.Migrations
                         .HasForeignKey("LastEditedByUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CFMS.Domain.Entities.Medicine", "Medicine")
+                        .WithMany()
+                        .HasForeignKey("MedicineId");
 
                     b.HasOne("CFMS.Domain.Entities.SubCategory", "Package")
                         .WithMany("ResourcePackages")
@@ -3679,9 +3696,13 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Navigation("CreatedByUser");
 
+                    b.Navigation("Equipment");
+
                     b.Navigation("Food");
 
                     b.Navigation("LastEditedByUser");
+
+                    b.Navigation("Medicine");
 
                     b.Navigation("Package");
 
@@ -4369,11 +4390,7 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.Resource", b =>
                 {
-                    b.Navigation("Equipment");
-
                     b.Navigation("InventoryRequestDetails");
-
-                    b.Navigation("Medicine");
 
                     b.Navigation("ResourceSuppliers");
 
@@ -4397,6 +4414,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("ChickenCoopPurposes");
 
                     b.Navigation("Chickens");
+
+                    b.Navigation("EquipmentMaterials");
 
                     b.Navigation("EquipmentSizeUnits");
 
