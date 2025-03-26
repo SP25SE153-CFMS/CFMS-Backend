@@ -28,13 +28,13 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
                     return BaseResponse<bool>.FailureResponse($"Tên đã tồn tại");
                 }
 
-                var chickens = _unitOfWork.ChickenRepository.Get(filter: c => request.ChickenList.Contains(c.ChickenId)).ToList();
-                var missingIds = request.ChickenList.Except(chickens.Select(c => c.ChickenId)).ToList();
+                //var chickens = _unitOfWork.ChickenRepository.Get(filter: c => request.ChickenList.Contains(c.ChickenId)).ToList();
+                //var missingIds = request.ChickenList.Except(chickens.Select(c => c.ChickenId)).ToList();
 
-                if (missingIds.Any())
-                {
-                    return BaseResponse<bool>.FailureResponse($"Không tồn tại loại gà nào");
-                }
+                //if (missingIds.Any())
+                //{
+                //    return BaseResponse<bool>.FailureResponse($"Không tồn tại loại gà nào");
+                //}
 
                 var nutritionPlan = new NutritionPlan
                 {
