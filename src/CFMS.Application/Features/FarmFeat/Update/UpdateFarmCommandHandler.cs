@@ -31,6 +31,8 @@ namespace CFMS.Application.Features.FarmFeat.Update
                 existFarm.Scale = request.Scale;
                 existFarm.Website = request.Website;
                 existFarm.ImageUrl = request.ImageUrl;
+                existFarm.Longitude = request.Longitude;
+                existFarm.Latitude = request.Latitude;
 
                 _unitOfWork.FarmRepository.Update(existFarm);
                 var result = await _unitOfWork.SaveChangesAsync();

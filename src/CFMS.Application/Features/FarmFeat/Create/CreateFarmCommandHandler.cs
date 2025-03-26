@@ -37,7 +37,7 @@ namespace CFMS.Application.Features.FarmFeat.Create
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return BaseResponse<bool>.SuccessResponse(message: "Tạo trnag trại thành công");
+                    return BaseResponse<bool>.SuccessResponse(message: "Tạo trang trại thành công");
                 }
                 return BaseResponse<bool>.FailureResponse(message: "Tạo trang trại không thành công");
             }
