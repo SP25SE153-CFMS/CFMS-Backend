@@ -1,4 +1,4 @@
-﻿using CFMS.Application.Common;
+using CFMS.Application.Common;
 using CFMS.Domain.Entities;
 using MediatR;
 using System;

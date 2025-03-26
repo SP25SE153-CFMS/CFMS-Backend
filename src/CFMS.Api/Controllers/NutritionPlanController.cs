@@ -1,8 +1,11 @@
-﻿using CFMS.Application.Features.NutritionPlanFeat.Create;
+﻿using CFMS.Application.Features.NutritionPlanFeat.AddFeedSession;
+using CFMS.Application.Features.NutritionPlanFeat.Create;
 using CFMS.Application.Features.NutritionPlanFeat.Delete;
+using CFMS.Application.Features.NutritionPlanFeat.DeleteFeedSession;
 using CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlan;
 using CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlans;
 using CFMS.Application.Features.NutritionPlanFeat.Update;
+using CFMS.Application.Features.NutritionPlanFeat.UpdateFeedSession;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +49,27 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await Send(new DeleteNutritionPlanCommand(id));
+            return result;
+        }
+
+        [HttpPost("add-feedsession")]
+        public async Task<IActionResult> AddFeedSession(AddFeedSessionCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPut("update-feedsession")]
+        public async Task<IActionResult> UpdateFeedSession(UpdateFeedSessionCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPut("delete-feedsession")]
+        public async Task<IActionResult> DeleteFeedSession(DeleteFeedSessionCommand command)
+        {
+            var result = await Send(command);
             return result;
         }
     }

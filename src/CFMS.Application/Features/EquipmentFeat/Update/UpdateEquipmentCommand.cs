@@ -1,4 +1,4 @@
-﻿using CFMS.Application.Common;
+using CFMS.Application.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;
