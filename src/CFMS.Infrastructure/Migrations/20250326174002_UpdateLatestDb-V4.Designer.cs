@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250326110712_UpdateLatestDb-V3")]
-    partial class UpdateLatestDbV3
+    [Migration("20250326174002_UpdateLatestDb-V4")]
+    partial class UpdateLatestDbV4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1678,6 +1678,12 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("character varying");
 
+                    b.Property<Guid?>("EquipmentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("FoodId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -1686,6 +1692,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("MedicineId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("PackageId")
                         .HasColumnType("uuid");
@@ -1703,6 +1712,8 @@ namespace CFMS.Infrastructure.Migrations
                         .HasName("Resource_pkey");
 
                     b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("FoodId");
 
                     b.HasIndex("LastEditedByUserId");
 
@@ -3239,12 +3250,6 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CFMS.Domain.Entities.Resource", "FoodNavigation")
-                        .WithOne("Food")
-                        .HasForeignKey("CFMS.Domain.Entities.Food", "FoodId")
-                        .IsRequired()
-                        .HasConstraintName("Food_FoodId_fkey");
-
                     b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
                         .WithMany()
                         .HasForeignKey("LastEditedByUserId")
@@ -3252,8 +3257,6 @@ namespace CFMS.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedByUser");
-
-                    b.Navigation("FoodNavigation");
 
                     b.Navigation("LastEditedByUser");
                 });
@@ -3649,6 +3652,10 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CFMS.Domain.Entities.Food", "Food")
+                        .WithMany()
+                        .HasForeignKey("FoodId");
+
                     b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
                         .WithMany()
                         .HasForeignKey("LastEditedByUserId")
@@ -3671,6 +3678,8 @@ namespace CFMS.Infrastructure.Migrations
                         .HasConstraintName("Resource_UnitId_fkey");
 
                     b.Navigation("CreatedByUser");
+
+                    b.Navigation("Food");
 
                     b.Navigation("LastEditedByUser");
 
@@ -4361,8 +4370,6 @@ namespace CFMS.Infrastructure.Migrations
             modelBuilder.Entity("CFMS.Domain.Entities.Resource", b =>
                 {
                     b.Navigation("Equipment");
-
-                    b.Navigation("Food");
 
                     b.Navigation("InventoryRequestDetails");
 

@@ -821,10 +821,10 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.Note).HasColumnType("character varying");
             entity.Property(e => e.ProductionDate).HasColumnType("timestamp(6) without time zone");
 
-            entity.HasOne(d => d.FoodNavigation).WithOne(p => p.Food)
-                .HasForeignKey<Food>(d => d.FoodId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Food_FoodId_fkey");
+            //entity.HasOne(d => d.FoodNavigation).WithOne(p => p.Food)
+            //    .HasForeignKey<Food>(d => d.FoodId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("Food_FoodId_fkey");
         });
 
         modelBuilder.Entity<GrowthBatch>(entity =>

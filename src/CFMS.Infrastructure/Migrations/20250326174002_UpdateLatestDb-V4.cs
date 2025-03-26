@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CFMS.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateLatestDbV3 : Migration
+    public partial class UpdateLatestDbV4 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -97,6 +97,40 @@ namespace CFMS.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Farm_User_LastEditedByUserId",
+                        column: x => x.LastEditedByUserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Food",
+                columns: table => new
+                {
+                    FoodId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    FoodCode = table.Column<string>(type: "character varying", nullable: true),
+                    FoodName = table.Column<string>(type: "character varying", nullable: true),
+                    Note = table.Column<string>(type: "character varying", nullable: true),
+                    ProductionDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ExpiryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("Food_pkey", x => x.FoodId);
+                    table.ForeignKey(
+                        name: "FK_Food_User_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Food_User_LastEditedByUserId",
                         column: x => x.LastEditedByUserId,
                         principalTable: "User",
                         principalColumn: "UserId",
@@ -589,6 +623,37 @@ namespace CFMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "NutritionPlanDetail",
+                columns: table => new
+                {
+                    NutritionPlanDetailId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    NutritionPlanId = table.Column<Guid>(type: "uuid", nullable: true),
+                    FoodId = table.Column<Guid>(type: "uuid", nullable: true),
+                    UnitId = table.Column<Guid>(type: "uuid", nullable: true),
+                    FoodWeight = table.Column<decimal>(type: "numeric", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("NutritionPlanDetail_pkey", x => x.NutritionPlanDetailId);
+                    table.ForeignKey(
+                        name: "NutritionPlanDetail_FoodId_fkey",
+                        column: x => x.FoodId,
+                        principalTable: "Food",
+                        principalColumn: "FoodId");
+                    table.ForeignKey(
+                        name: "NutritionPlanDetail_NutritionPlanId_fkey",
+                        column: x => x.NutritionPlanId,
+                        principalTable: "NutritionPlan",
+                        principalColumn: "NutritionPlanId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "NutritionPlanDetail_UnitId_fkey",
+                        column: x => x.UnitId,
+                        principalTable: "SubCategory",
+                        principalColumn: "SubCategoryId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Request",
                 columns: table => new
                 {
@@ -642,6 +707,9 @@ namespace CFMS.Infrastructure.Migrations
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
                     PackageId = table.Column<Guid>(type: "uuid", nullable: true),
                     PackageSize = table.Column<decimal>(type: "numeric", nullable: true),
+                    FoodId = table.Column<Guid>(type: "uuid", nullable: true),
+                    EquipmentId = table.Column<Guid>(type: "uuid", nullable: true),
+                    MedicineId = table.Column<Guid>(type: "uuid", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -652,6 +720,11 @@ namespace CFMS.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("Resource_pkey", x => x.ResourceId);
+                    table.ForeignKey(
+                        name: "FK_Resource_Food_FoodId",
+                        column: x => x.FoodId,
+                        principalTable: "Food",
+                        principalColumn: "FoodId");
                     table.ForeignKey(
                         name: "FK_Resource_User_CreatedByUserId",
                         column: x => x.CreatedByUserId,
@@ -963,45 +1036,6 @@ namespace CFMS.Infrastructure.Migrations
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Food",
-                columns: table => new
-                {
-                    FoodId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    FoodCode = table.Column<string>(type: "character varying", nullable: true),
-                    FoodName = table.Column<string>(type: "character varying", nullable: true),
-                    Note = table.Column<string>(type: "character varying", nullable: true),
-                    ProductionDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    ExpiryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("Food_pkey", x => x.FoodId);
-                    table.ForeignKey(
-                        name: "FK_Food_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Food_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "Food_FoodId_fkey",
-                        column: x => x.FoodId,
-                        principalTable: "Resource",
-                        principalColumn: "ResourceId");
                 });
 
             migrationBuilder.CreateTable(
@@ -1687,37 +1721,6 @@ namespace CFMS.Infrastructure.Migrations
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "NutritionPlanDetail",
-                columns: table => new
-                {
-                    NutritionPlanDetailId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    NutritionPlanId = table.Column<Guid>(type: "uuid", nullable: true),
-                    FoodId = table.Column<Guid>(type: "uuid", nullable: true),
-                    UnitId = table.Column<Guid>(type: "uuid", nullable: true),
-                    FoodWeight = table.Column<decimal>(type: "numeric", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("NutritionPlanDetail_pkey", x => x.NutritionPlanDetailId);
-                    table.ForeignKey(
-                        name: "NutritionPlanDetail_FoodId_fkey",
-                        column: x => x.FoodId,
-                        principalTable: "Food",
-                        principalColumn: "FoodId");
-                    table.ForeignKey(
-                        name: "NutritionPlanDetail_NutritionPlanId_fkey",
-                        column: x => x.NutritionPlanId,
-                        principalTable: "NutritionPlan",
-                        principalColumn: "NutritionPlanId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "NutritionPlanDetail_UnitId_fkey",
-                        column: x => x.UnitId,
-                        principalTable: "SubCategory",
-                        principalColumn: "SubCategoryId");
                 });
 
             migrationBuilder.CreateTable(
@@ -2665,6 +2668,11 @@ namespace CFMS.Infrastructure.Migrations
                 column: "CreatedByUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Resource_FoodId",
+                table: "Resource",
+                column: "FoodId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Resource_LastEditedByUserId",
                 table: "Resource",
                 column: "LastEditedByUserId");
@@ -3100,13 +3108,13 @@ namespace CFMS.Infrastructure.Migrations
                 name: "InventoryReceipt");
 
             migrationBuilder.DropTable(
-                name: "Food");
-
-            migrationBuilder.DropTable(
                 name: "Supplier");
 
             migrationBuilder.DropTable(
                 name: "Shift");
+
+            migrationBuilder.DropTable(
+                name: "Resource");
 
             migrationBuilder.DropTable(
                 name: "EvaluatedTarget");
@@ -3124,7 +3132,7 @@ namespace CFMS.Infrastructure.Migrations
                 name: "InventoryRequest");
 
             migrationBuilder.DropTable(
-                name: "Resource");
+                name: "Food");
 
             migrationBuilder.DropTable(
                 name: "Task");

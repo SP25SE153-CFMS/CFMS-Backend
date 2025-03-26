@@ -17,6 +17,10 @@ public partial class Farm : EntityAudit
 
     public int? Scale { get; set; }
 
+    public decimal? Longitude { get; set; }
+
+    public decimal? Latitude { get; set; }
+
     public string? PhoneNumber { get; set; }
 
     public string? Website { get; set; }
