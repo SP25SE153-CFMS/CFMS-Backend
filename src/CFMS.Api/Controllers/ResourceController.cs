@@ -3,12 +3,7 @@ using CFMS.Application.Features.ResourceFeat.Delete;
 using CFMS.Application.Features.ResourceFeat.GetResource;
 using CFMS.Application.Features.ResourceFeat.GetResources;
 using CFMS.Application.Features.ResourceFeat.Update;
-using CFMS.Application.Features.UserFeat.Delete;
-using CFMS.Application.Features.UserFeat.GetUser;
-using CFMS.Application.Features.UserFeat.GetUsers;
-using CFMS.Application.Features.UserFeat.Update;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CFMS.Api.Controllers

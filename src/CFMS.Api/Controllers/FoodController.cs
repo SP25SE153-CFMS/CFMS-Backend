@@ -3,11 +3,6 @@ using CFMS.Application.Features.FoodFeat.Delete;
 using CFMS.Application.Features.FoodFeat.GetFood;
 using CFMS.Application.Features.FoodFeat.GetFoods;
 using CFMS.Application.Features.FoodFeat.Update;
-using CFMS.Application.Features.SupplierFeat.Create;
-using CFMS.Application.Features.SupplierFeat.GetSupplier;
-using CFMS.Application.Features.SupplierFeat.GetSuppliers;
-using CFMS.Application.Features.SupplierFeat.Update;
-using CFMS.Application.Features.WarehouseFeat.Delete;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

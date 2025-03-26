@@ -1,14 +1,8 @@
-﻿using CFMS.Application.Features.FoodFeat.Create;
-using CFMS.Application.Features.FoodFeat.Delete;
-using CFMS.Application.Features.FoodFeat.GetFood;
-using CFMS.Application.Features.FoodFeat.GetFoods;
-using CFMS.Application.Features.FoodFeat.Update;
-using CFMS.Application.Features.ShiftFeat.Create;
+﻿using CFMS.Application.Features.ShiftFeat.Create;
 using CFMS.Application.Features.ShiftFeat.Delete;
 using CFMS.Application.Features.ShiftFeat.GetShift;
 using CFMS.Application.Features.ShiftFeat.GetShifts;
 using CFMS.Application.Features.ShiftFeat.Update;
-using CFMS.Application.Features.WarehouseFeat.Delete;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,14 +1,11 @@
 ﻿using CFMS.Application.Features.ChickenBatchFeat.AddChicken;
-using CFMS.Application.Features.ChickenBatchFeat.AddGrowthStage;
 using CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog;
 using CFMS.Application.Features.ChickenBatchFeat.Create;
 using CFMS.Application.Features.ChickenBatchFeat.Delete;
-using CFMS.Application.Features.ChickenBatchFeat.DeleteGrowthBatch;
 using CFMS.Application.Features.ChickenBatchFeat.DeleteQuantityLog;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatch;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatchs;
 using CFMS.Application.Features.ChickenBatchFeat.Update;
-using CFMS.Application.Features.ChickenBatchFeat.UpdateGrowthBatch;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
