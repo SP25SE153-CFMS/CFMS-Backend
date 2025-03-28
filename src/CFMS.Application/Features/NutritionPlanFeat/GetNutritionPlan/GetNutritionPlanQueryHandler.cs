@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlan
 
         public async Task<BaseResponse<NutritionPlan>> Handle(GetNutritionPlanQuery request, CancellationToken cancellationToken)
         {
-            var existPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.NutritionPlanId.Equals(request.Id) && p.IsDeleted == false).FirstOrDefault();
+            var existPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.NutritionPlanId.Equals(request.Id) && p.IsDeleted == false, includeProperties: "FeedSessions,NutritionPlanDetails").FirstOrDefault();
             if (existPlan == null)
             {
                 return BaseResponse<NutritionPlan>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
