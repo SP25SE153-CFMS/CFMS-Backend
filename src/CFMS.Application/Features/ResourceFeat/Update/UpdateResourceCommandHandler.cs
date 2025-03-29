@@ -56,7 +56,7 @@ namespace CFMS.Application.Features.ResourceFeat.Update
             try
             {
                 existResource.ResourceTypeId = request.ResourceTypeId;
-                existResource.Description = request.Description;
+                //existResource.Description = request.Description;
                 existResource.UnitId = request.UnitId;
                 existResource.PackageId = request.PackageId;
                 existResource.PackageSize = request.PackageSize;

@@ -55,7 +55,7 @@ namespace CFMS.Infrastructure.Repositories
         private GenericRepository<TaskLog> taskLogRepository;
         private GenericRepository<TaskRequest> taskRequestRepository;
         private GenericRepository<TaskResource> taskResourceRepository;
-        private GenericRepository<TaskSchedule> taskScheduleRepository;
+        private GenericRepository<FrequencySchedule> FrequencySchedule;
         private GenericRepository<TemplateCriterion> templateCriterionRepository;
         private GenericRepository<User> userRepository;
         private GenericRepository<VaccineLog> vaccineLogRepository;
@@ -118,7 +118,7 @@ namespace CFMS.Infrastructure.Repositories
         public IGenericRepository<TaskLocation> TaskLocationRepository => taskLocationRepository ??= new GenericRepository<TaskLocation>(context);
         public IGenericRepository<TaskRequest> TaskRequestRepository => taskRequestRepository ??= new GenericRepository<TaskRequest>(context);
         public IGenericRepository<TaskResource> TaskResourceRepository => taskResourceRepository ??= new GenericRepository<TaskResource>(context);
-        public IGenericRepository<TaskSchedule> TaskScheduleRepository => taskScheduleRepository ??= new GenericRepository<TaskSchedule>(context);
+        public IGenericRepository<FrequencySchedule> FrequencyScheduleRepository => FrequencySchedule ??= new GenericRepository<FrequencySchedule>(context);
         public IGenericRepository<TemplateCriterion> TemplateCriterionRepository => templateCriterionRepository ??= new GenericRepository<TemplateCriterion>(context);
         public IGenericRepository<VaccineLog> VaccineLogRepository => vaccineLogRepository ??= new GenericRepository<VaccineLog>(context);
         public IGenericRepository<WarePermission> WarePermissionRepository => warePermissionRepository ??= new GenericRepository<WarePermission>(context);

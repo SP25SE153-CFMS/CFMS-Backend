@@ -21,6 +21,13 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Khu nuôi không tồn tại");
             }
 
+
+            var existNameCode = _unitOfWork.BreedingAreaRepository.Get(filter: ba => (ba.BreedingAreaCode.Equals(request.BreedingAreaCode) || ba.BreedingAreaName.Equals(request.BreedingAreaName)) && ba.IsDeleted == false).FirstOrDefault();
+            if (existNameCode != null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã khu nuôi đã tồn tại");
+            }
+
             try
             {
                 existBreedingArea.BreedingAreaName = request.BreedingAreaName;

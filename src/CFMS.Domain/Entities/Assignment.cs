@@ -27,5 +27,5 @@ public partial class Assignment : EntityAudit
 
     public virtual Task? Task { get; set; }
 
-    public virtual TaskSchedule? TaskSchedule { get; set; }
+    public virtual FrequencySchedule? FrequencySchedule { get; set; }
 }

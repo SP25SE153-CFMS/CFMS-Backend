@@ -22,6 +22,12 @@ namespace CFMS.Application.Features.ChickenFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Gà không tồn tại");
             }
 
+            var existNameCode = _unitOfWork.ChickenRepository.Get(c => c.ChickenCode.Equals(request.ChickenCode) || c.ChickenName.Equals(request.ChickenName) && c.IsDeleted == false).FirstOrDefault();
+            if (existNameCode != null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã loại gà đã được sử dụng");
+            }
+
             try
             {
                 existChicken.ChickenCode = request.ChickenCode;

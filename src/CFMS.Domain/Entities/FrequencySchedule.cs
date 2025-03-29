@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public partial class TaskSchedule : EntityAudit
+public partial class FrequencySchedule : EntityAudit
 {
-    public Guid TaskScheduleId { get; set; }
+    public Guid FrequencyScheduleId { get; set; }
 
     public int? Frequency { get; set; }
 

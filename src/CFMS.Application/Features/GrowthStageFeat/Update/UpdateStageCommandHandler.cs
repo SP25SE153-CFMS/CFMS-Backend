@@ -21,6 +21,12 @@ namespace CFMS.Application.Features.GrowthStageFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
             }
 
+            var existName = _unitOfWork.GrowthStageRepository.Get(filter: t => t.IsDeleted == false && t.StageName.Equals(request.StageName)).FirstOrDefault();
+            if (existName != null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Tên giai đoạn phát triển đã tồn tại");
+            }
+
             try
             {
                 existStage.StageName = request.StageName;

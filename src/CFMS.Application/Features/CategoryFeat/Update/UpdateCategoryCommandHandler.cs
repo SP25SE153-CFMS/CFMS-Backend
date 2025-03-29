@@ -21,6 +21,11 @@ namespace CFMS.Application.Features.CategoryFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Danh mục không tồn tại");
             }
 
+            if (existCategory.CategoryName.Equals(request.CategoryName) == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Mã danh mục đã tồn tại");
+            }
+
             try
             {
                 existCategory.CategoryName = request.CategoryName;

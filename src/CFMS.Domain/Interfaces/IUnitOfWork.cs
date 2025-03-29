@@ -55,7 +55,7 @@ namespace CFMS.Domain.Interfaces
         IGenericRepository<TaskLog> TaskLogRepository { get; }
         IGenericRepository<TaskRequest> TaskRequestRepository { get; }
         IGenericRepository<TaskResource> TaskResourceRepository { get; }
-        IGenericRepository<TaskSchedule> TaskScheduleRepository { get; }
+        IGenericRepository<FrequencySchedule> FrequencyScheduleRepository { get; }
         IGenericRepository<TemplateCriterion> TemplateCriterionRepository { get; }
         IGenericRepository<User> UserRepository { get; }
         IGenericRepository<VaccineLog> VaccineLogRepository { get; }

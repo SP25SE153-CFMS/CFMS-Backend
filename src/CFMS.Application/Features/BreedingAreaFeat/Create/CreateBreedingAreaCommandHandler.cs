@@ -25,10 +25,10 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Create
                 return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
-            var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaCode.Equals(request.BreedingAreaCode) && ba.IsDeleted == false);
-            if (existBreedingArea == null)
+            var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => (ba.BreedingAreaCode.Equals(request.BreedingAreaCode) || ba.BreedingAreaName.Equals(request.BreedingAreaName)) && ba.IsDeleted == false).FirstOrDefault();
+            if (existBreedingArea != null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Mã khu nuôi đã tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã khu nuôi đã tồn tại");
             }
 
             try
@@ -37,7 +37,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Create
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return BaseResponse<bool>.SuccessResponse(message: "Tạo Khu nuôi thành công");
+                    return BaseResponse<bool>.SuccessResponse(message: "Tạo khu nuôi thành công");
                 }
                 return BaseResponse<bool>.FailureResponse(message: "Tạo khu nuôi thất bại");
             }
