@@ -11,6 +11,6 @@ namespace CFMS.Application.DTOs.NutritionPlan
         public Guid FoodId { get; set; }
         public Guid UnitId { get; set; }
         public decimal FoodWeight { get; set; }
-        public decimal ConsumptionRate { get; set; }
+        //public decimal ConsumptionRate { get; set; }
     }
 }

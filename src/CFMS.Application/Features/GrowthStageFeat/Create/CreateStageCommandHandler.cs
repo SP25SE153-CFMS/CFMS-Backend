@@ -25,6 +25,12 @@ namespace CFMS.Application.Features.GrowthStageFeat.Create
                 return BaseResponse<bool>.FailureResponse(message: "Loại gà không tồn tại");
             }
 
+            var existStage = _unitOfWork.GrowthStageRepository.Get(filter: t => t.IsDeleted == false && t.StageName.Equals(request.StageName)).FirstOrDefault();
+            if (existStage != null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Tên giai đoạn phát triển đã tồn tại");
+            }
+
             try
             {
                 _unitOfWork.GrowthStageRepository.Insert(_mapper.Map<GrowthStage>(request));

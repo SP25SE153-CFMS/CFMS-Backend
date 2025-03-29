@@ -21,6 +21,12 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Chuồng gà không tồn tại");
             }
 
+            var existNameCode = _unitOfWork.ChickenCoopRepository.Get(filter: c => (c.ChickenCoopCode.Equals(request.ChickenCoopCode) || c.ChickenCoopName.Equals(request.ChickenCoopName)) && c.IsDeleted == false).FirstOrDefault();
+            if (existNameCode != null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã chuồng gà đã tồn tại");
+            }
+
             try
             {
                 existCoop.ChickenCoopName = request.ChickenCoopName;

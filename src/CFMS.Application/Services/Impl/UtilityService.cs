@@ -74,5 +74,13 @@ namespace CFMS.Application.Services.Impl
             if (string.IsNullOrEmpty(input)) return input;
             return char.ToUpper(input[0]) + input.Substring(1).ToLower();
         }
+
+        public string FormatVietnamPhoneNumber(string input)
+        {
+            if (input.StartsWith("0"))
+                input = input.Substring(1);
+
+            return $"+84 {input.Substring(0, 3)} {input.Substring(3, 3)} {input.Substring(6)}";
+        }
     }
 }

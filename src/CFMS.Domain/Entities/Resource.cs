@@ -10,7 +10,7 @@ public partial class Resource : EntityAudit
 
     public Guid? ResourceTypeId { get; set; }
 
-    public string? Description { get; set; }
+    //public string? Description { get; set; }
 
     public Guid? UnitId { get; set; }
 

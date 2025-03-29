@@ -19,6 +19,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.GetBatch
         public async Task<BaseResponse<ChickenBatch>> Handle(GetBatchQuery request, CancellationToken cancellationToken)
         {
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.Id) && b.IsDeleted == false, includeProperties: [batch => batch.Chicken, batch => batch.Chicken.ChickenDetails]).FirstOrDefault();
+
             if (existBatch == null)
             {
                 return BaseResponse<ChickenBatch>.FailureResponse(message: "Lứa không tồn tại");

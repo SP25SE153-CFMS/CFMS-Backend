@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
 
                 if (existNutritionPlan != null)
                 {
-                    return BaseResponse<bool>.FailureResponse($"Tên đã tồn tại");
+                    return BaseResponse<bool>.FailureResponse("Tên chế độ dinh dưỡng đã tồn tại");
                 }
 
                 //var chickens = _unitOfWork.ChickenRepository.Get(filter: c => request.ChickenList.Contains(c.ChickenId)).ToList();

@@ -79,11 +79,7 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasIndex("LastEditedByUserId");
 
-                    b.HasIndex("ShiftScheduleId");
-
                     b.HasIndex("TaskId");
-
-                    b.HasIndex("TaskScheduleId");
 
                     b.ToTable("Assignment", (string)null);
                 });
@@ -1011,6 +1007,58 @@ namespace CFMS.Infrastructure.Migrations
                     b.ToTable("Food", (string)null);
                 });
 
+            modelBuilder.Entity("CFMS.Domain.Entities.FrequencySchedule", b =>
+                {
+                    b.Property<Guid>("FrequencyScheduleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedWhen")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("EndWorkDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("Frequency")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("LastEditedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("LastEditedWhen")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("StartWorkDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid?>("TaskId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("TimeUnitId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("FrequencyScheduleId")
+                        .HasName("FrequencySchedule_pkey");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("LastEditedByUserId");
+
+                    b.HasIndex("TimeUnitId");
+
+                    b.ToTable("TaskSchedule", (string)null);
+                });
+
             modelBuilder.Entity("CFMS.Domain.Entities.GrowthBatch", b =>
                 {
                     b.Property<Guid>("GrowthBatchId")
@@ -1686,9 +1734,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedWhen")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("character varying");
-
                     b.Property<Guid?>("EquipmentId")
                         .HasColumnType("uuid");
 
@@ -1891,6 +1936,9 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("date");
 
                     b.Property<Guid?>("ShiftId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("TaskId")
                         .HasColumnType("uuid");
 
                     b.HasKey("ShiftScheduleId")
@@ -2096,11 +2144,21 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<int?>("IsHavest")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("TaskName")
                         .HasColumnType("character varying");
@@ -2310,50 +2368,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasIndex("TaskId");
 
                     b.ToTable("TaskResource", (string)null);
-                });
-
-            modelBuilder.Entity("CFMS.Domain.Entities.TaskSchedule", b =>
-                {
-                    b.Property<Guid>("TaskScheduleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
-
-                    b.Property<Guid>("CreatedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedWhen")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedWhen")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int?>("Frequency")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastEditedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastEditedWhen")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("LastWorkDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("NextWorkDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("TaskScheduleId")
-                        .HasName("TaskSchedule_pkey");
-
-                    b.HasIndex("CreatedByUserId");
-
-                    b.HasIndex("LastEditedByUserId");
-
-                    b.ToTable("TaskSchedule", (string)null);
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.TemplateCriterion", b =>
@@ -2576,15 +2590,12 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<int>("Quantity")
+                    b.Property<string>("Quantity")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
+                        .HasColumnType("text")
+                        .HasDefaultValue("0");
 
                     b.Property<Guid?>("ResourceId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("UnitId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("WareId")
@@ -2761,22 +2772,11 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CFMS.Domain.Entities.ShiftSchedule", "ShiftSchedule")
-                        .WithMany("Assignments")
-                        .HasForeignKey("ShiftScheduleId")
-                        .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
-
                     b.HasOne("CFMS.Domain.Entities.Task", "Task")
                         .WithMany("Assignments")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("Assignment_taskId_fkey");
-
-                    b.HasOne("CFMS.Domain.Entities.TaskSchedule", "TaskSchedule")
-                        .WithMany("Assignments")
-                        .HasForeignKey("TaskScheduleId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("Assignment_TaskScheduleId_fkey");
 
                     b.Navigation("AssignedTo");
 
@@ -2784,11 +2784,7 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Navigation("LastEditedByUser");
 
-                    b.Navigation("ShiftSchedule");
-
                     b.Navigation("Task");
-
-                    b.Navigation("TaskSchedule");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.BreedingArea", b =>
@@ -3273,6 +3269,40 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("LastEditedByUser");
+                });
+
+            modelBuilder.Entity("CFMS.Domain.Entities.FrequencySchedule", b =>
+                {
+                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CFMS.Domain.Entities.Task", "Task")
+                        .WithMany("FrequencySchedules")
+                        .HasForeignKey("FrequencyScheduleId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FrequencySchedule_FrequencyScheduleId_fkey");
+
+                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
+                        .WithMany()
+                        .HasForeignKey("LastEditedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CFMS.Domain.Entities.SubCategory", "TimeUnit")
+                        .WithMany("TimeUnits")
+                        .HasForeignKey("TimeUnitId");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("LastEditedByUser");
+
+                    b.Navigation("Task");
+
+                    b.Navigation("TimeUnit");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.GrowthBatch", b =>
@@ -3794,7 +3824,16 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("ShiftSchedule_ShiftId_fkey");
 
+                    b.HasOne("CFMS.Domain.Entities.Task", "Task")
+                        .WithMany("ShiftSchedules")
+                        .HasForeignKey("ShiftScheduleId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
+
                     b.Navigation("Shift");
+
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.SubCategory", b =>
@@ -4045,25 +4084,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("ResourceType");
 
                     b.Navigation("Task");
-                });
-
-            modelBuilder.Entity("CFMS.Domain.Entities.TaskSchedule", b =>
-                {
-                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
-                        .WithMany()
-                        .HasForeignKey("LastEditedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("LastEditedByUser");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.TemplateCriterion", b =>
@@ -4399,11 +4419,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("ShiftSchedules");
                 });
 
-            modelBuilder.Entity("CFMS.Domain.Entities.ShiftSchedule", b =>
-                {
-                    b.Navigation("Assignments");
-                });
-
             modelBuilder.Entity("CFMS.Domain.Entities.SubCategory", b =>
                 {
                     b.Navigation("ChickenCoopDensityUnits");
@@ -4462,6 +4477,8 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Navigation("TemplateCriteria");
 
+                    b.Navigation("TimeUnits");
+
                     b.Navigation("WareTransactions");
 
                     b.Navigation("Warehouses");
@@ -4480,7 +4497,11 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Navigation("FeedLogs");
 
+                    b.Navigation("FrequencySchedules");
+
                     b.Navigation("HealthLogs");
+
+                    b.Navigation("ShiftSchedules");
 
                     b.Navigation("TaskHarvests");
 
@@ -4494,11 +4515,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("TaskResources");
 
                     b.Navigation("VaccineLogs");
-                });
-
-            modelBuilder.Entity("CFMS.Domain.Entities.TaskSchedule", b =>
-                {
-                    b.Navigation("Assignments");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.User", b =>

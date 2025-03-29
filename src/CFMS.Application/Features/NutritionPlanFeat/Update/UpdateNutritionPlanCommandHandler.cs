@@ -26,7 +26,15 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
 
             if (nutritionPlan == null)
             {
-                return BaseResponse<bool>.FailureResponse($"Chế độ dinh dưỡng không tồn tại");
+                return BaseResponse<bool>.FailureResponse("Chế độ dinh dưỡng không tồn tại");
+            }
+
+            var existNutritionPlan = _unitOfWork.NutritionPlanRepository
+                .Get(filter: p => p.Name.Equals(request.Name) && p.IsDeleted == false)
+                .FirstOrDefault();
+            if (existNutritionPlan != null)
+            {
+                return BaseResponse<bool>.FailureResponse("Tên chế độ dinh dưỡng đã tồn tại");
             }
 
             nutritionPlan.Name = request.Name ?? nutritionPlan.Name;

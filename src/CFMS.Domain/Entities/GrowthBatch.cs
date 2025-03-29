@@ -15,8 +15,6 @@ public partial class GrowthBatch : EntityAudit
 
     public DateTime? EndDate { get; set; }
 
-    //public decimal? AvgWeight { get; set; }
-
     public decimal? MortalityRate { get; set; }
 
     public decimal? FeedConsumption { get; set; }

@@ -40,11 +40,10 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignUp
             var user = new User
             {
                 FullName = request.Fullname,
-                PhoneNumber = request.PhoneNumber,
+                PhoneNumber = _utilityService.FormatVietnamPhoneNumber(request.PhoneNumber),
                 Mail = request.Mail,
                 HashedPassword = _utilityService.HashPassword(request.Password),
                 SystemRole = (int)GeneralRole.USER_ROLE,
-                //CreatedDate = DateOnly.FromDateTime(DateTime.Now),
                 Status = (int)UserStatus.ACTIVE_STATUS
             };
 
