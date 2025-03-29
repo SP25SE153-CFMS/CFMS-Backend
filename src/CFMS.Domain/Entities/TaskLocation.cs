@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -11,7 +12,11 @@ public partial class TaskLocation
 
     public string? LocationType { get; set; }
 
-    public Guid LocationId { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Guid? CoopId { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Guid? WareId { get; set; }
 
     public virtual ChickenCoop Location { get; set; } = null!;
 

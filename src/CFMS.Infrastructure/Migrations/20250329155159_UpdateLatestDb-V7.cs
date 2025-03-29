@@ -1137,6 +1137,51 @@ namespace CFMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FrequencySchedule",
+                columns: table => new
+                {
+                    FrequencyScheduleId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    Frequency = table.Column<int>(type: "integer", nullable: true),
+                    TaskId = table.Column<Guid>(type: "uuid", nullable: true),
+                    TimeUnitId = table.Column<Guid>(type: "uuid", nullable: true),
+                    StartWorkDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EndWorkDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("FrequencySchedule_pkey", x => x.FrequencyScheduleId);
+                    table.ForeignKey(
+                        name: "FK_FrequencySchedule_SubCategory_TimeUnitId",
+                        column: x => x.TimeUnitId,
+                        principalTable: "SubCategory",
+                        principalColumn: "SubCategoryId");
+                    table.ForeignKey(
+                        name: "FK_FrequencySchedule_User_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FrequencySchedule_User_LastEditedByUserId",
+                        column: x => x.LastEditedByUserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FrequencySchedule_FrequencyScheduleId_fkey",
+                        column: x => x.FrequencyScheduleId,
+                        principalTable: "Task",
+                        principalColumn: "TaskId",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ShiftSchedule",
                 columns: table => new
                 {
@@ -1232,51 +1277,6 @@ namespace CFMS.Infrastructure.Migrations
                         principalTable: "Task",
                         principalColumn: "TaskId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TaskSchedule",
-                columns: table => new
-                {
-                    FrequencyScheduleId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    Frequency = table.Column<int>(type: "integer", nullable: true),
-                    TaskId = table.Column<Guid>(type: "uuid", nullable: true),
-                    TimeUnitId = table.Column<Guid>(type: "uuid", nullable: true),
-                    StartWorkDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    EndWorkDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("FrequencySchedule_pkey", x => x.FrequencyScheduleId);
-                    table.ForeignKey(
-                        name: "FK_TaskSchedule_SubCategory_TimeUnitId",
-                        column: x => x.TimeUnitId,
-                        principalTable: "SubCategory",
-                        principalColumn: "SubCategoryId");
-                    table.ForeignKey(
-                        name: "FK_TaskSchedule_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TaskSchedule_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FrequencySchedule_FrequencyScheduleId_fkey",
-                        column: x => x.FrequencyScheduleId,
-                        principalTable: "Task",
-                        principalColumn: "TaskId",
-                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -1594,19 +1594,15 @@ namespace CFMS.Infrastructure.Migrations
                     TaskLocationId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     TaskId = table.Column<Guid>(type: "uuid", nullable: true),
                     LocationType = table.Column<string>(type: "character varying", nullable: true),
-                    LocationId = table.Column<Guid>(type: "uuid", nullable: false)
+                    CoopId = table.Column<Guid>(type: "uuid", nullable: true),
+                    WareId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("TaskLocation_pkey", x => x.TaskLocationId);
                     table.ForeignKey(
-                        name: "TaskLocation_LocationId_fkey",
-                        column: x => x.LocationId,
-                        principalTable: "Warehouse",
-                        principalColumn: "WareId");
-                    table.ForeignKey(
-                        name: "TaskLocation_LocationId_fkey1",
-                        column: x => x.LocationId,
+                        name: "TaskLocation_CoopId_fkey",
+                        column: x => x.CoopId,
                         principalTable: "ChickenCoop",
                         principalColumn: "ChickenCoopId");
                     table.ForeignKey(
@@ -1614,6 +1610,11 @@ namespace CFMS.Infrastructure.Migrations
                         column: x => x.TaskId,
                         principalTable: "Task",
                         principalColumn: "TaskId");
+                    table.ForeignKey(
+                        name: "TaskLocation_WareId_fkey",
+                        column: x => x.WareId,
+                        principalTable: "Warehouse",
+                        principalColumn: "WareId");
                 });
 
             migrationBuilder.CreateTable(
@@ -1724,7 +1725,7 @@ namespace CFMS.Infrastructure.Migrations
                     WareStockId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     WareId = table.Column<Guid>(type: "uuid", nullable: true),
                     ResourceId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Quantity = table.Column<string>(type: "text", nullable: true, defaultValue: "0")
+                    Quantity = table.Column<int>(type: "integer", nullable: true, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -2456,6 +2457,21 @@ namespace CFMS.Infrastructure.Migrations
                 column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FrequencySchedule_CreatedByUserId",
+                table: "FrequencySchedule",
+                column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FrequencySchedule_LastEditedByUserId",
+                table: "FrequencySchedule",
+                column: "LastEditedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FrequencySchedule_TimeUnitId",
+                table: "FrequencySchedule",
+                column: "TimeUnitId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GrowthBatch_ChickenBatchId",
                 table: "GrowthBatch",
                 column: "ChickenBatchId");
@@ -2832,14 +2848,19 @@ namespace CFMS.Infrastructure.Migrations
                 column: "TaskId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TaskLocation_LocationId",
+                name: "IX_TaskLocation_CoopId",
                 table: "TaskLocation",
-                column: "LocationId");
+                column: "CoopId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskLocation_TaskId",
                 table: "TaskLocation",
                 column: "TaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TaskLocation_WareId",
+                table: "TaskLocation",
+                column: "WareId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskLog_ChickenCoopId",
@@ -2890,21 +2911,6 @@ namespace CFMS.Infrastructure.Migrations
                 name: "IX_TaskResource_TaskId",
                 table: "TaskResource",
                 column: "TaskId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskSchedule_CreatedByUserId",
-                table: "TaskSchedule",
-                column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskSchedule_LastEditedByUserId",
-                table: "TaskSchedule",
-                column: "LastEditedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TaskSchedule_TimeUnitId",
-                table: "TaskSchedule",
-                column: "TimeUnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TemplateCriteria_CreatedByUserId",
@@ -3052,6 +3058,9 @@ namespace CFMS.Infrastructure.Migrations
                 name: "FeedSession");
 
             migrationBuilder.DropTable(
+                name: "FrequencySchedule");
+
+            migrationBuilder.DropTable(
                 name: "GrowthBatch");
 
             migrationBuilder.DropTable(
@@ -3098,9 +3107,6 @@ namespace CFMS.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "TaskResource");
-
-            migrationBuilder.DropTable(
-                name: "TaskSchedule");
 
             migrationBuilder.DropTable(
                 name: "TemplateCriteria");

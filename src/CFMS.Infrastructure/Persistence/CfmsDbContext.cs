@@ -1299,14 +1299,19 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.LocationType).HasColumnType("character varying");
 
             entity.HasOne(d => d.Location).WithMany(p => p.TaskLocations)
-                .HasForeignKey(d => d.LocationId)
+                .HasForeignKey(d => d.TaskLocationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("TaskLocation_LocationId_fkey1");
 
-            entity.HasOne(d => d.LocationNavigation).WithMany(p => p.TaskLocations)
-                .HasForeignKey(d => d.LocationId)
+            entity.HasOne(d => d.Location).WithMany(p => p.TaskLocations)
+                .HasForeignKey(d => d.CoopId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("TaskLocation_LocationId_fkey");
+                .HasConstraintName("TaskLocation_CoopId_fkey");
+
+            entity.HasOne(d => d.LocationNavigation).WithMany(p => p.TaskLocations)
+                .HasForeignKey(d => d.WareId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("TaskLocation_WareId_fkey");
 
             entity.HasOne(d => d.Task).WithMany(p => p.TaskLocations)
                 .HasForeignKey(d => d.TaskId)
@@ -1372,7 +1377,7 @@ public partial class CfmsDbContext : DbContext
         {
             entity.HasKey(e => e.FrequencyScheduleId).HasName("FrequencySchedule_pkey");
 
-            entity.ToTable("TaskSchedule");
+            entity.ToTable("FrequencySchedule");
 
             entity.Property(e => e.FrequencyScheduleId).HasDefaultValueSql("gen_random_uuid()");
             entity.Property(e => e.StartWorkDate).HasColumnType("timestamp(6) without time zone");

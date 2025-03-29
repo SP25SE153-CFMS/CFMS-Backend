@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Application.Events;
 using CFMS.Application.Features.SupplierFeat.Create;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
@@ -16,11 +17,13 @@ namespace CFMS.Application.Features.FoodFeat.Create
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public CreateFoodCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public CreateFoodCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediator mediator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         public async Task<BaseResponse<bool>> Handle(CreateFoodCommand request, CancellationToken cancellationToken)
@@ -34,6 +37,18 @@ namespace CFMS.Application.Features.FoodFeat.Create
             var food = _mapper.Map<Food>(request);
             _unitOfWork.FoodRepository.Insert(food);
             var result = await _unitOfWork.SaveChangesAsync();
+
+            //_mediator.Publish(new StockUpdatedEvent
+            //{
+            //    ResourceId = food.FoodId,
+            //    ResourceTypeId = reqResourceType.Food,
+            //    UnitId = request.UnitId,
+            //    PackageId = request.PackageId,
+            //    PackageSize = request.PackageSize,
+            //    Quantity = 0,
+            //    WareId = request.Wa
+            //    IsCreatedCall = true
+            //});
 
             return result > 0
                 ? BaseResponse<bool>.SuccessResponse("Thêm thực phẩm thành công")
