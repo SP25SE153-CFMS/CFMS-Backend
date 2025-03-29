@@ -22,7 +22,7 @@ namespace CFMS.Application.Features.ChickenFeat.GetChickens
 
         public async Task<BaseResponse<IEnumerable<Chicken>>> Handle(GetChickensQuery request, CancellationToken cancellationToken)
         {
-            var chickens = _unitOfWork.ChickenRepository.Get(filter: c => c.IsDeleted == false, includeProperties: "ChickenBatches").ToList();
+            var chickens = _unitOfWork.ChickenRepository.Get(filter: c => c.IsDeleted == false, includeProperties: [c => c.ChickenDetails]).ToList();
             return BaseResponse<IEnumerable<Chicken>>.SuccessResponse(data: chickens);
         }
     }
