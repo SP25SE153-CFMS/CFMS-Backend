@@ -27,6 +27,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Create
 
             var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => (ba.BreedingAreaCode.Equals(request.BreedingAreaCode) || ba.BreedingAreaName.Equals(request.BreedingAreaName)) && ba.IsDeleted == false).FirstOrDefault();
             if (existBreedingArea != null)
+
             {
                 return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã khu nuôi đã tồn tại");
             }

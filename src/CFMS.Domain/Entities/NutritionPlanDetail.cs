@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -17,6 +18,7 @@ public partial class NutritionPlanDetail
 
     public virtual Food? Food { get; set; }
 
+    [JsonIgnore]
     public virtual NutritionPlan? NutritionPlan { get; set; }
 
     public virtual SubCategory? Unit { get; set; }
