@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.ChickenFeat.GetChicken
 
         public async Task<BaseResponse<Chicken>> Handle(GetChickenQuery request, CancellationToken cancellationToken)
         {
-            var existChicken = _unitOfWork.ChickenRepository.Get(filter: c => c.ChickenId.Equals(request.Id) && c.IsDeleted == false).FirstOrDefault();
+            var existChicken = _unitOfWork.ChickenRepository.Get(filter: c => c.ChickenId.Equals(request.Id) && c.IsDeleted == false, includeProperties: [c => c.ChickenDetails]).FirstOrDefault();
             if (existChicken == null)
             {
                 return BaseResponse<Chicken>.FailureResponse(message: "Gà không tồn tại");

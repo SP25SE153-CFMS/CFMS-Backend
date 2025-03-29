@@ -20,7 +20,7 @@ namespace CFMS.Application.Features.ChickenFeat.GetChickenByBatchId
             if (chickenBatch == null)
                 return BaseResponse<Chicken>.FailureResponse(message: "Lứa nuôi không tồn tại");
 
-            var chicken = _unitOfWork.ChickenRepository.Get(filter: c => c.IsDeleted == false && chickenBatch.ChickenId.Equals(c.ChickenId)).FirstOrDefault();
+            var chicken = _unitOfWork.ChickenRepository.Get(filter: c => c.IsDeleted == false && chickenBatch.ChickenId.Equals(c.ChickenId), includeProperties: [c => c.ChickenDetails]).FirstOrDefault();
             return BaseResponse<Chicken>.SuccessResponse(data: chicken);
         }
     }
