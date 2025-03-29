@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -477,19 +478,19 @@ public partial class CfmsDbContext : DbContext
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("Assignment_AssignedToId_fkey");
 
-            entity.HasOne(d => d.ShiftSchedule).WithMany(p => p.Assignments)
-                .HasForeignKey(d => d.ShiftScheduleId)
-                .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
+            //entity.HasOne(d => d.ShiftSchedule).WithMany(p => p.Assignments)
+            //    .HasForeignKey(d => d.ShiftScheduleId)
+            //    .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
 
             entity.HasOne(d => d.Task).WithMany(p => p.Assignments)
                 .HasForeignKey(d => d.TaskId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("Assignment_taskId_fkey");
 
-            entity.HasOne(d => d.FrequencySchedule).WithMany(p => p.Assignments)
-                .HasForeignKey(d => d.TaskScheduleId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("Assignment_TaskScheduleId_fkey");
+            //entity.HasOne(d => d.FrequencySchedule).WithMany(p => p.Assignments)
+            //    .HasForeignKey(d => d.TaskScheduleId)
+            //    .OnDelete(DeleteBehavior.SetNull)
+            //    .HasConstraintName("Assignment_TaskScheduleId_fkey");
         });
 
         modelBuilder.Entity<BreedingArea>(entity =>
@@ -1193,6 +1194,12 @@ public partial class CfmsDbContext : DbContext
                 .HasForeignKey(d => d.ShiftId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("ShiftSchedule_ShiftId_fkey");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.ShiftSchedules)
+                .HasForeignKey(d => d.ShiftScheduleId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
+
         });
 
         modelBuilder.Entity<SubCategory>(entity =>
@@ -1368,8 +1375,13 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("TaskSchedule");
 
             entity.Property(e => e.FrequencyScheduleId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.LastWorkDate).HasColumnType("timestamp(6) without time zone");
-            entity.Property(e => e.NextWorkDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.StartWorkDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.EndWorkDate).HasColumnType("timestamp(6) without time zone");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.FrequencySchedules)
+                .HasForeignKey(d => d.FrequencyScheduleId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FrequencySchedule_FrequencyScheduleId_fkey");
         });
 
         modelBuilder.Entity<TemplateCriterion>(entity =>

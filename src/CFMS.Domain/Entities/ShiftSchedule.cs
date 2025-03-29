@@ -11,7 +11,9 @@ public partial class ShiftSchedule
 
     public DateOnly? Date { get; set; }
 
-    public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
+    public Guid? TaskId { get; set; }
+
+    public virtual Task? Task { get; set; }
 
     public virtual Shift? Shift { get; set; }
 }

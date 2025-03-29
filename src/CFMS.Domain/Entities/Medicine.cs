@@ -25,7 +25,4 @@ public partial class Medicine : EntityAudit
     public DateTime? ExpiryDate { get; set; }
 
     public virtual SubCategory? Disease { get; set; }
-
-    //[JsonIgnore]
-    //public virtual Resource MedicineNavigation { get; set; } = null!;
 }

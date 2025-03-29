@@ -23,9 +23,5 @@ public partial class Assignment : EntityAudit
 
     public virtual User? AssignedTo { get; set; }
 
-    public virtual ShiftSchedule? ShiftSchedule { get; set; }
-
     public virtual Task? Task { get; set; }
-
-    public virtual FrequencySchedule? FrequencySchedule { get; set; }
 }

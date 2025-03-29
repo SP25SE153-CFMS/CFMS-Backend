@@ -79,11 +79,7 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasIndex("LastEditedByUserId");
 
-                    b.HasIndex("ShiftScheduleId");
-
                     b.HasIndex("TaskId");
-
-                    b.HasIndex("TaskScheduleId");
 
                     b.ToTable("Assignment", (string)null);
                 });
@@ -1027,6 +1023,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedWhen")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<DateTime?>("EndWorkDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<int?>("Frequency")
                         .HasColumnType("integer");
 
@@ -1039,11 +1038,14 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("LastWorkDate")
+                    b.Property<DateTime?>("StartWorkDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("NextWorkDate")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<Guid?>("TaskId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("TimeUnitId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("FrequencyScheduleId")
                         .HasName("FrequencySchedule_pkey");
@@ -1051,6 +1053,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("LastEditedByUserId");
+
+                    b.HasIndex("TimeUnitId");
 
                     b.ToTable("TaskSchedule", (string)null);
                 });
@@ -1730,9 +1734,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedWhen")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("character varying");
-
                     b.Property<Guid?>("EquipmentId")
                         .HasColumnType("uuid");
 
@@ -1935,6 +1936,9 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("date");
 
                     b.Property<Guid?>("ShiftId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("TaskId")
                         .HasColumnType("uuid");
 
                     b.HasKey("ShiftScheduleId")
@@ -2586,15 +2590,12 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<int>("Quantity")
+                    b.Property<string>("Quantity")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
+                        .HasColumnType("text")
+                        .HasDefaultValue("0");
 
                     b.Property<Guid?>("ResourceId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("UnitId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("WareId")
@@ -2771,32 +2772,17 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CFMS.Domain.Entities.ShiftSchedule", "ShiftSchedule")
-                        .WithMany("Assignments")
-                        .HasForeignKey("ShiftScheduleId")
-                        .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
-
                     b.HasOne("CFMS.Domain.Entities.Task", "Task")
                         .WithMany("Assignments")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("Assignment_taskId_fkey");
 
-                    b.HasOne("CFMS.Domain.Entities.FrequencySchedule", "FrequencySchedule")
-                        .WithMany("Assignments")
-                        .HasForeignKey("TaskScheduleId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("Assignment_TaskScheduleId_fkey");
-
                     b.Navigation("AssignedTo");
 
                     b.Navigation("CreatedByUser");
 
-                    b.Navigation("FrequencySchedule");
-
                     b.Navigation("LastEditedByUser");
-
-                    b.Navigation("ShiftSchedule");
 
                     b.Navigation("Task");
                 });
@@ -3293,15 +3279,30 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CFMS.Domain.Entities.Task", "Task")
+                        .WithMany("FrequencySchedules")
+                        .HasForeignKey("FrequencyScheduleId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FrequencySchedule_FrequencyScheduleId_fkey");
+
                     b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
                         .WithMany()
                         .HasForeignKey("LastEditedByUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CFMS.Domain.Entities.SubCategory", "TimeUnit")
+                        .WithMany("TimeUnits")
+                        .HasForeignKey("TimeUnitId");
+
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("LastEditedByUser");
+
+                    b.Navigation("Task");
+
+                    b.Navigation("TimeUnit");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.GrowthBatch", b =>
@@ -3823,7 +3824,16 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("ShiftSchedule_ShiftId_fkey");
 
+                    b.HasOne("CFMS.Domain.Entities.Task", "Task")
+                        .WithMany("ShiftSchedules")
+                        .HasForeignKey("ShiftScheduleId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
+
                     b.Navigation("Shift");
+
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.SubCategory", b =>
@@ -4357,11 +4367,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("NutritionPlanDetails");
                 });
 
-            modelBuilder.Entity("CFMS.Domain.Entities.FrequencySchedule", b =>
-                {
-                    b.Navigation("Assignments");
-                });
-
             modelBuilder.Entity("CFMS.Domain.Entities.GrowthStage", b =>
                 {
                     b.Navigation("GrowthBatches");
@@ -4412,11 +4417,6 @@ namespace CFMS.Infrastructure.Migrations
             modelBuilder.Entity("CFMS.Domain.Entities.Shift", b =>
                 {
                     b.Navigation("ShiftSchedules");
-                });
-
-            modelBuilder.Entity("CFMS.Domain.Entities.ShiftSchedule", b =>
-                {
-                    b.Navigation("Assignments");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.SubCategory", b =>
@@ -4477,6 +4477,8 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Navigation("TemplateCriteria");
 
+                    b.Navigation("TimeUnits");
+
                     b.Navigation("WareTransactions");
 
                     b.Navigation("Warehouses");
@@ -4495,7 +4497,11 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Navigation("FeedLogs");
 
+                    b.Navigation("FrequencySchedules");
+
                     b.Navigation("HealthLogs");
+
+                    b.Navigation("ShiftSchedules");
 
                     b.Navigation("TaskHarvests");
 

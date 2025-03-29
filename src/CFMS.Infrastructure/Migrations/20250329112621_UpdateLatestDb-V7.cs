@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CFMS.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateLatestDbV6 : Migration
+    public partial class UpdateLatestDbV7 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -282,38 +282,6 @@ namespace CFMS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TaskSchedule",
-                columns: table => new
-                {
-                    FrequencyScheduleId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    Frequency = table.Column<int>(type: "integer", nullable: true),
-                    NextWorkDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastWorkDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("FrequencySchedule_pkey", x => x.FrequencyScheduleId);
-                    table.ForeignKey(
-                        name: "FK_TaskSchedule_User_CreatedByUserId",
-                        column: x => x.CreatedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TaskSchedule_User_LastEditedByUserId",
-                        column: x => x.LastEditedByUserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SubCategory",
                 columns: table => new
                 {
@@ -437,25 +405,6 @@ namespace CFMS.Infrastructure.Migrations
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "UserId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ShiftSchedule",
-                columns: table => new
-                {
-                    ShiftScheduleId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    ShiftId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Date = table.Column<DateOnly>(type: "date", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("ShiftSchedule_pkey", x => x.ShiftScheduleId);
-                    table.ForeignKey(
-                        name: "ShiftSchedule_ShiftId_fkey",
-                        column: x => x.ShiftId,
-                        principalTable: "Shift",
-                        principalColumn: "ShiftId",
-                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -1008,7 +957,6 @@ namespace CFMS.Infrastructure.Migrations
                 {
                     ResourceId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     ResourceTypeId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Description = table.Column<string>(type: "character varying", nullable: true),
                     UnitId = table.Column<Guid>(type: "uuid", nullable: true),
                     PackageId = table.Column<Guid>(type: "uuid", nullable: true),
                     PackageSize = table.Column<decimal>(type: "numeric", nullable: true),
@@ -1123,12 +1071,6 @@ namespace CFMS.Infrastructure.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
-                        name: "Assignment_TaskScheduleId_fkey",
-                        column: x => x.TaskScheduleId,
-                        principalTable: "TaskSchedule",
-                        principalColumn: "FrequencyScheduleId",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
                         name: "Assignment_taskId_fkey",
                         column: x => x.TaskId,
                         principalTable: "Task",
@@ -1146,11 +1088,6 @@ namespace CFMS.Infrastructure.Migrations
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "ShiftSchedule_ShiftScheduleId_fkey",
-                        column: x => x.ShiftScheduleId,
-                        principalTable: "ShiftSchedule",
-                        principalColumn: "ShiftScheduleId");
                 });
 
             migrationBuilder.CreateTable(
@@ -1197,6 +1134,32 @@ namespace CFMS.Infrastructure.Migrations
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShiftSchedule",
+                columns: table => new
+                {
+                    ShiftScheduleId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    ShiftId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Date = table.Column<DateOnly>(type: "date", nullable: true),
+                    TaskId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("ShiftSchedule_pkey", x => x.ShiftScheduleId);
+                    table.ForeignKey(
+                        name: "ShiftSchedule_ShiftId_fkey",
+                        column: x => x.ShiftId,
+                        principalTable: "Shift",
+                        principalColumn: "ShiftId",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "ShiftSchedule_ShiftScheduleId_fkey",
+                        column: x => x.ShiftScheduleId,
+                        principalTable: "Task",
+                        principalColumn: "TaskId",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -1269,6 +1232,51 @@ namespace CFMS.Infrastructure.Migrations
                         principalTable: "Task",
                         principalColumn: "TaskId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TaskSchedule",
+                columns: table => new
+                {
+                    FrequencyScheduleId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    Frequency = table.Column<int>(type: "integer", nullable: true),
+                    TaskId = table.Column<Guid>(type: "uuid", nullable: true),
+                    TimeUnitId = table.Column<Guid>(type: "uuid", nullable: true),
+                    StartWorkDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    EndWorkDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    CreatedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    LastEditedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastEditedWhen = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("FrequencySchedule_pkey", x => x.FrequencyScheduleId);
+                    table.ForeignKey(
+                        name: "FK_TaskSchedule_SubCategory_TimeUnitId",
+                        column: x => x.TimeUnitId,
+                        principalTable: "SubCategory",
+                        principalColumn: "SubCategoryId");
+                    table.ForeignKey(
+                        name: "FK_TaskSchedule_User_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TaskSchedule_User_LastEditedByUserId",
+                        column: x => x.LastEditedByUserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FrequencySchedule_FrequencyScheduleId_fkey",
+                        column: x => x.FrequencyScheduleId,
+                        principalTable: "Task",
+                        principalColumn: "TaskId",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -1716,8 +1724,7 @@ namespace CFMS.Infrastructure.Migrations
                     WareStockId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     WareId = table.Column<Guid>(type: "uuid", nullable: true),
                     ResourceId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Quantity = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    UnitId = table.Column<Guid>(type: "uuid", nullable: true)
+                    Quantity = table.Column<string>(type: "text", nullable: true, defaultValue: "0")
                 },
                 constraints: table =>
                 {
@@ -2164,19 +2171,9 @@ namespace CFMS.Infrastructure.Migrations
                 column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Assignment_ShiftScheduleId",
-                table: "Assignment",
-                column: "ShiftScheduleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Assignment_TaskId",
                 table: "Assignment",
                 column: "TaskId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Assignment_TaskScheduleId",
-                table: "Assignment",
-                column: "TaskScheduleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BreedingArea_CreatedByUserId",
@@ -2905,6 +2902,11 @@ namespace CFMS.Infrastructure.Migrations
                 column: "LastEditedByUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TaskSchedule_TimeUnitId",
+                table: "TaskSchedule",
+                column: "TimeUnitId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TemplateCriteria_CreatedByUserId",
                 table: "TemplateCriteria",
                 column: "CreatedByUserId");
@@ -3077,6 +3079,9 @@ namespace CFMS.Infrastructure.Migrations
                 name: "RevokedToken");
 
             migrationBuilder.DropTable(
+                name: "ShiftSchedule");
+
+            migrationBuilder.DropTable(
                 name: "SystemConfig");
 
             migrationBuilder.DropTable(
@@ -3095,6 +3100,9 @@ namespace CFMS.Infrastructure.Migrations
                 name: "TaskResource");
 
             migrationBuilder.DropTable(
+                name: "TaskSchedule");
+
+            migrationBuilder.DropTable(
                 name: "TemplateCriteria");
 
             migrationBuilder.DropTable(
@@ -3108,12 +3116,6 @@ namespace CFMS.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "WareTransaction");
-
-            migrationBuilder.DropTable(
-                name: "TaskSchedule");
-
-            migrationBuilder.DropTable(
-                name: "ShiftSchedule");
 
             migrationBuilder.DropTable(
                 name: "EvaluationResult");
@@ -3131,10 +3133,10 @@ namespace CFMS.Infrastructure.Migrations
                 name: "Supplier");
 
             migrationBuilder.DropTable(
-                name: "Resource");
+                name: "Shift");
 
             migrationBuilder.DropTable(
-                name: "Shift");
+                name: "Resource");
 
             migrationBuilder.DropTable(
                 name: "EvaluatedTarget");

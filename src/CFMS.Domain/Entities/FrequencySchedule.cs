@@ -9,9 +9,15 @@ public partial class FrequencySchedule : EntityAudit
 
     public int? Frequency { get; set; }
 
-    public DateTime? NextWorkDate { get; set; }
+    public Guid? TaskId { get; set; }
 
-    public DateTime? LastWorkDate { get; set; }
+    public Guid? TimeUnitId { get; set; }
 
-    public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
+    public DateTime? StartWorkDate { get; set; }
+
+    public DateTime? EndWorkDate { get; set; }
+
+    public virtual Task? Task { get; set; }
+
+    public virtual SubCategory? TimeUnit { get; set; }
 }
