@@ -15,7 +15,7 @@ namespace CFMS.Application.Features.TaskFeat.Delete
 
         public async Task<BaseResponse<bool>> Handle(DeleteTaskCommand request, CancellationToken cancellationToken)
         {
-            var existTask = _unitOfWork.TaskRepository.Get(filter: f => f.TaskId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
+            var existTask = _unitOfWork.TaskRepository.Get(filter: f => f.TaskId.Equals(request.TaskId) && f.IsDeleted == false).FirstOrDefault();
             if (existTask == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");

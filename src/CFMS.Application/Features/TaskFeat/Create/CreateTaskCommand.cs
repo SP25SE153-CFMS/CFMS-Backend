@@ -5,7 +5,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
 {
     public class CreateTaskCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateTaskCommand(string? taskName, Guid? taskTypeId, string? description, int? isHavest, int? status, int? frequency, Guid? timeUnitId, DateTime? startWorkDate, DateTime? endWorkDate, Guid? shiftId, DateOnly? date)
+        public CreateTaskCommand(string? taskName, Guid? taskTypeId, string? description, int? isHavest, int? status, int? frequency, Guid? timeUnitId, DateTime? startWorkDate, DateTime? endWorkDate, Guid? shiftId, DateOnly? date, string? locationType, Guid locationId)
         {
             TaskName = taskName;
             TaskTypeId = taskTypeId;
@@ -18,6 +18,8 @@ namespace CFMS.Application.Features.TaskFeat.Create
             EndWorkDate = endWorkDate;
             ShiftId = shiftId;
             Date = date;
+            LocationType = locationType;
+            LocationId = locationId;
         }
 
         public string? TaskName { get; set; }

@@ -15,12 +15,14 @@ namespace CFMS.Api.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetTasks()
         {
             var result = await Send(new GetTasksQuery());
             return result;
         }
 
         [HttpGet("{id}")]
+        public async Task<IActionResult> GetTask(Guid id)
         {
             var result = await Send(new GetTaskQuery(id));
             return result;

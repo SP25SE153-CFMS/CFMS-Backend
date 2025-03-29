@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTask
 
         public async Task<BaseResponse<Domain.Entities.Task>> Handle(GetTaskQuery request, CancellationToken cancellationToken)
         {
-            var existTask = _unitOfWork.TaskRepository.Get(filter: f => f.TaskId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
+            var existTask = _unitOfWork.TaskRepository.Get(filter: f => f.TaskId.Equals(request.TaskId) && f.IsDeleted == false).FirstOrDefault();
             if (existTask == null)
             {
                 return BaseResponse<Domain.Entities.Task>.FailureResponse(message: "Công việc không tồn tại");

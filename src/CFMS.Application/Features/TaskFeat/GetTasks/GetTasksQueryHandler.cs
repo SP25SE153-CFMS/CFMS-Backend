@@ -1,4 +1,5 @@
-﻿using CFMS.Application.Common;
+﻿using AutoMapper;
+using CFMS.Application.Common;
 using CFMS.Domain.Interfaces;
 using MediatR;
 
