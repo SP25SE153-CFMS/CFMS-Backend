@@ -1,4 +1,5 @@
-﻿using CFMS.Domain.Entities;
+﻿using CFMS.Application.Common;
+using CFMS.Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace CFMS.Application.Events
             PackageId = packageId;
             PackageSize = packageSize;
         }
+
+        public bool IsCreatedCall { get; set; }
 
         public Guid? WareId { get; set; }
 
