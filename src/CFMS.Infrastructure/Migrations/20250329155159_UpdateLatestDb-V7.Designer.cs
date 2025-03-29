@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250329112621_UpdateLatestDb-V7")]
+    [Migration("20250329155159_UpdateLatestDb-V7")]
     partial class UpdateLatestDbV7
     {
         /// <inheritdoc />
@@ -1059,7 +1059,7 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasIndex("TimeUnitId");
 
-                    b.ToTable("TaskSchedule", (string)null);
+                    b.ToTable("FrequencySchedule", (string)null);
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.GrowthBatch", b =>
@@ -2220,7 +2220,7 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<Guid>("LocationId")
+                    b.Property<Guid?>("CoopId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("LocationType")
@@ -2229,12 +2229,17 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid?>("TaskId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("WareId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("TaskLocationId")
                         .HasName("TaskLocation_pkey");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("CoopId");
 
                     b.HasIndex("TaskId");
+
+                    b.HasIndex("WareId");
 
                     b.ToTable("TaskLocation", (string)null);
                 });
@@ -2593,10 +2598,10 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<string>("Quantity")
+                    b.Property<int?>("Quantity")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValue("0");
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
 
                     b.Property<Guid?>("ResourceId")
                         .HasColumnType("uuid");
@@ -3981,20 +3986,18 @@ namespace CFMS.Infrastructure.Migrations
                 {
                     b.HasOne("CFMS.Domain.Entities.ChickenCoop", "Location")
                         .WithMany("TaskLocations")
-                        .HasForeignKey("LocationId")
-                        .IsRequired()
-                        .HasConstraintName("TaskLocation_LocationId_fkey1");
-
-                    b.HasOne("CFMS.Domain.Entities.Warehouse", "LocationNavigation")
-                        .WithMany("TaskLocations")
-                        .HasForeignKey("LocationId")
-                        .IsRequired()
-                        .HasConstraintName("TaskLocation_LocationId_fkey");
+                        .HasForeignKey("CoopId")
+                        .HasConstraintName("TaskLocation_CoopId_fkey");
 
                     b.HasOne("CFMS.Domain.Entities.Task", "Task")
                         .WithMany("TaskLocations")
                         .HasForeignKey("TaskId")
                         .HasConstraintName("TaskLocation_TaskId_fkey");
+
+                    b.HasOne("CFMS.Domain.Entities.Warehouse", "LocationNavigation")
+                        .WithMany("TaskLocations")
+                        .HasForeignKey("WareId")
+                        .HasConstraintName("TaskLocation_WareId_fkey");
 
                     b.Navigation("Location");
 
