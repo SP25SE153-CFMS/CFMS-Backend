@@ -1,21 +1,16 @@
 ﻿using CFMS.Application.Common;
 using CFMS.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.TaskFeat.GetTask
 {
     public class GetTaskQuery : IRequest<BaseResponse<Domain.Entities.Task>>
     {
-        public GetTaskQuery(Guid id)
+        public GetTaskQuery(Guid taskId)
         {
-            Id = id;
+            TaskId = taskId;
         }
 
-        public Guid Id { get; set; }
+        public Guid TaskId { get; set; }
     }
 }
