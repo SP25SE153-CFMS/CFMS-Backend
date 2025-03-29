@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Create
                 return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
-            var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaCode.Equals(request.BreedingAreaCode) && ba.IsDeleted == false);
+            var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaCode.Equals(request.BreedingAreaCode) && ba.IsDeleted == false).FirstOrDefault();
             if (existBreedingArea == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Mã khu nuôi đã tồn tại");
