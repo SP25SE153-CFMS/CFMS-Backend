@@ -29,11 +29,8 @@ namespace CFMS.Application.Events.Handlers
                     && x.PackageSize.Equals(notification.PackageSize)
                     && x.IsDeleted == false).FirstOrDefault();
 
-            if (notification.IsCreatedCall)
+            if (notification.IsCreatedCall && resource == null)
             {
-                if (resource != null)
-                    throw new Exception("Sản phẩm có quy cách tính như này đã tồn tại");
-
                 resource = new Resource
                 {
                     ResourceTypeId = notification.ResourceTypeId,
@@ -45,10 +42,6 @@ namespace CFMS.Application.Events.Handlers
 
                 await _unitOfWork.ResourceRepository.InsertAsync(resource);
                 await _unitOfWork.SaveChangesAsync();
-            }
-            else if (resource == null)
-            {
-                throw new Exception("Sản phẩm có quy cách tính như này không tồn tại");
             }
 
             var wareStock = await _unitOfWork.WareStockRepository
@@ -62,7 +55,7 @@ namespace CFMS.Application.Events.Handlers
             };
 
             wareStock.Quantity += notification.Quantity;
-            await _unitOfWork.WareStockRepository.UpdateOrInsertAsync(wareStock);     
+            await _unitOfWork.WareStockRepository.UpdateOrInsertAsync(wareStock);
             await _unitOfWork.SaveChangesAsync();
         }
     }
