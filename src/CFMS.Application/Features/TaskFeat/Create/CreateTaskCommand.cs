@@ -5,7 +5,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
 {
     public class CreateTaskCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateTaskCommand(string? taskName, Guid? taskTypeId, string? description, int? isHavest, int? status, int? frequency, Guid? timeUnitId, DateTime? startWorkDate, DateTime? endWorkDate, Guid? shiftId, DateOnly? date, string? locationType, Guid locationId)
+        public CreateTaskCommand(string? taskName, Guid? taskTypeId, string? description, int? isHavest, int? status, int? frequency, Guid? timeUnitId, DateTime startWorkDate, DateTime endWorkDate, Guid[] shiftIds, string? locationType, Guid locationId)
         {
             TaskName = taskName;
             TaskTypeId = taskTypeId;
@@ -16,8 +16,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
             TimeUnitId = timeUnitId;
             StartWorkDate = startWorkDate;
             EndWorkDate = endWorkDate;
-            ShiftId = shiftId;
-            Date = date;
+            ShiftIds = shiftIds;
             LocationType = locationType;
             LocationId = locationId;
         }
@@ -37,12 +36,12 @@ namespace CFMS.Application.Features.TaskFeat.Create
 
         public Guid? TimeUnitId { get; set; }
 
-        public DateTime? StartWorkDate { get; set; }
+        public DateTime StartWorkDate { get; set; }
 
-        public DateTime? EndWorkDate { get; set; }
+        public DateTime EndWorkDate { get; set; }
 
         //Shift
-        public Guid[]? ShiftId { get; set; }
+        public Guid[] ShiftIds { get; set; }
 
         //Location
         public string? LocationType { get; set; }
