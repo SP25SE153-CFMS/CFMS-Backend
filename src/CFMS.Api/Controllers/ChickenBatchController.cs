@@ -6,6 +6,7 @@ using CFMS.Application.Features.ChickenBatchFeat.Delete;
 using CFMS.Application.Features.ChickenBatchFeat.DeleteQuantityLog;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatch;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatchs;
+using CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch;
 using CFMS.Application.Features.ChickenBatchFeat.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -97,6 +98,13 @@ namespace CFMS.Api.Controllers
 
         [HttpPut("close-chickenbatch")]
         public async Task<IActionResult> CloseChickenBatch(CloseChickenBatchCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPost("open-chickenbatch")]
+        public async Task<IActionResult> OpenChickenBatch(OpenChickenBatchCommand command)
         {
             var result = await Send(command);
             return result;
