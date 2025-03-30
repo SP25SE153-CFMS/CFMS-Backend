@@ -4,6 +4,7 @@ using CFMS.Application.Features.CategoryFeat.Delete;
 using CFMS.Application.Features.CategoryFeat.GetCategories;
 using CFMS.Application.Features.CategoryFeat.GetCategory;
 using CFMS.Application.Features.CategoryFeat.GetCategoryByType;
+using CFMS.Application.Features.CategoryFeat.GetChickenTypes;
 using CFMS.Application.Features.CategoryFeat.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -35,8 +36,8 @@ namespace CFMS.Api.Controllers
         {
             var result = await Send(new GetCategoryQuery(id));
             return result;
-        }        
-        
+        }
+
         [HttpGet("categoryType/{type}")]
         public async Task<IActionResult> GetByCategoryByType(string type)
         {
@@ -69,6 +70,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> AddSubCategory(AddSubCateCommand command)
         {
             var result = await Send(command);
+            return result;
+        }
+
+        [HttpGet("get-chickentypes")]
+        public async Task<IActionResult> GetChickenTypes()
+        {
+            var result = await Send(new GetChickenTypesQuery());
             return result;
         }
     }
