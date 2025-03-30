@@ -28,37 +28,40 @@ namespace CFMS.Application.Features.FoodFeat.Create
 
         public async Task<BaseResponse<bool>> Handle(CreateFoodCommand request, CancellationToken cancellationToken)
         {
-            var existFood = _unitOfWork.FoodRepository.Get(filter: s => s.FoodCode.Equals(request.FoodCode) || s.FoodName.Equals(request.FoodName) && s.IsDeleted == false).FirstOrDefault();
-            if (existFood != null)
+            try
             {
-                return BaseResponse<bool>.FailureResponse("Tên hoặc mã thực phẩm đã tồn tại");
-            }
+                var existFood = _unitOfWork.FoodRepository.Get(filter: s => s.FoodCode.Equals(request.FoodCode) || s.FoodName.Equals(request.FoodName) && s.IsDeleted == false).FirstOrDefault();
 
-            var food = _mapper.Map<Food>(request);
-            _unitOfWork.FoodRepository.Insert(food);
-            var result = await _unitOfWork.SaveChangesAsync();
+                if (existFood == null)
+                {
+                    var food = _mapper.Map<Food>(request);
+                    _unitOfWork.FoodRepository.Insert(food);
+                    var result = await _unitOfWork.SaveChangesAsync();
+                }
 
-            var foodType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Equals("food") && x.IsDeleted == false).FirstOrDefault();
-            if (foodType == null)
+                var foodType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Equals("food") && x.IsDeleted == false).FirstOrDefault();
+                if (foodType == null)
+                {
+                    return BaseResponse<bool>.FailureResponse("Không tìm thấy loại thực phẩm");
+                }
+
+                await _mediator.Publish(new StockUpdatedEvent
+                (
+                   existFood.FoodId,
+                   0,
+                   request.UnitId,
+                   foodType.SubCategoryId,
+                   request.PackageId,
+                   request.PackageSize,
+                   request.WareId,
+                   true
+               ));
+
+                return BaseResponse<bool>.SuccessResponse("Thêm thực phẩm thành công");
+            } catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse("Không tìm thấy loại thực phẩm");
+                return BaseResponse<bool>.FailureResponse("Thêm thất bại: " + ex.Message);
             }
-
-            await _mediator.Publish(new StockUpdatedEvent
-            (
-               food.FoodId,
-               0,
-               request.UnitId,
-               foodType.SubCategoryId,
-               request.PackageId,
-               request.PackageSize,
-               request.WareId,
-               true
-           ));
-
-            return result > 0
-                ? BaseResponse<bool>.SuccessResponse("Thêm thực phẩm thành công")
-                : BaseResponse<bool>.FailureResponse("Thêm thất bại");
         }
     }
 }
