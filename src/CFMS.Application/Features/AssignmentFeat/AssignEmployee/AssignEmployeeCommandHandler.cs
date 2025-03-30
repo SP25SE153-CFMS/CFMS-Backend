@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
 
@@ -27,7 +28,32 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
 
             try
             {
+                var frequency = task.FrequencySchedules.First();
+                int duration = (frequency.EndWorkDate.Value - frequency.StartWorkDate.Value).Days;
+                int step = frequency.Frequency.Value;
 
+                for (int i = 0; i < duration; i += step)
+                {
+                    foreach (var assignedToId in request.AssignedToIds)
+                    {
+                        var assignment = new Assignment
+                        {
+                            TaskId = request.TaskId,
+                            AssignedDate = frequency.StartWorkDate.Value.AddDays(i),
+                            AssignedToId = assignedToId,
+                            Note = request.Note,
+                            Status = request.Status,
+                        };
+                        _unitOfWork.AssignmentRepository.Insert(assignment);
+                    }
+                }
+
+                var result = await _unitOfWork.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return BaseResponse<bool>.SuccessResponse(message: "Tạo thành công");
+                }
+                return BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
             }
             catch (Exception ex)
             {

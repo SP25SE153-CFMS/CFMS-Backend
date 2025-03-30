@@ -13,9 +13,28 @@ namespace CFMS.Application.Features.AssignmentFeat.Delete
             _unitOfWork = unitOfWork;
         }
 
-        public Task<BaseResponse<bool>> Handle(DeleteAssignmentCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(DeleteAssignmentCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var existAssignment = _unitOfWork.AssignmentRepository.Get(filter: a => a.AssignmentId.Equals(request.AssignmentId) && a.IsDeleted == false).FirstOrDefault();
+            if (existAssignment == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Assignment không tồn tại");
+            }
+
+            try
+            {
+                _unitOfWork.AssignmentRepository.Delete(existAssignment);
+                var result = await _unitOfWork.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
+                }
+                return BaseResponse<bool>.SuccessResponse(message: "Xóa không thành công");
+            }
+            catch (Exception ex)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+            }
         }
     }
 }

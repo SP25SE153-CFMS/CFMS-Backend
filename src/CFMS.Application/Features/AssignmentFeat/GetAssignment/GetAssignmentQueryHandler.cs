@@ -14,9 +14,14 @@ namespace CFMS.Application.Features.AssignmentFeat.GetAssignment
             _unitOfWork = unitOfWork;
         }
 
-        public Task<BaseResponse<Assignment>> Handle(GetAssignmentQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<Assignment>> Handle(GetAssignmentQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var existAssignment = _unitOfWork.AssignmentRepository.Get(filter: a => a.AssignmentId.Equals(request.AssignmentId) && a.IsDeleted == false).FirstOrDefault();
+            if (existAssignment == null)
+            {
+                return BaseResponse<Assignment>.FailureResponse(message: "Assignment không tồn tại");
+            }
+            return BaseResponse<Assignment>.SuccessResponse(data: existAssignment);
         }
     }
 }

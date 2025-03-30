@@ -14,9 +14,10 @@ namespace CFMS.Application.Features.AssignmentFeat.GetAssignments
             _unitOfWork = unitOfWork;
         }
 
-        public Task<BaseResponse<IEnumerable<Assignment>>> Handle(GetAssignmentsQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<IEnumerable<Assignment>>> Handle(GetAssignmentsQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var assignments = _unitOfWork.AssignmentRepository.Get(filter: a => a.IsDeleted == false);
+            return BaseResponse<IEnumerable<Assignment>>.SuccessResponse(data: assignments);
         }
     }
 }
