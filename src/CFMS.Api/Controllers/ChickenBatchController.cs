@@ -1,10 +1,12 @@
 ﻿using CFMS.Application.Features.ChickenBatchFeat.AddChicken;
 using CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog;
+using CFMS.Application.Features.ChickenBatchFeat.CloseChickenBatch;
 using CFMS.Application.Features.ChickenBatchFeat.Create;
 using CFMS.Application.Features.ChickenBatchFeat.Delete;
 using CFMS.Application.Features.ChickenBatchFeat.DeleteQuantityLog;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatch;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatchs;
+using CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch;
 using CFMS.Application.Features.ChickenBatchFeat.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -89,6 +91,20 @@ namespace CFMS.Api.Controllers
 
         [HttpDelete("delete-quantitylog")]
         public async Task<IActionResult> DeleteQuantityLog(DeleteQuantityLogCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPut("close-chickenbatch")]
+        public async Task<IActionResult> CloseChickenBatch(CloseChickenBatchCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPost("open-chickenbatch")]
+        public async Task<IActionResult> OpenChickenBatch(OpenChickenBatchCommand command)
         {
             var result = await Send(command);
             return result;
