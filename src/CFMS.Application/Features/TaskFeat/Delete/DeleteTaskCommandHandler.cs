@@ -1,12 +1,6 @@
 ﻿using CFMS.Application.Common;
-using CFMS.Application.Features.FoodFeat.Delete;
 using CFMS.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.TaskFeat.Delete
 {
@@ -21,7 +15,7 @@ namespace CFMS.Application.Features.TaskFeat.Delete
 
         public async Task<BaseResponse<bool>> Handle(DeleteTaskCommand request, CancellationToken cancellationToken)
         {
-            var existTask = _unitOfWork.TaskRepository.Get(filter: f => f.TaskId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
+            var existTask = _unitOfWork.TaskRepository.Get(filter: f => f.TaskId.Equals(request.TaskId) && f.IsDeleted == false).FirstOrDefault();
             if (existTask == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
