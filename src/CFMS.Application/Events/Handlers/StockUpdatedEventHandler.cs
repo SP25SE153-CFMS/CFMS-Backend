@@ -3,11 +3,9 @@ using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Task = System.Threading.Tasks.Task;
 
 namespace CFMS.Application.Events.Handlers
 {
@@ -22,53 +20,50 @@ namespace CFMS.Application.Events.Handlers
             _eventQueue = eventQueue;
         }
 
-        public async Task Handle(StockUpdatedEvent notification, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task Handle(StockUpdatedEvent notification, CancellationToken cancellationToken)
         {
+            var resource = await _unitOfWork.ResourceRepository
+                .FirstOrDefaultAsync(x => x.FoodId == notification.ResourceId
+                    && x.UnitId == notification.UnitId
+                    && x.PackageId == notification.PackageId
+                    && x.PackageSize == notification.PackageSize
+                    && !x.IsDeleted);
+
             if (notification.IsCreatedCall)
             {
-                var existResource = _unitOfWork.ResourceRepository.Get(filter: x => x.ResourceId.Equals(notification.ResourceId) && x.IsDeleted == false).FirstOrDefault();
-                if (existResource != null
-                    && existResource.UnitId.Equals(notification.UnitId)
-                    && existResource.PackageId.Equals(notification.PackageId)
-                    && existResource.PackageSize.Equals(notification.PackageSize))
-                {
+                if (resource != null)
                     throw new Exception("Sản phẩm có quy cách tính như này đã tồn tại");
-                }
 
-                var newResource = new Resource
+                resource = new Resource
                 {
                     ResourceTypeId = notification.ResourceTypeId,
                     UnitId = notification.UnitId,
                     PackageId = notification.PackageId,
-                    PackageSize = notification.PackageSize
+                    PackageSize = notification.PackageSize,
+                    FoodId = notification.ResourceId
                 };
 
-                _unitOfWork.ResourceRepository.Insert(newResource);
+                await _unitOfWork.ResourceRepository.InsertAsync(resource);
                 await _unitOfWork.SaveChangesAsync();
             }
-
-            var quantity = !notification.IsCreatedCall ? notification.Quantity : 0;
-
-            if (quantity != 0)
+            else if (resource == null)
             {
-                var wareStock = _unitOfWork.WareStockRepository.Get(filter: x => x.WareId.Equals(notification.WareId) && x.ResourceId.Equals(notification.ResourceId)).FirstOrDefault();
-                if (wareStock != null)
-                {
-                    wareStock.Quantity += quantity;
-                    _unitOfWork.WareStockRepository.Update(wareStock);
-                }
-                else
-                {
-                    wareStock = new WareStock
-                    {
-                        WareId = notification.WareId,
-                        ResourceId = notification.ResourceId,
-                        Quantity = quantity
-                    };
-                    _unitOfWork.WareStockRepository.Insert(wareStock);
-                }
-                await _unitOfWork.SaveChangesAsync();
+                throw new Exception("Sản phẩm có quy cách tính như này không tồn tại");
             }
+
+            var wareStock = await _unitOfWork.WareStockRepository
+                .FirstOrDefaultAsync(x => x.WareId == notification.WareId && x.ResourceId == resource.ResourceId);
+
+            wareStock ??= new WareStock
+            {
+                WareId = notification.WareId,
+                ResourceId = resource.ResourceId,
+                Quantity = 0
+            };
+
+            wareStock.Quantity += notification.Quantity;
+            await _unitOfWork.WareStockRepository.UpdateOrInsertAsync(wareStock);     
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

@@ -117,11 +117,17 @@ namespace CFMS.Infrastructure.Repositories
             Delete(entityToDelete);
             return true;
         }
+
         public virtual bool Update(object id, TEntity entityUpdate)
         {
-            TEntity entity = GetByID(id);
+            if (entityUpdate == null) return false;
+
+            var entity = GetByID(id);
             if (entity == null) return false;
-            Update(entityUpdate);
+
+            _context.Entry(entity).CurrentValues.SetValues(entityUpdate);
+            _context.Entry(entity).State = EntityState.Modified;
+
             return true;
         }
 
@@ -163,6 +169,36 @@ namespace CFMS.Infrastructure.Repositories
 
             _dbSet.AddRange(entities);
             return true;
+        }
+
+        public virtual async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            return await _dbSet.FirstOrDefaultAsync(filter);
+        }
+
+        public virtual async Task InsertAsync(TEntity entity)
+        {
+            if (entity == null) return;
+            await _dbSet.AddAsync(entity);
+        }
+
+        public virtual async Task UpdateOrInsertAsync(TEntity entity)
+        {
+            if (entity != null)
+            {
+                if (entity == null) return;
+                _dbSet.Add(entity);
+            }
+            else
+            {
+                var trackedEntities = _context.ChangeTracker.Entries<TEntity>().ToList();
+                foreach (var trackedEntity in trackedEntities)
+                {
+                    trackedEntity.State = EntityState.Detached;
+                }
+                _dbSet.Attach(entity);
+                _context.Entry(entity).State = EntityState.Modified;
+            }
         }
     }
 }
