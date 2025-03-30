@@ -30,16 +30,26 @@ namespace CFMS.Application.Features.TaskFeat.Create
                     EndWorkDate = request.EndWorkDate,
                     Frequency = request.Frequency,
                 });
-                task.ShiftSchedules.Add(new ShiftSchedule
+
+                foreach (var shiftId in request.ShiftIds)
                 {
-                    ShiftId = request.ShiftId,
-                    Date = request.Date,
-                });
+                    var existShitf = _unitOfWork.ShiftRepository.Get(filter: s => s.ShiftId.Equals(shiftId) && s.IsDeleted == false).FirstOrDefault();
+                    if (existShitf == null)
+                    {
+                        return BaseResponse<bool>.FailureResponse(message: "Ca làm việc không tồn tại");
+                    }
+
+                    task.ShiftSchedules.Add(new ShiftSchedule
+                    {
+                        ShiftId = existShitf.ShiftId,
+                    });
+                }
+
                 task.TaskLocations.Add(new TaskLocation
                 {
-                    CoopId = request.LocationId,
-                    //CoopId = request.LocationType == 1 ? request.LocationId : null,
-                    //WareId = request.LocationType == 0 ? request.LocationId : null,
+                    //CoopId = request.LocationId,
+                    CoopId = request.LocationType.Equals("COOP") ? request.LocationId : null,
+                    WareId = request.LocationType.Equals("WARE") ? request.LocationId : null,
                     LocationType = request.LocationType,
                 });
 
