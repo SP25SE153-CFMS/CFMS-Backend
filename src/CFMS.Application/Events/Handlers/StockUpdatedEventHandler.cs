@@ -23,7 +23,7 @@ namespace CFMS.Application.Events.Handlers
         public async System.Threading.Tasks.Task Handle(StockUpdatedEvent notification, CancellationToken cancellationToken)
         {
             var resource = _unitOfWork.ResourceRepository.Get
-                (filter: x => x.FoodId.Equals(notification.ResourceId)
+                (filter: x => (x.FoodId.Equals(notification.ResourceId) || x.EquipmentId.Equals(notification.ResourceId) || x.MedicineId.Equals(notification.ResourceId))
                     && x.UnitId.Equals(notification.UnitId)
                     && x.PackageId.Equals(notification.PackageId)
                     && x.PackageSize.Equals(notification.PackageSize)

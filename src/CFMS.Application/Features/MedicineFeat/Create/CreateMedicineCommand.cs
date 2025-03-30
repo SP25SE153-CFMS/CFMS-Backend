@@ -10,7 +10,7 @@ namespace CFMS.Application.Features.MedicineFeat.Create
 {
     public class CreateMedicineCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateMedicineCommand(string? usage, string? dosageForm, string? storageCondition, Guid? diseaseId, DateTime? productionDate, DateTime? expiryDate, string? medicineCode, string? medicineName)
+        public CreateMedicineCommand(string? usage, string? dosageForm, string? storageCondition, Guid? diseaseId, DateTime? productionDate, DateTime? expiryDate, string? medicineCode, string? medicineName, Guid? unitId, Guid? packageId, decimal? packageSize, Guid wareId)
         {
             Usage = usage;
             DosageForm = dosageForm;
@@ -20,6 +20,10 @@ namespace CFMS.Application.Features.MedicineFeat.Create
             ExpiryDate = expiryDate;
             MedicineCode = medicineCode;
             MedicineName = medicineName;
+            UnitId = unitId;
+            PackageId = packageId;
+            PackageSize = packageSize;
+            WareId = wareId;
         }
 
         public string? MedicineCode { get; set; }
@@ -37,5 +41,13 @@ namespace CFMS.Application.Features.MedicineFeat.Create
         public DateTime? ProductionDate { get; set; }
 
         public DateTime? ExpiryDate { get; set; }
+
+        public Guid? UnitId { get; set; }
+
+        public Guid? PackageId { get; set; }
+
+        public decimal? PackageSize { get; set; }
+
+        public Guid WareId { get; set; }
     }
 }
