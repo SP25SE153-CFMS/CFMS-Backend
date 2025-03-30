@@ -29,23 +29,42 @@ namespace CFMS.Application.Events.Handlers
                     && x.PackageSize.Equals(notification.PackageSize)
                     && x.IsDeleted == false).FirstOrDefault();
 
+            var resourceType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Equals(notification.ResourceType) && x.IsDeleted == false).FirstOrDefault();
+            if (resourceType == null)
+            {
+                throw new Exception("Không tìm thấy loại hàng hoá");
+            }
+
             if (notification.IsCreatedCall && resource == null)
             {
                 resource = new Resource
                 {
-                    ResourceTypeId = notification.ResourceTypeId,
+                    ResourceTypeId = resourceType.SubCategoryId,
                     UnitId = notification.UnitId,
                     PackageId = notification.PackageId,
-                    PackageSize = notification.PackageSize,
-                    FoodId = notification.ResourceId
+                    PackageSize = notification.PackageSize
                 };
 
-                await _unitOfWork.ResourceRepository.InsertAsync(resource);
+                if (notification.ResourceType.Equals("food"))
+                    resource.FoodId = notification.ResourceId;
+
+                if (notification.ResourceType.Equals("medicine"))
+                    resource.MedicineId = notification.ResourceId;
+
+                if (notification.ResourceType.Equals("equipment"))
+                    resource.EquipmentId = notification.ResourceId;
+
+                await _unitOfWork.ResourceRepository.UpdateOrInsertAsync(resource);
                 await _unitOfWork.SaveChangesAsync();
             }
 
             var wareStock = await _unitOfWork.WareStockRepository
-                .FirstOrDefaultAsync(x => x.WareId == notification.WareId && x.ResourceId == resource.ResourceId);
+                  .FirstOrDefaultAsync(x => x.WareId == notification.WareId && x.ResourceId == resource.ResourceId);
+
+            if (notification.IsCreatedCall && resource != null && wareStock != null)
+            {
+                throw new Exception("Hàng hoá có quy cách tính này đã tồn tại");
+            }
 
             wareStock ??= new WareStock
             {

@@ -34,31 +34,27 @@ namespace CFMS.Application.Features.FoodFeat.Create
 
                 if (existFood == null)
                 {
-                    var food = _mapper.Map<Food>(request);
-                    _unitOfWork.FoodRepository.Insert(food);
+                    existFood = _mapper.Map<Food>(request);
+                    _unitOfWork.FoodRepository.Insert(existFood);
                     var result = await _unitOfWork.SaveChangesAsync();
-                }
 
-                var foodType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Equals("food") && x.IsDeleted == false).FirstOrDefault();
-                if (foodType == null)
-                {
-                    return BaseResponse<bool>.FailureResponse("Không tìm thấy loại thực phẩm");
+
                 }
 
                 await _mediator.Publish(new StockUpdatedEvent
-                (
-                   existFood.FoodId,
-                   0,
-                   request.UnitId,
-                   foodType.SubCategoryId,
-                   request.PackageId,
-                   request.PackageSize,
-                   request.WareId,
-                   true
-               ));
-
+                     (
+                        existFood.FoodId,
+                        0,
+                        request.UnitId,
+                        "food",
+                        request.PackageId,
+                        request.PackageSize,
+                        request.WareId,
+                        true
+                    ));
                 return BaseResponse<bool>.SuccessResponse("Thêm thực phẩm thành công");
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BaseResponse<bool>.FailureResponse("Thêm thất bại: " + ex.Message);
             }
