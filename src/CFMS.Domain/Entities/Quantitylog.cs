@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -17,5 +18,6 @@ public partial class QuantityLog : EntityAudit
 
     public int? LogType { get; set; }
 
+    [JsonIgnore]
     public virtual ChickenBatch? ChickenBatch { get; set; }
 }

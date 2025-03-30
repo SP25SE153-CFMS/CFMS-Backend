@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -17,7 +18,9 @@ public partial class VaccineLog : EntityAudit
 
     public Guid? TaskId { get; set; }
 
+    [JsonIgnore]
     public virtual ChickenBatch? ChickenBatch { get; set; }
 
+    [JsonIgnore]
     public virtual Task? Task { get; set; }
 }
