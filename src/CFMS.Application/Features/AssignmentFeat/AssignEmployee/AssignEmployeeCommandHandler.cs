@@ -17,9 +17,22 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
             _mapper = mapper;
         }
 
-        public Task<BaseResponse<bool>> Handle(AssignEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(AssignEmployeeCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var task = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false, includeProperties: [t => t.FrequencySchedules]).FirstOrDefault();
+            if (task == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Task không tồn tại");
+            }
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+            }
         }
     }
 }

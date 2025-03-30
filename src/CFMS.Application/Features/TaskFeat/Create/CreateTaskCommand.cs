@@ -42,9 +42,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
         public DateTime? EndWorkDate { get; set; }
 
         //Shift
-        public Guid? ShiftId { get; set; }
-
-        public DateOnly? Date { get; set; }
+        public Guid[]? ShiftId { get; set; }
 
         //Location
         public string? LocationType { get; set; }
