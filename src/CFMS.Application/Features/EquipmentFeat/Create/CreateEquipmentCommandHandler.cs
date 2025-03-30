@@ -51,11 +51,12 @@ namespace CFMS.Application.Features.EquipmentFeat.Create
 
                 if (existEquipment == null)
                 {
-                    var equipment = _mapper.Map<Equipment>(request);
-                    _unitOfWork.EquipmentRepository.Insert(equipment);
+                    existEquipment = _mapper.Map<Equipment>(request);
+                    _unitOfWork.EquipmentRepository.Insert(existEquipment);
                     var result = await _unitOfWork.SaveChangesAsync();
+                }
 
-                    await _mediator.Publish(new StockUpdatedEvent
+                await _mediator.Publish(new StockUpdatedEvent
                     (
                        existEquipment.EquipmentId,
                        0,
@@ -65,8 +66,7 @@ namespace CFMS.Application.Features.EquipmentFeat.Create
                        request.PackageSize,
                        request.WareId,
                        true
-                   ));
-                }
+                    ));
                 return BaseResponse<bool>.SuccessResponse("Thêm trang thiết bị thành công");
             }
             catch (Exception ex)

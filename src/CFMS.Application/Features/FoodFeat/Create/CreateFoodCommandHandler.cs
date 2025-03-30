@@ -37,8 +37,6 @@ namespace CFMS.Application.Features.FoodFeat.Create
                     existFood = _mapper.Map<Food>(request);
                     _unitOfWork.FoodRepository.Insert(existFood);
                     var result = await _unitOfWork.SaveChangesAsync();
-
-
                 }
 
                 await _mediator.Publish(new StockUpdatedEvent
