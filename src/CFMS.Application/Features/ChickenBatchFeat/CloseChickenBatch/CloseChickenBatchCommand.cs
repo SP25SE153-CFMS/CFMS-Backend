@@ -5,13 +5,11 @@ namespace CFMS.Application.Features.ChickenBatchFeat.CloseChickenBatch
 {
     public class CloseChickenBatchCommand : IRequest<BaseResponse<bool>>
     {
-        public CloseChickenBatchCommand(int status, Guid chickenBatchId)
+        public CloseChickenBatchCommand(Guid chickenBatchId)
         {
-            Status = status;
             ChickenBatchId = chickenBatchId;
         }
 
-        public int Status { get; set; }
         public Guid ChickenBatchId { get; set; }
     }
 }
