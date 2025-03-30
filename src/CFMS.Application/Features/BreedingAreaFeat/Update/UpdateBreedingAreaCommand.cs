@@ -18,6 +18,8 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Update
 
         public Guid BreedingAreaId { get; set; }
 
+        public Guid FarmId { get; set; }
+
         public string? BreedingAreaCode { get; set; }
 
         public string? BreedingAreaName { get; set; }

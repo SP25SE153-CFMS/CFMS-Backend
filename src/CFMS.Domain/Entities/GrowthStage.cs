@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -25,5 +26,6 @@ public partial class GrowthStage : EntityAudit
 
     public virtual SubCategory? ChickenTypeNavigation { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<GrowthBatch> GrowthBatches { get; set; } = new List<GrowthBatch>();
 }
