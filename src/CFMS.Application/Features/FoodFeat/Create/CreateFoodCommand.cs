@@ -10,7 +10,7 @@ namespace CFMS.Application.Features.FoodFeat.Create
 {
     public class CreateFoodCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateFoodCommand(string? foodCode, string? foodName, string? note, DateTime? productionDate, DateTime? expiryDate, Guid? unitId, Guid? packageId, decimal? packageSize)
+        public CreateFoodCommand(string? foodCode, string? foodName, string? note, DateTime? productionDate, DateTime? expiryDate, Guid? unitId, Guid? packageId, decimal? packageSize, Guid wareId)
         {
             FoodCode = foodCode;
             FoodName = foodName;
@@ -20,6 +20,7 @@ namespace CFMS.Application.Features.FoodFeat.Create
             UnitId = unitId;
             PackageId = packageId;
             PackageSize = packageSize;
+            WareId = wareId;
         }
 
         public string? FoodCode { get; set; }
@@ -37,5 +38,7 @@ namespace CFMS.Application.Features.FoodFeat.Create
         public Guid? PackageId { get; set; }
 
         public decimal? PackageSize { get; set; }
+
+        public Guid WareId { get; set; }
     }
 }
