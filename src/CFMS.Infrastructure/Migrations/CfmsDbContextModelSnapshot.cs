@@ -507,9 +507,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("EquipmentName")
                         .HasColumnType("character varying");
 
-                    b.Property<Guid>("FarmId")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -978,9 +975,6 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<DateTime?>("ExpiryDate")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("FarmId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("FoodCode")
                         .HasColumnType("character varying");
@@ -1478,9 +1472,6 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<DateTime?>("ExpiryDate")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("FarmId")
-                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
