@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250329155159_UpdateLatestDb-V7")]
+    [Migration("20250330163722_UpdateLatestDb-V7")]
     partial class UpdateLatestDbV7
     {
         /// <inheritdoc />

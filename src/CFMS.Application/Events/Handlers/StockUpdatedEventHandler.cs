@@ -22,37 +22,49 @@ namespace CFMS.Application.Events.Handlers
 
         public async System.Threading.Tasks.Task Handle(StockUpdatedEvent notification, CancellationToken cancellationToken)
         {
-            var resource = await _unitOfWork.ResourceRepository
-                .FirstOrDefaultAsync(x => x.FoodId == notification.ResourceId
-                    && x.UnitId == notification.UnitId
-                    && x.PackageId == notification.PackageId
-                    && x.PackageSize == notification.PackageSize
-                    && !x.IsDeleted);
+            var resource = _unitOfWork.ResourceRepository.Get
+                (filter: x => x.FoodId.Equals(notification.ResourceId)
+                    && x.UnitId.Equals(notification.UnitId)
+                    && x.PackageId.Equals(notification.PackageId)
+                    && x.PackageSize.Equals(notification.PackageSize)
+                    && x.IsDeleted == false).FirstOrDefault();
 
-            if (notification.IsCreatedCall)
+            var resourceType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Equals(notification.ResourceType) && x.IsDeleted == false).FirstOrDefault();
+            if (resourceType == null)
             {
-                if (resource != null)
-                    throw new Exception("Sản phẩm có quy cách tính như này đã tồn tại");
+                throw new Exception("Không tìm thấy loại hàng hoá");
+            }
 
+            if (notification.IsCreatedCall && resource == null)
+            {
                 resource = new Resource
                 {
-                    ResourceTypeId = notification.ResourceTypeId,
+                    ResourceTypeId = resourceType.SubCategoryId,
                     UnitId = notification.UnitId,
                     PackageId = notification.PackageId,
-                    PackageSize = notification.PackageSize,
-                    FoodId = notification.ResourceId
+                    PackageSize = notification.PackageSize
                 };
 
-                await _unitOfWork.ResourceRepository.InsertAsync(resource);
+                if (notification.ResourceType.Equals("food"))
+                    resource.FoodId = notification.ResourceId;
+
+                if (notification.ResourceType.Equals("medicine"))
+                    resource.MedicineId = notification.ResourceId;
+
+                if (notification.ResourceType.Equals("equipment"))
+                    resource.EquipmentId = notification.ResourceId;
+
+                await _unitOfWork.ResourceRepository.UpdateOrInsertAsync(resource);
                 await _unitOfWork.SaveChangesAsync();
-            }
-            else if (resource == null)
-            {
-                throw new Exception("Sản phẩm có quy cách tính như này không tồn tại");
             }
 
             var wareStock = await _unitOfWork.WareStockRepository
-                .FirstOrDefaultAsync(x => x.WareId == notification.WareId && x.ResourceId == resource.ResourceId);
+                  .FirstOrDefaultAsync(x => x.WareId == notification.WareId && x.ResourceId == resource.ResourceId);
+
+            if (notification.IsCreatedCall && resource != null && wareStock != null)
+            {
+                throw new Exception("Hàng hoá có quy cách tính này đã tồn tại");
+            }
 
             wareStock ??= new WareStock
             {
@@ -62,7 +74,7 @@ namespace CFMS.Application.Events.Handlers
             };
 
             wareStock.Quantity += notification.Quantity;
-            await _unitOfWork.WareStockRepository.UpdateOrInsertAsync(wareStock);     
+            await _unitOfWork.WareStockRepository.UpdateOrInsertAsync(wareStock);
             await _unitOfWork.SaveChangesAsync();
         }
     }

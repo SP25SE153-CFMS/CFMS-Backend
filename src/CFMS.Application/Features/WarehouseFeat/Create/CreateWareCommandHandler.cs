@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.WarehouseFeat.Create
 
         public async Task<BaseResponse<bool>> Handle(CreateWareCommand request, CancellationToken cancellationToken)
         {
-            var existWare = _unitOfWork.WarehouseRepository.Get(filter: s => s.WarehouseName.Equals(request.WarehouseName) && s.IsDeleted == false).FirstOrDefault();
+            var existWare = _unitOfWork.WarehouseRepository.Get(filter: s => s.FarmId.Equals(request.FarmId) && s.WarehouseName.Equals(request.WarehouseName) && s.IsDeleted == false).FirstOrDefault();
             if (existWare != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên kho đã tồn tại");

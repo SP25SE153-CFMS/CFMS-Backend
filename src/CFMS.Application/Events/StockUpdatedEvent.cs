@@ -11,12 +11,12 @@ namespace CFMS.Application.Events
 {
     public class StockUpdatedEvent : INotification
     {
-        public StockUpdatedEvent(Guid resourceId, int quantity, Guid? unitId, Guid resourceTypeId, Guid? packageId, decimal? packageSize, Guid wareId, bool isCreatedCall)
+        public StockUpdatedEvent(Guid resourceId, int quantity, Guid? unitId, string resourceType, Guid? packageId, decimal? packageSize, Guid wareId, bool isCreatedCall)
         {
             ResourceId = resourceId;
             Quantity = quantity;
             UnitId = unitId;
-            ResourceTypeId = resourceTypeId;
+            ResourceType = resourceType;
             PackageId = packageId;
             PackageSize = packageSize;
             WareId = wareId;
@@ -29,7 +29,7 @@ namespace CFMS.Application.Events
 
         public Guid ResourceId { get; set; }
 
-        public Guid ResourceTypeId { get; set; }
+        public string ResourceType { get; set; }
 
         public int Quantity { get; set; }
 

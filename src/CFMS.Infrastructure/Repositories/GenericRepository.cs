@@ -184,12 +184,20 @@ namespace CFMS.Infrastructure.Repositories
 
         public virtual async Task UpdateOrInsertAsync(TEntity entity)
         {
-            if (entity != null)
-            {
-                if (entity == null) return;
-                _dbSet.Add(entity);
-            }
-            else
+            if (entity == null) return;
+
+            var keyName = _context.Model
+                .FindEntityType(typeof(TEntity))
+                ?.FindPrimaryKey()
+                ?.Properties
+                ?.Select(p => p.Name)
+                .FirstOrDefault();
+
+            if (string.IsNullOrEmpty(keyName)) return;
+            var keyValue = _context.Entry(entity).Property(keyName).CurrentValue;
+            bool isInsert = keyValue == null || keyValue.Equals(Guid.Empty) || keyValue.Equals(0);
+
+            if (!isInsert)
             {
                 var trackedEntities = _context.ChangeTracker.Entries<TEntity>().ToList();
                 foreach (var trackedEntity in trackedEntities)
@@ -198,6 +206,11 @@ namespace CFMS.Infrastructure.Repositories
                 }
                 _dbSet.Attach(entity);
                 _context.Entry(entity).State = EntityState.Modified;
+            }
+            else
+            {
+                if (entity == null) return;
+                _dbSet.Add(entity);
             }
         }
     }
