@@ -33,5 +33,9 @@ namespace CFMS.Domain.Interfaces
         bool Update(object id, T entityToUpdate);
         void Update(T entityToUpdate);
         bool InsertRange(IEnumerable<T> entities);
+
+        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> filter);
+        Task InsertAsync(T entity);
+        Task UpdateOrInsertAsync(T entity);
     }
 }
