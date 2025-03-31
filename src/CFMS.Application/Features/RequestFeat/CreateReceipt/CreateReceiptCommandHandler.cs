@@ -1,90 +1,112 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CFMS.Application.Common;
+using CFMS.Application.Events;
+using CFMS.Application.Features.InventoryReceipts.Commands;
+using CFMS.Domain.Entities;
+using CFMS.Domain.Enums.Types;
+using CFMS.Domain.Interfaces;
+using CFMS.Infrastructure.Repositories;
+using MediatR;
+using System;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.RequestFeat.CreateReceipt
+public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInventoryReceiptCommand, BaseResponse<bool>>
 {
-    using global::CFMS.Application.Common;
-    using global::CFMS.Application.Features.InventoryReceipts.Commands;
-    using global::CFMS.Domain.Entities;
-    using global::CFMS.Domain.Enums.Types;
-    using global::CFMS.Domain.Interfaces;
-    using MediatR;
-    using System;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMediator _mediator;
 
-    namespace CFMS.Application.Features.InventoryReceipts.Commands
+    public CreateInventoryReceiptCommandHandler(IUnitOfWork unitOfWork, IMediator mediator)
     {
-        public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInventoryReceiptCommand, BaseResponse<bool>>
+        _unitOfWork = unitOfWork;
+        _mediator = mediator;
+    }
+
+    public async Task<BaseResponse<bool>> Handle(CreateInventoryReceiptCommand request, CancellationToken cancellationToken)
+    {
+        try
         {
-            private readonly IUnitOfWork _unitOfWork;
+            var existRequest = _unitOfWork.RequestRepository.Get(x => x.RequestId == request.RequestId && !x.IsDeleted).FirstOrDefault();
+            if (existRequest == null)
+                return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu không tồn tại");
 
-            public CreateInventoryReceiptCommandHandler(IUnitOfWork unitOfWork)
+            if (existRequest.Status == 1)
+                return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu đã bị từ chối");
+
+            if (existRequest.Status == 0)
+                return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu đang chờ duyệt");
+
+            var existReceiptType = _unitOfWork.SubCategoryRepository.Get(x => x.SubCategoryId.Equals(request.ReceiptTypeId) && !x.IsDeleted).FirstOrDefault();
+            if (existReceiptType == null)
+                return BaseResponse<bool>.FailureResponse("Loại phiếu không tồn tại");
+
+            string receiptCodePrefix = existReceiptType.SubCategoryName.Equals(RequestType.IMPORT.ToString()) ? "PNK" : "PXK";
+            var inventoryReceipt = new InventoryReceipt
             {
-                _unitOfWork = unitOfWork;
-            }
+                InventoryRequestId = request.InventoryRequestId,
+                ReceiptTypeId = request.ReceiptTypeId,
+                ReceiptCodeNumber = $"{receiptCodePrefix}-{DateTime.UtcNow.Ticks}"
+            };
 
-            public async Task<BaseResponse<bool>> Handle(CreateInventoryReceiptCommand request, CancellationToken cancellationToken)
+            _unitOfWork.InventoryReceiptRepository.Insert(inventoryReceipt);
+            await _unitOfWork.SaveChangesAsync();
+
+            if (receiptCodePrefix == "PXK")
             {
-                try
+                foreach (var detail in inventoryReceipt.InventoryReceiptDetails)
                 {
-                    var existRequest = _unitOfWork.RequestRepository.Get(filter: x => x.RequestId.Equals(request.RequestId) && x.IsDeleted == false).FirstOrDefault();
-                    if (existRequest == null)
-                    {
-                        return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu không tồn tại");
-                    }
-
-                    if (existRequest.Status.Equals(1))
-                    {
-                        return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu đã bị từ chối");
-                    }
-
-                    if (existRequest.Status.Equals(0))
-                    {
-                        return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu đang chờ duyệt");
-                    }
-
-                    var existReceiptType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(request.ReceiptTypeId) && x.IsDeleted == false).FirstOrDefault();
-
-                    if (existReceiptType == null)
-                    {
-                        return BaseResponse<bool>.FailureResponse("Loại phiếu không tồn tại");
-                    }
-
-
-
-                    //var inventoryReceipt = new InventoryReceipt
-                    //{
-                    //    InventoryRequestId = request.InventoryRequestId,
-                    //    ReceiptTypeId = request.ReceiptTypeId,
-                    //    ReceiptCodeNumber = $"PNX-{DateTime.UtcNow.Ticks}",
-                    //    Status = 1,
-                    //    InventoryReceiptDetails = request.ReceiptDetails.Select(d => new InventoryReceiptDetail
-                    //    {
-                    //        InventoryReceiptDetailId = Guid.NewGuid(),
-                    //        ActualQuantity = d.ActualQuantity,
-                    //        ActualDate = d.ActualDate,
-                    //        Note = d.Note,
-                    //        BatchNumber = d.BatchNumber
-                    //    }).ToList()
-                    //};
-
-                    //await _receiptRepository.Insert(inventoryReceipt);
-                    //await _receiptRepository.Save();
-
-                    //inventoryReceipt.InventoryReceiptId;
-
-                    return BaseResponse<bool>.SuccessResponse("Tạo phiếu nhập thành công");
-                }
-                catch (Exception ex)
-                {
-                    return BaseResponse<bool>.FailureResponse("Tạo thất bại: " + ex.Message);
+                    var stock = _unitOfWork.WareStockRepository.Get(x => x.ResourceId.Equals(detail.ResourceId) && x.WareId.Equals(request.WareFromId)).FirstOrDefault();
+                    if (stock == null || stock.Quantity < detail.ActualQuantity)
+                        return BaseResponse<bool>.FailureResponse("Không đủ hàng trong kho để xuất");
                 }
             }
+
+            foreach (var d in request.ReceiptDetails)
+            {
+                var inventoryReceiptDetail = new InventoryReceiptDetail
+                {
+                    ResourceId = d.ResourceId,
+                    ResourceSupplierId = null,
+                    ActualQuantity = d.ActualQuantity,
+                    ActualDate = DateTime.Now,
+                    Note = d.Note,
+                    BatchNumber = d.BatchNumber
+                };
+                _unitOfWork.InventoryReceiptDetailRepository.Insert(inventoryReceiptDetail);
+
+                var existResource = _unitOfWork.ResourceRepository.Get(filter: x => x.ResourceId.Equals(d.ResourceId)).FirstOrDefault();
+
+                var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(existResource.ResourceTypeId)).FirstOrDefault();
+
+                var typeName = existResourceType.SubCategoryName;
+
+                var resourceId = typeName.Equals("food")
+                    ? existResource.FoodId
+                    : typeName.Equals("equipment")
+                        ? existResource.EquipmentId
+                        : typeName.Equals("equipment")
+                            ? existResource.MedicineId
+                            : null;
+
+                await _mediator.Publish(new StockUpdatedEvent(
+                    resourceId ?? Guid.Empty,
+                    receiptCodePrefix == "PNK" ? (int)d.ActualQuantity.Value : -(int)d.ActualQuantity.Value,
+                    existResource.UnitId,
+                    typeName,
+                    existResource.PackageId,
+                    existResource.PackageSize,
+                    request.WareToId ?? Guid.Empty,
+                    false
+                ));
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return BaseResponse<bool>.SuccessResponse($"Tạo phiếu {(receiptCodePrefix.Equals("PNK") ? "nhập" : "xuất")} thành công");
+        }
+        catch (Exception ex)
+        {
+            return BaseResponse<bool>.FailureResponse("Tạo thất bại: " + ex.Message);
         }
     }
 }

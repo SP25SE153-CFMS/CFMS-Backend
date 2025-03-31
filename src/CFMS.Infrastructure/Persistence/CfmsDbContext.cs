@@ -928,7 +928,7 @@ public partial class CfmsDbContext : DbContext
 
             entity.Property(e => e.InventoryReceiptId).HasDefaultValueSql("gen_random_uuid()");
             entity.Property(e => e.ReceiptCodeNumber).HasColumnType("character varying");
-            entity.Property(e => e.Status).HasDefaultValue(1);
+            //entity.Property(e => e.Status).HasDefaultValue(1);
 
             entity.HasOne(d => d.InventoryRequest).WithMany(p => p.InventoryReceipts)
                 .HasForeignKey(d => d.InventoryRequestId)

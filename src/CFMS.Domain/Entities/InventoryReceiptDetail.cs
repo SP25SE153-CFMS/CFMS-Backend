@@ -9,6 +9,10 @@ public partial class InventoryReceiptDetail
 
     public Guid? InventoryReceiptId { get; set; }
 
+    public Guid? ResourceId { get; set; }
+
+    public Guid? ResourceSupplierId { get; set; }
+
     public decimal? ActualQuantity { get; set; }
 
     public DateTime? ActualDate { get; set; }

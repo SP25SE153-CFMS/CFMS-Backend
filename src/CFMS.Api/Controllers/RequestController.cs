@@ -3,6 +3,7 @@ using CFMS.Application.Features.FoodFeat.Delete;
 using CFMS.Application.Features.FoodFeat.GetFood;
 using CFMS.Application.Features.FoodFeat.GetFoods;
 using CFMS.Application.Features.FoodFeat.Update;
+using CFMS.Application.Features.InventoryReceipts.Commands;
 using CFMS.Application.Features.RequestFeat.ApproveRequest;
 using CFMS.Application.Features.RequestFeat.Create;
 using CFMS.Application.Features.RequestFeat.Delete;
@@ -57,6 +58,13 @@ namespace CFMS.Api.Controllers
 
         [HttpPut("/approve")]
         public async Task<IActionResult> Approve(ApproveRequestCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }        
+        
+        [HttpPost("/create-inventory-receipt")]
+        public async Task<IActionResult> CreateInventoryReceipt(CreateInventoryReceiptCommand command)
         {
             var result = await Send(command);
             return result;

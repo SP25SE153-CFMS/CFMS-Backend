@@ -9,6 +9,8 @@ namespace CFMS.Domain.Enums.Types
     public enum RequestType
     {
         REQUEST_TYPE,
-        INVENTORY_REQUEST_TYPE
+        INVENTORY_REQUEST_TYPE,
+        IMPORT,
+        EXPORT
     }
 }
