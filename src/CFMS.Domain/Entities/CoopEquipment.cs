@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -25,6 +26,7 @@ public partial class CoopEquipment : EntityAudit
 
     public string? Note { get; set; }
 
+    [JsonIgnore]
     public virtual ChickenCoop? ChickenCoop { get; set; }
 
     public virtual Equipment? Equipment { get; set; }
