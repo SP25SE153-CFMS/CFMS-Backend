@@ -1097,7 +1097,7 @@ public partial class CfmsDbContext : DbContext
 
             entity.Property(e => e.RequestId).HasDefaultValueSql("gen_random_uuid()");
             entity.Property(e => e.ApprovedAt).HasColumnType("timestamp(6) without time zone");
-            entity.Property(e => e.Status).HasDefaultValue(1);
+            entity.Property(e => e.Status).HasDefaultValue(0);
 
             entity.HasOne(d => d.ApprovedBy).WithMany(p => p.Requests)
                 .HasForeignKey(d => d.ApprovedById)

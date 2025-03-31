@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250331011708_UpdateLatestDb-V9")]
+    [Migration("20250331014921_UpdateLatestDb-V9")]
     partial class UpdateLatestDbV9
     {
         /// <inheritdoc />
@@ -1704,7 +1704,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<int?>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasDefaultValue(1);
+                        .HasDefaultValue(0);
 
                     b.HasKey("RequestId")
                         .HasName("Request_pkey");

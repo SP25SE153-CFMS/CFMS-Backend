@@ -3,6 +3,7 @@ using CFMS.Application.Features.FoodFeat.Delete;
 using CFMS.Application.Features.FoodFeat.GetFood;
 using CFMS.Application.Features.FoodFeat.GetFoods;
 using CFMS.Application.Features.FoodFeat.Update;
+using CFMS.Application.Features.RequestFeat.ApproveRequest;
 using CFMS.Application.Features.RequestFeat.Create;
 using CFMS.Application.Features.RequestFeat.Delete;
 using CFMS.Application.Features.RequestFeat.GetRequest;
@@ -51,6 +52,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await Send(new DeleteRequestCommand(id));
+            return result;
+        }
+
+        [HttpPut("/approve")]
+        public async Task<IActionResult> Approve(ApproveRequestCommand command)
+        {
+            var result = await Send(command);
             return result;
         }
     }
