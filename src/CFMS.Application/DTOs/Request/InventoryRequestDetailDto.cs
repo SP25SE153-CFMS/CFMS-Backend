@@ -9,6 +9,7 @@ namespace CFMS.Application.DTOs.Request
     public class InventoryRequestDetailDto
     {
         public Guid? ResourceId { get; set; }
+        public Guid? ResourceSupplierId { get; set; }
         public decimal? ExpectedQuantity { get; set; }
         public Guid? UnitId { get; set; }
         public string? Reason { get; set; }

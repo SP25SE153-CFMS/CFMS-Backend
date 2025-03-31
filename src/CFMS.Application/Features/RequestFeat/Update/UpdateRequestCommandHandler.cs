@@ -62,6 +62,7 @@ namespace CFMS.Application.Features.RequestFeat.Update
                         {
                             InventoryRequestId = inventoryRequest.InventoryRequestId,
                             ResourceId = detail.ResourceId,
+                            ResourceSupplierId = detail.ResourceSupplierId,
                             ExpectedQuantity = detail.ExpectedQuantity,
                             UnitId = detail.UnitId,
                             Reason = detail.Reason,
