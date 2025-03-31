@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.SupplierFeat.Update
             }
 
             var existNameCode = _unitOfWork.SupplierRepository.Get(filter: s => s.SupplierCode.Equals(request.SupplierCode) || s.SupplierName.Equals(request.SupplierName) && s.IsDeleted == false && s.SupplierId != request.SupplierId).FirstOrDefault();
-            if (existSupplier != null)
+            if (existNameCode != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên hoặc mã nhà cung cấp đã tồn tại");
             }
