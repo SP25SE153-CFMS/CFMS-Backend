@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.GetCoop
 
         public async Task<BaseResponse<ChickenCoop>> Handle(GetCoopQuery request, CancellationToken cancellationToken)
         {
-            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.Id) && c.IsDeleted == false, includeProperties: [c => c.ChickenBatches, c => c.CoopEquipments]).FirstOrDefault();
+            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.Id) && c.IsDeleted == false, includeProperties: [c => c.ChickenBatches, c => c.CoopEquipments, c => c.DensityUnit]).FirstOrDefault();
             if (existCoop == null)
             {
                 return BaseResponse<ChickenCoop>.FailureResponse(message: "Chuồng gà không tồn tại");
