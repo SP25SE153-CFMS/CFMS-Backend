@@ -1,4 +1,5 @@
-﻿using CFMS.Application.Features.SupplierFeat.Create;
+﻿using CFMS.Application.Features.SupplierFeat.AddResourceSupplier;
+using CFMS.Application.Features.SupplierFeat.Create;
 using CFMS.Application.Features.SupplierFeat.Delete;
 using CFMS.Application.Features.SupplierFeat.GetSupplier;
 using CFMS.Application.Features.SupplierFeat.GetSuppliers;
@@ -46,6 +47,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await Send(new DeleteSupplierCommand(id));
+            return result;
+        }
+
+        [HttpPost("add-resource-supplier")]
+        public async Task<IActionResult> AddResourceSupplier(AddResourceSupplierCommand command)
+        {
+            var result = await Send(command);
             return result;
         }
     }

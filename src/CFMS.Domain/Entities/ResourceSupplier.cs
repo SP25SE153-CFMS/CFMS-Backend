@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -25,6 +26,7 @@ public partial class ResourceSupplier : EntityAudit
 
     public virtual Resource? Resource { get; set; }
 
+    [JsonIgnore]
     public virtual Supplier? Supplier { get; set; }
 
     //public virtual SubCategory? UnitPrice { get; set; }
