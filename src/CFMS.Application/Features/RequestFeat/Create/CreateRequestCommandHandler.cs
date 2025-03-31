@@ -38,7 +38,6 @@ namespace CFMS.Application.Features.RequestFeat.Create
             }
 
             var newRequest = _mapper.Map<Request>(request);
-            newRequest.RequestId = Guid.NewGuid();
 
             _unitOfWork.RequestRepository.Insert(newRequest);
             await _unitOfWork.SaveChangesAsync();
@@ -62,6 +61,7 @@ namespace CFMS.Application.Features.RequestFeat.Create
                     {
                         InventoryRequestId = inventoryRequest.InventoryRequestId,
                         ResourceId = detail.ResourceId,
+                        ResourceSupplierId = detail.ResourceSupplierId,
                         ExpectedQuantity = detail.ExpectedQuantity,
                         UnitId = detail.UnitId,
                         Reason = detail.Reason,

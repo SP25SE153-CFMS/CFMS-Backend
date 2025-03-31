@@ -11,6 +11,8 @@ public partial class InventoryRequestDetail
 
     public Guid? ResourceId { get; set; }
 
+    public Guid? ResourceSupplierId { get; set; }
+
     public decimal? ExpectedQuantity { get; set; }
 
     public Guid? UnitId { get; set; }
@@ -24,6 +26,8 @@ public partial class InventoryRequestDetail
     public virtual InventoryRequest? InventoryRequest { get; set; }
 
     public virtual Resource? Resource { get; set; }
+
+    public virtual ResourceSupplier? ResourceSupplier { get; set; }
 
     public virtual SubCategory? Unit { get; set; }
 }

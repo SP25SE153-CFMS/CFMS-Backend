@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250330163722_UpdateLatestDb-V7")]
-    partial class UpdateLatestDbV7
+    [Migration("20250331011708_UpdateLatestDb-V9")]
+    partial class UpdateLatestDbV9
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,18 +59,12 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ShiftScheduleId")
-                        .HasColumnType("uuid");
-
                     b.Property<int?>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(1);
 
                     b.Property<Guid?>("TaskId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("TaskScheduleId")
                         .HasColumnType("uuid");
 
                     b.HasKey("AssignmentId")
@@ -1436,6 +1430,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid?>("ResourceId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ResourceSupplierId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("UnitId")
                         .HasColumnType("uuid");
 
@@ -1445,6 +1442,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasIndex("InventoryRequestId");
 
                     b.HasIndex("ResourceId");
+
+                    b.HasIndex("ResourceSupplierId");
 
                     b.HasIndex("UnitId");
 
@@ -1817,12 +1816,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime>("LastEditedWhen")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid?>("PackagePriceId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal?>("PackageSizePrice")
-                        .HasColumnType("numeric");
-
                     b.Property<decimal?>("Price")
                         .HasColumnType("numeric");
 
@@ -1832,9 +1825,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid?>("SupplierId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("UnitPriceId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("ResourceSupplierId")
                         .HasName("ResourceSupplier_pkey");
 
@@ -1842,13 +1832,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasIndex("LastEditedByUserId");
 
-                    b.HasIndex("PackagePriceId");
-
                     b.HasIndex("ResourceId");
 
                     b.HasIndex("SupplierId");
-
-                    b.HasIndex("UnitPriceId");
 
                     b.ToTable("ResourceSupplier", (string)null);
                 });
@@ -3497,6 +3483,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasOne("CFMS.Domain.Entities.Request", "Request")
                         .WithMany("InventoryRequests")
                         .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("InventoryRequest_RequestId_fkey");
 
                     b.HasOne("CFMS.Domain.Entities.Warehouse", "WareFrom")
@@ -3535,6 +3522,11 @@ namespace CFMS.Infrastructure.Migrations
                         .HasForeignKey("ResourceId")
                         .HasConstraintName("InventoryRequestDetail_ResourceId_fkey");
 
+                    b.HasOne("CFMS.Domain.Entities.ResourceSupplier", "ResourceSupplier")
+                        .WithMany("InventoryRequestDetails")
+                        .HasForeignKey("ResourceSupplierId")
+                        .HasConstraintName("InventoryRequestDetail_ResourceSupplierId_fkey");
+
                     b.HasOne("CFMS.Domain.Entities.SubCategory", "Unit")
                         .WithMany("InventoryRequestDetails")
                         .HasForeignKey("UnitId")
@@ -3543,6 +3535,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("InventoryRequest");
 
                     b.Navigation("Resource");
+
+                    b.Navigation("ResourceSupplier");
 
                     b.Navigation("Unit");
                 });
@@ -3760,11 +3754,6 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CFMS.Domain.Entities.SubCategory", "PackagePrice")
-                        .WithMany("ResourceSupplierPackagePrices")
-                        .HasForeignKey("PackagePriceId")
-                        .HasConstraintName("ResourceSupplier_PackagePriceId_fkey");
-
                     b.HasOne("CFMS.Domain.Entities.Resource", "Resource")
                         .WithMany("ResourceSuppliers")
                         .HasForeignKey("ResourceId")
@@ -3776,22 +3765,13 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("ResourceSupplier_SupplierId_fkey");
 
-                    b.HasOne("CFMS.Domain.Entities.SubCategory", "UnitPrice")
-                        .WithMany("ResourceSupplierUnitPrices")
-                        .HasForeignKey("UnitPriceId")
-                        .HasConstraintName("ResourceSupplier_UnitPriceId_fkey");
-
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("LastEditedByUser");
 
-                    b.Navigation("PackagePrice");
-
                     b.Navigation("Resource");
 
                     b.Navigation("Supplier");
-
-                    b.Navigation("UnitPrice");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.RevokedToken", b =>
@@ -4420,6 +4400,11 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("WareStocks");
                 });
 
+            modelBuilder.Entity("CFMS.Domain.Entities.ResourceSupplier", b =>
+                {
+                    b.Navigation("InventoryRequestDetails");
+                });
+
             modelBuilder.Entity("CFMS.Domain.Entities.Shift", b =>
                 {
                     b.Navigation("ShiftSchedules");
@@ -4466,10 +4451,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("ResourcePackages");
 
                     b.Navigation("ResourceResourceTypes");
-
-                    b.Navigation("ResourceSupplierPackagePrices");
-
-                    b.Navigation("ResourceSupplierUnitPrices");
 
                     b.Navigation("ResourceUnits");
 

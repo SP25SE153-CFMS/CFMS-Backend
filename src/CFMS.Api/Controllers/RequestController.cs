@@ -7,6 +7,7 @@ using CFMS.Application.Features.RequestFeat.Create;
 using CFMS.Application.Features.RequestFeat.Delete;
 using CFMS.Application.Features.RequestFeat.GetRequest;
 using CFMS.Application.Features.RequestFeat.GetRequests;
+using CFMS.Application.Features.RequestFeat.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,12 +40,12 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        //[HttpPut]
-        //public async Task<IActionResult> Update(UpdateRequestCommand command)
-        //{
-        //    var result = await Send(command);
-        //    return result;
-        //}
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateRequestCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)

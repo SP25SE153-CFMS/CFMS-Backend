@@ -81,11 +81,11 @@ public partial class SubCategory : EntityAudit
     [JsonIgnore]
     public virtual ICollection<Resource> ResourceResourceTypes { get; set; } = new List<Resource>();
 
-    [JsonIgnore]
-    public virtual ICollection<ResourceSupplier> ResourceSupplierPackagePrices { get; set; } = new List<ResourceSupplier>();
+    //[JsonIgnore]
+    //public virtual ICollection<ResourceSupplier> ResourceSupplierPackagePrices { get; set; } = new List<ResourceSupplier>();
 
-    [JsonIgnore]
-    public virtual ICollection<ResourceSupplier> ResourceSupplierUnitPrices { get; set; } = new List<ResourceSupplier>();
+    //[JsonIgnore]
+    //public virtual ICollection<ResourceSupplier> ResourceSupplierUnitPrices { get; set; } = new List<ResourceSupplier>();
 
     [JsonIgnore]
     public virtual ICollection<Resource> ResourceUnits { get; set; } = new List<Resource>();

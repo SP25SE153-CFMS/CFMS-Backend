@@ -962,6 +962,7 @@ public partial class CfmsDbContext : DbContext
 
             entity.HasOne(d => d.Request).WithMany(p => p.InventoryRequests)
                 .HasForeignKey(d => d.RequestId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("InventoryRequest_RequestId_fkey");
 
             entity.HasOne(d => d.WareFrom).WithMany(p => p.InventoryRequestWareFroms)
@@ -996,6 +997,10 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.Unit).WithMany(p => p.InventoryRequestDetails)
                 .HasForeignKey(d => d.UnitId)
                 .HasConstraintName("InventoryRequestDetail_UnitId_fkey");
+
+            entity.HasOne(d => d.ResourceSupplier).WithMany(p => p.InventoryRequestDetails)
+                .HasForeignKey(d => d.ResourceSupplierId)
+                .HasConstraintName("InventoryRequestDetail_ResourceSupplierId_fkey");
         });
 
         modelBuilder.Entity<Medicine>(entity =>
@@ -1135,9 +1140,9 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.ResourceSupplierId).HasDefaultValueSql("gen_random_uuid()");
             entity.Property(e => e.Description).HasColumnType("character varying");
 
-            entity.HasOne(d => d.PackagePrice).WithMany(p => p.ResourceSupplierPackagePrices)
-                .HasForeignKey(d => d.PackagePriceId)
-                .HasConstraintName("ResourceSupplier_PackagePriceId_fkey");
+            //entity.HasOne(d => d.PackagePrice).WithMany(p => p.ResourceSupplierPackagePrices)
+            //    .HasForeignKey(d => d.PackagePriceId)
+            //    .HasConstraintName("ResourceSupplier_PackagePriceId_fkey");
 
             entity.HasOne(d => d.Resource).WithMany(p => p.ResourceSuppliers)
                 .HasForeignKey(d => d.ResourceId)
@@ -1148,9 +1153,9 @@ public partial class CfmsDbContext : DbContext
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("ResourceSupplier_SupplierId_fkey");
 
-            entity.HasOne(d => d.UnitPrice).WithMany(p => p.ResourceSupplierUnitPrices)
-                .HasForeignKey(d => d.UnitPriceId)
-                .HasConstraintName("ResourceSupplier_UnitPriceId_fkey");
+            //entity.HasOne(d => d.UnitPrice).WithMany(p => p.ResourceSupplierUnitPrices)
+            //    .HasForeignKey(d => d.UnitPriceId)
+            //    .HasConstraintName("ResourceSupplier_UnitPriceId_fkey");
         });
 
         modelBuilder.Entity<RevokedToken>(entity =>
