@@ -5,6 +5,17 @@ namespace CFMS.Application.Features.ChickenCoopFeat.AddCoopEquipment
 {
     public class AddCoopEquipmentCommand : IRequest<BaseResponse<bool>>
     {
+        public AddCoopEquipmentCommand(Guid? chickenCoopId, Guid? equipmentId, int? quantity, DateTime? assignedDate, int maintenanceInterval, int? status, string? note)
+        {
+            ChickenCoopId = chickenCoopId;
+            EquipmentId = equipmentId;
+            Quantity = quantity;
+            AssignedDate = assignedDate;
+            MaintenanceInterval = maintenanceInterval;
+            Status = status;
+            Note = note;
+        }
+
         public Guid? ChickenCoopId { get; set; }
 
         public Guid? EquipmentId { get; set; }
@@ -13,9 +24,9 @@ namespace CFMS.Application.Features.ChickenCoopFeat.AddCoopEquipment
 
         public DateTime? AssignedDate { get; set; }
 
-        public DateTime? LastMaintenanceDate { get; set; }
+        //public DateTime? LastMaintenanceDate { get; set; }
 
-        public DateTime? NextMaintenanceDate { get; set; }
+        //public DateTime? NextMaintenanceDate { get; set; }
 
         public int MaintenanceInterval { get; set; }
 
