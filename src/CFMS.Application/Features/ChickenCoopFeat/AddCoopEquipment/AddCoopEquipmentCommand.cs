@@ -24,9 +24,9 @@ namespace CFMS.Application.Features.ChickenCoopFeat.AddCoopEquipment
 
         public DateTime? AssignedDate { get; set; }
 
-        //public DateTime? LastMaintenanceDate { get; set; }
+        public DateTime? LastMaintenanceDate { get; set; }
 
-        //public DateTime? NextMaintenanceDate { get; set; }
+        public DateTime? NextMaintenanceDate { get; set; }
 
         public int MaintenanceInterval { get; set; }
 
