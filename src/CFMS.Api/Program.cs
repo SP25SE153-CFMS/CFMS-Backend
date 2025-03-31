@@ -16,9 +16,9 @@ app.UseSwaggerDocumentation();
 
 app.UseHttpsRedirection();
 
-app.UseRouting();
+app.UseCorsPolicy();
 
-app.UseCorsPolicy(); 
+app.UseRouting();
 
 app.UseAuthentication(); 
 
