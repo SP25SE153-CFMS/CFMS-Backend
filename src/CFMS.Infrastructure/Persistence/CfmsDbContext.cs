@@ -962,6 +962,7 @@ public partial class CfmsDbContext : DbContext
 
             entity.HasOne(d => d.Request).WithMany(p => p.InventoryRequests)
                 .HasForeignKey(d => d.RequestId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("InventoryRequest_RequestId_fkey");
 
             entity.HasOne(d => d.WareFrom).WithMany(p => p.InventoryRequestWareFroms)

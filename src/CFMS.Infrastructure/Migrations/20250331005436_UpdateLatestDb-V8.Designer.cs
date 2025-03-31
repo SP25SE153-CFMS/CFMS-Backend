@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250330163722_UpdateLatestDb-V7")]
-    partial class UpdateLatestDbV7
+    [Migration("20250331005436_UpdateLatestDb-V8")]
+    partial class UpdateLatestDbV8
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,18 +59,12 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ShiftScheduleId")
-                        .HasColumnType("uuid");
-
                     b.Property<int?>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(1);
 
                     b.Property<Guid?>("TaskId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("TaskScheduleId")
                         .HasColumnType("uuid");
 
                     b.HasKey("AssignmentId")
@@ -3497,6 +3491,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasOne("CFMS.Domain.Entities.Request", "Request")
                         .WithMany("InventoryRequests")
                         .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("InventoryRequest_RequestId_fkey");
 
                     b.HasOne("CFMS.Domain.Entities.Warehouse", "WareFrom")
