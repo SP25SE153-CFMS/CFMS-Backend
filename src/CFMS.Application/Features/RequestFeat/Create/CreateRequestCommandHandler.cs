@@ -1,0 +1,94 @@
+﻿using AutoMapper;
+using CFMS.Application.Common;
+using CFMS.Domain.Entities;
+using CFMS.Domain.Interfaces;
+using MediatR;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace CFMS.Application.Features.RequestFeat.Create
+{
+    public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand, BaseResponse<bool>>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly ICurrentUserService _currentUserService;
+
+        public CreateRequestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUserService)
+        {
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _currentUserService = currentUserService;
+        }
+
+        public async Task<BaseResponse<bool>> Handle(CreateRequestCommand request, CancellationToken cancellationToken)
+        {
+            var user = _currentUserService.GetUserId();
+
+            var lastRequest = _unitOfWork.RequestRepository
+                .Get(filter: r => r.CreatedByUser.UserId.ToString().Equals(user))
+                .OrderByDescending(r => r.CreatedWhen)
+                .FirstOrDefault();
+
+            if (lastRequest != null && (DateTime.Now - lastRequest.CreatedWhen).TotalSeconds < 10)
+            {
+                return BaseResponse<bool>.FailureResponse("Bạn không thể tạo yêu cầu quá nhanh. Vui lòng thử lại sau");
+            }
+
+            var newRequest = _mapper.Map<Request>(request);
+            newRequest.RequestId = Guid.NewGuid();
+
+            _unitOfWork.RequestRepository.Insert(newRequest);
+            await _unitOfWork.SaveChangesAsync();
+
+            if (request.IsInventoryRequest)
+            {
+                var inventoryRequest = new InventoryRequest
+                {
+                    RequestId = newRequest.RequestId,
+                    InventoryRequestTypeId = request.InventoryRequestTypeId,
+                    WareFromId = request.WareFromId,
+                    WareToId = request.WareToId
+                };
+
+                _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
+                await _unitOfWork.SaveChangesAsync();
+
+                foreach (var detail in request.InventoryDetails)
+                {
+                    var inventoryRequestDetail = new InventoryRequestDetail
+                    {
+                        InventoryRequestId = inventoryRequest.InventoryRequestId,
+                        ResourceId = detail.ResourceId,
+                        ExpectedQuantity = detail.ExpectedQuantity,
+                        UnitId = detail.UnitId,
+                        Reason = detail.Reason,
+                        ExpectedDate = detail.ExpectedDate,
+                        Note = detail.Note
+                    };
+                    _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);
+                }
+            }
+            else
+            {
+                var taskRequest = new TaskRequest
+                {
+                    RequestId = newRequest.RequestId,
+                    TaskTypeId = request.TaskTypeId,
+                    Priority = request.Priority,
+                    Description = request.Description
+                };
+
+                _unitOfWork.TaskRequestRepository.Insert(taskRequest);
+            }
+
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            return result > 0
+                ? BaseResponse<bool>.SuccessResponse("Tạo yêu cầu thành công")
+                : BaseResponse<bool>.FailureResponse("Thêm thất bại");
+        }
+    }
+}
