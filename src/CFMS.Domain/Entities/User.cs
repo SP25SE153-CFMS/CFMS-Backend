@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -31,6 +32,7 @@ public partial class User
 
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
+    [JsonIgnore]
     public virtual ICollection<FarmEmployee> FarmEmployees { get; set; } = new List<FarmEmployee>();
 
     public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
