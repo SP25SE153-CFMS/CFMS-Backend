@@ -22,7 +22,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Update
             }
 
 
-            var existNameCode = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaCode.Equals(request.BreedingAreaCode) && ba.FarmId.Equals(request.FarmId) && ba.IsDeleted == false).FirstOrDefault();
+            var existNameCode = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaCode.Equals(request.BreedingAreaCode) && ba.FarmId.Equals(request.FarmId) && ba.IsDeleted == false && ba.BreedingAreaId != request.BreedingAreaId).FirstOrDefault();
             if (existNameCode != null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã khu nuôi đã tồn tại");
