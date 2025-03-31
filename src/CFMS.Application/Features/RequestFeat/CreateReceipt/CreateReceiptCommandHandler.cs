@@ -9,6 +9,7 @@ namespace CFMS.Application.Features.RequestFeat.CreateReceipt
     using global::CFMS.Application.Common;
     using global::CFMS.Application.Features.InventoryReceipts.Commands;
     using global::CFMS.Domain.Entities;
+    using global::CFMS.Domain.Enums.Types;
     using global::CFMS.Domain.Interfaces;
     using MediatR;
     using System;
@@ -45,6 +46,13 @@ namespace CFMS.Application.Features.RequestFeat.CreateReceipt
                     if (existRequest.Status.Equals(0))
                     {
                         return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu đang chờ duyệt");
+                    }
+
+                    var existReceiptType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(request.ReceiptTypeId) && x.IsDeleted == false).FirstOrDefault();
+
+                    if (existReceiptType == null)
+                    {
+                        return BaseResponse<bool>.FailureResponse("Loại phiếu không tồn tại");
                     }
 
 
