@@ -26,7 +26,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetSuppliers
 
         public async Task<BaseResponse<IEnumerable<Supplier>>> Handle(GetSuppliersQuery request, CancellationToken cancellationToken)
         {
-            var suppliers = _unitOfWork.SupplierRepository.Get(filter: f => f.IsDeleted == false);
+            var suppliers = _unitOfWork.SupplierRepository.Get(filter: f => f.IsDeleted == false, includeProperties: [s => s.ResourceSuppliers]);
             return BaseResponse<IEnumerable<Supplier>>.SuccessResponse(_mapper.Map<IEnumerable<Supplier>>(suppliers));
         }
     }
