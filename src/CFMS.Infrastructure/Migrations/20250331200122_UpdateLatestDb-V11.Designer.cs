@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250331020650_UpdateLatestDb-V9")]
-    partial class UpdateLatestDbV9
+    [Migration("20250331200122_UpdateLatestDb-V11")]
+    partial class UpdateLatestDbV11
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1301,11 +1301,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid?>("ReceiptTypeId")
                         .HasColumnType("uuid");
 
-                    b.Property<int?>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(1);
-
                     b.HasKey("InventoryReceiptId")
                         .HasName("InventoryReceipt_pkey");
 
@@ -1341,6 +1336,12 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<string>("Note")
                         .HasColumnType("character varying");
+
+                    b.Property<Guid?>("ResourceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ResourceSupplierId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("InventoryReceiptDetailId")
                         .HasName("InventoryReceiptDetail_pkey");

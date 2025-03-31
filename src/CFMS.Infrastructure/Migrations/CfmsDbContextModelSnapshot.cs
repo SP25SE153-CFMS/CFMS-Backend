@@ -1298,11 +1298,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid?>("ReceiptTypeId")
                         .HasColumnType("uuid");
 
-                    b.Property<int?>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(1);
-
                     b.HasKey("InventoryReceiptId")
                         .HasName("InventoryReceipt_pkey");
 
@@ -1338,6 +1333,12 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<string>("Note")
                         .HasColumnType("character varying");
+
+                    b.Property<Guid?>("ResourceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ResourceSupplierId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("InventoryReceiptDetailId")
                         .HasName("InventoryReceiptDetail_pkey");
