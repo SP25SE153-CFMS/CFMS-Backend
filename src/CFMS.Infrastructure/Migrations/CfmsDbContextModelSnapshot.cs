@@ -1701,7 +1701,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<int?>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasDefaultValue(1);
+                        .HasDefaultValue(0);
 
                     b.HasKey("RequestId")
                         .HasName("Request_pkey");
