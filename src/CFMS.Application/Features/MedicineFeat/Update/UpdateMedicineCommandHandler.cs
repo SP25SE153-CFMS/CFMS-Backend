@@ -27,7 +27,7 @@ namespace CFMS.Application.Features.MedicineFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Dược phẩm không tồn tại");
             }
 
-            var existName = _unitOfWork.MedicineRepository.Get(filter: s => s.MedicineCode.Equals(request.MedicineCode) || s.MedicineName.Equals(request.MedicineName) && s.IsDeleted == false).FirstOrDefault();
+            var existName = _unitOfWork.MedicineRepository.Get(filter: s => s.MedicineCode.Equals(request.MedicineCode) || s.MedicineName.Equals(request.MedicineName) && s.IsDeleted == false && s.MedicineId != request.MedicineId).FirstOrDefault();
             if (existName != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên hoặc mã dược phẩm đã tồn tại");

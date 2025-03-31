@@ -22,7 +22,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetSupplier
 
         public async Task<BaseResponse<Supplier>> Handle(GetSupplierQuery request, CancellationToken cancellationToken)
         {
-            var existSupplier = _unitOfWork.SupplierRepository.Get(filter: f => f.SupplierId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
+            var existSupplier = _unitOfWork.SupplierRepository.Get(filter: f => f.SupplierId.Equals(request.Id) && f.IsDeleted == false, includeProperties: [s => s.ResourceSuppliers]).FirstOrDefault();
             if (existSupplier == null)
             {
                 return BaseResponse<Supplier>.FailureResponse(message: "Nhà cung cấp không tồn tại");

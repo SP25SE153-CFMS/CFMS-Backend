@@ -21,7 +21,7 @@ namespace CFMS.Application.Features.FarmFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
-            var farms = _unitOfWork.FarmRepository.Get(filter: f => (f.FarmCode.Equals(request.FarmCode) || f.FarmName.Equals(request.FarmName)) && f.IsDeleted == false);
+            var farms = _unitOfWork.FarmRepository.Get(filter: f => (f.FarmCode.Equals(request.FarmCode) || f.FarmName.Equals(request.FarmName)) && f.IsDeleted == false && f.FarmId != request.FarmId);
             if (farms.Any())
             {
                 return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã trang trại đã tồn tại");
