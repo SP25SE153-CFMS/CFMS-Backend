@@ -30,7 +30,7 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
             }
 
             var existNutritionPlan = _unitOfWork.NutritionPlanRepository
-                .Get(filter: p => p.Name.Equals(request.Name) && p.IsDeleted == false)
+                .Get(filter: p => p.Name.Equals(request.Name) && p.IsDeleted == false && p.NutritionPlanId != request.NutritionPlanId)
                 .FirstOrDefault();
             if (existNutritionPlan != null)
             {

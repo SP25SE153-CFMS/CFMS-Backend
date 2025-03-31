@@ -27,7 +27,7 @@ namespace CFMS.Application.Features.SupplierFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Nhà cung cấp không tồn tại");
             }
 
-            var existNameCode = _unitOfWork.SupplierRepository.Get(filter: s => s.SupplierCode.Equals(request.SupplierCode) || s.SupplierName.Equals(request.SupplierName) && s.IsDeleted == false).FirstOrDefault();
+            var existNameCode = _unitOfWork.SupplierRepository.Get(filter: s => s.SupplierCode.Equals(request.SupplierCode) || s.SupplierName.Equals(request.SupplierName) && s.IsDeleted == false && s.SupplierId != request.SupplierId).FirstOrDefault();
             if (existSupplier != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên hoặc mã nhà cung cấp đã tồn tại");

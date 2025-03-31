@@ -27,7 +27,7 @@ namespace CFMS.Application.Features.WarehouseFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Kho không tồn tại");
             }
 
-            var existName = _unitOfWork.WarehouseRepository.Get(filter: s => s.WarehouseName.Equals(request.WarehouseName) && s.IsDeleted == false).FirstOrDefault();
+            var existName = _unitOfWork.WarehouseRepository.Get(filter: s => s.WarehouseName.Equals(request.WarehouseName) && s.IsDeleted == false && s.WareId != request.WareId).FirstOrDefault();
             if (existWare != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên kho đã tồn tại");
