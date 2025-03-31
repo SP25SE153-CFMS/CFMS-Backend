@@ -592,6 +592,10 @@ public partial class CfmsDbContext : DbContext
                 .HasForeignKey(d => d.DensityUnitId)
                 .HasConstraintName("ChickenCoop_DensityUnitId_fkey");
 
+            entity.HasOne(d => d.AreaUnit).WithMany(p => p.ChickenCoopAreaUnits)
+                .HasForeignKey(d => d.AreaUnitId)
+                .HasConstraintName("ChickenCoop_AreaUnitId_fkey");
+
             entity.HasOne(d => d.Purpose).WithMany(p => p.ChickenCoopPurposes)
                 .HasForeignKey(d => d.PurposeId)
                 .HasConstraintName("ChickenCoop_PurposeId_fkey");
@@ -642,7 +646,7 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.EquipmentName).HasColumnType("character varying");
             entity.Property(e => e.PurchaseDate).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.Usage).HasColumnType("character varying");
-            
+
             //entity.HasOne(d => d.EquipmentNavigation).WithOne(p => p.Equipment)
             //    .HasForeignKey<Equipment>(d => d.EquipmentId)
             //    .OnDelete(DeleteBehavior.ClientSetNull)
@@ -746,6 +750,10 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.ImageUrl).HasColumnType("character varying");
             entity.Property(e => e.PhoneNumber).HasColumnType("character varying");
             entity.Property(e => e.Website).HasColumnType("character varying");
+
+            entity.HasOne(d => d.AreaUnit).WithMany(p => p.FarmAreaUnits)
+                .HasForeignKey(d => d.AreaUnitId)
+                .HasConstraintName("Farm_AreaUnitId_fkey");
         });
 
         modelBuilder.Entity<FarmEmployee>(entity =>

@@ -16,6 +16,8 @@ public partial class Farm : EntityAudit
 
     public decimal? Area { get; set; }
 
+    public Guid? AreaUnitId { get; set; }
+
     public int? Scale { get; set; }
 
     public decimal? Longitude { get; set; }
@@ -27,6 +29,8 @@ public partial class Farm : EntityAudit
     public string? Website { get; set; }
 
     public string? ImageUrl { get; set; }
+
+    public virtual SubCategory? AreaUnit { get; set; }
 
     public virtual ICollection<BreedingArea> BreedingAreas { get; set; } = new List<BreedingArea>();
 

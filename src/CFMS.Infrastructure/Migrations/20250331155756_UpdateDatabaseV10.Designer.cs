@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250331020650_UpdateLatestDb-V9")]
-    partial class UpdateLatestDbV9
+    [Migration("20250331155756_UpdateDatabaseV10")]
+    partial class UpdateDatabaseV10
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,6 +165,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<Guid?>("FarmId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -319,6 +322,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<int?>("Area")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("AreaUnitId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("BreedingAreaId")
                         .HasColumnType("uuid");
 
@@ -371,6 +377,8 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasKey("ChickenCoopId")
                         .HasName("ChickenCoop_pkey");
+
+                    b.HasIndex("AreaUnitId");
 
                     b.HasIndex("BreedingAreaId");
 
@@ -729,6 +737,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<decimal?>("Area")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("AreaUnitId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
@@ -773,6 +784,8 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasKey("FarmId")
                         .HasName("Farm_pkey");
+
+                    b.HasIndex("AreaUnitId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -1142,6 +1155,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("character varying");
+
+                    b.Property<Guid>("FarmId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -1561,6 +1577,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("character varying");
+
+                    b.Property<Guid?>("FarmId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -2129,6 +2148,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("character varying");
+
+                    b.Property<Guid?>("FarmId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -2888,6 +2910,11 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.ChickenCoop", b =>
                 {
+                    b.HasOne("CFMS.Domain.Entities.SubCategory", "AreaUnit")
+                        .WithMany("ChickenCoopAreaUnits")
+                        .HasForeignKey("AreaUnitId")
+                        .HasConstraintName("ChickenCoop_AreaUnitId_fkey");
+
                     b.HasOne("CFMS.Domain.Entities.BreedingArea", "BreedingArea")
                         .WithMany("ChickenCoops")
                         .HasForeignKey("BreedingAreaId")
@@ -2914,6 +2941,8 @@ namespace CFMS.Infrastructure.Migrations
                         .WithMany("ChickenCoopPurposes")
                         .HasForeignKey("PurposeId")
                         .HasConstraintName("ChickenCoop_PurposeId_fkey");
+
+                    b.Navigation("AreaUnit");
 
                     b.Navigation("BreedingArea");
 
@@ -3123,6 +3152,11 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.Farm", b =>
                 {
+                    b.HasOne("CFMS.Domain.Entities.SubCategory", "AreaUnit")
+                        .WithMany("FarmAreaUnits")
+                        .HasForeignKey("AreaUnitId")
+                        .HasConstraintName("Farm_AreaUnitId_fkey");
+
                     b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
@@ -3134,6 +3168,8 @@ namespace CFMS.Infrastructure.Migrations
                         .HasForeignKey("LastEditedByUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AreaUnit");
 
                     b.Navigation("CreatedByUser");
 
@@ -4413,6 +4449,8 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.SubCategory", b =>
                 {
+                    b.Navigation("ChickenCoopAreaUnits");
+
                     b.Navigation("ChickenCoopDensityUnits");
 
                     b.Navigation("ChickenCoopPurposes");
@@ -4428,6 +4466,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("EvaluatedTargets");
 
                     b.Navigation("EvaluationTemplates");
+
+                    b.Navigation("FarmAreaUnits");
 
                     b.Navigation("FeedLogs");
 

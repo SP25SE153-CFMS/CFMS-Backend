@@ -16,6 +16,8 @@ public partial class ChickenCoop : EntityAudit
 
     public int? Area { get; set; }
 
+    public Guid? AreaUnitId { get; set; }
+
     public decimal? Density { get; set; }
 
     public Guid? DensityUnitId { get; set; }
@@ -40,6 +42,8 @@ public partial class ChickenCoop : EntityAudit
     public virtual ICollection<CoopEquipment> CoopEquipments { get; set; } = new List<CoopEquipment>();
 
     public virtual SubCategory? DensityUnit { get; set; }
+
+    public virtual SubCategory? AreaUnit { get; set; }
 
     public virtual SubCategory? Purpose { get; set; }
 

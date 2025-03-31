@@ -11,6 +11,8 @@ public partial class NutritionPlan : EntityAudit
 
     public string? Description { get; set; }
 
+    public Guid? FarmId { get; set; }
+
     //public DateTime? StartDate { get; set; }
 
     //public DateTime? EndDate { get; set; }

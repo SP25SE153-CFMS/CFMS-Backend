@@ -14,8 +14,10 @@ public partial class Task : EntityAudit
     public string? Description { get; set; }
 
     public int? IsHavest { get; set; }
-    
+
     public int? Status { get; set; }
+
+    public Guid? FarmId { get; set; }
 
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 

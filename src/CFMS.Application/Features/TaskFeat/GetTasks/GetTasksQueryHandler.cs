@@ -18,8 +18,8 @@ namespace CFMS.Application.Features.TaskFeat.GetTasks
 
         public async Task<BaseResponse<IEnumerable<Domain.Entities.Task>>> Handle(GetTasksQuery request, CancellationToken cancellationToken)
         {
-            var foods = _unitOfWork.FoodRepository.Get(filter: t => t.IsDeleted == false);
-            return BaseResponse<IEnumerable<Domain.Entities.Task>>.SuccessResponse(_mapper.Map<IEnumerable<Domain.Entities.Task>>(foods));
+            var tasks = _unitOfWork.TaskRepository.Get(filter: t => t.IsDeleted == false);
+            return BaseResponse<IEnumerable<Domain.Entities.Task>>.SuccessResponse(data: tasks);
         }
     }
 }

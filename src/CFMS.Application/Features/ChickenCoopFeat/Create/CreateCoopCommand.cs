@@ -35,6 +35,10 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
 
         public int? Status { get; set; }
 
+        public Guid AreaUnitId { get; set; }
+
+        public Guid DensityUnitId { get; set; }
+
         public Guid? PurposeId { get; set; }
 
         public Guid? BreedingAreaId { get; set; }
