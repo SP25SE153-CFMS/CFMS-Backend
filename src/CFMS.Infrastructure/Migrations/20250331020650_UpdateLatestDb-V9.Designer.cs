@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250331014921_UpdateLatestDb-V9")]
+    [Migration("20250331020650_UpdateLatestDb-V9")]
     partial class UpdateLatestDbV9
     {
         /// <inheritdoc />
@@ -3757,12 +3757,13 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasOne("CFMS.Domain.Entities.Resource", "Resource")
                         .WithMany("ResourceSuppliers")
                         .HasForeignKey("ResourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("ResourceSupplier_ResourceId_fkey");
 
                     b.HasOne("CFMS.Domain.Entities.Supplier", "Supplier")
                         .WithMany("ResourceSuppliers")
                         .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("ResourceSupplier_SupplierId_fkey");
 
                     b.Navigation("CreatedByUser");

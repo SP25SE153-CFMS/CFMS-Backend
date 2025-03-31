@@ -1146,11 +1146,12 @@ public partial class CfmsDbContext : DbContext
 
             entity.HasOne(d => d.Resource).WithMany(p => p.ResourceSuppliers)
                 .HasForeignKey(d => d.ResourceId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ResourceSupplier_ResourceId_fkey");
 
             entity.HasOne(d => d.Supplier).WithMany(p => p.ResourceSuppliers)
                 .HasForeignKey(d => d.SupplierId)
-                .OnDelete(DeleteBehavior.SetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ResourceSupplier_SupplierId_fkey");
 
             //entity.HasOne(d => d.UnitPrice).WithMany(p => p.ResourceSupplierUnitPrices)
