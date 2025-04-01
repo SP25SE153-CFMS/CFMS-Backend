@@ -17,6 +17,8 @@ public partial class Supplier : EntityAudit
 
     public string? BankAccount { get; set; }
 
+    public Guid? FarmId { get; set; }
+
     public int? Status { get; set; }
 
     public virtual ICollection<ResourceSupplier> ResourceSuppliers { get; set; } = new List<ResourceSupplier>();

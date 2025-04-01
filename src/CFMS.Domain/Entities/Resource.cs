@@ -40,6 +40,7 @@ public partial class Resource : EntityAudit
 
     public virtual SubCategory? Package { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<ResourceSupplier> ResourceSuppliers { get; set; } = new List<ResourceSupplier>();
 
     public virtual SubCategory? ResourceType { get; set; }

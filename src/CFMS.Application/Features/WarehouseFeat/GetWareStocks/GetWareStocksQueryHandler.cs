@@ -1,18 +1,8 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
 using CFMS.Application.DTOs.WareStock;
-using CFMS.Application.Features.WarehouseFeat.GetWares;
-using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
-using Twilio.Base;
-using Twilio.Rest.Api.V2010.Account;
 
 namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
 {
@@ -67,7 +57,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
 
                     var ware = _unitOfWork.WarehouseRepository.Get(filter: f => f.WareId.Equals(request.WareId) && f.IsDeleted == false).FirstOrDefault();
 
-                    var resourceSupplier = _unitOfWork.ResourceSupplierRepository.Get(filter: f => f.ResourceId.Equals(resource.ResourceId) && f.FarmId.Equals(ware.FarmId) && f.IsDeleted == false).FirstOrDefault();
+                    var resourceSupplier = _unitOfWork.ResourceSupplierRepository.Get(filter: f => f.ResourceId.Equals(resource.ResourceId) && f.Supplier.FarmId.Equals(ware.FarmId) && f.IsDeleted == false).FirstOrDefault();
 
                     switch (existResourceType.SubCategoryName)
                     {
