@@ -27,7 +27,7 @@ namespace CFMS.Application.Features.EquipmentFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Trang thiết bị không tồn tại");
             }
 
-            var existNameCode = _unitOfWork.EquipmentRepository.Get(filter: s => s.EquipmentCode.Equals(request.EquipmentCode) || s.EquipmentName.Equals(request.EquipmentName) && s.IsDeleted == false && s.EquipmentId != request.EquipmentId).FirstOrDefault();
+            var existNameCode = _unitOfWork.EquipmentRepository.Get(filter: s => (s.EquipmentCode.Equals(request.EquipmentCode) || s.EquipmentName.Equals(request.EquipmentName)) && s.IsDeleted == false && s.EquipmentId != request.EquipmentId).FirstOrDefault();
             if (existNameCode != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên hoặc mã trang thiết bị đã tồn tại");

@@ -1527,6 +1527,7 @@ public partial class CfmsDbContext : DbContext
 
             entity.HasOne(d => d.Farm).WithMany(p => p.Warehouses)
                 .HasForeignKey(d => d.FarmId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("Warehouse_FarmId_fkey");
 
             entity.HasOne(d => d.ResourceType).WithMany(p => p.Warehouses)

@@ -11,19 +11,19 @@ namespace CFMS.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "UnitId",
-                table: "InventoryReceiptDetail");
+            migrationBuilder.AddColumn<Guid>(
+                name: "FarmId",
+                table: "ResourceSupplier",
+                type: "uuid",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Guid>(
-                name: "UnitId",
-                table: "InventoryReceiptDetail",
-                type: "uuid",
-                nullable: true);
+            migrationBuilder.DropColumn(
+                name: "FarmId",
+                table: "ResourceSupplier");
         }
     }
 }

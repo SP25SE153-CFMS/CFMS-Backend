@@ -27,7 +27,7 @@ namespace CFMS.Application.Features.FoodFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Thực phẩm không tồn tại");
             }
 
-            var existNameCode = _unitOfWork.FoodRepository.Get(filter: s => s.FoodCode.Equals(request.FoodCode) || s.FoodName.Equals(request.FoodName) && s.IsDeleted == false && s.FoodId != request.FoodId).FirstOrDefault();
+            var existNameCode = _unitOfWork.FoodRepository.Get(filter: s => (s.FoodCode.Equals(request.FoodCode) || s.FoodName.Equals(request.FoodName)) && s.IsDeleted == false && s.FoodId != request.FoodId).FirstOrDefault();
             if (existNameCode != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên hoặc mã thực phẩm đã tồn tại");

@@ -2,6 +2,7 @@
 using CFMS.Application.Features.WarehouseFeat.Delete;
 using CFMS.Application.Features.WarehouseFeat.GetWare;
 using CFMS.Application.Features.WarehouseFeat.GetWares;
+using CFMS.Application.Features.WarehouseFeat.GetWareStocks;
 using CFMS.Application.Features.WarehouseFeat.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Gets()
         {
             var result = await Send(new GetWaresQuery());
+            return result;
+        }
+
+        [HttpGet("warestocks/{wareId}/{resourceTypeId}")]
+        public async Task<IActionResult> GetWareStocks(Guid wareId, Guid resourceTypeId)
+        {
+            var result = await Send(new GetWareStocksQuery(wareId, resourceTypeId));
             return result;
         }
 
