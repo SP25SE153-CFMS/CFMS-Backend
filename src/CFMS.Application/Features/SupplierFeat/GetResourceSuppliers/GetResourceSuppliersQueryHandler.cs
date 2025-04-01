@@ -22,16 +22,6 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
 
         public async Task<BaseResponse<IEnumerable<object>>> Handle(GetResourceSuppliersQuery request, CancellationToken cancellationToken)
         {
-            //var resources = _unitOfWork.ResourceRepository.Get(
-            //    filter: f => f.IsDeleted == false,
-            //    includeProperties: [
-            //        r => r.ResourceSuppliers,
-            //        r => r.Food,
-            //        r => r.Equipment,
-            //        r => r.Medicine
-            //        ]
-            //).ToList();
-
             var suppliers = _unitOfWork.SupplierRepository.Get(
                     filter: f => f.SupplierId.Equals(request.SupplierId) && f.IsDeleted == false,
                     includeProperties: [
