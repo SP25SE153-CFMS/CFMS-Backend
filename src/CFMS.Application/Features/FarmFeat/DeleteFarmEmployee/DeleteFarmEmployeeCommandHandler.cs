@@ -15,12 +15,6 @@ namespace CFMS.Application.Features.FarmFeat.DeleteFarmEmployee
 
         public async Task<BaseResponse<bool>> Handle(DeleteFarmEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmId.Equals(request.FarmId) && f.IsDeleted == false).FirstOrDefault();
-            if (existFarm == null)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "Farm không tồn tại");
-            }
-
             var exsitFarmEmployee = _unitOfWork.FarmEmployeeRepository.Get(u => u.UserId.Equals(request.FarmEmployeeId) && u.Status == 0).FirstOrDefault();
             if (exsitFarmEmployee == null)
             {
@@ -29,9 +23,10 @@ namespace CFMS.Application.Features.FarmFeat.DeleteFarmEmployee
 
             try
             {
-                existFarm.FarmEmployees.Remove(exsitFarmEmployee);
+                exsitFarmEmployee.Status = 0;
+                exsitFarmEmployee.EndDate = DateTime.Now.ToLocalTime();
 
-                _unitOfWork.FarmRepository.Update(existFarm);
+                _unitOfWork.FarmEmployeeRepository.Update(exsitFarmEmployee);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {

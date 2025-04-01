@@ -5,7 +5,10 @@ namespace CFMS.Application.Features.FarmFeat.DeleteFarmEmployee
 {
     public class DeleteFarmEmployeeCommand : IRequest<BaseResponse<bool>>
     {
-        public Guid? FarmId { get; set; }
+        public DeleteFarmEmployeeCommand(Guid? farmEmployeeId)
+        {
+            FarmEmployeeId = farmEmployeeId;
+        }
 
         public Guid? FarmEmployeeId { get; set; }
     }
