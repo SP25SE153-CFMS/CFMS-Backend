@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250331200122_UpdateLatestDb-V11")]
+    [Migration("20250401001708_UpdateLatestDb-V11")]
     partial class UpdateLatestDbV11
     {
         /// <inheritdoc />
@@ -1807,6 +1807,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("character varying");
+
+                    b.Property<Guid?>("FarmId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -4248,6 +4251,7 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasOne("CFMS.Domain.Entities.Farm", "Farm")
                         .WithMany("Warehouses")
                         .HasForeignKey("FarmId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("Warehouse_FarmId_fkey");
 
                     b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")

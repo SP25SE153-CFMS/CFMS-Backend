@@ -15,14 +15,8 @@ public partial class ResourceSupplier : EntityAudit
     public Guid? SupplierId { get; set; }
 
     public decimal? Price { get; set; }
-
-    //public Guid? UnitPriceId { get; set; }
-
-    //public Guid? PackagePriceId { get; set; }
-
-    //public decimal? PackageSizePrice { get; set; }
-
-    //public virtual SubCategory? PackagePrice { get; set; }
+    
+    public Guid? FarmId { get; set; }
 
     public virtual Resource? Resource { get; set; }
 
