@@ -22,7 +22,7 @@ namespace CFMS.Application.Features.FarmFeat.AddFarmEmployee
                 return BaseResponse<bool>.FailureResponse(message: "Farm không tồn tại");
             }
 
-            var existUser = _unitOfWork.UserRepository.Get(u => u.UserId.Equals(request.UserId) && u.Status == 0).FirstOrDefault();
+            var existUser = _unitOfWork.UserRepository.Get(u => u.UserId.Equals(request.UserId) && u.Status == 1).FirstOrDefault();
             if (existUser == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
