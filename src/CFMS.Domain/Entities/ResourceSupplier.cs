@@ -15,8 +15,6 @@ public partial class ResourceSupplier : EntityAudit
     public Guid? SupplierId { get; set; }
 
     public decimal? Price { get; set; }
-    
-    public Guid? FarmId { get; set; }
 
     public virtual Resource? Resource { get; set; }
 

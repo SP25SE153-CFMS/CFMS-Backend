@@ -9,7 +9,9 @@ namespace CFMS.Application.DTOs.WareStock
     public abstract class WareStockResponseBase
     {
         public string SpecQuantity { get; set; }
+
         public string UnitSpecification { get; set; }
+
         public string SupplierName { get; set; }
     }
 }
