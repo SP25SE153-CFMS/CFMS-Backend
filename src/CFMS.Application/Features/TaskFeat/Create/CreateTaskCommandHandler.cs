@@ -55,10 +55,10 @@ namespace CFMS.Application.Features.TaskFeat.Create
 
                     task.TaskResources.Add(new TaskResource
                     {
-                        ResourceId = taskResource.ResourceId,
-                        ResourceTypeId = taskResource.ResourceTypeId,
+                        ResourceId = existResource.ResourceId,
+                        ResourceTypeId = existResource.ResourceTypeId,
+                        UnitId = existResource.UnitId,
                         Quantity = taskResource.Quantity,
-                        UnitId = taskResource.UnitId,
                     });
                 }
 
