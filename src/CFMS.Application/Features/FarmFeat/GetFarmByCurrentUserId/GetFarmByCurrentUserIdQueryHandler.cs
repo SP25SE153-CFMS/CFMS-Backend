@@ -27,8 +27,8 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmByCurrentUserId
             var currentUser = _currentUserService.GetUserId();
             Guid userId = Guid.Parse(_currentUserService.GetUserId());
 
-            var workFarms = _unitOfWork.FarmEmployeeRepository.Get(filter: f => f.UserId.ToString().Equals(currentUser) && f.IsDeleted == false).ToList().Select(x => x.UserId);
-            var existFarm = _unitOfWork.FarmRepository.Get(filter: f => (f.CreatedByUserId.ToString().Equals(currentUser) || workFarms.Contains(userId)) && f.IsDeleted == false, includeProperties: "BreedingAreas").ToList();
+            //var workFarms = _unitOfWork.FarmEmployeeRepository.Get(filter: f => f.UserId.ToString().Equals(currentUser) && f.IsDeleted == false).ToList().Select(x => x.UserId);
+            var existFarm = _unitOfWork.FarmRepository.Get(filter: f => (f.CreatedByUserId.ToString().Equals(currentUser) || f.FarmEmployees.Select(x => x.UserId).Contains(userId)) && f.IsDeleted == false).ToList();
             if (existFarm == null)  
             {
                 return BaseResponse<IEnumerable<Farm>>.FailureResponse(message: "Trang trại không tồn tại");
