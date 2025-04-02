@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -19,5 +20,6 @@ public partial class TaskHarvest
 
     public virtual SubCategory? HarvestType { get; set; }
 
+    [JsonIgnore]
     public virtual Task Task { get; set; } = null!;
 }
