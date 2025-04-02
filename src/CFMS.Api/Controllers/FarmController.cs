@@ -34,7 +34,7 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("byUserId/{userId}")]
         public async Task<IActionResult> GetByUserId(Guid userId)
         {
             var result = await Send(new GetFarmByUserIdQuery(userId));
