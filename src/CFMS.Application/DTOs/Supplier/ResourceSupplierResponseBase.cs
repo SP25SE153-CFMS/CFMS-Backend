@@ -9,10 +9,12 @@ namespace CFMS.Application.DTOs.Supplier
 {
     public abstract class ResourceSupplierResponseBase
     {
+        public string ResourceType { get; set; }
+
         public string UnitSpecification { get; set; }
 
         public string? Description { get; set; }
 
-        public decimal? Price { get; set; }
+        public decimal? Price { get; set; } 
     }
 }

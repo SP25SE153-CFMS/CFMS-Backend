@@ -59,7 +59,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
                         return null;
                     }
 
-                    var resourceSupplier = _unitOfWork.ResourceSupplierRepository.Get(filter: f => f.ResourceId.Equals(resource.ResourceId) && f.Supplier.SupplierId.Equals(request.SupplierId) && f.Supplier.FarmId.Equals(request.FarmId) && f.IsDeleted == false).FirstOrDefault();
+                    var resourceSupplier = _unitOfWork.ResourceSupplierRepository.Get(filter: f => f.ResourceId.Equals(resource.ResourceId) && f.Supplier.SupplierId.Equals(request.SupplierId) && f.IsDeleted == false).FirstOrDefault();
 
                     switch (existResourceType.SubCategoryName)
                     {
@@ -68,6 +68,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
                             {
                                 FoodCode = existResource?.Food.FoodCode ?? "Không xác định",
                                 FoodName = existResource?.Food.FoodName ?? "Không xác định",
+                                ResourceType = "Thực phẩm",
                                 Note = existResource?.Food.Note,
                                 ProductionDate = existResource?.Food.ProductionDate,
                                 ExpiryDate = existResource?.Food.ExpiryDate,
@@ -83,6 +84,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
                             {
                                 EquipmentCode = existResource?.Equipment.EquipmentCode ?? "Không xác định",
                                 EquipmentName = existResource?.Equipment.EquipmentName ?? "Không xác định",
+                                ResourceType = "Thiết bị",
                                 Material = existMaterial.SubCategoryName,
                                 Usage = existResource?.Equipment.Usage,
                                 Warranty = existResource?.Equipment.Warranty,
@@ -101,6 +103,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
                             {
                                 MedicineCode = existResource?.Medicine.MedicineCode ?? "Không xác định",
                                 MedicineName = existResource?.Medicine.MedicineName ?? "Không xác định",
+                                ResourceType = "Dược phẩm",
                                 Usage = existResource?.Medicine.Usage,
                                 DosageForm = existResource?.Medicine.DosageForm,
                                 StorageCondition = existResource?.Medicine.StorageCondition,
