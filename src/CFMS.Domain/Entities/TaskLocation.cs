@@ -22,5 +22,6 @@ public partial class TaskLocation
 
     public virtual Warehouse LocationNavigation { get; set; } = null!;
 
+    [JsonIgnore]
     public virtual Task? Task { get; set; }
 }

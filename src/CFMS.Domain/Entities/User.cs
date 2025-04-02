@@ -30,6 +30,7 @@ public partial class User
 
     public string? HashedPassword { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
     [JsonIgnore]

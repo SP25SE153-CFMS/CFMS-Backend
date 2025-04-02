@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -19,6 +20,7 @@ public partial class Assignment : EntityAudit
 
     public virtual User? AssignedTo { get; set; }
 
+    [JsonIgnore]
     public virtual Task? Task { get; set; }
 
     //public Guid? ShiftScheduleId { get; set; }
