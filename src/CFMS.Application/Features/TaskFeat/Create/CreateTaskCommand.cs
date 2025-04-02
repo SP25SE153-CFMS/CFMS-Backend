@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.TaskResource;
 using MediatR;
 
 namespace CFMS.Application.Features.TaskFeat.Create
@@ -47,5 +48,8 @@ namespace CFMS.Application.Features.TaskFeat.Create
         public string LocationType { get; set; }
 
         public Guid LocationId { get; set; }
+
+        //Resource
+        public IEnumerable<TaskResourceRequest> TaskResources { get; set; }
     }
 }

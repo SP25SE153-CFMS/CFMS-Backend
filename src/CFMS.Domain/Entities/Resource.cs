@@ -48,4 +48,7 @@ public partial class Resource : EntityAudit
     public virtual SubCategory? Unit { get; set; }
 
     public virtual ICollection<WareStock> WareStocks { get; set; } = new List<WareStock>();
+
+    [JsonIgnore]
+    public virtual ICollection<TaskResource> TaskResources { get; set; } = new List<TaskResource>();
 }

@@ -19,5 +19,9 @@ public partial class TaskResource : EntityAudit
 
     public virtual SubCategory? ResourceType { get; set; }
 
+    public virtual SubCategory? Unit { get; set; }
+
+    public virtual Resource? Resource { get; set; }
+
     public virtual Task Task { get; set; } = null!;
 }

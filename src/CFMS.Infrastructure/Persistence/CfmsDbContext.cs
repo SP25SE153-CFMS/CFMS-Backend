@@ -1385,6 +1385,14 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.Task).WithMany(p => p.TaskResources)
                 .HasForeignKey(d => d.TaskId)
                 .HasConstraintName("TaskResource_TaskId_fkey");
+
+            entity.HasOne(d => d.Resource).WithMany(p => p.TaskResources)
+                .HasForeignKey(d => d.ResourceId)
+                .HasConstraintName("TaskResource_ResourceId_fkey");
+
+            entity.HasOne(d => d.Unit).WithMany(p => p.TaskResourceUnits)
+                .HasForeignKey(d => d.UnitId)
+                .HasConstraintName("TaskResource_UnitId_fkey");
         });
 
         modelBuilder.Entity<FrequencySchedule>(entity =>

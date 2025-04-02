@@ -3,6 +3,7 @@ using System;
 using CFMS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    partial class CfmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250402063202_UpdateDatabaseV12")]
+    partial class UpdateDatabaseV12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2386,8 +2389,6 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.HasIndex("UnitId");
-
                     b.ToTable("TaskResource", (string)null);
                 });
 
@@ -4112,11 +4113,6 @@ namespace CFMS.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("TaskResource_TaskId_fkey");
 
-                    b.HasOne("CFMS.Domain.Entities.SubCategory", "Unit")
-                        .WithMany("TaskResourceUnits")
-                        .HasForeignKey("UnitId")
-                        .HasConstraintName("TaskResource_UnitId_fkey");
-
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("LastEditedByUser");
@@ -4126,8 +4122,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("ResourceType");
 
                     b.Navigation("Task");
-
-                    b.Navigation("Unit");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.TemplateCriterion", b =>
@@ -4522,8 +4516,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("TaskHarvests");
 
                     b.Navigation("TaskRequests");
-
-                    b.Navigation("TaskResourceUnits");
 
                     b.Navigation("TaskResources");
 

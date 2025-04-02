@@ -106,6 +106,9 @@ public partial class SubCategory : EntityAudit
     public virtual ICollection<TaskResource> TaskResources { get; set; } = new List<TaskResource>();
 
     [JsonIgnore]
+    public virtual ICollection<TaskResource> TaskResourceUnits { get; set; } = new List<TaskResource>();
+
+    [JsonIgnore]
     public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
 
     public virtual ICollection<FrequencySchedule> TimeUnits { get; set; } = new List<FrequencySchedule>();

@@ -45,6 +45,23 @@ namespace CFMS.Application.Features.TaskFeat.Create
                     });
                 }
 
+                foreach (var taskResource in request.TaskResources)
+                {
+                    var existResource = _unitOfWork.ResourceRepository.Get(filter: r => r.ResourceId.Equals(taskResource.ResourceId) && r.IsDeleted == false).FirstOrDefault();
+                    if (existResource == null)
+                    {
+                        return BaseResponse<bool>.FailureResponse(message: "Resource không tồn tại");
+                    }
+
+                    task.TaskResources.Add(new TaskResource
+                    {
+                        ResourceId = taskResource.ResourceId,
+                        ResourceTypeId = taskResource.ResourceTypeId,
+                        Quantity = taskResource.Quantity,
+                        UnitId = taskResource.UnitId,
+                    });
+                }
+
                 task.TaskLocations.Add(new TaskLocation
                 {
                     //CoopId = request.LocationId,
