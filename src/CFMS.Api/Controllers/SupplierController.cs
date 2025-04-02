@@ -4,6 +4,7 @@ using CFMS.Application.Features.SupplierFeat.Delete;
 using CFMS.Application.Features.SupplierFeat.GetResourceSuppliers;
 using CFMS.Application.Features.SupplierFeat.GetSupplier;
 using CFMS.Application.Features.SupplierFeat.GetSuppliers;
+using CFMS.Application.Features.SupplierFeat.GetSuppliersByFarmId;
 using CFMS.Application.Features.SupplierFeat.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,12 +22,19 @@ namespace CFMS.Api.Controllers
         {
             var result = await Send(new GetSuppliersQuery());
             return result;
+        }        
+        
+        [HttpGet("byFarmId/{farmId}")]
+        public async Task<IActionResult> GetSuppliers(Guid farmId)
+        {
+            var result = await Send(new GetSuppliersByFarmIdQuery(farmId));
+            return result;
         }
 
-        [HttpGet("resource-suppliers/{farmId}/{supplierId}")]
-        public async Task<IActionResult> GetResourceSuppliers(Guid farmId, Guid supplierId)
+        [HttpGet("resource-suppliers/{supplierId}")]
+        public async Task<IActionResult> GetResourceSuppliers(Guid supplierId)
         {
-            var result = await Send(new GetResourceSuppliersQuery(farmId, supplierId));
+            var result = await Send(new GetResourceSuppliersQuery(supplierId));
             return result;
         }
 
