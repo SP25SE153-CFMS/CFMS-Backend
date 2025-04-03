@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Application.Services.Impl;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
@@ -10,11 +11,13 @@ namespace CFMS.Application.Features.FarmFeat.Create
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUtilityService _utilityService;
 
-        public CreateFarmCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public CreateFarmCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IUtilityService utilityService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _utilityService = utilityService;
         }
 
         public async Task<BaseResponse<bool>> Handle(CreateFarmCommand request, CancellationToken cancellationToken)
@@ -33,6 +36,8 @@ namespace CFMS.Application.Features.FarmFeat.Create
 
             try
             {
+                request.PhoneNumber = _utilityService.FormatVietnamPhoneNumber(request.PhoneNumber) ?? "";
+
                 _unitOfWork.FarmRepository.Insert(_mapper.Map<Farm>(request));
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
