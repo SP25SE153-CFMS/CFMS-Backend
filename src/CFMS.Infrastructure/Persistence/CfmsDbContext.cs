@@ -1210,9 +1210,9 @@ public partial class CfmsDbContext : DbContext
                 .HasConstraintName("ShiftSchedule_ShiftId_fkey");
 
             entity.HasOne(d => d.Task).WithMany(p => p.ShiftSchedules)
-                .HasForeignKey(d => d.ShiftScheduleId)
+                .HasForeignKey(d => d.TaskId)
                 .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
+                .HasConstraintName("ShiftSchedule_TaskId_fkey");
 
         });
 
@@ -1273,6 +1273,8 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.TaskName).HasColumnType("character varying");
             entity.Property(e => e.IsHavest).HasDefaultValue(0);
             entity.Property(e => e.Status).HasDefaultValue(1);
+            entity.Property(e => e.StartWorkDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.EndWorkDate).HasColumnType("timestamp(6) without time zone");
 
             entity.HasOne(e => e.TaskNavigation)
                 .WithOne(c => c.Task)

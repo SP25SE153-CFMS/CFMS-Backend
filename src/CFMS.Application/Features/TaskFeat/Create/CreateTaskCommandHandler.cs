@@ -22,55 +22,55 @@ namespace CFMS.Application.Features.TaskFeat.Create
         {
             try
             {
-                var task = _mapper.Map<Domain.Entities.Task>(request);
-                task.FrequencySchedules.Add(new FrequencySchedule
+                foreach (var date in request.StartWorkDate)
                 {
-                    TimeUnitId = request.TimeUnitId,
-                    StartWorkDate = request.StartWorkDate,
-                    EndWorkDate = request.EndWorkDate,
-                    Frequency = request.Frequency,
-                });
+                    var task = _mapper.Map<Domain.Entities.Task>(request);
 
-                foreach (var shiftId in request.ShiftIds)
-                {
-                    var existShitf = _unitOfWork.ShiftRepository.Get(filter: s => s.ShiftId.Equals(shiftId) && s.IsDeleted == false).FirstOrDefault();
-                    if (existShitf == null)
+                    task.StartWorkDate = date;
+
+                    foreach (var shiftId in request.ShiftIds)
                     {
-                        return BaseResponse<bool>.FailureResponse(message: "Ca làm việc không tồn tại");
+                        var existShitf = _unitOfWork.ShiftRepository.Get(noTracking: true, filter: s => s.ShiftId.Equals(shiftId) && s.IsDeleted == false).FirstOrDefault();
+                        if (existShitf == null)
+                        {
+                            return BaseResponse<bool>.FailureResponse(message: "Ca làm việc không tồn tại");
+                        }
+
+                        task.ShiftSchedules.Add(new ShiftSchedule
+                        {
+                            ShiftId = existShitf.ShiftId,
+                            Date = DateOnly.FromDateTime(DateTime.Now.ToLocalTime()),
+                        });
                     }
 
-                    task.ShiftSchedules.Add(new ShiftSchedule
+                    foreach (var taskResource in request.TaskResources)
                     {
-                        ShiftId = existShitf.ShiftId,
-                    });
-                }
+                        var existResource = _unitOfWork.ResourceRepository.Get(filter: r => r.ResourceId.Equals(taskResource.ResourceId) && r.IsDeleted == false).FirstOrDefault();
+                        if (existResource == null)
+                        {
+                            return BaseResponse<bool>.FailureResponse(message: "Resource không tồn tại");
+                        }
 
-                foreach (var taskResource in request.TaskResources)
-                {
-                    var existResource = _unitOfWork.ResourceRepository.Get(filter: r => r.ResourceId.Equals(taskResource.ResourceId) && r.IsDeleted == false).FirstOrDefault();
-                    if (existResource == null)
-                    {
-                        return BaseResponse<bool>.FailureResponse(message: "Resource không tồn tại");
+                        task.TaskResources.Add(new TaskResource
+                        {
+                            ResourceId = existResource.ResourceId,
+                            ResourceTypeId = existResource.ResourceTypeId,
+                            UnitId = existResource.UnitId,
+                            Quantity = taskResource.Quantity,
+                        });
                     }
 
-                    task.TaskResources.Add(new TaskResource
+                    task.TaskLocations.Add(new TaskLocation
                     {
-                        ResourceId = existResource.ResourceId,
-                        ResourceTypeId = existResource.ResourceTypeId,
-                        UnitId = existResource.UnitId,
-                        Quantity = taskResource.Quantity,
+                        //CoopId = request.LocationId,
+                        CoopId = request.LocationType.Equals("COOP") ? request.LocationId : null,
+                        WareId = request.LocationType.Equals("WARE") ? request.LocationId : null,
+                        LocationType = request.LocationType,
                     });
+
+                    _unitOfWork.TaskRepository.Insert(task);
                 }
 
-                task.TaskLocations.Add(new TaskLocation
-                {
-                    //CoopId = request.LocationId,
-                    CoopId = request.LocationType.Equals("COOP") ? request.LocationId : null,
-                    WareId = request.LocationType.Equals("WARE") ? request.LocationId : null,
-                    LocationType = request.LocationType,
-                });
-
-                _unitOfWork.TaskRepository.Insert(task);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {

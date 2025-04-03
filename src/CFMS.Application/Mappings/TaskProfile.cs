@@ -8,7 +8,9 @@ namespace CFMS.Application.Mappings
     {
         public TaskProfile()
         {
-            CreateMap<CreateTaskCommand, Task>();
+            CreateMap<CreateTaskCommand, Task>()
+                .ForMember(dest => dest.StartWorkDate, opt => opt.Ignore())
+                .ForMember(dest => dest.TaskResources, opt => opt.Ignore());
         }
     }
 }

@@ -17,6 +17,10 @@ public partial class Task : EntityAudit
 
     public int? Status { get; set; }
 
+    public DateTime? StartWorkDate { get; set; }
+
+    public DateTime? EndWorkDate { get; set; }
+
     public Guid? FarmId { get; set; }
 
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();

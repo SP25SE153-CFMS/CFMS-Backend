@@ -3,6 +3,7 @@ using System;
 using CFMS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    partial class CfmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250403062140_UpdateDatabaseV14")]
+    partial class UpdateDatabaseV14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1952,8 +1955,6 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasIndex("ShiftId");
 
-                    b.HasIndex("TaskId");
-
                     b.ToTable("ShiftSchedule", (string)null);
                 });
 
@@ -3864,9 +3865,10 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasOne("CFMS.Domain.Entities.Task", "Task")
                         .WithMany("ShiftSchedules")
-                        .HasForeignKey("TaskId")
+                        .HasForeignKey("ShiftScheduleId")
                         .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("ShiftSchedule_TaskId_fkey");
+                        .IsRequired()
+                        .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
 
                     b.Navigation("Shift");
 

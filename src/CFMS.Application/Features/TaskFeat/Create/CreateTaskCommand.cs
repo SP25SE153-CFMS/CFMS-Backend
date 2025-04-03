@@ -6,20 +6,18 @@ namespace CFMS.Application.Features.TaskFeat.Create
 {
     public class CreateTaskCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateTaskCommand(string? taskName, Guid? taskTypeId, string? description, int? isHavest, int? status, int? frequency, Guid? timeUnitId, DateTime startWorkDate, DateTime endWorkDate, Guid[] shiftIds, string locationType, Guid locationId)
+        public CreateTaskCommand(string? taskName, Guid? taskTypeId, string? description, int? isHavest, int? status, DateTime[]? startWorkDate, Guid[]? shiftIds, string? locationType, Guid locationId, IEnumerable<TaskResourceRequest>? taskResources)
         {
             TaskName = taskName;
             TaskTypeId = taskTypeId;
             Description = description;
             IsHavest = isHavest;
             Status = status;
-            Frequency = frequency;
-            TimeUnitId = timeUnitId;
             StartWorkDate = startWorkDate;
-            EndWorkDate = endWorkDate;
             ShiftIds = shiftIds;
             LocationType = locationType;
             LocationId = locationId;
+            TaskResources = taskResources;
         }
 
         public string? TaskName { get; set; }
@@ -32,24 +30,20 @@ namespace CFMS.Application.Features.TaskFeat.Create
 
         public int? Status { get; set; }
 
-        //Frequency
-        public int? Frequency { get; set; }
+        public Guid FarmId { get; set; }
 
-        public Guid? TimeUnitId { get; set; }
-
-        public DateTime StartWorkDate { get; set; }
-
-        public DateTime EndWorkDate { get; set; }
+        //Time
+        public DateTime[]? StartWorkDate { get; set; }
 
         //Shift
-        public Guid[] ShiftIds { get; set; }
+        public Guid[]? ShiftIds { get; set; }
 
         //Location
-        public string LocationType { get; set; }
+        public string? LocationType { get; set; }
 
         public Guid LocationId { get; set; }
 
         //Resource
-        public IEnumerable<TaskResourceRequest> TaskResources { get; set; }
+        public IEnumerable<TaskResourceRequest>? TaskResources { get; set; }
     }
 }
