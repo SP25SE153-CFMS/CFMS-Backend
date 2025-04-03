@@ -30,18 +30,16 @@ namespace CFMS.Application.Features.TaskFeat.GetTasksByCurrentUser
             var currentUser = _currentUserService.GetUserId();
             Guid userId = Guid.Parse(_currentUserService.GetUserId());
 
-            //var assignedUsers = _unitOfWork.AssignmentRepository.Get(filter: f => f.AssignedToId.ToString().Equals(currentUser) && f.IsDeleted == false).ToList().Select(x => x.AssignedToId);
             var existTasks = _unitOfWork.TaskRepository.Get(filter: f => (f.FarmId.ToString().Equals(request.FarmId) || f.Assignments.Select(x => x.AssignedToId).Contains(userId)) && f.IsDeleted == false,
-                includeProperties: [
-                    x => x.Assignments,
+                  includeProperties: [
+                      x => x.Assignments,
                     x => x.ShiftSchedules,
                     x => x.TaskHarvests,
                     x => x.TaskResources,
                     x => x.TaskLocations
-                    ]).ToList();
+                      ]).ToList();
 
-            var tasks = _unitOfWork.TaskRepository.Get(filter: t => t.IsDeleted == false);
-            return BaseResponse<IEnumerable<Domain.Entities.Task>>.SuccessResponse(data: tasks);
+            return BaseResponse<IEnumerable<Domain.Entities.Task>>.SuccessResponse(data: existTasks);
         }
     }
 }

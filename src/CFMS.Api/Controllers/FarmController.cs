@@ -4,6 +4,7 @@ using CFMS.Application.Features.FarmFeat.Delete;
 using CFMS.Application.Features.FarmFeat.DeleteFarmEmployee;
 using CFMS.Application.Features.FarmFeat.GetByGetFarmByCurrentUser;
 using CFMS.Application.Features.FarmFeat.GetFarm;
+using CFMS.Application.Features.FarmFeat.GetFarmByCurrentEmployeeByFarmId;
 using CFMS.Application.Features.FarmFeat.GetFarmByCurrentUserId;
 using CFMS.Application.Features.FarmFeat.GetFarmByUserId;
 using CFMS.Application.Features.FarmFeat.GetFarmEmployees;
@@ -53,6 +54,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetByGetFarmByCurrentEmployee()
         {
             var result = await Send(new GetFarmByCurrentEmployeeQuery());
+            return result;
+        }
+
+        [HttpGet("currentEmployee/{farmId}")]
+        public async Task<IActionResult> GetByGetFarmByCurrentEmployeeByFarmId(Guid farmId)
+        {
+            var result = await Send(new GetFarmByCurrentEmployeeByFarmIdQuery(farmId));
             return result;
         }
 
