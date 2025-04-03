@@ -27,6 +27,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
                     var task = _mapper.Map<Domain.Entities.Task>(request);
 
                     task.StartWorkDate = date;
+                    task.FarmId = request.FarmId;
 
                     foreach (var shiftId in request.ShiftIds)
                     {
