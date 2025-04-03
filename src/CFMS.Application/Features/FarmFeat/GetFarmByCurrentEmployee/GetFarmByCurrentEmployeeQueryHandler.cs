@@ -31,6 +31,7 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmByCurrentUserId
                   filter: f => f.FarmEmployees.Any(x => x.UserId.Equals(userId) && x.FarmRole.Equals(3))
                                && f.IsDeleted == false
               ).ToList();
+
             if (existFarm == null)
             {
                 return BaseResponse<IEnumerable<Farm>>.FailureResponse(message: "Trang trại không tồn tại");
