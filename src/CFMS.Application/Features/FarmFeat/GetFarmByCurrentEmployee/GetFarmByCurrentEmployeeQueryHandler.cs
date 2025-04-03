@@ -28,8 +28,7 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmByCurrentUserId
             Guid userId = Guid.Parse(_currentUserService.GetUserId());
 
             var existFarm = _unitOfWork.FarmRepository.Get(
-                  filter: f => (f.CreatedByUserId.ToString().Equals(currentUser) ||
-                               f.FarmEmployees.Any(x => x.UserId == userId && (x.FarmRole.Equals(3))))
+                  filter: f => f.FarmEmployees.Any(x => x.UserId.Equals(userId) && x.FarmRole.Equals(3))
                                && f.IsDeleted == false
               ).ToList();
             if (existFarm == null)

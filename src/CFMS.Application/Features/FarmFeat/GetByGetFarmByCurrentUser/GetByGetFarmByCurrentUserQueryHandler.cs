@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.FarmFeat.GetByGetFarmByCurrentUser
 {
-    public class GetByGetFarmByCurrentUserQueryHandler : IRequestHandler<GetFarmByCurrentEmployeeQuery, BaseResponse<IEnumerable<Farm>>>
+    public class GetByGetFarmByCurrentUserQueryHandler : IRequestHandler<GetByGetFarmByCurrentUserQuery, BaseResponse<IEnumerable<Farm>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
@@ -22,7 +22,7 @@ namespace CFMS.Application.Features.FarmFeat.GetByGetFarmByCurrentUser
             _currentUserService = currentUserService;
         }
 
-        public async Task<BaseResponse<IEnumerable<Farm>>> Handle(GetFarmByCurrentEmployeeQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<IEnumerable<Farm>>> Handle(GetByGetFarmByCurrentUserQuery request, CancellationToken cancellationToken)
         {
             var currentUser = _currentUserService.GetUserId();
             Guid userId = Guid.Parse(_currentUserService.GetUserId());
