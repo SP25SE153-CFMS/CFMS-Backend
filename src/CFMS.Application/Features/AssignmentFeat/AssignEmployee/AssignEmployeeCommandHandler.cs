@@ -28,24 +28,18 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
 
             try
             {
-                var frequency = task.FrequencySchedules.First();
-                int duration = (frequency.EndWorkDate.Value - frequency.StartWorkDate.Value).Days;
-                int step = frequency.Frequency.Value;
-
-                for (int i = 0; i < duration; i += step)
+                foreach (var assignedToId in request.AssignedToIds)
                 {
-                    foreach (var assignedToId in request.AssignedToIds)
+                    var assignment = new Assignment
                     {
-                        var assignment = new Assignment
-                        {
-                            TaskId = request.TaskId,
-                            AssignedDate = frequency.StartWorkDate.Value.AddDays(i),
-                            AssignedToId = assignedToId,
-                            Note = request.Note,
-                            Status = request.Status,
-                        };
-                        _unitOfWork.AssignmentRepository.Insert(assignment);
-                    }
+                        TaskId = request.TaskId,
+                        AssignedDate = DateTime.Now.ToLocalTime(),
+                        AssignedToId = assignedToId,
+                        Note = request.Note,
+                        Status = request.Status,
+                    };
+
+                    _unitOfWork.AssignmentRepository.Insert(assignment);
                 }
 
                 var result = await _unitOfWork.SaveChangesAsync();
