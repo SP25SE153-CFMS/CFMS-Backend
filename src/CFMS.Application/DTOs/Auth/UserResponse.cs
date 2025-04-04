@@ -21,8 +21,6 @@ namespace CFMS.Application.DTOs.Auth
 
         public DateOnly? DateOfBirth { get; set; }
 
-        public DateOnly? StartDate { get; set; }
-
         public string? Status { get; set; }
 
         public string? Address { get; set; }
