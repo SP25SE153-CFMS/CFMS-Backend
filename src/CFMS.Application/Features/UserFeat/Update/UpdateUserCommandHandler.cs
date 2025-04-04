@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.Services.Impl;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Enums.Roles;
 using CFMS.Domain.Interfaces;
@@ -19,11 +20,13 @@ namespace CFMS.Application.Features.UserFeat.Update
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IUtilityService _utilityService;
 
-        public UpdateUserCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
+        public UpdateUserCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IUtilityService utilityService)
         {
             _unitOfWork = unitOfWork;
             _currentUserService = currentUserService;
+            _utilityService = utilityService;
         }
 
         public async Task<BaseResponse<bool>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -33,8 +36,6 @@ namespace CFMS.Application.Features.UserFeat.Update
             {
                 return BaseResponse<bool>.FailureResponse("Người dùng không tồn tại");
             }
-
-
 
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
@@ -55,7 +56,7 @@ namespace CFMS.Application.Features.UserFeat.Update
                 }
 
                 existUser.FullName = request.FullName ?? existUser.FullName;
-                existUser.PhoneNumber = request.PhoneNumber ?? existUser.PhoneNumber;   
+                existUser.PhoneNumber = _utilityService.FormatVietnamPhoneNumber(request.PhoneNumber) ?? existUser.PhoneNumber;   
                 existUser.Mail = request.Mail ?? existUser.Mail;
                 existUser.Avatar = request.Avatar ?? existUser.Avatar;
                 existUser.DateOfBirth = request.DateOfBirth ?? existUser.DateOfBirth;
