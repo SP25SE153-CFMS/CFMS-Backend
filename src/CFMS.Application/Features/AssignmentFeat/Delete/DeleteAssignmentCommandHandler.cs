@@ -15,6 +15,12 @@ namespace CFMS.Application.Features.AssignmentFeat.Delete
 
         public async Task<BaseResponse<bool>> Handle(DeleteAssignmentCommand request, CancellationToken cancellationToken)
         {
+            var existTask = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false).FirstOrDefault();
+            if (existTask == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Task không tồn tại");
+            }
+
             var existAssignment = _unitOfWork.AssignmentRepository.Get(filter: a => a.AssignmentId.Equals(request.AssignmentId) && a.IsDeleted == false).FirstOrDefault();
             if (existAssignment == null)
             {
@@ -23,7 +29,11 @@ namespace CFMS.Application.Features.AssignmentFeat.Delete
 
             try
             {
+                existTask.Assignments.Remove(existAssignment);
+
+                _unitOfWork.TaskRepository.Update(existTask);
                 _unitOfWork.AssignmentRepository.Delete(existAssignment);
+
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
