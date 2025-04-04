@@ -43,5 +43,5 @@ jobs:
               run: docker compose down || true
             - name: Run Docker
               run: docker compose up -d
-            - name: Remove docker-compose.yml file
-              run: sudo rm docker-compose.yml
+            # - name: Remove docker-compose.yml file
+            #   run: sudo rm docker-compose.yml
