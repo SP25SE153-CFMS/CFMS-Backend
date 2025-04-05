@@ -15,6 +15,7 @@ using CFMS.Application.DTOs.Auth;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using CFMS.Application.Features.UserFeat.Auth.VerifyPassword;
 
 namespace CFMS.Api.Controllers
 {
@@ -78,6 +79,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> SignOut()
         {
             var response = await Send(new SignOutQuery());
+            return response;
+        }
+
+        [HttpPost("verify-password")]
+        public async Task<IActionResult> VerifyPassword()
+        {
+            var response = await Send(new VerifyPasswordQuery());
             return response;
         }
     }
