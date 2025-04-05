@@ -1,22 +1,27 @@
 ﻿using CFMS.Application.Common;
 using CFMS.Application.DTOs.Image;
 using CFMS.Domain.Interfaces;
+using CFMS.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, BaseResponse<UploadImageResult>>
 {
     private readonly IGoogleDriveService _googleDriveService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UploadImageCommandHandler(IGoogleDriveService driveService, ICurrentUserService currentUserService)
+    public UploadImageCommandHandler(IGoogleDriveService driveService, ICurrentUserService currentUserService, IUnitOfWork unitOfWork)
     {
         _googleDriveService = driveService;
         _currentUserService = currentUserService;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<BaseResponse<UploadImageResult>> Handle(UploadImageCommand request, CancellationToken cancellationToken)
     {
         var user = _currentUserService.GetUserId();
+
+        var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.ToString().Equals(user)).FirstOrDefault();
 
         var tempPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + Path.GetExtension(request.File.FileName));
 
@@ -35,6 +40,10 @@ public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Bas
                 FileId = fileId,
                 FileUrl = $"https://drive.google.com/file/d/{fileId}/view"
             };
+
+            existUser.Avatar = result.FileUrl;
+            _unitOfWork.UserRepository.Update(existUser);
+            await _unitOfWork.SaveChangesAsync();
 
             return BaseResponse<UploadImageResult>.SuccessResponse(result);
         }
