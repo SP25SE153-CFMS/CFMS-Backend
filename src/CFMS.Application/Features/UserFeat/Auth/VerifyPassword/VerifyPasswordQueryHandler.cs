@@ -26,13 +26,15 @@ namespace CFMS.Application.Features.UserFeat.Auth.VerifyPassword
 
         public async Task<BaseResponse<bool>> Handle(VerifyPasswordQuery request, CancellationToken cancellationToken)
         {
-            var user = _currentUserService.GetUserId;
+            var user = _currentUserService.GetUserId();
 
-            var userHashedPassword = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(user)).FirstOrDefault().HashedPassword;
+            var userHashedPassword = _unitOfWork.UserRepository.Get(filter: u => u.UserId.ToString().Equals(user)).FirstOrDefault().HashedPassword;
 
             var isMatch = _utilityService.VerifyPassword(request.Password, userHashedPassword);
 
-            return BaseResponse<bool>.SuccessResponse(isMatch, "Xác thực mật khẩu thành công");
+            return isMatch 
+                ? BaseResponse<bool>.SuccessResponse(isMatch, "Xác thực mật khẩu thành công")
+                : BaseResponse<bool>.FailureResponse(isMatch, "Xác thực mật khẩu thất bại");
         }
     }
 }
