@@ -12,5 +12,10 @@ namespace CFMS.Application.Features.UserFeat.Auth.VerifyPassword
     public class VerifyPasswordQuery : IRequest<BaseResponse<bool>>
     {
         public string Password { get; set; }
+
+        public VerifyPasswordQuery(string password)
+        {
+            Password = password;
+        }
     }
 }

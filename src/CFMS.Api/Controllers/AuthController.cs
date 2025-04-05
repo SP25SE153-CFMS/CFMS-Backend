@@ -82,10 +82,10 @@ namespace CFMS.Api.Controllers
             return response;
         }
 
-        [HttpPost("verify-password")]
-        public async Task<IActionResult> VerifyPassword()
+        [HttpPost("verify-password/{password}")]
+        public async Task<IActionResult> VerifyPassword(string password)
         {
-            var response = await Send(new VerifyPasswordQuery());
+            var response = await Send(new VerifyPasswordQuery(password));
             return response;
         }
     }
