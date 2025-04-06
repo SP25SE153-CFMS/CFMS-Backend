@@ -1191,9 +1191,9 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Shift");
 
             entity.Property(e => e.ShiftId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.EndTime).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.EndTime).HasColumnType("time");
             entity.Property(e => e.ShiftName).HasColumnType("character varying");
-            entity.Property(e => e.StartTime).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.StartTime).HasColumnType("time");
         });
 
         modelBuilder.Entity<ShiftSchedule>(entity =>

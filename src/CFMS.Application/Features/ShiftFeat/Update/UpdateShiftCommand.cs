@@ -10,7 +10,7 @@ namespace CFMS.Application.Features.ShiftFeat.Update
 {
     public class UpdateShiftCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateShiftCommand(Guid shiftId, string? shiftName, DateTime? startTime, DateTime? endTime)
+        public UpdateShiftCommand(Guid shiftId, string? shiftName, TimeOnly? startTime, TimeOnly? endTime)
         {
             ShiftId = shiftId;
             ShiftName = shiftName;
@@ -22,8 +22,8 @@ namespace CFMS.Application.Features.ShiftFeat.Update
 
         public string? ShiftName { get; set; }
 
-        public DateTime? StartTime { get; set; }
+        public TimeOnly? StartTime { get; set; }
 
-        public DateTime? EndTime { get; set; }
+        public TimeOnly? EndTime { get; set; }
     }
 }

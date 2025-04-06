@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CFMS.Application.Common;
+using MediatR;
 
 namespace CFMS.Application.Features.TaskFeat.CompleteTask
 {
-    internal class CompleteTaskCommand
+    public class CompleteTaskCommand : IRequest<BaseResponse<bool>>
     {
+        public CompleteTaskCommand(Guid taskId, int status)
+        {
+            TaskId = taskId;
+            Status = status;
+        }
+
+        public Guid TaskId { get; set; }
+
+        public int Status { get; set; }
     }
 }
