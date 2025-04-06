@@ -30,6 +30,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
 
                         task.StartWorkDate = date;
                         task.FarmId = request.FarmId;
+                        task.Status = 0;
 
                         var existShitf = _unitOfWork.ShiftRepository.Get(noTracking: true, filter: s => s.ShiftId.Equals(shiftId) && s.IsDeleted == false).FirstOrDefault();
                         if (existShitf == null)

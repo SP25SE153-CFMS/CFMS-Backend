@@ -1,4 +1,5 @@
-﻿using CFMS.Application.Features.TaskFeat.Create;
+﻿using CFMS.Application.Features.TaskFeat.CompleteTask;
+using CFMS.Application.Features.TaskFeat.Create;
 using CFMS.Application.Features.TaskFeat.Delete;
 using CFMS.Application.Features.TaskFeat.GetTask;
 using CFMS.Application.Features.TaskFeat.GetTaskByFarmId;
@@ -62,6 +63,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await Send(new DeleteTaskCommand(id));
+            return result;
+        }
+
+        [HttpPut("complete-task")]
+        public async Task<IActionResult> CompleteTask(CompleteTaskCommand command)
+        {
+            var result = await Send(command);
             return result;
         }
     }

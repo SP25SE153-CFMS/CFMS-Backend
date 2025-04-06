@@ -5,14 +5,11 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 {
     public class CompleteTaskCommand : IRequest<BaseResponse<bool>>
     {
-        public CompleteTaskCommand(Guid taskId, int status)
+        public CompleteTaskCommand(Guid taskId)
         {
             TaskId = taskId;
-            Status = status;
         }
 
         public Guid TaskId { get; set; }
-
-        public int Status { get; set; }
     }
 }

@@ -13,9 +13,30 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
             _unitOfWork = unitOfWork;
         }
 
-        public Task<BaseResponse<bool>> Handle(CompleteTaskCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(CompleteTaskCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var existTask = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false).FirstOrDefault();
+            if (existTask == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Task không tồn tại");
+            }
+
+            try
+            {
+                existTask.Status = 1;
+
+                _unitOfWork.TaskRepository.Update(existTask);
+                var result = await _unitOfWork.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
+                }
+                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+            }
+            catch (Exception ex)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+            }
         }
     }
 }
