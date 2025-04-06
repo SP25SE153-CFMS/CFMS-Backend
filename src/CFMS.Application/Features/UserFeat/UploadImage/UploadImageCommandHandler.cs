@@ -38,7 +38,8 @@ public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Bas
             var result = new UploadImageResult
             {
                 FileId = fileId,
-                FileUrl = $"https://drive.google.com/file/d/{fileId}/view"
+                FileUrl = $"https://drive.usercontent.google.com/download?id={fileId}&export=view&authuser=0"
+                
             };
 
             existUser.Avatar = result.FileUrl;
