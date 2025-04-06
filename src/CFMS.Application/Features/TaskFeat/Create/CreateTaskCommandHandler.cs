@@ -24,13 +24,13 @@ namespace CFMS.Application.Features.TaskFeat.Create
             {
                 foreach (var date in request.StartWorkDate)
                 {
-                    var task = _mapper.Map<Domain.Entities.Task>(request);
-
-                    task.StartWorkDate = date;
-                    task.FarmId = request.FarmId;
-
                     foreach (var shiftId in request.ShiftIds)
                     {
+                        var task = _mapper.Map<Domain.Entities.Task>(request);
+
+                        task.StartWorkDate = date;
+                        task.FarmId = request.FarmId;
+
                         var existShitf = _unitOfWork.ShiftRepository.Get(noTracking: true, filter: s => s.ShiftId.Equals(shiftId) && s.IsDeleted == false).FirstOrDefault();
                         if (existShitf == null)
                         {
@@ -42,34 +42,34 @@ namespace CFMS.Application.Features.TaskFeat.Create
                             ShiftId = existShitf.ShiftId,
                             Date = DateOnly.FromDateTime(DateTime.Now.ToLocalTime()),
                         });
-                    }
 
-                    foreach (var taskResource in request.TaskResources)
-                    {
-                        var existResource = _unitOfWork.ResourceRepository.Get(filter: r => r.ResourceId.Equals(taskResource.ResourceId) && r.IsDeleted == false).FirstOrDefault();
-                        if (existResource == null)
+                        foreach (var taskResource in request.TaskResources)
                         {
-                            return BaseResponse<bool>.FailureResponse(message: "Resource không tồn tại");
+                            var existResource = _unitOfWork.ResourceRepository.Get(filter: r => r.ResourceId.Equals(taskResource.ResourceId) && r.IsDeleted == false).FirstOrDefault();
+                            if (existResource == null)
+                            {
+                                return BaseResponse<bool>.FailureResponse(message: "Resource không tồn tại");
+                            }
+
+                            task.TaskResources.Add(new TaskResource
+                            {
+                                ResourceId = existResource.ResourceId,
+                                ResourceTypeId = existResource.ResourceTypeId,
+                                UnitId = existResource.UnitId,
+                                Quantity = taskResource.Quantity,
+                            });
                         }
 
-                        task.TaskResources.Add(new TaskResource
+                        task.TaskLocations.Add(new TaskLocation
                         {
-                            ResourceId = existResource.ResourceId,
-                            ResourceTypeId = existResource.ResourceTypeId,
-                            UnitId = existResource.UnitId,
-                            Quantity = taskResource.Quantity,
+                            //CoopId = request.LocationId,
+                            CoopId = request.LocationType.Equals("COOP") ? request.LocationId : null,
+                            WareId = request.LocationType.Equals("WARE") ? request.LocationId : null,
+                            LocationType = request.LocationType,
                         });
+
+                        _unitOfWork.TaskRepository.Insert(task);
                     }
-
-                    task.TaskLocations.Add(new TaskLocation
-                    {
-                        //CoopId = request.LocationId,
-                        CoopId = request.LocationType.Equals("COOP") ? request.LocationId : null,
-                        WareId = request.LocationType.Equals("WARE") ? request.LocationId : null,
-                        LocationType = request.LocationType,
-                    });
-
-                    _unitOfWork.TaskRepository.Insert(task);
                 }
 
                 var result = await _unitOfWork.SaveChangesAsync();
