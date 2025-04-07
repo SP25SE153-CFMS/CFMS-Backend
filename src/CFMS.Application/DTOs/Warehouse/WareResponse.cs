@@ -8,6 +8,8 @@ namespace CFMS.Application.DTOs.Warehouse
 {
     public class WareResponse
     {
+        public Guid? WareId { get; set; }
+
         public Guid? FarmId { get; set; }
 
         public Guid? ResourceTypeId { get; set; }
