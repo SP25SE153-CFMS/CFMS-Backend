@@ -36,8 +36,6 @@ namespace CFMS.Application.Features.FarmFeat.Create
 
             try
             {
-                request.PhoneNumber = _utilityService.FormatVietnamPhoneNumber(request.PhoneNumber) ?? "";
-
                 _unitOfWork.FarmRepository.Insert(_mapper.Map<Farm>(request));
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
