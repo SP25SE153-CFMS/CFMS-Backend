@@ -41,6 +41,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWaresByFarmId
 
             var wareDtos = wares.Select(t => new WareResponse
             {
+                WareId = t.WareId,
                 FarmId = t.FarmId,
                 ResourceTypeId = t.ResourceTypeId,
                 ResourceTypeName = subCategories.FirstOrDefault(s => s.SubCategoryId.Equals(t.ResourceTypeId)) is var subCategory && subCategory != null
