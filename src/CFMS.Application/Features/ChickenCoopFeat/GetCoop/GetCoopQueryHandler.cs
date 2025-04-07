@@ -21,6 +21,8 @@ namespace CFMS.Application.Features.ChickenCoopFeat.GetCoop
             {
                 return BaseResponse<ChickenCoop>.FailureResponse(message: "Chuồng gà không tồn tại");
             }
+
+            existCoop.ChickenBatches.OrderBy(cb => cb.Status);
             return BaseResponse<ChickenCoop>.SuccessResponse(data: existCoop);
         }
     }
