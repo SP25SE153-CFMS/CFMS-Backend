@@ -30,6 +30,6 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Update
 
         public decimal? Area { get; set; }
 
-        public bool? Status { get; set; }
+        public int? Status { get; set; }
     }
 }
