@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
             try
             {
                 var batch = _mapper.Map<ChickenBatch>(request);
-                batch.Status = 0;
+                batch.Status = DateOnly.FromDateTime(batch.StartDate.Value) > DateOnly.FromDateTime(DateTime.Now.ToLocalTime()) ? 0 : 1;
 
                 foreach (var stage in stages)
                 {
