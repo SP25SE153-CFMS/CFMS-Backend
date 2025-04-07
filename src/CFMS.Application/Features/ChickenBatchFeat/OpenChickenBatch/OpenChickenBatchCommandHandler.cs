@@ -35,6 +35,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
             try
             {
                 var batch = _mapper.Map<ChickenBatch>(request);
+                batch.Status = 0;
 
                 foreach (var stage in stages)
                 {
