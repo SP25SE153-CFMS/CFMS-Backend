@@ -5,16 +5,16 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
 {
     public class CreateCoopCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateCoopCommand(string? chickenCoopCode, string? chickenCoopName, int? capacity, int? area, double? density, int? currentQuantity, string? description, int? status, Guid? purposeId, Guid? breedingAreaId)
+        public CreateCoopCommand(string? chickenCoopCode, string? chickenCoopName, int? capacity, int? area, double? density, string? description, Guid areaUnitId, Guid densityUnitId, Guid? purposeId, Guid? breedingAreaId)
         {
             ChickenCoopCode = chickenCoopCode;
             ChickenCoopName = chickenCoopName;
             Capacity = capacity;
             Area = area;
             Density = density;
-            CurrentQuantity = currentQuantity;
             Description = description;
-            Status = status;
+            AreaUnitId = areaUnitId;
+            DensityUnitId = densityUnitId;
             PurposeId = purposeId;
             BreedingAreaId = breedingAreaId;
         }
@@ -29,11 +29,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
 
         public double? Density { get; set; }
 
-        public int? CurrentQuantity { get; set; }
-
         public string? Description { get; set; }
-
-        public int? Status { get; set; }
 
         public Guid AreaUnitId { get; set; }
 

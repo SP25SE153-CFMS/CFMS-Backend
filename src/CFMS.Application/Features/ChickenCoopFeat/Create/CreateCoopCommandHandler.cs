@@ -44,7 +44,10 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
 
             try
             {
-                _unitOfWork.ChickenCoopRepository.Insert(_mapper.Map<ChickenCoop>(request));
+                var coop = _mapper.Map<ChickenCoop>(request);
+                coop.Status = 0;
+
+                _unitOfWork.ChickenCoopRepository.Insert(coop);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
