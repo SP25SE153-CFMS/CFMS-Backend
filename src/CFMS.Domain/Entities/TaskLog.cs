@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -15,6 +16,7 @@ public partial class TaskLog : EntityAudit
 
     public string? Note { get; set; }
 
+    [JsonIgnore]
     public virtual ChickenCoop? ChickenCoop { get; set; }
 
     public virtual Task? Task { get; set; }

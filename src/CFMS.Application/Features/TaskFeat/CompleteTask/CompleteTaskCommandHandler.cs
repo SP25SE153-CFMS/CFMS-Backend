@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
 
@@ -15,7 +16,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
         public async Task<BaseResponse<bool>> Handle(CompleteTaskCommand request, CancellationToken cancellationToken)
         {
-            var existTask = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false).FirstOrDefault();
+            var existTask = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false, includeProperties: [t => t.TaskLocations]).FirstOrDefault();
             if (existTask == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Task không tồn tại");
@@ -24,6 +25,20 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
             try
             {
                 existTask.Status = 1;
+
+                var location = existTask.TaskLocations.FirstOrDefault();
+                if (location.LocationType.Equals("COOP"))
+                {
+                    var taskLog = new TaskLog
+                    {
+                        ChickenCoopId = location.CoopId,
+                        CompletedAt = DateTime.Now.ToLocalTime(),
+                        TaskId = existTask.TaskId,
+                        Note = request.Note,
+                    };
+
+                    _unitOfWork.TaskLogRepository.Insert(taskLog);
+                }
 
                 _unitOfWork.TaskRepository.Update(existTask);
                 var result = await _unitOfWork.SaveChangesAsync();
