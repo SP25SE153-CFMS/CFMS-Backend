@@ -33,11 +33,12 @@ namespace CFMS.Application.Features.TaskFeat.GetTasksByCurrentUser
             var existTasks = _unitOfWork.TaskRepository.Get(filter: f => (f.FarmId.ToString().Equals(request.FarmId) || f.Assignments.Select(x => x.AssignedToId).Contains(userId)) && f.IsDeleted == false,
                   includeProperties: [
                       x => x.Assignments,
+                      x => x.TaskType,
                     x => x.ShiftSchedules,
                     x => x.TaskHarvests,
                     x => x.TaskResources,
                     x => x.TaskLocations
-                      ]).ToList();
+                      ]);
 
             return BaseResponse<IEnumerable<Domain.Entities.Task>>.SuccessResponse(data: existTasks);
         }

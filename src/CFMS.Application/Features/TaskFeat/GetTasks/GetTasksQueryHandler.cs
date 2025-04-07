@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTasks
 
         public async Task<BaseResponse<IEnumerable<Domain.Entities.Task>>> Handle(GetTasksQuery request, CancellationToken cancellationToken)
         {
-            var tasks = _unitOfWork.TaskRepository.Get(filter: t => t.IsDeleted == false, includeProperties: [t => t.Assignments, t => t.TaskLocations, t => t.ShiftSchedules, t => t.TaskResources]);
+            var tasks = _unitOfWork.TaskRepository.Get(filter: t => t.IsDeleted == false, includeProperties: [t => t.TaskType, t => t.Assignments, t => t.TaskLocations, t => t.ShiftSchedules, t => t.TaskResources]);
             return BaseResponse<IEnumerable<Domain.Entities.Task>>.SuccessResponse(data: tasks);
         }
     }
