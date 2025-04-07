@@ -15,7 +15,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.DeleteCoopEquipment
 
         public async Task<BaseResponse<bool>> Handle(DeleteCoopEquipmentCommand request, CancellationToken cancellationToken)
         {
-            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.CoopId) && c.IsDeleted == false).FirstOrDefault();
+            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.CoopId) && c.IsDeleted == false, includeProperties: [x => x.CoopEquipments]).FirstOrDefault();
             if (existCoop == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Chuồng không tồn tại");
@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.DeleteCoopEquipment
 
             try
             {
-                existCoop.CoopEquipments.Remove(existCoopEquip);
+                var temp = existCoop.CoopEquipments.Remove(existCoopEquip);
 
                 _unitOfWork.ChickenCoopRepository.Update(existCoop);
                 var result = await _unitOfWork.SaveChangesAsync();
