@@ -9,6 +9,6 @@ namespace CFMS.Application.DTOs.Task.ShiftSchedule
     public class ShiftScheduleDto
     {
         public string? ShiftName { get; set; }
-        public DateTime? WorkTime { get; set; }
+        public DateOnly? WorkTime { get; set; }
     }
 }
