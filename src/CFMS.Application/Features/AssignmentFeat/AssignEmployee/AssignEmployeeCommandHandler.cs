@@ -28,24 +28,28 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
 
             try
             {
-                var frequency = task.FrequencySchedules.First();
-                int duration = (frequency.EndWorkDate.Value - frequency.StartWorkDate.Value).Days;
-                int step = frequency.Frequency.Value;
-
-                for (int i = 0; i < duration; i += step)
+                foreach (var assignedToId in request.AssignedToIds)
                 {
-                    foreach (var assignedToId in request.AssignedToIds)
+                    var assignment = new Assignment
                     {
-                        var assignment = new Assignment
-                        {
-                            TaskId = request.TaskId,
-                            AssignedDate = frequency.StartWorkDate.Value.AddDays(i),
-                            AssignedToId = assignedToId,
-                            Note = request.Note,
-                            Status = request.Status,
-                        };
-                        _unitOfWork.AssignmentRepository.Insert(assignment);
-                    }
+                        TaskId = request.TaskId,
+                        AssignedDate = DateTime.Now.ToLocalTime(),
+                        AssignedToId = assignedToId,
+                        Note = request.Note,
+                        Status = request.Status,
+                    };
+
+                    var noti = new Notification
+                    {
+                        UserId = assignedToId,
+                        NotificationName = "Thông báo giao việc",
+                        NotificationType = "ASSIGNMENT_TASK",
+                        Content = "Công việc " + task.TaskName + " đã được giao đến bạn, vui lòng hoàn thành đúng thời hạn",
+                        IsRead = 0
+                    };
+
+                    _unitOfWork.NotificationRepository.Insert(noti);
+                    _unitOfWork.AssignmentRepository.Insert(assignment);
                 }
 
                 var result = await _unitOfWork.SaveChangesAsync();

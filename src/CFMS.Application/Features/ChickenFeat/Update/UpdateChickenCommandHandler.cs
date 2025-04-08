@@ -32,7 +32,7 @@ namespace CFMS.Application.Features.ChickenFeat.Update
             {
                 existChicken.ChickenCode = request.ChickenCode;
                 existChicken.ChickenName = request.ChickenName;
-                existChicken.TotalQuantity = request.TotalQuantity;
+                //existChicken.TotalQuantity = request.TotalQuantity;
                 existChicken.Status = request.Status;
                 existChicken.Description = request.Description;
                 existChicken.ChickenTypeId = request.ChickenTypeId;
@@ -40,7 +40,7 @@ namespace CFMS.Application.Features.ChickenFeat.Update
                 var chickenDetails = request.ChickenDetails.Select(detail => new ChickenDetail
                 {
                     ChickenId = existChicken.ChickenId,
-                    Weight = detail.Weight,
+                    //Weight = detail.Weight,
                     Quantity = detail.Quantity,
                     Gender = detail.Gender
                 }).ToList() ?? new List<ChickenDetail>();

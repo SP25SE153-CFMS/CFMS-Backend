@@ -88,6 +88,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<decimal?>("Area")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("AreaUnitId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("BreedingAreaCode")
                         .HasColumnType("character varying");
 
@@ -128,6 +131,8 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasKey("BreedingAreaId")
                         .HasName("BreedingArea_pkey");
+
+                    b.HasIndex("AreaUnitId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -231,9 +236,6 @@ namespace CFMS.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(1);
-
-                    b.Property<int?>("TotalQuantity")
-                        .HasColumnType("integer");
 
                     b.HasKey("ChickenId")
                         .HasName("Chicken_pkey");
@@ -397,6 +399,9 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
+                    b.Property<Guid?>("ChickenBatchId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("ChickenId")
                         .HasColumnType("uuid");
 
@@ -406,11 +411,10 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<int?>("Quantity")
                         .HasColumnType("integer");
 
-                    b.Property<decimal?>("Weight")
-                        .HasColumnType("numeric");
-
                     b.HasKey("ChickenDetailId")
                         .HasName("ChickenDetail_pkey");
+
+                    b.HasIndex("ChickenBatchId");
 
                     b.HasIndex("ChickenId");
 
@@ -1535,10 +1539,28 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedWhen")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<int?>("IsRead")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(0);
+
+                    b.Property<Guid>("LastEditedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("LastEditedWhen")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NotificationName")
                         .HasColumnType("character varying");
@@ -1551,6 +1573,10 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasKey("NotificationId")
                         .HasName("Notification_pkey");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("LastEditedByUserId");
 
                     b.HasIndex("UserId");
 
@@ -1903,8 +1929,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedWhen")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<TimeOnly?>("EndTime")
+                        .HasColumnType("time");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -1918,8 +1944,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("ShiftName")
                         .HasColumnType("character varying");
 
-                    b.Property<DateTime?>("StartTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<TimeOnly?>("StartTime")
+                        .HasColumnType("time");
 
                     b.HasKey("ShiftId")
                         .HasName("Shift_pkey");
@@ -1951,6 +1977,8 @@ namespace CFMS.Infrastructure.Migrations
                         .HasName("ShiftSchedule_pkey");
 
                     b.HasIndex("ShiftId");
+
+                    b.HasIndex("TaskId");
 
                     b.ToTable("ShiftSchedule", (string)null);
                 });
@@ -2150,6 +2178,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("character varying");
 
+                    b.Property<DateTime?>("EndWorkDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<Guid?>("FarmId")
                         .HasColumnType("uuid");
 
@@ -2165,6 +2196,9 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("LastEditedWhen")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("StartWorkDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int?>("Status")
@@ -2810,6 +2844,11 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.BreedingArea", b =>
                 {
+                    b.HasOne("CFMS.Domain.Entities.SubCategory", "AreaUnit")
+                        .WithMany("BreedingAreaUnits")
+                        .HasForeignKey("AreaUnitId")
+                        .HasConstraintName("BreedingArea_AreaUnitId_fkey");
+
                     b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
@@ -2826,6 +2865,8 @@ namespace CFMS.Infrastructure.Migrations
                         .HasForeignKey("LastEditedByUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AreaUnit");
 
                     b.Navigation("CreatedByUser");
 
@@ -2888,9 +2929,8 @@ namespace CFMS.Infrastructure.Migrations
                         .HasConstraintName("ChickenBatch_ChickenCoopId_fkey");
 
                     b.HasOne("CFMS.Domain.Entities.Chicken", "Chicken")
-                        .WithMany("ChickenBatches")
-                        .HasForeignKey("ChickenId")
-                        .HasConstraintName("Chicken_ChickenId_fkey");
+                        .WithMany()
+                        .HasForeignKey("ChickenId");
 
                     b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
@@ -2962,12 +3002,19 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.ChickenDetail", b =>
                 {
+                    b.HasOne("CFMS.Domain.Entities.ChickenBatch", "ChickenBatch")
+                        .WithMany("ChickenDetails")
+                        .HasForeignKey("ChickenBatchId")
+                        .HasConstraintName("ChickenDetail_ChickenBatchId_fkey");
+
                     b.HasOne("CFMS.Domain.Entities.Chicken", "Chicken")
                         .WithMany("ChickenDetails")
                         .HasForeignKey("ChickenId")
                         .HasConstraintName("ChickenDetail_ChickenId_fkey");
 
                     b.Navigation("Chicken");
+
+                    b.Navigation("ChickenBatch");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.CoopEquipment", b =>
@@ -3610,11 +3657,27 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.Notification", b =>
                 {
+                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
+                        .WithMany()
+                        .HasForeignKey("LastEditedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("CFMS.Domain.Entities.User", "User")
                         .WithMany("Notifications")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("Notification_UserId_fkey");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("LastEditedByUser");
 
                     b.Navigation("User");
                 });
@@ -3856,10 +3919,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasOne("CFMS.Domain.Entities.Task", "Task")
                         .WithMany("ShiftSchedules")
-                        .HasForeignKey("ShiftScheduleId")
+                        .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired()
-                        .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
+                        .HasConstraintName("ShiftSchedule_TaskId_fkey");
 
                     b.Navigation("Shift");
 
@@ -4339,8 +4401,6 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.Chicken", b =>
                 {
-                    b.Navigation("ChickenBatches");
-
                     b.Navigation("ChickenDetails");
 
                     b.Navigation("ChickenNavigation")
@@ -4351,6 +4411,8 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.ChickenBatch", b =>
                 {
+                    b.Navigation("ChickenDetails");
+
                     b.Navigation("FeedLogs");
 
                     b.Navigation("GrowthBatches");
@@ -4473,6 +4535,8 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.SubCategory", b =>
                 {
+                    b.Navigation("BreedingAreaUnits");
+
                     b.Navigation("ChickenCoopAreaUnits");
 
                     b.Navigation("ChickenCoopDensityUnits");

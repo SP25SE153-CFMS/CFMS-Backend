@@ -37,26 +37,25 @@ namespace CFMS.Application.Features.ChickenFeat.Create
                 {
                     ChickenCode = request.ChickenCode,
                     ChickenName = request.ChickenName,
-                    TotalQuantity = request.TotalQuantity,
                     Description = request.Description,
                     Status = request.Status,
                     ChickenTypeId = request.ChickenTypeId,
                 };
 
                 _unitOfWork.ChickenRepository.Insert(newChicken);
-                await _unitOfWork.SaveChangesAsync();
+                //await _unitOfWork.SaveChangesAsync();
 
-                existChicken = _unitOfWork.ChickenRepository.Get(filter: p => p.ChickenCode.Equals(request.ChickenCode) && p.IsDeleted == false).FirstOrDefault();
+                //existChicken = _unitOfWork.ChickenRepository.Get(filter: p => p.ChickenCode.Equals(request.ChickenCode) && p.IsDeleted == false).FirstOrDefault();
 
-                var chickenDetails = request.ChickenDetails.Select(detail => new ChickenDetail
-                {
-                    ChickenId = existChicken.ChickenId,
-                    Weight = detail.Weight,
-                    Quantity = detail.Quantity,
-                    Gender = detail.Gender
-                }).ToList() ?? new List<ChickenDetail>();
+                //var chickenDetails = request.ChickenDetails.Select(detail => new ChickenDetail
+                //{
+                //    ChickenId = existChicken.ChickenId,
+                //    Weight = detail.Weight,
+                //    Quantity = detail.Quantity,
+                //    Gender = detail.Gender
+                //}).ToList() ?? new List<ChickenDetail>();
 
-                _unitOfWork.ChickenDetailRepository.InsertRange(chickenDetails);
+                //_unitOfWork.ChickenDetailRepository.InsertRange(chickenDetails);
 
                 var result = await _unitOfWork.SaveChangesAsync();
 

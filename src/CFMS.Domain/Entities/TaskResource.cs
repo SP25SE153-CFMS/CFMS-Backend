@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -23,5 +24,6 @@ public partial class TaskResource : EntityAudit
 
     public virtual Resource? Resource { get; set; }
 
+    [JsonIgnore]
     public virtual Task Task { get; set; } = null!;
 }

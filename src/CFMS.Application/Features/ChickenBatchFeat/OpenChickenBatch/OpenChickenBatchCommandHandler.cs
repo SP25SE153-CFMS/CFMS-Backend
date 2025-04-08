@@ -35,6 +35,17 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
             try
             {
                 var batch = _mapper.Map<ChickenBatch>(request);
+                batch.Status = DateOnly.FromDateTime(batch.StartDate.Value) > DateOnly.FromDateTime(DateTime.Now.ToLocalTime()) ? 0 : 1;
+
+                foreach (var chickenDetail in request.ChickenDetailRequests)
+                {
+                    batch.ChickenDetails.Add(new ChickenDetail
+                    {
+                        ChickenId = existChicken.ChickenId,
+                        Quantity = chickenDetail.Quantity,
+                        Gender = chickenDetail.Gender,
+                    });
+                }
 
                 foreach (var stage in stages)
                 {

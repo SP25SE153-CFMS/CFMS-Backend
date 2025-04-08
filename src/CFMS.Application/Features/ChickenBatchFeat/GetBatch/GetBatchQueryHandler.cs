@@ -18,14 +18,10 @@ namespace CFMS.Application.Features.ChickenBatchFeat.GetBatch
 
         public async Task<BaseResponse<ChickenBatch>> Handle(GetBatchQuery request, CancellationToken cancellationToken)
         {
-            var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.Id) && b.IsDeleted == false,
-                includeProperties: [
-                    batch => batch.Chicken, 
-                    batch => batch.Chicken.ChickenDetails, 
-                    batch => batch.FeedLogs,
-                    batch => batch.HealthLogs,
-                    batch => batch.QuantityLogs,
-                    batch => batch.VaccineLogs]).FirstOrDefault();
+            var existBatch = _unitOfWork.ChickenBatchRepository.Get(
+            filter: b => b.ChickenBatchId.Equals(request.Id) && !b.IsDeleted,
+            includeProperties: "Chicken,GrowthBatches,GrowthBatches.GrowthStage,GrowthBatches.GrowthStage.NutritionPlan,FeedLogs,HealthLogs,QuantityLogs,VaccineLogs,ChickenDetails"
+            ).FirstOrDefault();
 
             if (existBatch == null)
             {

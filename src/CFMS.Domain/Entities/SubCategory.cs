@@ -29,6 +29,9 @@ public partial class SubCategory : EntityAudit
 
     [JsonIgnore]
     public virtual ICollection<Farm> FarmAreaUnits { get; set; } = new List<Farm>();
+    
+    [JsonIgnore]
+    public virtual ICollection<BreedingArea> BreedingAreaUnits { get; set; } = new List<BreedingArea>();
 
     [JsonIgnore]
     public virtual ICollection<ChickenCoop> ChickenCoopPurposes { get; set; } = new List<ChickenCoop>();

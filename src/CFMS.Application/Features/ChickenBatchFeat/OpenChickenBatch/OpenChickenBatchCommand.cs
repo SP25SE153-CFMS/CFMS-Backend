@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.ChickenDetail;
 using MediatR;
 
 namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
@@ -17,6 +18,8 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
         public Guid? ChickenCoopId { get; set; }
 
         public Guid ChickenId { get; set; }
+
+        public IEnumerable<ChickenDetailRequest> ChickenDetailRequests { get; set; }
 
         public string? ChickenBatchName { get; set; }
 

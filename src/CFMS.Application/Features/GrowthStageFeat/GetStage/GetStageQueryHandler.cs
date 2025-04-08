@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.GetStage
 
         public async Task<BaseResponse<GrowthStage>> Handle(GetStageQuery request, CancellationToken cancellationToken)
         {
-            var existStage = _unitOfWork.GrowthStageRepository.Get(filter: s => s.GrowthStageId.Equals(request.StageId) && s.IsDeleted == false).FirstOrDefault();
+            var existStage = _unitOfWork.GrowthStageRepository.Get(filter: s => s.GrowthStageId.Equals(request.StageId) && s.IsDeleted == false, includeProperties: [g => g.NutritionPlan]).FirstOrDefault();
             if (existStage == null)
             {
                 return BaseResponse<GrowthStage>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");

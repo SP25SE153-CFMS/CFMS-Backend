@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.CloseChickenBatch
             try
             {
                 existBatch.EndDate = DateTime.Now.ToLocalTime();
-                existBatch.Status = 0;
+                existBatch.Status = 2;
 
                 _unitOfWork.ChickenBatchRepository.Update(existBatch);
                 var result = await _unitOfWork.SaveChangesAsync();

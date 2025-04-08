@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -16,6 +17,10 @@ public partial class Task : EntityAudit
     public int? IsHavest { get; set; }
 
     public int? Status { get; set; }
+
+    public DateTime? StartWorkDate { get; set; }
+
+    public DateTime? EndWorkDate { get; set; }
 
     public Guid? FarmId { get; set; }
 
@@ -35,6 +40,7 @@ public partial class Task : EntityAudit
 
     public virtual ICollection<TaskLocation> TaskLocations { get; set; } = new List<TaskLocation>();
 
+    [JsonIgnore]
     public virtual ICollection<TaskLog> TaskLogs { get; set; } = new List<TaskLog>();
 
     public virtual SystemConfig TaskNavigation { get; set; } = null!;

@@ -10,7 +10,9 @@ public partial class ChickenDetail
 
     public Guid? ChickenId { get; set; }
 
-    public decimal? Weight { get; set; }
+    public Guid? ChickenBatchId { get; set; }
+
+    //public decimal? Weight { get; set; }
 
     public int? Quantity { get; set; }
 
@@ -18,4 +20,7 @@ public partial class ChickenDetail
 
     [JsonIgnore]
     public virtual Chicken? Chicken { get; set; }
+
+    [JsonIgnore]
+    public virtual ChickenBatch? ChickenBatch { get; set; }
 }

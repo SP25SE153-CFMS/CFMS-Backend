@@ -5,9 +5,10 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Update
 {
     public class UpdateBreedingAreaCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateBreedingAreaCommand(Guid breedingAreaId, string? breedingAreaCode, string? breedingAreaName, string? imageUrl, string? notes, decimal? area, bool? status)
+        public UpdateBreedingAreaCommand(Guid breedingAreaId, Guid farmId, string? breedingAreaCode, string? breedingAreaName, string? imageUrl, string? notes, decimal? area, int? status)
         {
             BreedingAreaId = breedingAreaId;
+            FarmId = farmId;
             BreedingAreaCode = breedingAreaCode;
             BreedingAreaName = breedingAreaName;
             ImageUrl = imageUrl;
@@ -30,6 +31,6 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Update
 
         public decimal? Area { get; set; }
 
-        public bool? Status { get; set; }
+        public int? Status { get; set; }
     }
 }

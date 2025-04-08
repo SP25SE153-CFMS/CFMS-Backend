@@ -12,7 +12,9 @@ namespace CFMS.Application.Mappings
     {
         public TaskProfile()
         {
-            CreateMap<CreateTaskCommand, Task>();
+            CreateMap<CreateTaskCommand, Task>()
+                .ForMember(dest => dest.StartWorkDate, opt => opt.Ignore())
+                .ForMember(dest => dest.TaskResources, opt => opt.Ignore());
 
             CreateMap<Task, TaskDto>()
                 .ForMember(dest => dest.TaskName, opt => opt.MapFrom(src => src.TaskName))
@@ -46,7 +48,6 @@ namespace CFMS.Application.Mappings
                         _ => "Không xác định"
                     };
                 });
-
         }
     }
 }
