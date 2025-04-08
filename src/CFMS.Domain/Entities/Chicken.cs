@@ -12,7 +12,7 @@ public partial class Chicken : EntityAudit
 
     public string? ChickenName { get; set; }
 
-    public int? TotalQuantity { get; set; }
+    //public int? TotalQuantity { get; set; }
 
     public string? Description { get; set; }
 
@@ -20,8 +20,8 @@ public partial class Chicken : EntityAudit
 
     public Guid? ChickenTypeId { get; set; }
 
-    [JsonIgnore]
-    public virtual ICollection<ChickenBatch> ChickenBatches { get; set; } = new List<ChickenBatch>();
+    //[JsonIgnore]
+    //public virtual ICollection<ChickenBatch> ChickenBatches { get; set; } = new List<ChickenBatch>();
 
     public virtual ICollection<ChickenDetail> ChickenDetails { get; set; } = new List<ChickenDetail>();
 

@@ -5,7 +5,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Create
 {
     public class CreateBreedingAreaCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateBreedingAreaCommand(string? breedingAreaCode, string? breedingAreaName, string? imageUrl, string? notes, Guid? farmId, double? area, int? status)
+        public CreateBreedingAreaCommand(string? breedingAreaCode, string? breedingAreaName, string? imageUrl, string? notes, Guid? farmId, double? area, int? status, Guid? areaUnitId)
         {
             BreedingAreaCode = breedingAreaCode;
             BreedingAreaName = breedingAreaName;
@@ -14,6 +14,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Create
             FarmId = farmId;
             Area = area;
             Status = status;
+            AreaUnitId = areaUnitId;
         }
 
         public string? BreedingAreaCode { get; set; }
@@ -25,6 +26,8 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Create
         public string? Notes { get; set; }
 
         public Guid? FarmId { get; set; }
+
+        public Guid? AreaUnitId { get; set; }
 
         public double? Area { get; set; }
 

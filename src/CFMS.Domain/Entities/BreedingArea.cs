@@ -20,7 +20,11 @@ public partial class BreedingArea : EntityAudit
 
     public decimal? Area { get; set; }
 
+    public Guid? AreaUnitId { get; set; }
+
     public int? Status { get; set; }
+
+    public virtual SubCategory? AreaUnit { get; set; }
 
     public virtual ICollection<ChickenCoop> ChickenCoops { get; set; } = new List<ChickenCoop>();
 

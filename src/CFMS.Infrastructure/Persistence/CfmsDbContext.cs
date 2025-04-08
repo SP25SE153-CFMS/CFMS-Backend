@@ -508,6 +508,10 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.Farm).WithMany(p => p.BreedingAreas)
                 .HasForeignKey(d => d.FarmId)
                 .HasConstraintName("BreedingArea_FarmId_fkey");
+            
+            entity.HasOne(d => d.AreaUnit).WithMany(p => p.BreedingAreaUnits)
+                .HasForeignKey(d => d.AreaUnitId)
+                .HasConstraintName("BreedingArea_AreaUnitId_fkey");
         });
 
         modelBuilder.Entity<Category>(entity =>
@@ -556,9 +560,9 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.Status).HasDefaultValue(1);
 
-            entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenBatches)
-                .HasForeignKey(d => d.ChickenId)
-                .HasConstraintName("Chicken_ChickenId_fkey");
+            //entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenBatches)
+            //    .HasForeignKey(d => d.ChickenId)
+            //    .HasConstraintName("Chicken_ChickenId_fkey");
 
             entity.HasOne(d => d.ChickenCoop).WithMany(p => p.ChickenBatches)
                 .HasForeignKey(d => d.ChickenCoopId)
@@ -612,6 +616,10 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenDetails)
                 .HasForeignKey(d => d.ChickenId)
                 .HasConstraintName("ChickenDetail_ChickenId_fkey");
+
+            entity.HasOne(d => d.ChickenBatch).WithMany(p => p.ChickenDetails)
+                .HasForeignKey(d => d.ChickenBatchId)
+                .HasConstraintName("ChickenDetail_ChickenBatchId_fkey");
         });
 
         modelBuilder.Entity<CoopEquipment>(entity =>
