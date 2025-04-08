@@ -8,6 +8,8 @@ namespace CFMS.Application.DTOs.WareStock
 {
     public class WareStockEquipmentResponse : WareStockResponseBase
     {
+        public Guid ResourceId { get; set; }
+
         public string? EquipmentCode { get; set; }
 
         public string? EquipmentName { get; set; }
