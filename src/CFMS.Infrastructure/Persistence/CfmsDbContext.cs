@@ -235,6 +235,18 @@ public partial class CfmsDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Notification>()
+        .HasOne(a => a.CreatedByUser)
+        .WithMany()
+        .HasForeignKey(a => a.CreatedByUserId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Notification>()
+        .HasOne(a => a.LastEditedByUser)
+        .WithMany()
+        .HasForeignKey(a => a.LastEditedByUserId)
+        .OnDelete(DeleteBehavior.Restrict);
+        
         modelBuilder.Entity<WarePermission>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
