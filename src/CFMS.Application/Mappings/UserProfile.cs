@@ -19,8 +19,9 @@ namespace CFMS.Application.Mappings
         public UserProfile()
         {
             CreateMap<User, UserResponse>();
-                //.ForMember(dest => dest.SystemRole, opt => opt.MapFrom(src => GetSystemRoleName(src.SystemRole)))
-                //.ForMember(dest => dest.Status, opt => opt.MapFrom(src => GetUserStatusName(src.Status)));
+            //.ForMember(dest => dest.SystemRole, opt => opt.MapFrom(src => GetSystemRoleName(src.SystemRole)))
+            //.ForMember(dest => dest.Status, opt => opt.MapFrom(src => GetUserStatusName(src.Status)));
+            CreateMap<User, CurrentUserResponse>();
         }
 
         private string GetSystemRoleName(GeneralRole? systemRole)
