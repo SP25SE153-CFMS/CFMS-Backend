@@ -28,7 +28,6 @@ namespace CFMS.Application.Features.ChickenFeat.AddChickenDetail
                 {
                     ChickenId = request.ChickenId,
                     Gender = request.Gender,
-                    Weight = request.Weight,
                     Quantity = request.Quantity,
                 });
 
