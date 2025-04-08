@@ -36,4 +36,6 @@ public partial class ChickenBatch : EntityAudit
     public virtual ICollection<QuantityLog> QuantityLogs { get; set; } = new List<QuantityLog>();
 
     public virtual ICollection<VaccineLog> VaccineLogs { get; set; } = new List<VaccineLog>();
+
+    public virtual ICollection<ChickenDetail> ChickenDetails { get; set; } = new List<ChickenDetail>();
 }

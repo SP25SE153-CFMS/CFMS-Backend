@@ -3,6 +3,7 @@ using System;
 using CFMS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    partial class CfmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250408133401_UpdateDatabaseV17")]
+    partial class UpdateDatabaseV17
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,9 +91,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<decimal?>("Area")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid?>("AreaUnitId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("BreedingAreaCode")
                         .HasColumnType("character varying");
 
@@ -131,8 +131,6 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasKey("BreedingAreaId")
                         .HasName("BreedingArea_pkey");
-
-                    b.HasIndex("AreaUnitId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -236,6 +234,9 @@ namespace CFMS.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(1);
+
+                    b.Property<int?>("TotalQuantity")
+                        .HasColumnType("integer");
 
                     b.HasKey("ChickenId")
                         .HasName("Chicken_pkey");
@@ -399,7 +400,7 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<Guid?>("ChickenBatchId")
+                    b.Property<Guid?>("ChickenBathId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("ChickenId")
@@ -411,10 +412,13 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<int?>("Quantity")
                         .HasColumnType("integer");
 
+                    b.Property<decimal?>("Weight")
+                        .HasColumnType("numeric");
+
                     b.HasKey("ChickenDetailId")
                         .HasName("ChickenDetail_pkey");
 
-                    b.HasIndex("ChickenBatchId");
+                    b.HasIndex("ChickenBathId");
 
                     b.HasIndex("ChickenId");
 
@@ -2822,11 +2826,6 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.BreedingArea", b =>
                 {
-                    b.HasOne("CFMS.Domain.Entities.SubCategory", "AreaUnit")
-                        .WithMany("BreedingAreaUnits")
-                        .HasForeignKey("AreaUnitId")
-                        .HasConstraintName("BreedingArea_AreaUnitId_fkey");
-
                     b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
@@ -2843,8 +2842,6 @@ namespace CFMS.Infrastructure.Migrations
                         .HasForeignKey("LastEditedByUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("AreaUnit");
 
                     b.Navigation("CreatedByUser");
 
@@ -2907,7 +2904,7 @@ namespace CFMS.Infrastructure.Migrations
                         .HasConstraintName("ChickenBatch_ChickenCoopId_fkey");
 
                     b.HasOne("CFMS.Domain.Entities.Chicken", "Chicken")
-                        .WithMany()
+                        .WithMany("ChickenBatches")
                         .HasForeignKey("ChickenId");
 
                     b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
@@ -2982,7 +2979,7 @@ namespace CFMS.Infrastructure.Migrations
                 {
                     b.HasOne("CFMS.Domain.Entities.ChickenBatch", "ChickenBatch")
                         .WithMany("ChickenDetails")
-                        .HasForeignKey("ChickenBatchId")
+                        .HasForeignKey("ChickenBathId")
                         .HasConstraintName("ChickenDetail_ChickenBatchId_fkey");
 
                     b.HasOne("CFMS.Domain.Entities.Chicken", "Chicken")
@@ -4363,6 +4360,8 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.Chicken", b =>
                 {
+                    b.Navigation("ChickenBatches");
+
                     b.Navigation("ChickenDetails");
 
                     b.Navigation("ChickenNavigation")
@@ -4497,8 +4496,6 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.SubCategory", b =>
                 {
-                    b.Navigation("BreedingAreaUnits");
-
                     b.Navigation("ChickenCoopAreaUnits");
 
                     b.Navigation("ChickenCoopDensityUnits");

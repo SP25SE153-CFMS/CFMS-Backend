@@ -3,6 +3,7 @@ using System;
 using CFMS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    partial class CfmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250408135525_UpdateDatabaseV18")]
+    partial class UpdateDatabaseV18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,9 +91,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<decimal?>("Area")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid?>("AreaUnitId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("BreedingAreaCode")
                         .HasColumnType("character varying");
 
@@ -131,8 +131,6 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasKey("BreedingAreaId")
                         .HasName("BreedingArea_pkey");
-
-                    b.HasIndex("AreaUnitId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -2822,11 +2820,6 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.BreedingArea", b =>
                 {
-                    b.HasOne("CFMS.Domain.Entities.SubCategory", "AreaUnit")
-                        .WithMany("BreedingAreaUnits")
-                        .HasForeignKey("AreaUnitId")
-                        .HasConstraintName("BreedingArea_AreaUnitId_fkey");
-
                     b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
@@ -2843,8 +2836,6 @@ namespace CFMS.Infrastructure.Migrations
                         .HasForeignKey("LastEditedByUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("AreaUnit");
 
                     b.Navigation("CreatedByUser");
 
@@ -4497,8 +4488,6 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.SubCategory", b =>
                 {
-                    b.Navigation("BreedingAreaUnits");
-
                     b.Navigation("ChickenCoopAreaUnits");
 
                     b.Navigation("ChickenCoopDensityUnits");
