@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
 
@@ -31,6 +32,16 @@ namespace CFMS.Application.Features.AssignmentFeat.Delete
             {
                 existTask.Assignments.Remove(existAssignment);
 
+                var noti = new Notification
+                {
+                    UserId = existAssignment.AssignedToId,
+                    NotificationName = "Thông báo hủy giao việc",
+                    NotificationType = "ASSIGNMENT_REMOVE",
+                    Content = "Công việc " + existTask.TaskName + " đã không còn giao cho bạn",
+                    IsRead = 0
+                };
+
+                _unitOfWork.NotificationRepository.Insert(noti);
                 _unitOfWork.TaskRepository.Update(existTask);
                 _unitOfWork.AssignmentRepository.Delete(existAssignment);
 

@@ -39,6 +39,16 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
                         Status = request.Status,
                     };
 
+                    var noti = new Notification
+                    {
+                        UserId = assignedToId,
+                        NotificationName = "Thông báo giao việc",
+                        NotificationType = "ASSIGNMENT_TASK",
+                        Content = "Công việc " + task.TaskName + " đã được giao đến bạn, vui lòng hoàn thành đúng thời hạn",
+                        IsRead = 0
+                    };
+
+                    _unitOfWork.NotificationRepository.Insert(noti);
                     _unitOfWork.AssignmentRepository.Insert(assignment);
                 }
 
