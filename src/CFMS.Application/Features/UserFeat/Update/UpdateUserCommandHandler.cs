@@ -56,7 +56,7 @@ namespace CFMS.Application.Features.UserFeat.Update
                 }
 
                 existUser.FullName = request.FullName ?? existUser.FullName;
-                existUser.PhoneNumber = _utilityService.FormatVietnamPhoneNumber(request.PhoneNumber) ?? existUser.PhoneNumber;   
+                existUser.PhoneNumber = request.PhoneNumber;   
                 existUser.Mail = request.Mail ?? existUser.Mail;
                 existUser.Avatar = request.Avatar ?? existUser.Avatar;
                 existUser.DateOfBirth = request.DateOfBirth ?? existUser.DateOfBirth;
