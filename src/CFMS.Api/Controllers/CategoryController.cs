@@ -5,6 +5,7 @@ using CFMS.Application.Features.CategoryFeat.GetCategories;
 using CFMS.Application.Features.CategoryFeat.GetCategory;
 using CFMS.Application.Features.CategoryFeat.GetCategoryByType;
 using CFMS.Application.Features.CategoryFeat.GetChickenTypes;
+using CFMS.Application.Features.CategoryFeat.GetSubsByCode;
 using CFMS.Application.Features.CategoryFeat.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -77,6 +78,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetChickenTypes()
         {
             var result = await Send(new GetChickenTypesQuery());
+            return result;
+        }
+
+        [HttpGet("sub-by-type/{categoryType}")]
+        public async Task<IActionResult> GetSubsByType(string categoryType)
+        {
+            var result = await Send(new GetSubsByTypeQuery(categoryType));
             return result;
         }
     }
