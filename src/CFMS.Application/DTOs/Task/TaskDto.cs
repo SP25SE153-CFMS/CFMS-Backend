@@ -23,8 +23,8 @@ namespace CFMS.Application.DTOs.Task
 
         public int? Status { get; set; }
 
-        public List<ShiftScheduleDto> shiftScheduleList { get; set; }
+        public List<ShiftScheduleDto> shiftScheduleList { get; set; } = new List<ShiftScheduleDto>();
 
-        public List<TaskResourceDto> resourceList { get; set; }
+        public List<TaskResourceDto> resourceList { get; set; } = new List<TaskResourceDto>();
     }
 }

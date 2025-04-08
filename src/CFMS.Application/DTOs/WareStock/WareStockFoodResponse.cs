@@ -10,6 +10,8 @@ namespace CFMS.Application.DTOs.WareStock
     {
         public Guid ResourceId { get; set; }
 
+        public Guid FoodId { get; set; }
+
         public string? FoodCode { get; set; }
 
         public string? FoodName { get; set; }

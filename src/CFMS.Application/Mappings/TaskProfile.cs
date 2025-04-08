@@ -21,13 +21,25 @@ namespace CFMS.Application.Mappings
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
                 .ForMember(dest => dest.TaskType, opt => opt.MapFrom(src => src.TaskType.SubCategoryName))
-                .ForMember(dest => dest.TaskLocation, opt => opt.MapFrom(src => src.TaskLocations.FirstOrDefault().LocationType))
+                .AfterMap((src, dest) =>
+                {
+                    var location = src.TaskLocations.FirstOrDefault();
+                    if (location?.LocationType?.Equals("COOP", StringComparison.OrdinalIgnoreCase) is true)
+                        dest.TaskLocation = location.Location?.ChickenCoopName ?? "Không xác định";
+                    else if (location?.LocationType?.Equals("WARE", StringComparison.OrdinalIgnoreCase) is true)
+                        dest.TaskLocation = location.LocationNavigation?.WarehouseName ?? "Không xác định";
+                    else
+                        dest.TaskLocation = "Không xác định";
+                })
                 .ForMember(dest => dest.shiftScheduleList, opt => opt.MapFrom(src => src.ShiftSchedules))
                 .ForMember(dest => dest.resourceList, opt => opt.MapFrom(src => src.TaskResources));
 
             CreateMap<ShiftSchedule, ShiftScheduleDto>()
-                .ForMember(dest => dest.ShiftName, opt => opt.MapFrom(src => src.Shift.ShiftName))
-                .ForMember(dest => dest.WorkTime, opt => opt.MapFrom(src => src.Date));
+                .AfterMap((src, dest) =>
+                {
+                    dest.ShiftName = src.Shift?.ShiftName ?? "Không xác định";
+                    dest.WorkTime = src.Date;
+                });
 
             CreateMap<TaskResource, TaskResourceDto>()
                 .AfterMap((src, dest) =>

@@ -10,6 +10,8 @@ namespace CFMS.Application.DTOs.WareStock
     {
         public Guid ResourceId { get; set; }
 
+        public Guid EquipmentId { get; set; }
+
         public string? EquipmentCode { get; set; }
 
         public string? EquipmentName { get; set; }
