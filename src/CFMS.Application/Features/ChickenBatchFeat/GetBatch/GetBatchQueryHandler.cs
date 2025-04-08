@@ -20,7 +20,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.GetBatch
         {
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(
             filter: b => b.ChickenBatchId.Equals(request.Id) && !b.IsDeleted,
-            includeProperties: "Chicken,Chicken.ChickenDetails,GrowthBatches,GrowthBatches.GrowthStage,GrowthBatches.GrowthStage.NutritionPlan,FeedLogs,HealthLogs,QuantityLogs,VaccineLogs"
+            includeProperties: "Chicken,GrowthBatches,GrowthBatches.GrowthStage,GrowthBatches.GrowthStage.NutritionPlan,FeedLogs,HealthLogs,QuantityLogs,VaccineLogs,ChickenDetails"
             ).FirstOrDefault();
 
             if (existBatch == null)
