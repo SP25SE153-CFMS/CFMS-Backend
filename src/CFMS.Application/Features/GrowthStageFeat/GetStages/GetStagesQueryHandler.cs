@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.GetStages
 
         public async Task<BaseResponse<IEnumerable<GrowthStage>>> Handle(GetStagesQuery request, CancellationToken cancellationToken)
         {
-            var stages = _unitOfWork.GrowthStageRepository.Get(filter: s => s.IsDeleted == false);
+            var stages = _unitOfWork.GrowthStageRepository.Get(filter: s => s.IsDeleted == false, includeProperties: [g => g.NutritionPlan]);
             return BaseResponse<IEnumerable<GrowthStage>>.SuccessResponse(data: stages);
         }
     }

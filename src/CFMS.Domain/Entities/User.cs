@@ -24,9 +24,9 @@ public partial class User
 
     public string? Cccd { get; set; }
 
-    public string? GoogleId { get; set; }
-
     public int? SystemRole { get; set; }
+
+    public string? GoogleId { get; set; }
 
     public string? HashedPassword { get; set; }
 
@@ -36,6 +36,7 @@ public partial class User
     [JsonIgnore]
     public virtual ICollection<FarmEmployee> FarmEmployees { get; set; } = new List<FarmEmployee>();
 
+    [JsonIgnore]
     public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();

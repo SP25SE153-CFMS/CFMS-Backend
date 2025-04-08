@@ -235,6 +235,18 @@ public partial class CfmsDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Notification>()
+        .HasOne(a => a.CreatedByUser)
+        .WithMany()
+        .HasForeignKey(a => a.CreatedByUserId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Notification>()
+        .HasOne(a => a.LastEditedByUser)
+        .WithMany()
+        .HasForeignKey(a => a.LastEditedByUserId)
+        .OnDelete(DeleteBehavior.Restrict);
+        
         modelBuilder.Entity<WarePermission>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
@@ -508,6 +520,10 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.Farm).WithMany(p => p.BreedingAreas)
                 .HasForeignKey(d => d.FarmId)
                 .HasConstraintName("BreedingArea_FarmId_fkey");
+            
+            entity.HasOne(d => d.AreaUnit).WithMany(p => p.BreedingAreaUnits)
+                .HasForeignKey(d => d.AreaUnitId)
+                .HasConstraintName("BreedingArea_AreaUnitId_fkey");
         });
 
         modelBuilder.Entity<Category>(entity =>
@@ -556,9 +572,9 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.Status).HasDefaultValue(1);
 
-            entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenBatches)
-                .HasForeignKey(d => d.ChickenId)
-                .HasConstraintName("Chicken_ChickenId_fkey");
+            //entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenBatches)
+            //    .HasForeignKey(d => d.ChickenId)
+            //    .HasConstraintName("Chicken_ChickenId_fkey");
 
             entity.HasOne(d => d.ChickenCoop).WithMany(p => p.ChickenBatches)
                 .HasForeignKey(d => d.ChickenCoopId)
@@ -612,6 +628,10 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.Chicken).WithMany(p => p.ChickenDetails)
                 .HasForeignKey(d => d.ChickenId)
                 .HasConstraintName("ChickenDetail_ChickenId_fkey");
+
+            entity.HasOne(d => d.ChickenBatch).WithMany(p => p.ChickenDetails)
+                .HasForeignKey(d => d.ChickenBatchId)
+                .HasConstraintName("ChickenDetail_ChickenBatchId_fkey");
         });
 
         modelBuilder.Entity<CoopEquipment>(entity =>
@@ -1191,9 +1211,9 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("Shift");
 
             entity.Property(e => e.ShiftId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.EndTime).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.EndTime).HasColumnType("time");
             entity.Property(e => e.ShiftName).HasColumnType("character varying");
-            entity.Property(e => e.StartTime).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.StartTime).HasColumnType("time");
         });
 
         modelBuilder.Entity<ShiftSchedule>(entity =>
@@ -1210,9 +1230,9 @@ public partial class CfmsDbContext : DbContext
                 .HasConstraintName("ShiftSchedule_ShiftId_fkey");
 
             entity.HasOne(d => d.Task).WithMany(p => p.ShiftSchedules)
-                .HasForeignKey(d => d.ShiftScheduleId)
+                .HasForeignKey(d => d.TaskId)
                 .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("ShiftSchedule_ShiftScheduleId_fkey");
+                .HasConstraintName("ShiftSchedule_TaskId_fkey");
 
         });
 
@@ -1273,6 +1293,8 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.TaskName).HasColumnType("character varying");
             entity.Property(e => e.IsHavest).HasDefaultValue(0);
             entity.Property(e => e.Status).HasDefaultValue(1);
+            entity.Property(e => e.StartWorkDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.EndWorkDate).HasColumnType("timestamp(6) without time zone");
 
             entity.HasOne(e => e.TaskNavigation)
                 .WithOne(c => c.Task)

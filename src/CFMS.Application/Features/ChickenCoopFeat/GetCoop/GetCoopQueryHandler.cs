@@ -16,11 +16,13 @@ namespace CFMS.Application.Features.ChickenCoopFeat.GetCoop
 
         public async Task<BaseResponse<ChickenCoop>> Handle(GetCoopQuery request, CancellationToken cancellationToken)
         {
-            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.Id) && c.IsDeleted == false, includeProperties: [c => c.ChickenBatches, c => c.CoopEquipments, c => c.DensityUnit]).FirstOrDefault();
+            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.Id) && c.IsDeleted == false, includeProperties: "ChickenBatches,CoopEquipments,DensityUnit,TaskLogs,TaskLogs.Task.TaskHarvests,AreaUnit").FirstOrDefault();
             if (existCoop == null)
             {
                 return BaseResponse<ChickenCoop>.FailureResponse(message: "Chuồng gà không tồn tại");
             }
+
+            existCoop.ChickenBatches = existCoop.ChickenBatches.OrderBy(cb => cb.Status).ToList();
             return BaseResponse<ChickenCoop>.SuccessResponse(data: existCoop);
         }
     }

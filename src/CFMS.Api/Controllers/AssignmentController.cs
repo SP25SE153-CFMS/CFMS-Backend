@@ -42,10 +42,10 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(DeleteAssignmentCommand command)
         {
-            var result = await Send(new DeleteAssignmentCommand(id));
+            var result = await Send(command);
             return result;
         }
     }

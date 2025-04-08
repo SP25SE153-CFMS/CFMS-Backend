@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.ChickenFeat.UpdateChickenDetail
 
             try
             {
-                existDetail.Weight = request.Weight;
+                //existDetail.Weight = request.Weight;
                 existDetail.Gender = request.Gender;
                 existDetail.Quantity = request.Quantity;
 

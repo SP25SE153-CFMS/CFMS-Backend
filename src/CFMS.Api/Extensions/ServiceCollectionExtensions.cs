@@ -29,7 +29,10 @@ namespace CFMS.Api.Extensions
         {
             //DbContext
             services.AddDbContext<CfmsDbContext>(options =>
-                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            });
 
             //Http
             services.AddHttpContextAccessor();

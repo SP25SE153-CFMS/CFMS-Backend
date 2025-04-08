@@ -9,9 +9,9 @@ public partial class Shift : EntityAudit
 
     public string? ShiftName { get; set; }
 
-    public DateTime? StartTime { get; set; }
+    public TimeOnly? StartTime { get; set; }
 
-    public DateTime? EndTime { get; set; }
+    public TimeOnly? EndTime { get; set; }
 
     public virtual ICollection<ShiftSchedule> ShiftSchedules { get; set; } = new List<ShiftSchedule>();
 }
