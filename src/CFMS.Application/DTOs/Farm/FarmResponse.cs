@@ -30,5 +30,6 @@ namespace CFMS.Application.DTOs.Farm
         public string? ImageUrl { get; set; }
 
         public List<TaskDto>? TaskList { get; set; }
+
     }
 }

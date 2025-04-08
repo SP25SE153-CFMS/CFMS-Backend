@@ -4,6 +4,7 @@ using CFMS.Application.Features.TaskFeat.GetTask;
 using CFMS.Application.Features.TaskFeat.GetTaskByFarmId;
 using CFMS.Application.Features.TaskFeat.GetTasks;
 using CFMS.Application.Features.TaskFeat.GetTasksByCurrentUser;
+using CFMS.Application.Features.TaskFeat.GetTasksByStatus;
 using CFMS.Application.Features.TaskFeat.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetTasks()
         {
             var result = await Send(new GetTasksQuery());
+            return result;
+        }
+
+        [HttpGet("byStatus/{status}/{farmId}")]
+        public async Task<IActionResult> GetTasksByStatus(int status, Guid farmId)
+        {
+            var result = await Send(new GetTasksByStatusQuery(status, farmId));
             return result;
         }
 
