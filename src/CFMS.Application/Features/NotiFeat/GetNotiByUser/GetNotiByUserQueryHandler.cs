@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.NotiFeat.GetNotiByUser
                 return BaseResponse<IEnumerable<Notification>>.FailureResponse(message: "User không tồn tại");
             }
 
-            var notis = _unitOfWork.NotificationRepository.Get(filter: n => n.UserId.Equals(request.UserId) && n.IsRead == 0, includeProperties: "User");
+            var notis = _unitOfWork.NotificationRepository.Get(filter: n => n.UserId.Equals(existUser.UserId) && n.IsRead == 0, includeProperties: "User");
             return BaseResponse<IEnumerable<Notification>>.SuccessResponse(data: notis);
         }
     }
