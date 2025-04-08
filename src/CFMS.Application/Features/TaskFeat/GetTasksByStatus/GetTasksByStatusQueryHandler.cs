@@ -46,6 +46,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTasksByStatus
                 filter: t => t.FarmId.Equals(existFarm.FarmId) && t.Assignments.Any(x => x.AssignedToId.Equals(userId)) && t.Status.Equals(request.Status) && !t.IsDeleted,
                 include: q => q
                     .Include(t => t.Assignments)
+                        .ThenInclude(s => s.AssignedTo)
                     .Include(t => t.TaskType)
                     .Include(t => t.ShiftSchedules)
                         .ThenInclude(s => s.Shift)
