@@ -5,6 +5,7 @@ using CFMS.Application.DTOs.Task;
 using CFMS.Application.Features.TaskFeat.Create;
 using CFMS.Domain.Entities;
 using Task = CFMS.Domain.Entities.Task;
+using CFMS.Application.DTOs.Task.Assignment;
 
 namespace CFMS.Application.Mappings
 {
@@ -32,7 +33,8 @@ namespace CFMS.Application.Mappings
                         dest.TaskLocation = "Không xác định";
                 })
                 .ForMember(dest => dest.shiftScheduleList, opt => opt.MapFrom(src => src.ShiftSchedules))
-                .ForMember(dest => dest.resourceList, opt => opt.MapFrom(src => src.TaskResources));
+                .ForMember(dest => dest.resourceList, opt => opt.MapFrom(src => src.TaskResources))
+                .ForMember(dest => dest.assignmentList, opt => opt.MapFrom(src => src.Assignments));
 
             CreateMap<ShiftSchedule, ShiftScheduleDto>()
                 .AfterMap((src, dest) =>
@@ -59,6 +61,12 @@ namespace CFMS.Application.Mappings
                         "medicine" => "Dược phẩm",
                         _ => "Không xác định"
                     };
+                });
+
+            CreateMap<Assignment, AssignmentDto>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.AssignedTo = src.AssignedTo?.FullName ?? "Không xác định";
                 });
         }
     }
