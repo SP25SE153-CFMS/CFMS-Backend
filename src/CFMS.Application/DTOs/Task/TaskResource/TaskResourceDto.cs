@@ -14,6 +14,10 @@ namespace CFMS.Application.DTOs.Task.TaskResource
 
         public string? ResourceType { get; set; }
 
+        public string? SpecQuantity { get; set; }
+
+        public string? UnitSpecification { get; set; }
+
         public int? Quantity { get; set; }
     }
 }

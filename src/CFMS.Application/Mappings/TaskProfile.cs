@@ -53,6 +53,9 @@ namespace CFMS.Application.Mappings
                         "Không xác định";
 
                     var subType = src.ResourceType?.SubCategoryName?.ToLower();
+                    var package = src.Resource?.Package?.SubCategoryName;
+                    var unit = src.Resource?.Unit?.SubCategoryName;
+                    var packageSize = src.Resource?.PackageSize;
 
                     dest.ResourceType = subType switch
                     {
@@ -61,6 +64,8 @@ namespace CFMS.Application.Mappings
                         "medicine" => "Dược phẩm",
                         _ => "Không xác định"
                     };
+                    dest.SpecQuantity = $"{src.Quantity} {src.Unit?.SubCategoryName}";
+                    dest.UnitSpecification = $"{packageSize} {unit}/{package}";
                 });
 
             CreateMap<Assignment, AssignmentDto>()
