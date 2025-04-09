@@ -1,6 +1,7 @@
 ﻿using CFMS.Application.Common;
 using CFMS.Application.Features.UserFeat.Delete;
 using CFMS.Application.Features.UserFeat.GetUser;
+using CFMS.Application.Features.UserFeat.GetUserByCCCDByPhoneByEmail;
 using CFMS.Application.Features.UserFeat.GetUsers;
 using CFMS.Application.Features.UserFeat.Update;
 using Google.Apis.Drive.v3;
@@ -47,6 +48,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> UploadImage(UploadImageCommand command)
         {
             var result = await Send(command);
+            return result;
+        }
+
+        [HttpGet("search/{searchTemp}")]
+        public async Task<IActionResult> UploadImage(string searchTemp)
+        {
+            var result = await Send(new GetUserByCCCDByPhoneByEmailQuery(searchTemp));
             return result;
         }
     }
