@@ -12,6 +12,8 @@ namespace CFMS.Application.DTOs.Task
 {
     public class TaskDto
     {
+        public Guid TaskId { get; set; }
+
         public string? TaskName { get; set; }
 
         public string? TaskType { get; set; }
