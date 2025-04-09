@@ -246,7 +246,7 @@ public partial class CfmsDbContext : DbContext
         .WithMany()
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
-        
+
         modelBuilder.Entity<WarePermission>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
@@ -520,7 +520,7 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.Farm).WithMany(p => p.BreedingAreas)
                 .HasForeignKey(d => d.FarmId)
                 .HasConstraintName("BreedingArea_FarmId_fkey");
-            
+
             entity.HasOne(d => d.AreaUnit).WithMany(p => p.BreedingAreaUnits)
                 .HasForeignKey(d => d.AreaUnitId)
                 .HasConstraintName("BreedingArea_AreaUnitId_fkey");
@@ -580,6 +580,11 @@ public partial class CfmsDbContext : DbContext
                 .HasForeignKey(d => d.ChickenCoopId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("ChickenBatch_ChickenCoopId_fkey");
+
+            entity.HasOne(d => d.CurrentStage).WithMany(p => p.ChickenBatches)
+                .HasForeignKey(d => d.CurrentStageId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("ChickenBatch_CurrentStageId_fkey");
         });
 
         modelBuilder.Entity<ChickenCoop>(entity =>

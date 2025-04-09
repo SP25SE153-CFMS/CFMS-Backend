@@ -26,7 +26,10 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
                 return BaseResponse<bool>.FailureResponse(message: "Gà không tồn tại");
             }
 
-            var stages = _unitOfWork.GrowthStageRepository.Get(filter: s => s.StageCode.Equals(request.StageCode));
+            var stages = _unitOfWork.GrowthStageRepository.Get(
+                filter: s => s.StageCode.Equals(request.StageCode),
+                orderBy: s => s.OrderBy(s => s.MinAgeWeek)
+                );
             if (!stages.Any())
             {
                 return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
@@ -36,6 +39,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
             {
                 var batch = _mapper.Map<ChickenBatch>(request);
                 batch.Status = DateOnly.FromDateTime(batch.StartDate.Value) > DateOnly.FromDateTime(DateTime.Now.ToLocalTime()) ? 0 : 1;
+                batch.CurrentStageId = stages.FirstOrDefault().GrowthStageId;
 
                 foreach (var chickenDetail in request.ChickenDetailRequests)
                 {
@@ -52,6 +56,8 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
                     batch.GrowthBatches.Add(new GrowthBatch
                     {
                         GrowthStageId = stage.GrowthStageId,
+                        StartDate = batch.StartDate.Value.AddDays(stage.MinAgeWeek.Value * 7),
+                        EndDate = batch.StartDate.Value.AddDays(stage.MaxAgeWeek.Value * 7)
                     });
                 }
 

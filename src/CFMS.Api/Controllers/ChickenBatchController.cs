@@ -2,6 +2,7 @@
 using CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog;
 using CFMS.Application.Features.ChickenBatchFeat.CloseChickenBatch;
 using CFMS.Application.Features.ChickenBatchFeat.Create;
+using CFMS.Application.Features.ChickenBatchFeat.DashboardChickenBatch;
 using CFMS.Application.Features.ChickenBatchFeat.Delete;
 using CFMS.Application.Features.ChickenBatchFeat.DeleteQuantityLog;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatch;
@@ -107,6 +108,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> OpenChickenBatch(OpenChickenBatchCommand command)
         {
             var result = await Send(command);
+            return result;
+        }
+
+        [HttpGet("{batchId}/dashboard-chickenbatch")]
+        public async Task<IActionResult> DashboardChickenBatch(Guid batchId)
+        {
+            var result = await Send(new DashboardChickenBatchQuery(batchId));
             return result;
         }
     }

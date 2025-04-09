@@ -10,6 +10,8 @@ public partial class ChickenBatch : EntityAudit
 
     public Guid? ChickenCoopId { get; set; }
 
+    public Guid? CurrentStageId { get; set; }
+
     public string? ChickenBatchName { get; set; }
 
     public DateTime? StartDate { get; set; }
@@ -24,6 +26,9 @@ public partial class ChickenBatch : EntityAudit
 
     [JsonIgnore]
     public virtual ChickenCoop? ChickenCoop { get; set; }
+
+    [JsonIgnore]
+    public virtual GrowthStage? CurrentStage { get; set; }
 
     public virtual Chicken? Chicken { get; set; }
 

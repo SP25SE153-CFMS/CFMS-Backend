@@ -31,4 +31,7 @@ public partial class GrowthStage : EntityAudit
 
     [JsonIgnore]
     public virtual ICollection<GrowthBatch> GrowthBatches { get; set; } = new List<GrowthBatch>();
+
+    [JsonIgnore]
+    public virtual ICollection<ChickenBatch> ChickenBatches { get; set; } = new List<ChickenBatch>();
 }
