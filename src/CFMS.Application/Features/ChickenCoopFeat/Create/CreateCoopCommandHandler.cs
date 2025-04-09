@@ -24,12 +24,6 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
 
         public async Task<BaseResponse<bool>> Handle(CreateCoopCommand request, CancellationToken cancellationToken)
         {
-            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => (c.ChickenCoopCode.Equals(request.ChickenCoopCode) || c.ChickenCoopName.Equals(request.ChickenCoopName)) && c.IsDeleted == false).FirstOrDefault();
-            if (existCoop != null)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã chuồng gà đã tồn tại");
-            }
-
             var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaId.Equals(request.BreedingAreaId) && ba.IsDeleted == false).FirstOrDefault();
             if (existBreedingArea == null)
             {
@@ -40,6 +34,12 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
             if (existPurpose == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Mục đích nuôi không tồn tại");
+            }
+
+            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopCode.Equals(request.ChickenCoopCode) && c.IsDeleted == false).FirstOrDefault();
+            if (existCoop != null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Mã chuồng gà đã tồn tại");
             }
 
             try
