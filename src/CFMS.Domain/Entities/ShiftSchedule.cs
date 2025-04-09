@@ -16,6 +16,6 @@ public partial class ShiftSchedule
 
     [JsonIgnore]
     public virtual Task? Task { get; set; }
-
+    [JsonIgnore]
     public virtual Shift? Shift { get; set; }
 }
