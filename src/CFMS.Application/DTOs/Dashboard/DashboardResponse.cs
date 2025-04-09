@@ -1,12 +1,13 @@
-﻿using CFMS.Application.DTOs.Farm;
-using CFMS.Domain.Entities;
-
-namespace CFMS.Application.DTOs.Dashboard
+﻿namespace CFMS.Application.DTOs.Dashboard
 {
     public class DashboardResponse
     {
-        public int TotalQuantity { get; set; }
+        public int? TotalChicken { get; set; }
 
-        public FarmResponse Farm { get; set; }
+        public int? TotalEmployee { get; set; }
+
+        public int? TotalChickenDeath { get; set; }
+
+        public IEnumerable<Domain.Entities.ChickenBatch>? ChickenBatches { get; set; }
     }
 }

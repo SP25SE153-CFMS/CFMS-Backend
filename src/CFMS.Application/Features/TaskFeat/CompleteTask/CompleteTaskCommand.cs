@@ -13,6 +13,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
         public Guid TaskId { get; set; }
 
-        public String Note { get; set; }
+        public string Note { get; set; }
     }
 }
