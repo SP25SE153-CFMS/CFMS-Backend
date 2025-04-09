@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -24,6 +25,14 @@ namespace CFMS.Domain.Interfaces
             int? pageSize = null,
             bool noTracking = false,
             params Expression<Func<T, object>>[] includeProperties);
+
+        IEnumerable<T> GetIncludeMultiLayer(
+            Expression<Func<T, bool>> filter = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+            int? pageIndex = null,
+            int? pageSize = null,
+            bool noTracking = false);
 
         T GetByID(object id);
         void Insert(T entity);

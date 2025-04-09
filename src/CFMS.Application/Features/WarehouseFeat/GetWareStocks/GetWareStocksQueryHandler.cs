@@ -62,8 +62,10 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                     switch (existResourceType.SubCategoryName)
                     {
                         case "food":
-                            return new WareStockFoodResponse
+                            return (WareStockResponseBase) new WareStockFoodResponse
                             {
+                                ResourceId = resource.ResourceId,
+                                FoodId = resource.FoodId ?? Guid.Empty,
                                 FoodCode = resource?.Food.FoodCode ?? "Không xác định",
                                 FoodName = resource?.Food.FoodName ?? "Không xác định",
                                 Note = resource?.Food.Note,
@@ -72,13 +74,15 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Không xác định"
-                            } as WareStockResponseBase;
+                            };
 
                         case "equipment":
                             var existMaterial = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.Equipment.MaterialId) && f.IsDeleted == false).FirstOrDefault();
 
                             return new WareStockEquipmentResponse
                             {
+                                ResourceId = resource.ResourceId,
+                                EquipmentId = resource.EquipmentId ?? Guid.Empty,
                                 EquipmentCode = resource?.Equipment.EquipmentCode ?? "Không xác định",
                                 EquipmentName = resource?.Equipment.EquipmentName ?? "Không xác định",
                                 Material = existMaterial.SubCategoryName,
@@ -97,6 +101,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
 
                             return new WareStockMedicineResponse
                             {
+                                ResourceId = resource.ResourceId,
+                                MedicineId = resource.MedicineId ?? Guid.Empty,
                                 MedicineCode = resource?.Medicine.MedicineCode ?? "Không xác định",
                                 MedicineName = resource?.Medicine.MedicineName ?? "Không xác định",
                                 Usage = resource?.Medicine.Usage,
