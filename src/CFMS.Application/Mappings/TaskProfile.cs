@@ -41,6 +41,8 @@ namespace CFMS.Application.Mappings
                 {
                     dest.ShiftName = src.Shift?.ShiftName ?? "Không xác định";
                     dest.WorkTime = src.Date;
+                    dest.StartTime = src.Shift?.StartTime;
+                    dest.EndTime = src.Shift?.EndTime;
                 });
 
             CreateMap<TaskResource, TaskResourceDto>()
