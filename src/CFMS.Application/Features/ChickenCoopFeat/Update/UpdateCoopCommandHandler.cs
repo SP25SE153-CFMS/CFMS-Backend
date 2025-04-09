@@ -15,13 +15,13 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
 
         public async Task<BaseResponse<bool>> Handle(UpdateCoopCommand request, CancellationToken cancellationToken)
         {
-            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.Id) && c.IsDeleted == false).FirstOrDefault();
+            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.ChickenCoopId) && c.IsDeleted == false).FirstOrDefault();
             if (existCoop == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Chuồng gà không tồn tại");
             }
 
-            var existNameCode = _unitOfWork.ChickenCoopRepository.Get(filter: c => (c.ChickenCoopCode.Equals(request.ChickenCoopCode) || c.ChickenCoopName.Equals(request.ChickenCoopName)) && c.IsDeleted == false && c.ChickenCoopId != request.Id).FirstOrDefault();
+            var existNameCode = _unitOfWork.ChickenCoopRepository.Get(filter: c => (c.ChickenCoopCode.Equals(request.ChickenCoopCode) || c.ChickenCoopName.Equals(request.ChickenCoopName)) && c.IsDeleted == false && c.ChickenCoopId != request.ChickenCoopId).FirstOrDefault();
             if (existNameCode != null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã chuồng gà đã tồn tại");
