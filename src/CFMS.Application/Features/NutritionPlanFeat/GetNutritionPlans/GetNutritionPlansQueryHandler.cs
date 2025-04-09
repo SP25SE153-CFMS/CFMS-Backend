@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlans
 
         public async Task<BaseResponse<IEnumerable<NutritionPlan>>> Handle(GetNutritionPlansQuery request, CancellationToken cancellationToken)
         {
-            var plans = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.IsDeleted == false, includeProperties: "FeedSessions,NutritionPlanDetails");
+            var plans = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.IsDeleted == false, includeProperties: "FeedSessions,NutritionPlanDetails,NutritionPlanDetails.Food");
             return BaseResponse<IEnumerable<NutritionPlan>>.SuccessResponse(data: plans);
         }
     }

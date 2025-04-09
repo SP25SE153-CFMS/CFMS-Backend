@@ -18,5 +18,6 @@ public partial class Food : EntityAudit
 
     public DateTime? ExpiryDate { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<NutritionPlanDetail> NutritionPlanDetails { get; set; } = new List<NutritionPlanDetail>();
 }
