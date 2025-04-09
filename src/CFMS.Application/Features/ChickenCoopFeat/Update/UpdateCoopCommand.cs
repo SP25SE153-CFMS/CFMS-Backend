@@ -1,13 +1,14 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Domain.Entities;
 using MediatR;
 
 namespace CFMS.Application.Features.ChickenCoopFeat.Update
 {
     public class UpdateCoopCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateCoopCommand(Guid id, string? chickenCoopCode, string? chickenCoopName, int? maxQuantity, int? area, decimal? density, int? currentQuantity, string? description, int? status, Guid? purposeId, Guid? breedingAreaId)
+        public UpdateCoopCommand(Guid chickenCoopId, string? chickenCoopCode, string? chickenCoopName, int? maxQuantity, int? area, decimal? density, int? currentQuantity, string? description, int? status, Guid? purposeId, Guid? breedingAreaId)
         {
-            Id = id;
+            ChickenCoopId = chickenCoopId;
             ChickenCoopCode = chickenCoopCode;
             ChickenCoopName = chickenCoopName;
             MaxQuantity = maxQuantity;
@@ -20,7 +21,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
             BreedingAreaId = breedingAreaId;
         }
 
-        public Guid Id { get; set; }
+        public Guid ChickenCoopId { get; set; }
 
         public string? ChickenCoopCode { get; set; }
 
