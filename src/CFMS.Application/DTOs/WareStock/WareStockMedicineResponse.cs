@@ -22,6 +22,8 @@ namespace CFMS.Application.DTOs.WareStock
 
         public string? StorageCondition { get; set; }
 
+        public Guid? DiseaseId { get; set; }
+
         public string? Disease { get; set; }
 
         public DateTime? ProductionDate { get; set; }

@@ -16,13 +16,19 @@ namespace CFMS.Application.DTOs.WareStock
 
         public string? EquipmentName { get; set; }
 
+        public Guid? MaterialId { get; set; }
+
         public string? Material { get; set; }
 
         public string? Usage { get; set; }
 
         public int? Warranty { get; set; }
 
+        public Guid? SizeUnitId { get; set; }
+
         public decimal? Size { get; set; }
+
+        public Guid? WeightUnitId { get; set; }
 
         public decimal? Weight { get; set; }
 
