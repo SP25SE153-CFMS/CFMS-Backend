@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.NotiFeat.GetNotiByUser
 
         public async Task<BaseResponse<IEnumerable<Notification>>> Handle(GetNotiByUserQuery request, CancellationToken cancellationToken)
         {
-            var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(Guid.Parse(_currentUserService.GetUserId())) && u.Status == 1).FirstOrDefault();
+            var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(Guid.Parse(_currentUserService.GetUserId()))).FirstOrDefault();
             if (existUser == null)
             {
                 return BaseResponse<IEnumerable<Notification>>.FailureResponse(message: "User không tồn tại");

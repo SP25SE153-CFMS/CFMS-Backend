@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\TaskFeat\RetryTask\**" />
+    <EmbeddedResource Remove="Features\TaskFeat\RetryTask\**" />
+    <None Remove="Features\TaskFeat\RetryTask\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
@@ -30,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\TaskFeat\RetryTask\" />
     <Folder Include="Features\UserFeat\Delete\" />
     <Folder Include="Features\UserFeat\Update\" />
   </ItemGroup>
