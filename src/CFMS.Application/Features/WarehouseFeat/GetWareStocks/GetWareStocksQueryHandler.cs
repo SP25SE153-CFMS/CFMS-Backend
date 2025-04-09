@@ -105,7 +105,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                             return new WareStockMedicineResponse
                             {
                                 ResourceId = resource?.ResourceId ?? Guid.Empty,
-                                MedicineId = resource.MedicineId ?? Guid.Empty,
+                                MedicineId = resource?.MedicineId ?? Guid.Empty,
                                 MedicineCode = resource?.Medicine?.MedicineCode ?? "Không xác định",
                                 MedicineName = resource?.Medicine?.MedicineName ?? "Không xác định",
                                 Usage = resource?.Medicine?.Usage,

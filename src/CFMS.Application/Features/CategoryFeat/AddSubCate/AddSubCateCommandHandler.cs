@@ -16,11 +16,11 @@ namespace CFMS.Application.Features.CategoryFeat.AddSubCate
 
         public async Task<BaseResponse<bool>> Handle(AddSubCateCommand request, CancellationToken cancellationToken)
         {
-            var existCategory = _unitOfWork.SubCategoryRepository.Get(filter: c => (c.SubCategoryName.Equals(request.SubCategoryName)) && c.IsDeleted == false).FirstOrDefault();
-            if (existCategory != null)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "Tên danh mục đã tồn tại");
-            }
+            //var existCategory = _unitOfWork.SubCategoryRepository.Get(filter: c => (c.SubCategoryName.Equals(request.SubCategoryName)) && c.IsDeleted == false).FirstOrDefault();
+            //if (existCategory != null)
+            //{
+            //    return BaseResponse<bool>.FailureResponse(message: "Tên danh mục đã tồn tại");
+            //}
 
             var existCate = _unitOfWork.CategoryRepository.Get(filter: c => c.CategoryId.Equals(request.CategoryId) & c.IsDeleted == false).FirstOrDefault();
             if (existCate == null)
