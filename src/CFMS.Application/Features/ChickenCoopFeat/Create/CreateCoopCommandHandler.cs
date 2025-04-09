@@ -36,7 +36,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
                 return BaseResponse<bool>.FailureResponse(message: "Mục đích nuôi không tồn tại");
             }
 
-            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopCode.Equals(request.ChickenCoopCode) && c.IsDeleted == false).FirstOrDefault();
+            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopCode.Equals(request.ChickenCoopCode) && c.BreedingAreaId.Equals(request.BreedingAreaId) && c.IsDeleted == false).FirstOrDefault();
             if (existCoop != null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Mã chuồng gà đã tồn tại");
