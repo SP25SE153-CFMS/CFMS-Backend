@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\TaskFeat\RetryTask\" />
     <Folder Include="Features\UserFeat\Delete\" />
     <Folder Include="Features\UserFeat\Update\" />
   </ItemGroup>

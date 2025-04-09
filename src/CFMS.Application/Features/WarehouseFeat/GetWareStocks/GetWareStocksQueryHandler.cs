@@ -66,14 +66,14 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                             {
                                 ResourceId = resource?.ResourceId ?? Guid.Empty,
                                 FoodId = resource?.FoodId ?? Guid.Empty,
-                                FoodCode = resource?.Food?.FoodCode ?? "Không xác định",
-                                FoodName = resource?.Food?.FoodName ?? "Không xác định",
+                                FoodCode = resource?.Food?.FoodCode,
+                                FoodName = resource?.Food?.FoodName,
                                 Note = resource?.Food?.Note,
                                 ProductionDate = resource?.Food?.ProductionDate,
                                 ExpiryDate = resource?.Food?.ExpiryDate,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Không xác định"
+                                SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Chưa có nhà cung cấp"
                             };
 
                         case "equipment":
@@ -90,9 +90,9 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                                 Usage = resource?.Equipment?.Usage,
                                 Warranty = resource?.Equipment?.Warranty,
                                 SizeUnitId = resource?.Equipment?.SizeUnitId,
-                                Size = 0,
+                                Size = resource?.Equipment?.Size,
                                 WeightUnitId = resource?.Equipment?.WeightUnitId,
-                                Weight = 0,
+                                Weight = resource?.Equipment?.Weight,
                                 PurchaseDate = resource?.Equipment?.PurchaseDate,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
@@ -106,8 +106,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                             {
                                 ResourceId = resource?.ResourceId ?? Guid.Empty,
                                 MedicineId = resource?.MedicineId ?? Guid.Empty,
-                                MedicineCode = resource?.Medicine?.MedicineCode ?? "Không xác định",
-                                MedicineName = resource?.Medicine?.MedicineName ?? "Không xác định",
+                                MedicineCode = resource?.Medicine?.MedicineCode,
+                                MedicineName = resource?.Medicine?.MedicineName,
                                 Usage = resource?.Medicine?.Usage,
                                 DosageForm = resource?.Medicine?.DosageForm,
                                 StorageCondition = resource?.Medicine?.StorageCondition,
@@ -117,7 +117,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                                 ExpiryDate = resource?.Medicine?.ExpiryDate,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Không xác định"
+                                SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Chưa có nhà cung cấp"
                             };
 
                         default:

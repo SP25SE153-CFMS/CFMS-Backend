@@ -16,7 +16,11 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
         public async Task<BaseResponse<bool>> Handle(CompleteTaskCommand request, CancellationToken cancellationToken)
         {
-            var existTask = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false, includeProperties: [t => t.TaskLocations]).FirstOrDefault();
+            var existTask = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false,
+                includeProperties: [
+                    t => t.TaskLocations,
+                    t => t.Assignments
+                    ]).FirstOrDefault();
             if (existTask == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Task không tồn tại");
