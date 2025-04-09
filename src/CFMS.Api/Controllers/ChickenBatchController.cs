@@ -1,9 +1,11 @@
 ﻿using CFMS.Application.Features.ChickenBatchFeat.AddChicken;
+using CFMS.Application.Features.ChickenBatchFeat.AddHealthLog;
 using CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog;
 using CFMS.Application.Features.ChickenBatchFeat.CloseChickenBatch;
 using CFMS.Application.Features.ChickenBatchFeat.Create;
 using CFMS.Application.Features.ChickenBatchFeat.DashboardChickenBatch;
 using CFMS.Application.Features.ChickenBatchFeat.Delete;
+using CFMS.Application.Features.ChickenBatchFeat.DeleteHealthLog;
 using CFMS.Application.Features.ChickenBatchFeat.DeleteQuantityLog;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatch;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatchs;
@@ -115,6 +117,20 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> DashboardChickenBatch(Guid batchId)
         {
             var result = await Send(new DashboardChickenBatchQuery(batchId));
+            return result;
+        }
+
+        [HttpPut("add-healthLog")]
+        public async Task<IActionResult> AddHealthLog(AddHealthLogCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPut("delete-healthLog")]
+        public async Task<IActionResult> DeleteHealthLog(DeleteHealthLogCommand command)
+        {
+            var result = await Send(command);
             return result;
         }
     }

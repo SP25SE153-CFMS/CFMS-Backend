@@ -29,7 +29,9 @@ namespace CFMS.Application.Features.ChickenCoopFeat.DeleteCoopEquipment
 
             try
             {
-                var temp = existCoop.CoopEquipments.Remove(existCoopEquip);
+                var temp = existCoop.CoopEquipments.ToList();
+                temp.RemoveAll(ce => ce.CoopEquipmentId.Equals(existCoopEquip.CoopEquipmentId));
+                existCoop.CoopEquipments = temp;
 
                 _unitOfWork.ChickenCoopRepository.Update(existCoop);
                 var result = await _unitOfWork.SaveChangesAsync();
