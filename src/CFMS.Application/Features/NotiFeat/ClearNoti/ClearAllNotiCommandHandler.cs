@@ -36,7 +36,11 @@ namespace CFMS.Application.Features.NotiFeat.ClearNoti
 
             try
             {
-                _unitOfWork.NotificationRepository.DeleteRange(notiList);
+                foreach (var item in notiList)
+                {
+                    item.IsDeleted = true;
+                }
+                _unitOfWork.NotificationRepository.UpdateRange(notiList);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
