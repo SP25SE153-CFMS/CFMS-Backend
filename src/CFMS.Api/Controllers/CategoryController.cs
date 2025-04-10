@@ -7,7 +7,7 @@ using CFMS.Application.Features.CategoryFeat.GetCategoryByType;
 using CFMS.Application.Features.CategoryFeat.GetChickenTypes;
 using CFMS.Application.Features.CategoryFeat.GetSubsByType;
 using CFMS.Application.Features.CategoryFeat.Update;
-using CFMS.Application.Features.GetSubsByTypeAndName;
+using CFMS.Application.Features.CategoryFeat.GetSubsByTypeAndFarm;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -92,7 +92,7 @@ namespace CFMS.Api.Controllers
         [HttpGet("sub-by-type-and-farm/{categoryType}/{farmId}")]
         public async Task<IActionResult> GetSubsByType(string categoryType, Guid farmId)
         {
-            var result = await Send(new GetSubsByTypeAndNameQuery(categoryType, farmId));
+            var result = await Send(new GetSubsByTypeAndFarmQuery(categoryType, farmId));
             return result;
         }
     }
