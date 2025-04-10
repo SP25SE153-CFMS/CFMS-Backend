@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.GetSubsByTypeAndName
+namespace CFMS.Application.Features.CategoryFeat.GetSubsByTypeAndFarm
 {
     public class GetSubsByTypeAndFarmQuery : IRequest<BaseResponse<IEnumerable<SubCategory>>>
     {
