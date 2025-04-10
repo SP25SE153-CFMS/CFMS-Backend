@@ -40,7 +40,7 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpDelete("clear")]
+        [HttpPut("clear")]
         public async Task<IActionResult> Clear(ClearNotiCommand command)
         {
             var result = await Send(command);
