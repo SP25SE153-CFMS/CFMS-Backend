@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.CategoryFeat.GetSubsByCode
+namespace CFMS.Application.Features.CategoryFeat.GetSubsByType
 {
     public class GetSubsByCodeQueryHandler : IRequestHandler<GetSubsByTypeQuery, BaseResponse<IEnumerable<SubCategory>>>
     {

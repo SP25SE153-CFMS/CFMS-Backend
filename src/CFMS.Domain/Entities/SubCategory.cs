@@ -17,6 +17,8 @@ public partial class SubCategory : EntityAudit
     public string? DataType { get; set; }
 
     public Guid? CategoryId { get; set; }
+    
+    public Guid? FarmId { get; set; }
 
     [JsonIgnore]
     public virtual Category? Category { get; set; }

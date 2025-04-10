@@ -15,7 +15,5 @@ public partial class Category : EntityAudit
 
     public int? Status { get; set; }
 
-    public Guid? FarmId { get; set; }
-
     public virtual ICollection<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
 }

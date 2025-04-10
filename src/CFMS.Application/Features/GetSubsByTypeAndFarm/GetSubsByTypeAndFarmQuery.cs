@@ -7,15 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.CategoryFeat.GetSubsByType
+namespace CFMS.Application.Features.GetSubsByTypeAndName
 {
-    public class GetSubsByTypeQuery : IRequest<BaseResponse<IEnumerable<SubCategory>>>
+    public class GetSubsByTypeAndNameQuery : IRequest<BaseResponse<IEnumerable<SubCategory>>>
     {
         public string CategoryType { get; set; }
 
-        public GetSubsByTypeQuery(string categoryType)
+        public Guid? FarmId { get; set; }
+
+        public GetSubsByTypeAndNameQuery(string categoryType, Guid? farmId)
         {
             CategoryType = categoryType;
+            FarmId = farmId;
         }
     }
 }
