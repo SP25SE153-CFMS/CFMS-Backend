@@ -41,6 +41,7 @@ namespace CFMS.Domain.Interfaces
         void DeleteRange(IEnumerable<T> entities);
         bool Update(object id, T entityToUpdate);
         void Update(T entityToUpdate);
+        void UpdateRange(IEnumerable<T> entities);
         bool InsertRange(IEnumerable<T> entities);
 
         Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> filter);

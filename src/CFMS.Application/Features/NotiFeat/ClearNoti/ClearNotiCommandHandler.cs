@@ -1,19 +1,25 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.Features.NotiFeat.ReadNoti;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.NotiFeat.ReadNoti
+namespace CFMS.Application.Features.NotiFeat.ClearNoti
 {
-    public class ReadNotiCommandHandler : IRequestHandler<ReadNotiCommand, BaseResponse<bool>>
+    public class ClearNotiCommandHandler : IRequestHandler<ClearNotiCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public ReadNotiCommandHandler(IUnitOfWork unitOfWork)
+        public ClearNotiCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponse<bool>> Handle(ReadNotiCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(ClearNotiCommand request, CancellationToken cancellationToken)
         {
             var existNoti = _unitOfWork.NotificationRepository.Get(filter: n => n.NotificationId.Equals(request.NotificationId)).FirstOrDefault();
             if (existNoti == null)
@@ -23,15 +29,13 @@ namespace CFMS.Application.Features.NotiFeat.ReadNoti
 
             try
             {
-                existNoti.IsRead = 1;
-
-                _unitOfWork.NotificationRepository.Update(existNoti);
+                _unitOfWork.NotificationRepository.Delete(existNoti);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
+                    return BaseResponse<bool>.SuccessResponse(message: "Xoá thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

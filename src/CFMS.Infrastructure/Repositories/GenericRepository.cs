@@ -205,6 +205,11 @@ namespace CFMS.Infrastructure.Repositories
             _context.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
+        public void UpdateRange(IEnumerable<TEntity> entities)
+        {
+            _dbSet.UpdateRange(entities);
+        }
+
         public virtual bool InsertRange(IEnumerable<TEntity> entities)
         {
             if (entities == null || !entities.Any()) return false;

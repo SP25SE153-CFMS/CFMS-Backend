@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.GetSubsByTypeAndName
 {
-    public class GetSubsByTypeAndNameQuery : IRequest<BaseResponse<IEnumerable<SubCategory>>>
+    public class GetSubsByTypeAndFarmQuery : IRequest<BaseResponse<IEnumerable<SubCategory>>>
     {
         public string CategoryType { get; set; }
 
         public Guid? FarmId { get; set; }
 
-        public GetSubsByTypeAndNameQuery(string categoryType, Guid? farmId)
+        public GetSubsByTypeAndFarmQuery(string categoryType, Guid? farmId)
         {
             CategoryType = categoryType;
             FarmId = farmId;
