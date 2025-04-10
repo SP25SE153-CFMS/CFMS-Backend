@@ -92,7 +92,7 @@ namespace CFMS.Api.Controllers
         [HttpGet("sub-by-type-and-farm/{categoryType}/{farmId}")]
         public async Task<IActionResult> GetSubsByType(string categoryType, Guid farmId)
         {
-            var result = await Send(new GetSubsByTypeAndFarmQuery(categoryType, farmId));
+            var result = await Send(new GetSubsByTypeAndNameQuery(categoryType, farmId));
             return result;
         }
     }

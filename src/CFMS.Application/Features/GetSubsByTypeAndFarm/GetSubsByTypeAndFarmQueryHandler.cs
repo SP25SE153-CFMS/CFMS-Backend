@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.GetSubsByTypeAndName
 {
-    public class GetSubsByTypeAndFarmQueryHandler : IRequestHandler<GetSubsByTypeAndFarmQuery, BaseResponse<IEnumerable<SubCategory>>>
+    public class GetSubsByTypeAndFarmQueryHandler : IRequestHandler<GetSubsByTypeAndNameQuery, BaseResponse<IEnumerable<SubCategory>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace CFMS.Application.Features.GetSubsByTypeAndName
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse<IEnumerable<SubCategory>>> Handle(GetSubsByTypeAndFarmQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<IEnumerable<SubCategory>>> Handle(GetSubsByTypeAndNameQuery request, CancellationToken cancellationToken)
         {
             var subs = _unitOfWork.SubCategoryRepository.Get(filter: c => c.FarmId.Equals(request.FarmId) && c.Category.CategoryType.Equals(request.CategoryType) && c.IsDeleted == false, includeProperties: [x => x.Category]).ToList();
             return BaseResponse<IEnumerable<SubCategory>>.SuccessResponse(data: subs);
