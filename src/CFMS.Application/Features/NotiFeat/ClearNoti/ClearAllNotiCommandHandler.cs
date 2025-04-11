@@ -38,7 +38,7 @@ namespace CFMS.Application.Features.NotiFeat.ClearNoti
             {
                 foreach (var n in notiList)
                 {
-                    n.DeletedWhen = DateTime.Now;
+                    n.DeletedWhen = DateTime.Now.ToLocalTime();
                     n.IsDeleted = true;
                 }
                 _unitOfWork.NotificationRepository.UpdateRange(notiList);
