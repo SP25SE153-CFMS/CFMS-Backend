@@ -115,7 +115,7 @@ public partial class CfmsDbContext : DbContext
 
     public virtual DbSet<TaskResource> TaskResources { get; set; }
 
-    public virtual DbSet<FrequencySchedule> FrequencySchedules { get; set; }
+    //public virtual DbSet<FrequencySchedule> FrequencySchedules { get; set; }
 
     public virtual DbSet<TemplateCriterion> TemplateCriteria { get; set; }
 
@@ -130,6 +130,8 @@ public partial class CfmsDbContext : DbContext
     public virtual DbSet<WareTransaction> WareTransactions { get; set; }
 
     public virtual DbSet<Warehouse> Warehouses { get; set; }
+
+    public virtual DbSet<HarvestProduct> HarvestProducts { get; set; }
 
     private void OnBeforeSaving()
     {
@@ -235,6 +237,18 @@ public partial class CfmsDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<HarvestProduct>()
+        .HasOne(a => a.CreatedByUser)
+        .WithMany()
+        .HasForeignKey(a => a.CreatedByUserId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<HarvestProduct>()
+        .HasOne(a => a.LastEditedByUser)
+        .WithMany()
+        .HasForeignKey(a => a.LastEditedByUserId)
+        .OnDelete(DeleteBehavior.Restrict);
+
         modelBuilder.Entity<Notification>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
@@ -474,6 +488,21 @@ public partial class CfmsDbContext : DbContext
         .WithMany()
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<HarvestProduct>(entity =>
+        {
+            entity.HasKey(e => e.HarvestProducttId).HasName("HarvestProduct_pkey");
+
+            entity.ToTable("HarvestProduct");
+
+            entity.Property(e => e.HarvestProducttId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.HarvestProductName).HasColumnType("character varying");
+
+            entity.HasOne(d => d.HarvestProductType).WithMany(p => p.HarvestProductTypes)
+                .HasForeignKey(d => d.HarvestProductTypeId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("HarvestProduct_HarvestProductTypeId_fkey");
+        });
 
         modelBuilder.Entity<Assignment>(entity =>
         {
@@ -1422,21 +1451,21 @@ public partial class CfmsDbContext : DbContext
                 .HasConstraintName("TaskResource_UnitId_fkey");
         });
 
-        modelBuilder.Entity<FrequencySchedule>(entity =>
-        {
-            entity.HasKey(e => e.FrequencyScheduleId).HasName("FrequencySchedule_pkey");
+        //modelBuilder.Entity<FrequencySchedule>(entity =>
+        //{
+        //    entity.HasKey(e => e.FrequencyScheduleId).HasName("FrequencySchedule_pkey");
 
-            entity.ToTable("FrequencySchedule");
+        //    entity.ToTable("FrequencySchedule");
 
-            entity.Property(e => e.FrequencyScheduleId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.StartWorkDate).HasColumnType("timestamp(6) without time zone");
-            entity.Property(e => e.EndWorkDate).HasColumnType("timestamp(6) without time zone");
+        //    entity.Property(e => e.FrequencyScheduleId).HasDefaultValueSql("gen_random_uuid()");
+        //    entity.Property(e => e.StartWorkDate).HasColumnType("timestamp(6) without time zone");
+        //    entity.Property(e => e.EndWorkDate).HasColumnType("timestamp(6) without time zone");
 
-            entity.HasOne(d => d.Task).WithMany(p => p.FrequencySchedules)
-                .HasForeignKey(d => d.FrequencyScheduleId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("FrequencySchedule_FrequencyScheduleId_fkey");
-        });
+        //    entity.HasOne(d => d.Task).WithMany(p => p.FrequencySchedules)
+        //        .HasForeignKey(d => d.FrequencyScheduleId)
+        //        .OnDelete(DeleteBehavior.SetNull)
+        //        .HasConstraintName("FrequencySchedule_FrequencyScheduleId_fkey");
+        //});
 
         modelBuilder.Entity<TemplateCriterion>(entity =>
         {

@@ -1020,58 +1020,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.ToTable("Food", (string)null);
                 });
 
-            modelBuilder.Entity("CFMS.Domain.Entities.FrequencySchedule", b =>
-                {
-                    b.Property<Guid>("FrequencyScheduleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
-
-                    b.Property<Guid>("CreatedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedWhen")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedWhen")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("EndWorkDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int?>("Frequency")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("LastEditedByUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("LastEditedWhen")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("StartWorkDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid?>("TaskId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("TimeUnitId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("FrequencyScheduleId")
-                        .HasName("FrequencySchedule_pkey");
-
-                    b.HasIndex("CreatedByUserId");
-
-                    b.HasIndex("LastEditedByUserId");
-
-                    b.HasIndex("TimeUnitId");
-
-                    b.ToTable("FrequencySchedule", (string)null);
-                });
-
             modelBuilder.Entity("CFMS.Domain.Entities.GrowthBatch", b =>
                 {
                     b.Property<Guid>("GrowthBatchId")
@@ -1180,6 +1128,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<Guid?>("NutritionPlanId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("OrderNum")
+                        .HasColumnType("integer");
+
                     b.Property<string>("StageCode")
                         .HasColumnType("text");
 
@@ -1198,6 +1149,50 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasIndex("NutritionPlanId");
 
                     b.ToTable("GrowthStage", (string)null);
+                });
+
+            modelBuilder.Entity("CFMS.Domain.Entities.HarvestProduct", b =>
+                {
+                    b.Property<Guid>("HarvestProducttId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedWhen")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("HarvestProductName")
+                        .IsRequired()
+                        .HasColumnType("character varying");
+
+                    b.Property<Guid>("HarvestProductTypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("LastEditedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("LastEditedWhen")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("HarvestProducttId")
+                        .HasName("HarvestProduct_pkey");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("HarvestProductTypeId");
+
+                    b.HasIndex("LastEditedByUserId");
+
+                    b.ToTable("HarvestProduct", (string)null);
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.HealthLog", b =>
@@ -1772,6 +1767,9 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
+                    b.Property<Guid?>("ChickenId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
@@ -1785,6 +1783,9 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("FoodId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("HarvestProductId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
@@ -1814,11 +1815,15 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasKey("ResourceId")
                         .HasName("Resource_pkey");
 
+                    b.HasIndex("ChickenId");
+
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("EquipmentId");
 
                     b.HasIndex("FoodId");
+
+                    b.HasIndex("HarvestProductId");
 
                     b.HasIndex("LastEditedByUserId");
 
@@ -3366,40 +3371,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("LastEditedByUser");
                 });
 
-            modelBuilder.Entity("CFMS.Domain.Entities.FrequencySchedule", b =>
-                {
-                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CFMS.Domain.Entities.Task", "Task")
-                        .WithMany("FrequencySchedules")
-                        .HasForeignKey("FrequencyScheduleId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired()
-                        .HasConstraintName("FrequencySchedule_FrequencyScheduleId_fkey");
-
-                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
-                        .WithMany()
-                        .HasForeignKey("LastEditedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CFMS.Domain.Entities.SubCategory", "TimeUnit")
-                        .WithMany("TimeUnits")
-                        .HasForeignKey("TimeUnitId");
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("LastEditedByUser");
-
-                    b.Navigation("Task");
-
-                    b.Navigation("TimeUnit");
-                });
-
             modelBuilder.Entity("CFMS.Domain.Entities.GrowthBatch", b =>
                 {
                     b.HasOne("CFMS.Domain.Entities.ChickenBatch", "ChickenBatch")
@@ -3465,6 +3436,34 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("LastEditedByUser");
 
                     b.Navigation("NutritionPlan");
+                });
+
+            modelBuilder.Entity("CFMS.Domain.Entities.HarvestProduct", b =>
+                {
+                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CFMS.Domain.Entities.SubCategory", "HarvestProductType")
+                        .WithMany("HarvestProductTypes")
+                        .HasForeignKey("HarvestProductTypeId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("HarvestProduct_HarvestProductTypeId_fkey");
+
+                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
+                        .WithMany()
+                        .HasForeignKey("LastEditedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("HarvestProductType");
+
+                    b.Navigation("LastEditedByUser");
                 });
 
             modelBuilder.Entity("CFMS.Domain.Entities.HealthLog", b =>
@@ -3801,6 +3800,10 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.Resource", b =>
                 {
+                    b.HasOne("CFMS.Domain.Entities.Chicken", "Chicken")
+                        .WithMany()
+                        .HasForeignKey("ChickenId");
+
                     b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
                         .WithMany()
                         .HasForeignKey("CreatedByUserId")
@@ -3814,6 +3817,10 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasOne("CFMS.Domain.Entities.Food", "Food")
                         .WithMany()
                         .HasForeignKey("FoodId");
+
+                    b.HasOne("CFMS.Domain.Entities.HarvestProduct", "HarvestProduct")
+                        .WithMany()
+                        .HasForeignKey("HarvestProductId");
 
                     b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
                         .WithMany()
@@ -3840,11 +3847,15 @@ namespace CFMS.Infrastructure.Migrations
                         .HasForeignKey("UnitId")
                         .HasConstraintName("Resource_UnitId_fkey");
 
+                    b.Navigation("Chicken");
+
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("Equipment");
 
                     b.Navigation("Food");
+
+                    b.Navigation("HarvestProduct");
 
                     b.Navigation("LastEditedByUser");
 
@@ -4578,6 +4589,8 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Navigation("GrowthStages");
 
+                    b.Navigation("HarvestProductTypes");
+
                     b.Navigation("HealthLogDetails");
 
                     b.Navigation("InventoryReceipts");
@@ -4610,8 +4623,6 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Navigation("TemplateCriteria");
 
-                    b.Navigation("TimeUnits");
-
                     b.Navigation("WareTransactions");
 
                     b.Navigation("Warehouses");
@@ -4629,8 +4640,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("EvaluatedTargets");
 
                     b.Navigation("FeedLogs");
-
-                    b.Navigation("FrequencySchedules");
 
                     b.Navigation("HealthLogs");
 

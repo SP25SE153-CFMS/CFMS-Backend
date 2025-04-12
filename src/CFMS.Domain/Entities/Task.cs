@@ -26,7 +26,7 @@ public partial class Task : EntityAudit
 
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
-    public virtual ICollection<FrequencySchedule> FrequencySchedules { get; set; } = new List<FrequencySchedule>();
+    //public virtual ICollection<FrequencySchedule> FrequencySchedules { get; set; } = new List<FrequencySchedule>();
 
     public virtual ICollection<ShiftSchedule> ShiftSchedules { get; set; } = new List<ShiftSchedule>();
 

@@ -17,11 +17,14 @@ public partial class SubCategory : EntityAudit
     public string? DataType { get; set; }
 
     public Guid? CategoryId { get; set; }
-    
+
     public Guid? FarmId { get; set; }
 
     [JsonIgnore]
     public virtual Category? Category { get; set; }
+
+    [JsonIgnore]
+    public virtual ICollection<HarvestProduct> HarvestProductTypes { get; set; } = new List<HarvestProduct>();
 
     [JsonIgnore]
     public virtual ICollection<ChickenCoop> ChickenCoopDensityUnits { get; set; } = new List<ChickenCoop>();
@@ -31,7 +34,7 @@ public partial class SubCategory : EntityAudit
 
     [JsonIgnore]
     public virtual ICollection<Farm> FarmAreaUnits { get; set; } = new List<Farm>();
-    
+
     [JsonIgnore]
     public virtual ICollection<BreedingArea> BreedingAreaUnits { get; set; } = new List<BreedingArea>();
 
@@ -116,7 +119,7 @@ public partial class SubCategory : EntityAudit
     [JsonIgnore]
     public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
 
-    public virtual ICollection<FrequencySchedule> TimeUnits { get; set; } = new List<FrequencySchedule>();
+    //public virtual ICollection<FrequencySchedule> TimeUnits { get; set; } = new List<FrequencySchedule>();
 
     [JsonIgnore]
     public virtual ICollection<TemplateCriterion> TemplateCriteria { get; set; } = new List<TemplateCriterion>();

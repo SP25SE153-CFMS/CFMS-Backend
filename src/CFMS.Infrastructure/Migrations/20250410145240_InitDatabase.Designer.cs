@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250408140940_UpdateDatabaseV19")]
-    partial class UpdateDatabaseV19
+    [Migration("20250410145240_InitDatabase")]
+    partial class InitDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,9 +171,6 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("FarmId")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -274,6 +271,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedWhen")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<Guid?>("CurrentStageId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime?>("DeletedWhen")
                         .HasColumnType("timestamp without time zone");
 
@@ -308,6 +308,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasIndex("ChickenId");
 
                     b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("CurrentStageId");
 
                     b.HasIndex("LastEditedByUserId");
 
@@ -1542,10 +1544,28 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedWhen")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedWhen")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<int?>("IsRead")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(0);
+
+                    b.Property<Guid>("LastEditedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("LastEditedWhen")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NotificationName")
                         .HasColumnType("character varying");
@@ -1558,6 +1578,10 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.HasKey("NotificationId")
                         .HasName("Notification_pkey");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("LastEditedByUserId");
 
                     b.HasIndex("UserId");
 
@@ -1988,6 +2012,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<Guid?>("FarmId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -2919,6 +2946,12 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("CFMS.Domain.Entities.GrowthStage", "CurrentStage")
+                        .WithMany("ChickenBatches")
+                        .HasForeignKey("CurrentStageId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("ChickenBatch_CurrentStageId_fkey");
+
                     b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
                         .WithMany()
                         .HasForeignKey("LastEditedByUserId")
@@ -2930,6 +2963,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("ChickenCoop");
 
                     b.Navigation("CreatedByUser");
+
+                    b.Navigation("CurrentStage");
 
                     b.Navigation("LastEditedByUser");
                 });
@@ -3638,11 +3673,27 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.Notification", b =>
                 {
+                    b.HasOne("CFMS.Domain.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CFMS.Domain.Entities.User", "LastEditedByUser")
+                        .WithMany()
+                        .HasForeignKey("LastEditedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("CFMS.Domain.Entities.User", "User")
                         .WithMany("Notifications")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("Notification_UserId_fkey");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("LastEditedByUser");
 
                     b.Navigation("User");
                 });
@@ -4441,6 +4492,8 @@ namespace CFMS.Infrastructure.Migrations
 
             modelBuilder.Entity("CFMS.Domain.Entities.GrowthStage", b =>
                 {
+                    b.Navigation("ChickenBatches");
+
                     b.Navigation("GrowthBatches");
                 });
 

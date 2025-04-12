@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.AssignmentFeat.Update
 
         public async Task<BaseResponse<bool>> Handle(UpdateAssignmentCommand request, CancellationToken cancellationToken)
         {
-            var task = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false, includeProperties: [t => t.FrequencySchedules]).FirstOrDefault();
+            var task = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false).FirstOrDefault();
             if (task == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Task không tồn tại");

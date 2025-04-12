@@ -20,6 +20,8 @@ public partial class GrowthStage : EntityAudit
 
     public string? Description { get; set; }
 
+    public int OrderNum { get; set; }
+
     public Guid FarmId { get; set; }
 
     public Guid? NutritionPlanId { get; set; }
