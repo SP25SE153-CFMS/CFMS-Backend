@@ -22,19 +22,10 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
             try
             {
                 var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) && p.IsDeleted == false).FirstOrDefault();
-
                 if (existNutritionPlan != null)
                 {
                     return BaseResponse<bool>.FailureResponse("Tên chế độ dinh dưỡng đã tồn tại");
                 }
-
-                //var chickens = _unitOfWork.ChickenRepository.Get(filter: c => request.ChickenList.Contains(c.ChickenId)).ToList();
-                //var missingIds = request.ChickenList.Except(chickens.Select(c => c.ChickenId)).ToList();
-
-                //if (missingIds.Any())
-                //{
-                //    return BaseResponse<bool>.FailureResponse($"Không tồn tại loại gà nào");
-                //}
 
                 var nutritionPlan = new NutritionPlan
                 {
@@ -42,9 +33,28 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
                     Description = request.Description
                 };
 
-                _unitOfWork.NutritionPlanRepository.Insert(nutritionPlan);
+                foreach (var nutritionPlanDetail in request.NutritionPlanDetails)
+                {
+                    nutritionPlan.NutritionPlanDetails.Add(new NutritionPlanDetail
+                    {
+                        FoodId = nutritionPlanDetail.FoodId,
+                        UnitId = nutritionPlanDetail.UnitId,
+                        FoodWeight = nutritionPlanDetail.FoodWeight,
+                    });
+                }
 
-                await _unitOfWork.SaveChangesAsync();
+                foreach (var feedSession in request.FeedSessions)
+                {
+                    nutritionPlan.FeedSessions.Add(new FeedSession
+                    {
+                        FeedAmount = feedSession.FeedAmount,
+                        UnitId = feedSession.UnitId,
+                        FeedingTime = feedSession.FeedingTime,
+                        Note = feedSession.Note,
+                    });
+                }
+
+                //await _unitOfWork.SaveChangesAsync();
 
                 //var nutritionPlanChickens = chickens.Select(chicken => new ChickenNutrition
                 //{
@@ -54,18 +64,19 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
 
                 //_unitOfWork.ChickenNutritionRepository.InsertRange(nutritionPlanChickens);
 
-                existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) & p.IsDeleted == false).FirstOrDefault();
+                //existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) & p.IsDeleted == false).FirstOrDefault();
 
-                var nutritionPlanDetails = request.NutritionPlanDetails.Select(detail => new NutritionPlanDetail
-                {
-                    NutritionPlanId = existNutritionPlan.NutritionPlanId,
-                    FoodId = detail.FoodId,
-                    UnitId = detail.UnitId,
-                    FoodWeight = detail.FoodWeight
-                }).ToList();
+                //var nutritionPlanDetails = request.NutritionPlanDetails.Select(detail => new NutritionPlanDetail
+                //{
+                //    NutritionPlanId = existNutritionPlan.NutritionPlanId,
+                //    FoodId = detail.FoodId,
+                //    UnitId = detail.UnitId,
+                //    FoodWeight = detail.FoodWeight
+                //}).ToList();
 
-                _unitOfWork.NutritionPlanDetailRepository.InsertRange(nutritionPlanDetails);
+                //_unitOfWork.NutritionPlanDetailRepository.InsertRange(nutritionPlanDetails);
 
+                _unitOfWork.NutritionPlanRepository.Insert(nutritionPlan);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {

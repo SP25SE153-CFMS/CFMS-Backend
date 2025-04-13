@@ -6,6 +6,7 @@ using CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlan;
 using CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlans;
 using CFMS.Application.Features.NutritionPlanFeat.Update;
 using CFMS.Application.Features.NutritionPlanFeat.UpdateFeedSession;
+using CFMS.Application.Features.NutritionPlanFeat.UpdateNutritionPlanDetail;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -68,6 +69,13 @@ namespace CFMS.Api.Controllers
 
         [HttpPut("delete-feedsession")]
         public async Task<IActionResult> DeleteFeedSession(DeleteFeedSessionCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPut("update-nutritionplandetail")]
+        public async Task<IActionResult> UpdateNutritionPlanDetail(UpdateNutritionPlanDetailCommand command)
         {
             var result = await Send(command);
             return result;
