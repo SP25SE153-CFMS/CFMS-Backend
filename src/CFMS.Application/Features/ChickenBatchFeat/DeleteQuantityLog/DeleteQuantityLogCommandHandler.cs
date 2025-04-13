@@ -30,8 +30,11 @@ namespace CFMS.Application.Features.ChickenBatchFeat.DeleteQuantityLog
 
             try
             {
-                existBatch.QuantityLogs.Remove(existQuantityLog);
+                var temp = existBatch.QuantityLogs.ToList();
+                temp.RemoveAll(hl => hl.QuantityLogId.Equals(existQuantityLog.QuantityLogId));
+                existBatch.QuantityLogs = temp;
 
+                _unitOfWork.QuantityLogRepository.Delete(existQuantityLog);
                 _unitOfWork.ChickenBatchRepository.Update(existBatch);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)

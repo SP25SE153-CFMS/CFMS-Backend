@@ -34,6 +34,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.DeleteHealthLog
                 temp.RemoveAll(hl => hl.HealthLogId.Equals(existLog.HealthLogId));
                 existBatch.HealthLogs = temp;
 
+                _unitOfWork.HealthLogRepository.Delete(existLog);
                 _unitOfWork.ChickenBatchRepository.Update(existBatch);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)

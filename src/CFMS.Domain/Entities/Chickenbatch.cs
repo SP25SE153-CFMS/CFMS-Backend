@@ -8,10 +8,6 @@ public partial class ChickenBatch : EntityAudit
 {
     public Guid ChickenBatchId { get; set; }
 
-    public Guid? ChickenCoopId { get; set; }
-
-    public Guid? CurrentStageId { get; set; }
-
     public string? ChickenBatchName { get; set; }
 
     public DateTime? StartDate { get; set; }
@@ -22,7 +18,20 @@ public partial class ChickenBatch : EntityAudit
 
     public int? Status { get; set; }
 
+    public int MinGrowDays { get; set; }
+
+    public int MaxGrowDays { get; set; }
+
     public Guid? ChickenId { get; set; }
+
+    public Guid? ChickenCoopId { get; set; }
+
+    public Guid? ParentBatchId { get; set; }
+
+    public Guid? CurrentStageId { get; set; }
+
+    [JsonIgnore]
+    public virtual ChickenBatch? ParentBatch { get; set; }
 
     [JsonIgnore]
     public virtual ChickenCoop? ChickenCoop { get; set; }
@@ -30,6 +39,7 @@ public partial class ChickenBatch : EntityAudit
     [JsonIgnore]
     public virtual GrowthStage? CurrentStage { get; set; }
 
+    [JsonIgnore]
     public virtual Chicken? Chicken { get; set; }
 
     public virtual ICollection<FeedLog> FeedLogs { get; set; } = new List<FeedLog>();
