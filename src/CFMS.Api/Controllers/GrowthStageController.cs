@@ -4,6 +4,7 @@ using CFMS.Application.Features.GrowthStageFeat.Delete;
 using CFMS.Application.Features.GrowthStageFeat.DeleteNutritionPlan;
 using CFMS.Application.Features.GrowthStageFeat.GetStage;
 using CFMS.Application.Features.GrowthStageFeat.GetStages;
+using CFMS.Application.Features.GrowthStageFeat.GetStagesByFarmId;
 using CFMS.Application.Features.GrowthStageFeat.Update;
 using CFMS.Application.Features.NutritionPlanFeat.Update;
 using MediatR;
@@ -63,6 +64,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> DeleteNutritionPlan(Application.Features.GrowthStageFeat.DeleteNutritionPlan.DeleteStageCommand command)
         {
             var result = await Send(command);
+            return result;
+        }
+
+        [HttpPost("{farmId}/get-growthstage")]
+        public async Task<IActionResult> GetStagesByFarmId(Guid farmId)
+        {
+            var result = await Send(new GetStagesByFarmIdQuery(farmId));
             return result;
         }
     }
