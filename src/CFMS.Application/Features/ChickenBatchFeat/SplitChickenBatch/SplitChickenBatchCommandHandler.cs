@@ -31,12 +31,6 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                 return BaseResponse<bool>.FailureResponse(message: "Chuồng gà không tồn tại");
             }
 
-            var existChicken = _unitOfWork.ChickenRepository.Get(filter: c => c.ChickenId.Equals(request.ChickenId) && c.IsDeleted == false).FirstOrDefault();
-            if (existChicken == null)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "Gà không tồn tại");
-            }
-
             var stages = _unitOfWork.GrowthStageRepository.Get(
                 filter: s => s.StageCode.Equals(request.StageCode),
                 orderBy: s => s.OrderBy(s => s.OrderNum)
