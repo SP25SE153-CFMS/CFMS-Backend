@@ -5,7 +5,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.Create
 {
     public class CreateStageCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateStageCommand(string? stageName, Guid? chickenType, int? minAgeWeek, int? maxAgeWeek, string? description, string stageCode)
+        public CreateStageCommand(string? stageName, Guid? chickenType, int? minAgeWeek, int? maxAgeWeek, string? description, string stageCode, Guid? farmId)
         {
             StageName = stageName;
             ChickenType = chickenType;
@@ -13,7 +13,10 @@ namespace CFMS.Application.Features.GrowthStageFeat.Create
             MaxAgeWeek = maxAgeWeek;
             Description = description;
             StageCode = stageCode;
+            FarmId = farmId;
         }
+
+        public Guid? FarmId { get; set; }
 
         public string? StageName { get; set; }
 
