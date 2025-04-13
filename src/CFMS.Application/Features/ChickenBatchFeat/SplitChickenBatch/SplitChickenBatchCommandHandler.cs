@@ -52,16 +52,15 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                 newBatch.Status = DateOnly.FromDateTime(newBatch.StartDate.Value) > DateOnly.FromDateTime(DateTime.Now.ToLocalTime()) ? 0 : 1;
                 newBatch.CurrentStageId = stages.FirstOrDefault().GrowthStageId;
 
+                var temp = existParentBatch.ChickenDetails;
                 foreach (var chickenDetail in request.ChickenDetailRequests)
                 {
-                    var temp = existParentBatch.ChickenDetails;
                     var chickenDetailTemp = temp.FirstOrDefault(c => c.Gender.Value == chickenDetail.Gender);
                     if (chickenDetailTemp == null || chickenDetailTemp.Quantity < chickenDetail.Quantity)
                     {
                         return BaseResponse<bool>.FailureResponse("Gà không tồn tại hoặc đã vượt quá số lượng tách đàn");
                     }
                     chickenDetailTemp.Quantity -= chickenDetail.Quantity;
-                    existParentBatch.ChickenDetails = temp;
 
                     newBatch.ChickenDetails.Add(new ChickenDetail
                     {
@@ -70,7 +69,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                         Gender = chickenDetail.Gender,
                     });
                 }
-
+                existParentBatch.ChickenDetails = temp;
                 existParentBatch.QuantityLogs.Add(new QuantityLog
                 {
                     LogDate = DateTime.Now.ToLocalTime(),
