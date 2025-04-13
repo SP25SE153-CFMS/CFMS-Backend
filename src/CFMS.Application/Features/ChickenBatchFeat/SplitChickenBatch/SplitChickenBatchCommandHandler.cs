@@ -64,7 +64,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
 
                     newBatch.ChickenDetails.Add(new ChickenDetail
                     {
-                        ChickenId = existChicken.ChickenId,
+                        ChickenId = existParentBatch.ChickenId,
                         Quantity = chickenDetail.Quantity,
                         Gender = chickenDetail.Gender,
                     });

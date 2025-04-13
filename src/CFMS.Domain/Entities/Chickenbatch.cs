@@ -39,7 +39,6 @@ public partial class ChickenBatch : EntityAudit
     [JsonIgnore]
     public virtual GrowthStage? CurrentStage { get; set; }
 
-    [JsonIgnore]
     public virtual Chicken? Chicken { get; set; }
 
     public virtual ICollection<FeedLog> FeedLogs { get; set; } = new List<FeedLog>();
