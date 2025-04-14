@@ -58,6 +58,13 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                 newBatch.CurrentStageId = stages.First().GrowthStageId;
 
                 // 5. Handle Chicken Details
+                var systemConfig = _unitOfWork.SystemConfigRepository.Get(filter: c => c.SettingName.Equals("MinQuantityChickenInBatch") && c.Status == 1).FirstOrDefault();
+                var totalChicken = request.ChickenDetailRequests.Select(c => c.Quantity).Sum();
+                if (totalChicken > systemConfig.SettingValue)
+                {
+                    return BaseResponse<bool>.FailureResponse(message: "Vượt quá số lượng tách đàn");
+                }
+
                 foreach (var chickenDetail in request.ChickenDetailRequests)
                 {
                     var matchedDetail = existParentBatch.ChickenDetails
