@@ -23,7 +23,7 @@ namespace CFMS.Application.Features.SystemConfigFeat.Update
         public async Task<BaseResponse<bool>> Handle(UpdateConfigCommand request, CancellationToken cancellationToken)
         {
             var existConfig = _unitOfWork.SystemConfigRepository.Get(filter: s => s.SettingName.Equals(request.SettingName) && s.IsDeleted == false).FirstOrDefault();
-            if (existConfig != null)
+            if (existConfig == null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên cấu hình đã tồn tại");
             }
