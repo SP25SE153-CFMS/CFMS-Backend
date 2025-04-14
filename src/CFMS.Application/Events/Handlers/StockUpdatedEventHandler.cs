@@ -54,12 +54,18 @@ namespace CFMS.Application.Events.Handlers
                 if (notification.ResourceType.Equals("equipment"))
                     resource.EquipmentId = notification.ResourceId;
 
+                if (notification.ResourceType.Equals("havest_product"))
+                    resource.HarvestProductId = notification.ResourceId;
+
+                if (notification.ResourceType.Equals("breeding"))
+                    resource.ChickenId = notification.ResourceId;
+
                 await _unitOfWork.ResourceRepository.UpdateOrInsertAsync(resource);
                 await _unitOfWork.SaveChangesAsync();
             }
 
             var wareStock = await _unitOfWork.WareStockRepository
-                  .FirstOrDefaultAsync(x => x.WareId.Equals(notification.WareId) && x.ResourceId == resource.ResourceId);
+                  .FirstOrDefaultAsync(x => x.WareId.Equals(notification.WareId) && x.ResourceId.Equals(resource.ResourceId));
 
             var ware = await _unitOfWork.WarehouseRepository
                   .FirstOrDefaultAsync(x => x.WareId.Equals(notification.WareId));

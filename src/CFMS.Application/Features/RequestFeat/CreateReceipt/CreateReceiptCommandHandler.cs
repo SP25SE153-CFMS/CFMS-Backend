@@ -78,23 +78,27 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
 
                 var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(existResource.ResourceTypeId)).FirstOrDefault();
 
-                var typeName = existResourceType.SubCategoryName;
+                var typeName = existResourceType?.SubCategoryName;
 
                 var resourceId = typeName.Equals("food")
-                    ? existResource.FoodId
+                    ? existResource?.FoodId
                     : typeName.Equals("equipment")
-                        ? existResource.EquipmentId
+                        ? existResource?.EquipmentId
                         : typeName.Equals("equipment")
-                            ? existResource.MedicineId
-                            : null;
+                            ? existResource?.MedicineId
+                                : typeName.Equals("breeding")
+                                    ? existResource?.ChickenId
+                                        : typeName.Equals("havest_product")
+                                            ? existResource?.HarvestProductId
+                                            : null;
 
                 await _mediator.Publish(new StockUpdatedEvent(
                     resourceId ?? Guid.Empty,
                     receiptCodePrefix == "PNK" ? (int)d.ActualQuantity.Value : -(int)d.ActualQuantity.Value,
-                    existResource.UnitId,
+                    existResource?.UnitId,   
                     typeName,
-                    existResource.PackageId,
-                    existResource.PackageSize,
+                    existResource?.PackageId,
+                    existResource?.PackageSize,
                     request.WareToId ?? Guid.Empty,
                     false
                 ));

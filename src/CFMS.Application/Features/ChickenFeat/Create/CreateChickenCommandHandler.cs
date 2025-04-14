@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Application.Events;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
@@ -10,39 +11,53 @@ namespace CFMS.Application.Features.ChickenFeat.Create
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public CreateChickenCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public CreateChickenCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediator mediator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         public async Task<BaseResponse<bool>> Handle(CreateChickenCommand request, CancellationToken cancellationToken)
         {
-            var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false).FirstOrDefault();
-            if (existBatch == null)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
-            }
-
-            var existChicken = _unitOfWork.ChickenRepository.Get(c => c.ChickenCode.Equals(request.ChickenCode) || c.ChickenName.Equals(request.ChickenName) && c.IsDeleted == false).FirstOrDefault();
-            if (existChicken != null)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã loại gà đã được sử dụng");
-            }
-
             try
             {
-                var newChicken = new Chicken
-                {
-                    ChickenCode = request.ChickenCode,
-                    ChickenName = request.ChickenName,
-                    Description = request.Description,
-                    Status = request.Status,
-                    ChickenTypeId = request.ChickenTypeId,
-                };
+                //var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false).FirstOrDefault();
+                //if (existBatch == null)
+                //{
+                //    return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
+                //}
 
-                _unitOfWork.ChickenRepository.Insert(newChicken);
+                var existChicken = _unitOfWork.ChickenRepository.Get(c => c.ChickenCode.Equals(request.ChickenCode) || c.ChickenName.Equals(request.ChickenName) && c.IsDeleted == false).FirstOrDefault();
+                if (existChicken == null)
+                {
+                    existChicken = new Chicken
+                    {
+                        ChickenCode = request.ChickenCode,
+                        ChickenName = request.ChickenName,
+                        Description = request.Description,
+                        Status = request.Status,
+                        ChickenTypeId = request.ChickenTypeId,
+                    };
+
+                    _unitOfWork.ChickenRepository.Insert(existChicken);
+                    var result = await _unitOfWork.SaveChangesAsync();
+                }
+
+                await _mediator.Publish(new StockUpdatedEvent
+                     (
+                        existChicken.ChickenId,
+                        0,
+                        request.UnitId,
+                        "breeding",
+                        request.PackageId,
+                        request.PackageSize,
+                        request.WareId,
+                        true
+                    ));
+
                 //await _unitOfWork.SaveChangesAsync();
 
                 //existChicken = _unitOfWork.ChickenRepository.Get(filter: p => p.ChickenCode.Equals(request.ChickenCode) && p.IsDeleted == false).FirstOrDefault();
@@ -56,14 +71,7 @@ namespace CFMS.Application.Features.ChickenFeat.Create
                 //}).ToList() ?? new List<ChickenDetail>();
 
                 //_unitOfWork.ChickenDetailRepository.InsertRange(chickenDetails);
-
-                var result = await _unitOfWork.SaveChangesAsync();
-
-                if (result > 0)
-                {
-                    return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
-                }
-                return BaseResponse<bool>.FailureResponse(message: "Thêm không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
             }
             catch (Exception ex)
             {
