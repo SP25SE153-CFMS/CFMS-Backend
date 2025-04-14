@@ -3,19 +3,25 @@ using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
 
-namespace CFMS.Application.Features.NutritionPlanFeat.AddFeedSession
+namespace CFMS.Application.Features.NutritionPlanFeat.AddFood
 {
-    public class AddFeedSessionCommandHandler : IRequestHandler<AddFeedSessionCommand, BaseResponse<bool>>
+    public class AddFoodCommandHandler : IRequestHandler<AddFoodCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddFeedSessionCommandHandler(IUnitOfWork unitOfWork)
+        public AddFoodCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponse<bool>> Handle(AddFeedSessionCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(AddFoodCommand request, CancellationToken cancellationToken)
         {
+            var existFood = _unitOfWork.FoodRepository.Get(filter: f => f.FoodId.Equals(request.FoodId) && f.IsDeleted == false).FirstOrDefault();
+            if (existFood == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Thức ăn không tồn tại");
+            }
+
             var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: np => np.NutritionPlanId.Equals(request.NutritionPlanId) && np.IsDeleted == false).FirstOrDefault();
             if (existNutritionPlan == null)
             {
@@ -24,23 +30,18 @@ namespace CFMS.Application.Features.NutritionPlanFeat.AddFeedSession
 
             try
             {
-                existNutritionPlan.FeedSessions.Add(new FeedSession
+                existNutritionPlan.NutritionPlanDetails.Add(new NutritionPlanDetail
                 {
-                    NutritionPlanId = request.NutritionPlanId,
-                    StartTime = request.StartTime,
-                    EndTime = request.EndTime,
-                    FeedAmount = request.FeedAmount,
+                    FoodId = request.FoodId,
+                    FoodWeight = request.FoodWeight,
                     UnitId = request.UnitId,
-                    Note = request.Note,
                 });
 
                 _unitOfWork.NutritionPlanRepository.Update(existNutritionPlan);
                 var result = await _unitOfWork.SaveChangesAsync();
-                if (result > 0)
-                {
-                    return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
-                }
-                return BaseResponse<bool>.FailureResponse(message: "Thêm không thành công");
+                return result > 0
+                   ? BaseResponse<bool>.SuccessResponse(message: "Tạo thành công")
+                   : BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
             }
             catch (Exception ex)
             {

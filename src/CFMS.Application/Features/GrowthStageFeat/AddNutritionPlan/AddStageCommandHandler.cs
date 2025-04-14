@@ -30,11 +30,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.AddNutritionPlan
 
             try
             {
-                //existGrowthStage.GrowthNutritions.Add(new GrowthNutrition
-                //{
-                //    GrowthStageId = request.GrowthStageId,
-                //    NutritionPlanId = request.NutritionPlanId,
-                //});
+                existGrowthStage.NutritionPlanId = existNutritionPlan.NutritionPlanId;
 
                 _unitOfWork.GrowthStageRepository.Update(existGrowthStage);
                 var result = await _unitOfWork.SaveChangesAsync();

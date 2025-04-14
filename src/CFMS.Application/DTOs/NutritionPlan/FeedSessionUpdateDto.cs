@@ -1,7 +1,9 @@
-﻿namespace CFMS.Application.DTOs.FeedSession
+﻿namespace CFMS.Application.DTOs.NutritionPlan
 {
-    public class FeedSessionRequest
+    public class FeedSessionUpdateDto
     {
+        public Guid? FeedSessionId { get; set; }
+
         public TimeOnly? StartTime { get; set; }
 
         public TimeOnly? EndTime { get; set; }

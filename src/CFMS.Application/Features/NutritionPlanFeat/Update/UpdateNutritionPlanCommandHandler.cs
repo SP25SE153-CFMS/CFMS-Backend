@@ -18,82 +18,59 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
 
     public async Task<BaseResponse<bool>> Handle(UpdateNutritionPlanCommand request, CancellationToken cancellationToken)
     {
+        var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: np => np.NutritionPlanId.Equals(request.NutritionPlanId) && np.IsDeleted == false).FirstOrDefault();
+        if (existNutritionPlan == null)
+        {
+            return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
+        }
+
         try
         {
-            var nutritionPlan = _unitOfWork.NutritionPlanRepository
-                .Get(filter: p => p.NutritionPlanId == request.NutritionPlanId && p.IsDeleted == false)
-                .FirstOrDefault();
+            existNutritionPlan.Description = request.Description;
+            existNutritionPlan.Name = request.Name;
 
-            if (nutritionPlan == null)
+            foreach (var nutritionPlanDetail in request.NutritionPlanDetails)
             {
-                return BaseResponse<bool>.FailureResponse("Chế độ dinh dưỡng không tồn tại");
-            }
-
-            var existNutritionPlan = _unitOfWork.NutritionPlanRepository
-                .Get(filter: p => p.Name.Equals(request.Name) && p.IsDeleted == false && p.NutritionPlanId != request.NutritionPlanId)
-                .FirstOrDefault();
-            if (existNutritionPlan != null)
-            {
-                return BaseResponse<bool>.FailureResponse("Tên chế độ dinh dưỡng đã tồn tại");
-            }
-
-            nutritionPlan.Name = request.Name ?? nutritionPlan.Name;
-            nutritionPlan.Description = request.Description ?? nutritionPlan.Description;
-
-            _unitOfWork.NutritionPlanRepository.Update(nutritionPlan);
-            await _unitOfWork.SaveChangesAsync();
-
-            //if (request.ChickenList != null)
-            //{
-            //    var chickens = _unitOfWork.ChickenRepository
-            //        .Get(filter: c => request.ChickenList.Contains(c.ChickenId))
-            //        .ToList();
-
-            //    var missingIds = request.ChickenList.Except(chickens.Select(c => c.ChickenId)).ToList();
-            //    if (missingIds.Any())
-            //    {
-            //        return BaseResponse<bool>.FailureResponse($"Một số loại gà không tồn tại trong hệ thống");
-            //    }
-
-                //var existingChickenNutritions = _unitOfWork.ChickenNutritionRepository
-                //    .Get(filter: cn => cn.NutritionPlanId == request.NutritionPlanId)
-                //    .ToList();
-
-                //_unitOfWork.ChickenNutritionRepository.DeleteRange(existingChickenNutritions);
-                //await _unitOfWork.SaveChangesAsync();
-
-                //var newChickenNutritions = chickens.Select(chicken => new ChickenNutrition
-                //{
-                //    NutritionPlanId = nutritionPlan.NutritionPlanId,
-                //    ChickenId = chicken.ChickenId
-                //}).ToList();
-
-                //_unitOfWork.ChickenNutritionRepository.InsertRange(newChickenNutritions);
-                //await _unitOfWork.SaveChangesAsync();
-            //}
-
-            if (request.NutritionPlanDetails != null)
-            {
-                var existingDetails = _unitOfWork.NutritionPlanDetailRepository
-                    .Get(filter: d => d.NutritionPlanId == request.NutritionPlanId)
-                    .ToList();
-
-                _unitOfWork.NutritionPlanDetailRepository.DeleteRange(existingDetails);
-                await _unitOfWork.SaveChangesAsync();
-
-                var newDetails = request.NutritionPlanDetails.Select(detail => new NutritionPlanDetail
+                var existNutritionPlanDetail = _unitOfWork.NutritionPlanDetailRepository.Get(filter: npd => npd.NutritionPlanId.Equals(existNutritionPlan.NutritionPlanId) && npd.NutritionPlanDetailId.Equals(nutritionPlanDetail.NutritionPlanDetailId)).FirstOrDefault();
+                if (existNutritionPlanDetail == null)
                 {
-                    NutritionPlanId = nutritionPlan.NutritionPlanId,
-                    FoodId = detail.FoodId,
-                    UnitId = detail.UnitId,
-                    FoodWeight = detail.FoodWeight
-                }).ToList();
+                    return BaseResponse<bool>.FailureResponse(message: "Chi tiết không tồn tại");
+                }
 
-                _unitOfWork.NutritionPlanDetailRepository.InsertRange(newDetails);
-                await _unitOfWork.SaveChangesAsync();
+                var existFood = _unitOfWork.FoodRepository.Get(filter: f => f.FoodId.Equals(nutritionPlanDetail.FoodId)).FirstOrDefault();
+                if (existFood == null)
+                {
+                    return BaseResponse<bool>.FailureResponse(message: "Thức ăn không tồn tại");
+                }
+
+                existNutritionPlanDetail.FoodId = nutritionPlanDetail.FoodId;
+                existNutritionPlanDetail.FoodWeight = nutritionPlanDetail.FoodWeight;
+                existNutritionPlanDetail.UnitId = nutritionPlanDetail.UnitId;
+
+                _unitOfWork.NutritionPlanDetailRepository.Update(existNutritionPlanDetail);
             }
 
-            return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
+            foreach (var feedSession in request.FeedSessions)
+            {
+                var existFeedSession = _unitOfWork.FeedSessionRepository.Get(f => f.NutritionPlanId.Equals(existNutritionPlan.NutritionPlanId) && f.FeedSessionId.Equals(feedSession.FeedSessionId) && f.IsDeleted == false).FirstOrDefault();
+                if (existFeedSession == null)
+                {
+                    return BaseResponse<bool>.FailureResponse(message: "Cữ cho ăn không tồn tại");
+                }
+
+                existFeedSession.FeedAmount = feedSession.FeedAmount;
+                existFeedSession.StartTime = feedSession.StartTime;
+                existFeedSession.EndTime = feedSession.EndTime;
+                existFeedSession.Note = feedSession.Note;
+                existFeedSession.UnitId = feedSession.UnitId;
+
+                _unitOfWork.FeedSessionRepository.Update(existFeedSession);
+            }
+
+            var result = await _unitOfWork.SaveChangesAsync();
+            return result > 0
+                ? BaseResponse<bool>.SuccessResponse(message: "Tạo thành công")
+                : BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
         }
         catch (Exception ex)
         {

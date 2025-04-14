@@ -49,32 +49,11 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
                     {
                         FeedAmount = feedSession.FeedAmount,
                         UnitId = feedSession.UnitId,
-                        FeedingTime = feedSession.FeedingTime,
+                        StartTime = feedSession.StartTime,
+                        EndTime = feedSession.EndTime,
                         Note = feedSession.Note,
                     });
                 }
-
-                //await _unitOfWork.SaveChangesAsync();
-
-                //var nutritionPlanChickens = chickens.Select(chicken => new ChickenNutrition
-                //{
-                //    NutritionPlanId = nutritionPlan.NutritionPlanId,
-                //    ChickenId = chicken.ChickenId
-                //}).ToList();
-
-                //_unitOfWork.ChickenNutritionRepository.InsertRange(nutritionPlanChickens);
-
-                //existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) & p.IsDeleted == false).FirstOrDefault();
-
-                //var nutritionPlanDetails = request.NutritionPlanDetails.Select(detail => new NutritionPlanDetail
-                //{
-                //    NutritionPlanId = existNutritionPlan.NutritionPlanId,
-                //    FoodId = detail.FoodId,
-                //    UnitId = detail.UnitId,
-                //    FoodWeight = detail.FoodWeight
-                //}).ToList();
-
-                //_unitOfWork.NutritionPlanDetailRepository.InsertRange(nutritionPlanDetails);
 
                 _unitOfWork.NutritionPlanRepository.Insert(nutritionPlan);
                 var result = await _unitOfWork.SaveChangesAsync();

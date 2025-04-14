@@ -67,7 +67,7 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpPost("{farmId}/get-growthstage")]
+        [HttpGet("{farmId}/get-growthstage")]
         public async Task<IActionResult> GetStagesByFarmId(Guid farmId)
         {
             var result = await Send(new GetStagesByFarmIdQuery(farmId));

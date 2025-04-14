@@ -23,7 +23,8 @@ namespace CFMS.Application.Features.NutritionPlanFeat.UpdateFeedSession
 
             try
             {
-                existFeedSession.FeedingTime = request.FeedingTime;
+                existFeedSession.StartTime = request.StartTime;
+                existFeedSession.EndTime = request.EndTime;
                 existFeedSession.FeedAmount = request.FeedAmount;
                 existFeedSession.UnitId = request.UnitId;
                 existFeedSession.Note = request.Note;

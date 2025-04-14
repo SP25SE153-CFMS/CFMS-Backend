@@ -8,7 +8,9 @@ public partial class FeedSession : EntityAudit
 
     public Guid? NutritionPlanId { get; set; }
 
-    public DateTime? FeedingTime { get; set; }
+    public TimeOnly? StartTime { get; set; }
+
+    public TimeOnly? EndTime { get; set; }
 
     public decimal? FeedAmount { get; set; }
 

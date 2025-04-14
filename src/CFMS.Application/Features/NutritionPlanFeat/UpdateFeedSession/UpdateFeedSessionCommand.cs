@@ -5,10 +5,11 @@ namespace CFMS.Application.Features.NutritionPlanFeat.UpdateFeedSession
 {
     public class UpdateFeedSessionCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateFeedSessionCommand(Guid feedSessionId, DateTime? feedingTime, decimal? feedAmount, Guid? unitId, string? note)
+        public UpdateFeedSessionCommand(Guid feedSessionId, TimeOnly? startTime, TimeOnly? endTime, decimal? feedAmount, Guid? unitId, string? note)
         {
             FeedSessionId = feedSessionId;
-            FeedingTime = feedingTime;
+            StartTime = startTime;
+            EndTime = endTime;
             FeedAmount = feedAmount;
             UnitId = unitId;
             Note = note;
@@ -16,7 +17,9 @@ namespace CFMS.Application.Features.NutritionPlanFeat.UpdateFeedSession
 
         public Guid FeedSessionId { get; set; }
 
-        public DateTime? FeedingTime { get; set; }
+        public TimeOnly? StartTime { get; set; }
+
+        public TimeOnly? EndTime { get; set; }
 
         public decimal? FeedAmount { get; set; }
 

@@ -31,7 +31,7 @@ namespace CFMS.Api.Extensions
             services.AddDbContext<CfmsDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
             //Http

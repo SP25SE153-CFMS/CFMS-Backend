@@ -862,7 +862,8 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("FeedSession");
 
             entity.Property(e => e.FeedSessionId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.FeedingTime).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.EndTime).HasColumnType("time");
+            entity.Property(e => e.StartTime).HasColumnType("time");
             entity.Property(e => e.Note).HasColumnType("character varying");
 
             entity.HasOne(d => d.NutritionPlan).WithMany(p => p.FeedSessions)
@@ -1246,8 +1247,8 @@ public partial class CfmsDbContext : DbContext
 
             entity.Property(e => e.ShiftId).HasDefaultValueSql("gen_random_uuid()");
             entity.Property(e => e.EndTime).HasColumnType("time");
-            entity.Property(e => e.ShiftName).HasColumnType("character varying");
             entity.Property(e => e.StartTime).HasColumnType("time");
+            entity.Property(e => e.ShiftName).HasColumnType("character varying");
         });
 
         modelBuilder.Entity<ShiftSchedule>(entity =>
