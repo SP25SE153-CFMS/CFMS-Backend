@@ -26,6 +26,18 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
                 return BaseResponse<bool>.FailureResponse(message: "Gà không tồn tại");
             }
 
+            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.ChickenCoopId) && c.IsDeleted == false).FirstOrDefault();
+            if (existCoop == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Chuồng không tồn tại");
+            }
+
+            var totalChicken = request.ChickenDetailRequests.Select(c => c.Quantity).Sum();
+            if (totalChicken > existCoop.MaxQuantity)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Vượt quá số lượng cho phép");
+            }
+
             var stages = _unitOfWork.GrowthStageRepository.Get(
                 filter: s => s.StageCode.Equals(request.StageCode),
                 orderBy: s => s.OrderBy(s => s.MinAgeWeek)
