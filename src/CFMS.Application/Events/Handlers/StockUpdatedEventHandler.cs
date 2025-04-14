@@ -69,7 +69,7 @@ namespace CFMS.Application.Events.Handlers
             wareStock ??= new WareStock
             {
                 WareId = notification.WareId,
-                ResourceId = resource.ResourceId,
+                ResourceId = resource?.ResourceId,
                 Quantity = 0
             };
 

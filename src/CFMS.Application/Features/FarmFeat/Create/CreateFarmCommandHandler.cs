@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Application.Events;
 using CFMS.Application.Services.Impl;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
@@ -12,12 +13,14 @@ namespace CFMS.Application.Features.FarmFeat.Create
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IUtilityService _utilityService;
+        private readonly IMediator _mediator;
 
-        public CreateFarmCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IUtilityService utilityService)
+        public CreateFarmCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IUtilityService utilityService, IMediator mediator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _utilityService = utilityService;
+            _mediator = mediator;
         }
 
         public async Task<BaseResponse<bool>> Handle(CreateFarmCommand request, CancellationToken cancellationToken)
@@ -27,7 +30,6 @@ namespace CFMS.Application.Features.FarmFeat.Create
             //{
             //    return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
             //}
-
             var farms = _unitOfWork.FarmRepository.Get(filter: f => (f.FarmCode.Equals(request.FarmCode) || f.FarmName.Equals(request.FarmName)) && f.IsDeleted == false);
             if (farms.Any())
             {
@@ -38,6 +40,14 @@ namespace CFMS.Application.Features.FarmFeat.Create
             {
                 _unitOfWork.FarmRepository.Insert(_mapper.Map<Farm>(request));
                 var result = await _unitOfWork.SaveChangesAsync();
+
+                var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmCode.Equals(request.FarmCode) && f.FarmName.Equals(request.FarmName) && f.IsDeleted == false).FirstOrDefault();
+                if (existFarm == null)
+                {
+                    return BaseResponse<bool>.FailureResponse(message: "Không tìm thấy trang trại");
+                }
+
+                await _mediator.Publish(new WareCreatedEvent(existFarm.FarmId));
                 if (result > 0)
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo trang trại thành công");
