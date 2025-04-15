@@ -57,7 +57,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
                                 ResourceId = existResource.ResourceId,
                                 ResourceTypeId = existResource.ResourceTypeId,
                                 UnitId = existResource.UnitId,
-                                Quantity = taskResource.Quantity,
+                                Quantity = taskResource.SuppliedQuantity,
                             });
                         }
 

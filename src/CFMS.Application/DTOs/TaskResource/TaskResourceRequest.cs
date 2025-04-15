@@ -10,6 +10,8 @@ namespace CFMS.Application.DTOs.TaskResource
     {
         public Guid ResourceId { get; set; }
 
-        public int? Quantity { get; set; }
+        public int? SuppliedQuantity { get; set; }
+
+        public int? ConsumedQuantity { get; set; }
     }
 }
