@@ -7,11 +7,10 @@ namespace CFMS.Application.Features.ChickenFeat.Create
 {
     public class CreateChickenCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateChickenCommand(string? chickenCode, string? chickenName, int? totalQuantity, string? description, int? status, List<ChickenDetailDto>? chickenDetails, Guid? chickenTypeId, Guid? unitId, Guid? packageId, decimal? packageSize, Guid wareId)
+        public CreateChickenCommand(string? chickenCode, string? chickenName, string? description, int? status, List<ChickenDetailDto>? chickenDetails, Guid? chickenTypeId, Guid? unitId, Guid? packageId, decimal? packageSize, Guid wareId)
         {
             ChickenCode = chickenCode;
             ChickenName = chickenName;
-            TotalQuantity = totalQuantity;
             Description = description;
             Status = status;
             ChickenDetails = chickenDetails;
@@ -25,8 +24,6 @@ namespace CFMS.Application.Features.ChickenFeat.Create
         public string? ChickenCode { get; set; }
 
         public string? ChickenName { get; set; }
-
-        public int? TotalQuantity { get; set; }
 
         public string? Description { get; set; }
 

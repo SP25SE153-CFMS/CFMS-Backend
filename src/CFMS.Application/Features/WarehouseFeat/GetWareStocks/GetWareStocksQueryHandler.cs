@@ -32,6 +32,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                     r => r.Food,
                     r => r.Equipment,
                     r => r.Medicine,
+                    r => r.HarvestProduct,
+                    r => r.Chicken,
                     r => r.WareStocks
                     ]
             ).ToList();
@@ -117,6 +119,36 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                                 ExpiryDate = resource?.Medicine?.ExpiryDate,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
+                                SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Chưa có nhà cung cấp"
+                            };
+
+                        case "breeding":
+                            var existChickenTypeName = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.Chicken.ChickenTypeId) && f.IsDeleted == false).FirstOrDefault();
+
+                            return new WareStockChickenBreedingResponse
+                            {
+                                ResourceId = resource?.ResourceId ?? Guid.Empty,
+                                ChickenId = resource?.ChickenId ?? Guid.Empty,
+                                ChickenCode = resource?.Chicken?.ChickenCode,
+                                ChickenName = resource?.Chicken?.ChickenName,
+                                Description = resource?.Chicken?.Description,
+                                ChickenTypeName = existChickenTypeName?.SubCategoryName,
+                                SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
+                                UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
+                                SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Chưa có nhà cung cấp"
+                            };
+
+                        case "havest_product":
+                            var existHarvestProductType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.HarvestProduct.HarvestProductTypeId) && f.IsDeleted == false).FirstOrDefault();
+
+                            return new WareStockHavestProductResponse
+                            {
+                                ResourceId = resource?.ResourceId ?? Guid.Empty,
+                                HarvestProductId = resource?.HarvestProductId ?? Guid.Empty,
+                                HarvestProductName = resource?.HarvestProduct?.HarvestProductName,
+                                HarvestProductTypeName = existHarvestProductType?.SubCategoryName,
+                                SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
+                                UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Chưa có nhà cung cấp"
                             };
 
