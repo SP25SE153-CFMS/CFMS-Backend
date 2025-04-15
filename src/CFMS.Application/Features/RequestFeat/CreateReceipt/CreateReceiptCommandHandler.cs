@@ -99,9 +99,24 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                     typeName,
                     existResource?.PackageId,
                     existResource?.PackageSize,
-                    request.WareToId ?? Guid.Empty,
+                    receiptCodePrefix == "PNK" ? request.WareToId ?? Guid.Empty : request.WareFromId ?? Guid.Empty,
                     false
                 ));
+
+                var transaction = new WareTransaction
+                {
+                    WareId = receiptCodePrefix == "PNK" ? request.WareToId : request.WareFromId,
+                    ResourceId = d.ResourceId,
+                    Quantity = receiptCodePrefix == "PNK" ? (int)d.ActualQuantity : (int)-d.ActualQuantity,
+                    UnitId = existResource?.UnitId,
+                    BatchNumber = d.BatchNumber,
+                    TransactionType = existReceiptType.SubCategoryId,
+                    Reason = d.Note,
+                    TransactionDate = DateTime.Now.ToLocalTime(),
+                    LocationFromId = receiptCodePrefix == "PNK" ? request.WareToId : request.WareFromId,
+                    LocationToId = receiptCodePrefix == "PNK" ? request.WareToId : request.WareFromId
+                };
+                _unitOfWork.InventoryReceiptDetailRepository.Insert(inventoryReceiptDetail);
             }
 
             await _unitOfWork.SaveChangesAsync();
