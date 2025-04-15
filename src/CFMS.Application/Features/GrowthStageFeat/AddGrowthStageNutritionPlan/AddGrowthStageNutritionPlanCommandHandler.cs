@@ -5,16 +5,16 @@ using MediatR;
 
 namespace CFMS.Application.Features.GrowthStageFeat.AddNutritionPlan
 {
-    public class AddStageCommandHandler : IRequestHandler<AddStageCommand, BaseResponse<bool>>
+    public class AddGrowthStageNutritionPlanCommandHandler : IRequestHandler<AddGrowthStageNutritionPlanCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddStageCommandHandler(IUnitOfWork unitOfWork)
+        public AddGrowthStageNutritionPlanCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponse<bool>> Handle(AddStageCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(AddGrowthStageNutritionPlanCommand request, CancellationToken cancellationToken)
         {
             var existGrowthStage = _unitOfWork.GrowthStageRepository.Get(filter: gt => gt.GrowthStageId.Equals(request.GrowthStageId) && gt.IsDeleted == false).FirstOrDefault();
             if (existGrowthStage == null)

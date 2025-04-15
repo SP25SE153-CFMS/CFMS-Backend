@@ -4,16 +4,16 @@ using MediatR;
 
 namespace CFMS.Application.Features.GrowthStageFeat.DeleteNutritionPlan
 {
-    public class DeleteStageCommandHandler : IRequestHandler<DeleteStageCommand, BaseResponse<bool>>
+    public class DeleteGrowthStageNutritionPlanCommandHandler : IRequestHandler<DeleteGrowthStageNutritionPlanCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteStageCommandHandler(IUnitOfWork unitOfWork)
+        public DeleteGrowthStageNutritionPlanCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponse<bool>> Handle(DeleteStageCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(DeleteGrowthStageNutritionPlanCommand request, CancellationToken cancellationToken)
         {
             var existGrowthStage = _unitOfWork.GrowthStageRepository.Get(filter: s => s.GrowthStageId.Equals(request.GrowthStageId) && s.IsDeleted == false).FirstOrDefault();
             if (existGrowthStage == null)
@@ -21,17 +21,17 @@ namespace CFMS.Application.Features.GrowthStageFeat.DeleteNutritionPlan
                 return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
             }
 
-            //var existGrowthNutrition = _unitOfWork.GrowthNutritionRepository.Get(filter: n => n.GrowthNutritionId.Equals(request.GrowthNutritionId) && n.IsDeleted == false).FirstOrDefault();
-            //if (existGrowthNutrition == null)
-            //{
-            //    return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
-            //}
+            var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: n => n.NutritionPlanId.Equals(request.NutritionPlanId) && n.IsDeleted == false).FirstOrDefault();
+            if (existNutritionPlan == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
+            }
 
             try
             {
-                //existGrowthStage.GrowthNutritions.Remove(existGrowthNutrition);
+                existNutritionPlan.GrowthStages.Remove(existGrowthStage);
 
-                _unitOfWork.GrowthStageRepository.Update(existGrowthStage);
+                _unitOfWork.NutritionPlanRepository.Update(existNutritionPlan);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
