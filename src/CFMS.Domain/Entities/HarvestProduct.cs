@@ -2,7 +2,7 @@
 {
     public class HarvestProduct : EntityAudit
     {
-        public Guid HarvestProducttId { get; set; }
+        public Guid HarvestProductId { get; set; }
 
         public string HarvestProductName { get; set; }
 

@@ -491,11 +491,11 @@ public partial class CfmsDbContext : DbContext
 
         modelBuilder.Entity<HarvestProduct>(entity =>
         {
-            entity.HasKey(e => e.HarvestProducttId).HasName("HarvestProduct_pkey");
+            entity.HasKey(e => e.HarvestProductId).HasName("HarvestProduct_pkey");
 
             entity.ToTable("HarvestProduct");
 
-            entity.Property(e => e.HarvestProducttId).HasDefaultValueSql("gen_random_uuid()");
+            entity.Property(e => e.HarvestProductId).HasDefaultValueSql("gen_random_uuid()");
             entity.Property(e => e.HarvestProductName).HasColumnType("character varying");
 
             entity.HasOne(d => d.HarvestProductType).WithMany(p => p.HarvestProductTypes)
