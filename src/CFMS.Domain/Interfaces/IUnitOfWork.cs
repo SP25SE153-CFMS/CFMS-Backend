@@ -33,6 +33,7 @@ namespace CFMS.Domain.Interfaces
         IGenericRepository<GrowthStage> GrowthStageRepository { get; }
         IGenericRepository<HealthLog> HealthLogRepository { get; }
         IGenericRepository<HealthLogDetail> HealthLogDetailRepository { get; }
+        IGenericRepository<HarvestProduct> HarvestProductRepository { get; }
         IGenericRepository<InventoryReceipt> InventoryReceiptRepository { get; }
         IGenericRepository<InventoryReceiptDetail> InventoryReceiptDetailRepository { get; }
         IGenericRepository<InventoryRequest> InventoryRequestRepository { get; }

@@ -33,6 +33,7 @@ namespace CFMS.Infrastructure.Repositories
         private GenericRepository<GrowthStage> growthStageRepository;
         private GenericRepository<HealthLog> healthLogRepository;
         private GenericRepository<HealthLogDetail> healthLogDetailRepository;
+        private GenericRepository<HarvestProduct> harvestProductRepository;
         private GenericRepository<InventoryReceipt> inventoryReceiptRepository;
         private GenericRepository<InventoryReceiptDetail> inventoryReceiptDetailRepository;
         private GenericRepository<InventoryRequest> inventoryRequestRepository;
@@ -93,6 +94,7 @@ namespace CFMS.Infrastructure.Repositories
         public IGenericRepository<GrowthStage> GrowthStageRepository => growthStageRepository ??= new GenericRepository<GrowthStage>(context);
         public IGenericRepository<HealthLog> HealthLogRepository => healthLogRepository ??= new GenericRepository<HealthLog>(context);
         public IGenericRepository<HealthLogDetail> HealthLogDetailRepository => healthLogDetailRepository ??= new GenericRepository<HealthLogDetail>(context);
+        public IGenericRepository<HarvestProduct> HarvestProductRepository => harvestProductRepository ??= new GenericRepository<HarvestProduct>(context);
         public IGenericRepository<Notification> NotificationRepository => notificationRepository ??= new GenericRepository<Notification>(context);
         public IGenericRepository<QuantityLog> QuantityLogRepository => quantityLogRepository ??= new GenericRepository<QuantityLog>(context);
         public IGenericRepository<Request> RequestRepository => requestRepository ??= new GenericRepository<Request>(context);

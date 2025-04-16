@@ -27,11 +27,11 @@ namespace CFMS.Application.Features.EquipmentFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Trang thiết bị không tồn tại");
             }
 
-            var existNameCode = _unitOfWork.EquipmentRepository.Get(filter: s => (s.EquipmentCode.Equals(request.EquipmentCode) || s.EquipmentName.Equals(request.EquipmentName)) && s.IsDeleted == false && s.EquipmentId != request.EquipmentId).FirstOrDefault();
-            if (existNameCode != null)
-            {
-                return BaseResponse<bool>.FailureResponse("Tên hoặc mã trang thiết bị đã tồn tại");
-            }
+            //var existNameCode = _unitOfWork.EquipmentRepository.Get(filter: s => s.EquipmentCode.Equals(request.EquipmentCode) && s.IsDeleted == false && s.EquipmentId != request.EquipmentId).FirstOrDefault();
+            //if (existNameCode != null)
+            //{
+            //    return BaseResponse<bool>.FailureResponse("Mã trang thiết bị đã tồn tại");
+            //}
 
             var existSizeUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.SizeUnitId) && s.IsDeleted == false).FirstOrDefault();
             if (existSizeUnit == null)
