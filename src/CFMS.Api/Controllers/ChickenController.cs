@@ -1,6 +1,7 @@
 ﻿using CFMS.Application.Features.ChickenCoopFeat.GetCoop;
 using CFMS.Application.Features.ChickenFeat.Create;
 using CFMS.Application.Features.ChickenFeat.Delete;
+using CFMS.Application.Features.ChickenFeat.GetChicken;
 using CFMS.Application.Features.ChickenFeat.GetChickenByBatchId;
 using CFMS.Application.Features.ChickenFeat.GetChickens;
 using CFMS.Application.Features.ChickenFeat.Update;
@@ -33,7 +34,7 @@ namespace CFMS.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetChicken(Guid id)
         {
-            var result = await Send(new GetCoopQuery(id));
+            var result = await Send(new GetChickenQuery(id));
             return result;
         }
 
