@@ -61,13 +61,40 @@ namespace CFMS.Application.Features.TaskFeat.Create
                             });
                         }
 
-                        task.TaskLocations.Add(new TaskLocation
+                        if (request.LocationType?.ToUpper() == "COOP")
                         {
-                            //CoopId = request.LocationId,
-                            CoopId = request.LocationType.Equals("COOP") ? request.LocationId : null,
-                            WareId = request.LocationType.Equals("WARE") ? request.LocationId : null,
-                            LocationType = request.LocationType,
-                        });
+                            var coopExists = _unitOfWork.ChickenCoopRepository
+                                .Get(filter: c => c.ChickenCoopId.Equals(request.LocationId) && c.BreedingArea.FarmId.Equals(request.FarmId) && !c.IsDeleted)
+                                .FirstOrDefault();
+
+                            if (coopExists == null)
+                                return BaseResponse<bool>.FailureResponse("Chuồng gà không tồn tại");
+
+                            task.TaskLocations.Add(new TaskLocation
+                            {
+                                CoopId = request.LocationId,
+                                LocationType = request.LocationType
+                            });
+                        }
+                        else if (request.LocationType?.ToUpper() == "WARE")
+                        {
+                            var wareExists = _unitOfWork.WarehouseRepository
+                                .Get(filter: w => w.WareId.Equals(request.LocationId) && !w.IsDeleted)
+                                .FirstOrDefault();
+
+                            if (wareExists == null)
+                                return BaseResponse<bool>.FailureResponse("Kho không tồn tại");
+
+                            task.TaskLocations.Add(new TaskLocation
+                            {
+                                WareId = request.LocationId,
+                                LocationType = request.LocationType
+                            });
+                        }
+                        else
+                        {
+                            return BaseResponse<bool>.FailureResponse("Loại vị trí không hợp lệ");
+                        }
 
                         _unitOfWork.TaskRepository.Insert(task);
                     }

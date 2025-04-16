@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Application.DTOs.Task;
 using CFMS.Application.Features.TaskFeat.GetTasks;
 using CFMS.Application.Services.Impl;
 using CFMS.Domain.Interfaces;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.TaskFeat.GetTasksByCurrentUser
 {
-    public class GetTasksByCurrentUserQueryHandler : IRequestHandler<GetTasksByCurrentUserQuery, BaseResponse<IEnumerable<Domain.Entities.Task>>>
+    public class GetTasksByCurrentUserQueryHandler : IRequestHandler<GetTasksByCurrentUserQuery, BaseResponse<IEnumerable<TaskResponse>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -25,7 +26,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTasksByCurrentUser
             _currentUserService = currentUserService;
         }
 
-        public async Task<BaseResponse<IEnumerable<Domain.Entities.Task>>> Handle(GetTasksByCurrentUserQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<IEnumerable<TaskResponse>>> Handle(GetTasksByCurrentUserQuery request, CancellationToken cancellationToken)
         {
             var currentUser = _currentUserService.GetUserId();
             Guid userId = Guid.Parse(_currentUserService.GetUserId());
@@ -39,7 +40,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTasksByCurrentUser
                     x => x.TaskLocations
                       ]);
 
-            return BaseResponse<IEnumerable<Domain.Entities.Task>>.SuccessResponse(data: existTasks);
+            return BaseResponse<IEnumerable<TaskResponse>>.SuccessResponse(data: _mapper.Map<IEnumerable<TaskResponse>>(existTasks));
         }
     }
 }

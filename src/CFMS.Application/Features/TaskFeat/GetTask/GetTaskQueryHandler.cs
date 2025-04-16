@@ -1,4 +1,6 @@
-﻿using CFMS.Application.Common;
+﻿using AutoMapper;
+using CFMS.Application.Common;
+using CFMS.Application.DTOs.Task;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
@@ -6,16 +8,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CFMS.Application.Features.TaskFeat.GetTask
 {
-    public class GetTaskQueryHandler : IRequestHandler<GetTaskQuery, BaseResponse<Domain.Entities.Task>>
+    public class GetTaskQueryHandler : IRequestHandler<GetTaskQuery, BaseResponse<TaskResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetTaskQueryHandler(IUnitOfWork unitOfWork)
+        public GetTaskQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<BaseResponse<Domain.Entities.Task>> Handle(GetTaskQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<TaskResponse>> Handle(GetTaskQuery request, CancellationToken cancellationToken)
         {
             var existTask = _unitOfWork.TaskRepository.GetIncludeMultiLayer(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false,
                 include: q => q
@@ -52,10 +56,10 @@ namespace CFMS.Application.Features.TaskFeat.GetTask
                 ).FirstOrDefault();
             if (existTask == null)
             {
-                return BaseResponse<Domain.Entities.Task>.FailureResponse(message: "Công việc không tồn tại");
+                return BaseResponse<TaskResponse>.FailureResponse(message: "Công việc không tồn tại");
             }
 
-            return BaseResponse<Domain.Entities.Task>.SuccessResponse(data: existTask);
+            return BaseResponse<TaskResponse>.SuccessResponse(data: _mapper.Map<TaskResponse>(existTask));
         }
     }
 }

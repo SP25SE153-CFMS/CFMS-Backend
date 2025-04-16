@@ -6,6 +6,7 @@ using CFMS.Application.Features.TaskFeat.Create;
 using CFMS.Domain.Entities;
 using Task = CFMS.Domain.Entities.Task;
 using CFMS.Application.DTOs.Task.Assignment;
+using CFMS.Application.DTOs.Task.TaskLocation;
 
 namespace CFMS.Application.Mappings
 {
@@ -13,6 +14,16 @@ namespace CFMS.Application.Mappings
     {
         public TaskProfile()
         {
+            CreateMap<Task, TaskResponse>()
+            .ForMember(dest => dest.ShiftSchedule, opt => opt.MapFrom(src =>
+                src.ShiftSchedules.FirstOrDefault()))
+            .ForMember(dest => dest.TaskLocation, opt => opt.MapFrom(src =>
+                src.TaskLocations.FirstOrDefault()))
+            .ForMember(dest => dest.Assignments, opt => opt.MapFrom(src =>
+                src.Assignments))
+            .ForMember(dest => dest.TaskResources, opt => opt.MapFrom(src =>
+                src.TaskResources));
+
             CreateMap<CreateTaskCommand, Task>()
                 .ForMember(dest => dest.StartWorkDate, opt => opt.Ignore())
                 .ForMember(dest => dest.TaskResources, opt => opt.Ignore());
@@ -35,6 +46,16 @@ namespace CFMS.Application.Mappings
                 .ForMember(dest => dest.shiftScheduleList, opt => opt.MapFrom(src => src.ShiftSchedules))
                 .ForMember(dest => dest.resourceList, opt => opt.MapFrom(src => src.TaskResources))
                 .ForMember(dest => dest.assignmentList, opt => opt.MapFrom(src => src.Assignments));
+
+            CreateMap<TaskLocation, TaskLocationDto>()
+                .ForMember(dest => dest.TaskLocationId, opt => opt.MapFrom(src => src.TaskLocationId))
+                .ForMember(dest => dest.TaskId, opt => opt.MapFrom(src => src.TaskId))
+                .ForMember(dest => dest.LocationType, opt => opt.MapFrom(src => src.LocationType))
+                .ForMember(dest => dest.CoopId, opt => opt.MapFrom(src => src.CoopId))
+                .ForMember(dest => dest.WareId, opt => opt.MapFrom(src => src.WareId));
+            // Bỏ qua navigation properties để tránh lỗi và không cần trong DTO
+            //.ForMember(dest => dest.Location, opt => opt.Ignore())
+            //.ForMember(dest => dest.LocationNavigation, opt => opt.Ignore());
 
             CreateMap<ShiftSchedule, ShiftScheduleDto>()
                 .AfterMap((src, dest) =>
