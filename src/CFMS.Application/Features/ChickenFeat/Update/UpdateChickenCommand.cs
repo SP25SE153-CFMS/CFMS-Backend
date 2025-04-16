@@ -6,12 +6,11 @@ namespace CFMS.Application.Features.ChickenFeat.Update
 {
     public class UpdateChickenCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateChickenCommand(Guid id, string? chickenCode, string? chickenName, int? totalQuantity, string? description, int? status, Guid? chickenBatchId, Guid? chickenTypeId, List<ChickenDetailDto>? chickenDetails)
+        public UpdateChickenCommand(Guid id, string? chickenCode, string? chickenName, string? description, int? status, Guid? chickenBatchId, Guid? chickenTypeId, List<ChickenDetailDto>? chickenDetails)
         {
             Id = id;
             ChickenCode = chickenCode;
             ChickenName = chickenName;
-            TotalQuantity = totalQuantity;
             Description = description;
             Status = status;
             ChickenBatchId = chickenBatchId;
@@ -25,7 +24,7 @@ namespace CFMS.Application.Features.ChickenFeat.Update
 
         public string? ChickenName { get; set; }
 
-        public int? TotalQuantity { get; set; }
+        //public int? TotalQuantity { get; set; }
 
         public string? Description { get; set; }
 
