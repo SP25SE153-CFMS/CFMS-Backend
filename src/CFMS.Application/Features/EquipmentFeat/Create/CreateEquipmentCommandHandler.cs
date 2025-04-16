@@ -47,7 +47,7 @@ namespace CFMS.Application.Features.EquipmentFeat.Create
                     return BaseResponse<bool>.FailureResponse("Không tìm thấy loại trang thiết bị");
                 }
 
-                var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: s => s.EquipmentCode.Equals(request.EquipmentCode) || s.EquipmentName.Equals(request.EquipmentName) && s.IsDeleted == false).FirstOrDefault();
+                var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: s => s.EquipmentCode.Equals(request.EquipmentCode) && s.EquipmentName.Equals(request.EquipmentName) && s.IsDeleted == false).FirstOrDefault();
 
                 if (existEquipment == null)
                 {

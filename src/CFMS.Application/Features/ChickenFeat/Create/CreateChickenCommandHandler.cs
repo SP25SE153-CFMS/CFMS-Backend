@@ -30,7 +30,7 @@ namespace CFMS.Application.Features.ChickenFeat.Create
                 //    return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
                 //}
 
-                var existChicken = _unitOfWork.ChickenRepository.Get(c => c.ChickenCode.Equals(request.ChickenCode) || c.ChickenName.Equals(request.ChickenName) && c.IsDeleted == false).FirstOrDefault();
+                var existChicken = _unitOfWork.ChickenRepository.Get(c => c.ChickenCode.Equals(request.ChickenCode) && c.ChickenName.Equals(request.ChickenName) && c.IsDeleted == false).FirstOrDefault();
                 if (existChicken == null)
                 {
                     existChicken = new Chicken
