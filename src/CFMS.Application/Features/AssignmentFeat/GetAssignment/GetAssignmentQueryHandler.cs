@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.AssignmentFeat.GetAssignment
 
         public async Task<BaseResponse<Assignment>> Handle(GetAssignmentQuery request, CancellationToken cancellationToken)
         {
-            var existAssignment = _unitOfWork.AssignmentRepository.Get(filter: a => a.AssignmentId.Equals(request.AssignmentId) && a.IsDeleted == false).FirstOrDefault();
+            var existAssignment = _unitOfWork.AssignmentRepository.Get(filter: a => a.AssignmentId.Equals(request.AssignmentId) && a.IsDeleted == false, includeProperties: "AssignedTo").FirstOrDefault();
             if (existAssignment == null)
             {
                 return BaseResponse<Assignment>.FailureResponse(message: "Assignment không tồn tại");
