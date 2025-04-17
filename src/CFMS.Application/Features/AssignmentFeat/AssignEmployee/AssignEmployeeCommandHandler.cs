@@ -23,7 +23,7 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
             var task = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false && t.Status == 0).FirstOrDefault();
             if (task == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Task không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
             }
 
             try
@@ -33,7 +33,7 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
                     var existEmployee = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(assignedToId) && u.FarmEmployees.Any(fe => fe.FarmId.Equals(task.FarmId)) && u.Status == 1, includeProperties: "FarmEmployees").FirstOrDefault();
                     if (existEmployee == null)
                     {
-                        return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
+                        return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
                     }
 
                     var assignment = new Assignment
