@@ -21,8 +21,8 @@ namespace CFMS.Application.Features.TaskFeat.GetTaskByFarmId
         {
             var tasks = _unitOfWork.TaskRepository.Get(filter: t => t.FarmId.Equals(request.FarmId) && t.IsDeleted == false,
                 includeProperties: [
-                      x => x.Assignments,
-                      x => x.TaskType,
+                    x => x.Assignments,
+                    x => x.TaskType,
                     x => x.ShiftSchedules,
                     x => x.TaskHarvests,
                     x => x.TaskResources,
