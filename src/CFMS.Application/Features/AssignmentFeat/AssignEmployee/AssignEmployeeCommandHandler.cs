@@ -20,7 +20,7 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
 
         public async Task<BaseResponse<bool>> Handle(AssignEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var task = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false).FirstOrDefault();
+            var task = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false && t.Status == 0).FirstOrDefault();
             if (task == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Task không tồn tại");
@@ -30,6 +30,12 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
             {
                 foreach (var assignedToId in request.AssignedToIds)
                 {
+                    var existEmployee = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(assignedToId) && u.FarmEmployees.Any(fe => fe.FarmId.Equals(task.FarmId)) && u.Status == 1).FirstOrDefault();
+                    if (existEmployee == null)
+                    {
+                        return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
+                    }
+
                     var assignment = new Assignment
                     {
                         TaskId = request.TaskId,
