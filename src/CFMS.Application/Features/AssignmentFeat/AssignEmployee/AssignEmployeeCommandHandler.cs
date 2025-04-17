@@ -30,7 +30,7 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
             {
                 foreach (var assignedToId in request.AssignedToIds)
                 {
-                    var existEmployee = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(assignedToId) && u.FarmEmployees.Any(fe => fe.FarmId.Equals(task.FarmId)) && u.Status == 1).FirstOrDefault();
+                    var existEmployee = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(assignedToId) && u.FarmEmployees.Any(fe => fe.FarmId.Equals(task.FarmId)) && u.Status == 1, includeProperties: "FarmEmployees").FirstOrDefault();
                     if (existEmployee == null)
                     {
                         return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
