@@ -26,7 +26,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
             }
 
             var resources = _unitOfWork.ResourceRepository.Get(
-                filter: f => f.ResourceTypeId.Equals(request.ResourceTypeId) && f.IsDeleted == false,
+                filter: f => f.ResourceTypeId.Equals(request.ResourceTypeId) && f.WareStocks.Any(t => t.WareId.Equals(request.WareId)) && f.IsDeleted == false,
                 includeProperties: [
                     r => r.ResourceSuppliers,
                     r => r.Food,
