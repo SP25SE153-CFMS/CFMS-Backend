@@ -28,10 +28,6 @@ namespace CFMS.Application.Features.TaskFeat.GetTask
                     .Include(t => t.TaskType)
                     .Include(t => t.ShiftSchedules)
                         .ThenInclude(s => s.Shift)
-                    .Include(t => t.TaskLocations)
-                        .ThenInclude(s => s.Location)
-                    .Include(t => t.TaskLocations)
-                        .ThenInclude(s => s.LocationNavigation)
                     .Include(t => t.TaskHarvests)
                     .Include(t => t.TaskResources)
                         .ThenInclude(s => s.Resource)
@@ -53,6 +49,9 @@ namespace CFMS.Application.Features.TaskFeat.GetTask
                     .Include(t => t.TaskResources)
                         .ThenInclude(s => s.Unit)
                     .Include(t => t.TaskLocations)
+                        .ThenInclude(s => s.Location)
+                    .Include(t => t.TaskLocations)
+                        .ThenInclude(s => s.LocationNavigation)
                 ).FirstOrDefault();
             if (existTask == null)
             {
