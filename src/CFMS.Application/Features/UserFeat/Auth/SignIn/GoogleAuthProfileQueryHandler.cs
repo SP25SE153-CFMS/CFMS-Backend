@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Strict
+                SameSite = SameSiteMode.Lax
             });
 
             var googleAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth" +
