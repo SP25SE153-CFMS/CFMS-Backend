@@ -63,7 +63,7 @@ namespace CFMS.Application.Events.Handlers
             ("food", "Kho thực phẩm", "Chứa thực phẩm cho trang trại"),
             ("medicine", "Kho dược phẩm", "Chứa dược phẩm cho trang trại"),
             ("equipment", "Kho thiết bị", "Chứa thiết bị cho trang trại"),
-            ("havest_product", "Kho thu hoạch", "Chứa sản phẩm đã thu hoạch"),
+            ("harvest_product", "Kho thu hoạch", "Chứa sản phẩm đã thu hoạch"),
             ("breeding", "Kho con giống", "Chứa con giống")
         };
     }
