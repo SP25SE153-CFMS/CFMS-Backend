@@ -60,7 +60,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     .Include(t => t.TaskLocations)
                         .ThenInclude(s => s.Location)
                     .Include(t => t.TaskLocations)
-                        .ThenInclude(s => s.LocationNavigation)
+                        .ThenInclude(s => s.LocationNavigation) 
                 ).FirstOrDefault();
 
             if (existTask == null)
