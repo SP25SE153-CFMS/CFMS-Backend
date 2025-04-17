@@ -18,9 +18,9 @@ public partial class TaskLocation
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Guid? WareId { get; set; }
 
-    public virtual ChickenCoop Location { get; set; } = null!;
+    public virtual ChickenCoop? Location { get; set; }
 
-    public virtual Warehouse LocationNavigation { get; set; } = null!;
+    public virtual Warehouse? LocationNavigation { get; set; }
 
     [JsonIgnore]
     public virtual Task? Task { get; set; }

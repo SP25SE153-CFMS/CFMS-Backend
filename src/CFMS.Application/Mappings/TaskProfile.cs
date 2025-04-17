@@ -53,7 +53,6 @@ namespace CFMS.Application.Mappings
                 .ForMember(dest => dest.LocationType, opt => opt.MapFrom(src => src.LocationType))
                 .ForMember(dest => dest.CoopId, opt => opt.MapFrom(src => src.CoopId))
                 .ForMember(dest => dest.WareId, opt => opt.MapFrom(src => src.WareId));
-            // Bỏ qua navigation properties để tránh lỗi và không cần trong DTO
             //.ForMember(dest => dest.Location, opt => opt.Ignore())
             //.ForMember(dest => dest.LocationNavigation, opt => opt.Ignore());
 
