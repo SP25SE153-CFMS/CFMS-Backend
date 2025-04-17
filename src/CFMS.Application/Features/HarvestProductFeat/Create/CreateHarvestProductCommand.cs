@@ -10,16 +10,17 @@ namespace CFMS.Application.Features.HarvestProductFeat.Create
 {
     public class CreateHarvestProductCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateHarvestProductCommand(Guid harvestProductTypeId, string? harvestProductName, string? harvestProductCode, Guid? unitId, Guid? packageId, decimal? packageSize, Guid wareId)
+        public CreateHarvestProductCommand(string? harvestProductCode, string? harvestProductName, Guid? harvestProductTypeId, Guid? unitId, Guid? packageId, decimal? packageSize, Guid wareId)
         {
-            HarvestProductTypeId = harvestProductTypeId;
-            HarvestProductName = harvestProductName;
             HarvestProductCode = harvestProductCode;
+            HarvestProductName = harvestProductName;
+            HarvestProductTypeId = harvestProductTypeId;
             UnitId = unitId;
             PackageId = packageId;
             PackageSize = packageSize;
             WareId = wareId;
         }
+
         public string? HarvestProductCode { get; set; }
 
         public string? HarvestProductName { get; set; }

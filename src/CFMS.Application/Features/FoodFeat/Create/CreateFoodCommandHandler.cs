@@ -50,6 +50,7 @@ namespace CFMS.Application.Features.FoodFeat.Create
                         request.WareId,
                         true
                     ));
+
                 return BaseResponse<bool>.SuccessResponse("Thêm thực phẩm thành công");
             }
             catch (Exception ex)

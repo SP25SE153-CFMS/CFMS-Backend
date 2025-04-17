@@ -1,5 +1,7 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.HarvestProduct;
 using CFMS.Application.DTOs.TaskResource;
+using CFMS.Domain.Entities;
 using MediatR;
 
 namespace CFMS.Application.Features.TaskFeat.CompleteTask
@@ -15,10 +17,12 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
         public Guid TaskId { get; set; }
 
-        public string Reason { get; set; }
+        public string? Reason { get; set; }
 
-        public string Note { get; set; }
+        public string? Note { get; set; }
 
         public IEnumerable<TaskResourceRequest>? TaskResources { get; set; }
+
+        public IEnumerable<HarvestProductRequest>? HarvestProducts { get; set; }
     }
 }

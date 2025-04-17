@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Application.DTOs.TaskResource;
+using CFMS.Application.Events;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Enums.Types;
 using CFMS.Domain.Interfaces;
 using Google.Apis.Drive.v3.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Twilio.Base;
+using Resource = CFMS.Domain.Entities.Resource;
 
 namespace CFMS.Application.Features.TaskFeat.CompleteTask
 {
@@ -56,7 +61,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
             if (existTask == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Task không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
             }
 
             try
@@ -64,8 +69,8 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                 string[] keywords = { "thực phẩm", "dược phẩm", "thiết bị", "thu hoạch", "con giống" };
 
                 existTask.Status = 1;
-                var leader = existTask.Assignments.Where(x => x.Status.Equals(1)).FirstOrDefault();
-                leader.Note = request.Note;
+                //var leader = existTask.Assignments.Where(x => x.Status.Equals(1)).FirstOrDefault();
+                //leader.Note = request.Note;
 
                 var requestType = _unitOfWork.SubCategoryRepository.Get(x => x.SubCategoryName.Equals("IMPORT") && x.IsDeleted == false).FirstOrDefault();
 
@@ -83,21 +88,21 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     _unitOfWork.TaskLogRepository.Insert(taskLog);
                 }
 
-                var lastRequest = _unitOfWork.RequestRepository.Get(filter: r => r.CreatedByUser.UserId.ToString().Equals(leader.AssignedToId)).FirstOrDefault();
+                //var lastRequest = _unitOfWork.RequestRepository.Get(filter: r => r.CreatedByUser.UserId.ToString().Equals(leader.AssignedToId)).FirstOrDefault();
                 var newRequest = new Request()
                 {
                     RequestTypeId = requestType?.SubCategoryId,
-                    Status = 0,
-                    ApprovedById = leader.AssignedToId,
-                    ApprovedAt = null
+                    Status = 0
                 };
 
                 _unitOfWork.RequestRepository.Insert(newRequest);
                 await _unitOfWork.SaveChangesAsync();
 
-                Resource resource;
+                if (request?.TaskResources != null)
+                {
+                    Resource resource;
 
-                var groupedResources = request?.TaskResources?
+                    var groupedResources = request?.TaskResources?
                     .Select(detail => new
                     {
 
@@ -128,47 +133,113 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     .ToList();
 
 
-                foreach (var group in groupedResources)
-                {
-                    var ware = _unitOfWork.WarehouseRepository
-                        .Get(filter: w => w.WarehouseName.Equals(group.Key) && w.IsDeleted == false)
-                        .FirstOrDefault();
-
-                    var inventoryRequest = new InventoryRequest
+                    foreach (var group in groupedResources)
                     {
-                        RequestId = newRequest.RequestId,
-                        InventoryRequestTypeId = requestType?.SubCategoryId,
-                        WareToId = ware?.WareId,
-                    };
+                        var ware = _unitOfWork.WarehouseRepository
+                            .Get(filter: w => w.WarehouseName.Equals(group.Key) && w.IsDeleted == false)
+                            .FirstOrDefault();
 
-                    _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
-                    await _unitOfWork.SaveChangesAsync();
-
-                    foreach (var detail in group)
-                    {
-                        var inventoryRequestDetail = new InventoryRequestDetail
+                        var inventoryRequest = new InventoryRequest
                         {
-                            InventoryRequestId = inventoryRequest.InventoryRequestId,
-                            ResourceId = detail?.Resource?.ResourceId,
-                            ResourceSupplierId = detail?.Resource?.ResourceSuppliers?.Where(t => t.ResourceId.Equals(detail?.Resource?.ResourceId)).FirstOrDefault()?.ResourceSupplierId,
-                            ExpectedQuantity = detail?.SuppliedQuantity - detail?.ConsumedQuantity,
-                            UnitId = detail?.Resource?.UnitId,
-                            Reason = request?.Reason,
-                            ExpectedDate = DateTime.Now.ToLocalTime(),
-                            Note = request?.Note
+                            RequestId = newRequest.RequestId,
+                            InventoryRequestTypeId = requestType?.SubCategoryId,
+                            WareToId = ware?.WareId,
                         };
 
-                        _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);
-                    }
+                        _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
+                        await _unitOfWork.SaveChangesAsync();
 
-                    await _unitOfWork.SaveChangesAsync();
+                        foreach (var detail in group)
+                        {
+                            var inventoryRequestDetail = new InventoryRequestDetail
+                            {
+                                InventoryRequestId = inventoryRequest.InventoryRequestId,
+                                ResourceId = detail?.Resource?.ResourceId,
+                                ResourceSupplierId = detail?.Resource?.ResourceSuppliers?.Where(t => t.ResourceId.Equals(detail?.Resource?.ResourceId)).FirstOrDefault()?.ResourceSupplierId,
+                                ExpectedQuantity = detail?.SuppliedQuantity - detail?.ConsumedQuantity,
+                                UnitId = detail?.Resource?.UnitId,
+                                Reason = request?.Reason,
+                                ExpectedDate = DateTime.Now.ToLocalTime(),
+                                Note = request?.Note
+                            };
+
+                            _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);
+                        }
+
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                }
+
+                if (request?.HarvestProducts != null)
+                {
+                    Resource resource;
+
+                    var groupedResources = request?.HarvestProducts?
+                    .Select(detail => new
+                    {
+
+                        Resource = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(
+                            filter: r => r.ResourceId == detail.ResourceId,
+                            include: x => x
+                                .Include(t => t.HarvestProduct))
+                                .FirstOrDefault(),
+                        HarvestQuantity = detail.Quantity
+                    })
+                    .GroupBy(x => new
+                    {
+                        x?.Resource?.PackageSize,
+                        x?.Resource?.UnitId,
+                        x?.Resource?.PackageId
+                    })
+                    .ToList();
+
+
+                    foreach (var group in groupedResources)
+                    {
+                        var resourceType = _unitOfWork.SubCategoryRepository
+                            .Get(filter: w => w.SubCategoryName.Equals("harvest_product") && w.IsDeleted == false)
+                            .FirstOrDefault();
+
+                        var ware = _unitOfWork.WarehouseRepository
+                            .Get(filter: w => w.ResourceTypeId.Equals(resourceType.SubCategoryId) && w.IsDeleted == false)
+                            .FirstOrDefault();
+
+                        var inventoryRequest = new InventoryRequest
+                        {
+                            RequestId = newRequest.RequestId,
+                            InventoryRequestTypeId = requestType?.SubCategoryId,
+                            WareToId = ware?.WareId,
+                        };
+
+                        _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
+                        await _unitOfWork.SaveChangesAsync();
+
+                        foreach (var detail in group)
+                        {
+                            var inventoryRequestDetail = new InventoryRequestDetail
+                            {
+                                InventoryRequestId = inventoryRequest.InventoryRequestId,
+                                ResourceId = detail?.Resource?.ResourceId,
+                                ResourceSupplierId = detail?.Resource?.ResourceSuppliers?.Where(t => t.ResourceId.Equals(detail?.Resource?.ResourceId)).FirstOrDefault()?.ResourceSupplierId,
+                                ExpectedQuantity = detail?.HarvestQuantity,
+                                UnitId = detail?.Resource?.UnitId,
+                                Reason = request?.Reason,
+                                ExpectedDate = DateTime.Now.ToLocalTime(),
+                                Note = request?.Note
+                            };
+
+                            _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);
+                        }
+
+                        await _unitOfWork.SaveChangesAsync();
+                    }
                 }
 
                 _unitOfWork.TaskRepository.Update(existTask);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
+                    return BaseResponse<bool>.SuccessResponse(message: "Cập nhật công việc thành công");
                 }
                 return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
             }

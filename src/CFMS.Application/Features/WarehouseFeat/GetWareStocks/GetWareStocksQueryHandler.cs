@@ -138,7 +138,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                                 SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Chưa có nhà cung cấp"
                             };
 
-                        case "havest_product":
+                        case "harvest_product":
                             var existHarvestProductType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.HarvestProduct.HarvestProductTypeId) && f.IsDeleted == false).FirstOrDefault();
 
                             return new WareStockHavestProductResponse
@@ -146,6 +146,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                                 ResourceId = resource?.ResourceId ?? Guid.Empty,
                                 HarvestProductId = resource?.HarvestProductId ?? Guid.Empty,
                                 HarvestProductName = resource?.HarvestProduct?.HarvestProductName,
+                                HarvestProductTypeId = existHarvestProductType.SubCategoryId,
                                 HarvestProductTypeName = existHarvestProductType?.SubCategoryName,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",

@@ -50,6 +50,7 @@ namespace CFMS.Application.Features.HarvestProductFeat.Create
                         request.WareId,
                         true
                     ));
+
                 return BaseResponse<bool>.SuccessResponse("Thêm sản phẩm thu hoạch thành công");
             }
             catch (Exception ex)

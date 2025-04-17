@@ -1326,7 +1326,7 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.TaskId).HasDefaultValueSql("gen_random_uuid()");
             entity.Property(e => e.Description).HasColumnType("character varying");
             entity.Property(e => e.TaskName).HasColumnType("character varying");
-            entity.Property(e => e.IsHavest).HasDefaultValue(0);
+            entity.Property(e => e.IsHarvest).HasDefaultValue(0);
             entity.Property(e => e.Status).HasDefaultValue(1);
             entity.Property(e => e.StartWorkDate).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.EndWorkDate).HasColumnType("timestamp(6) without time zone");

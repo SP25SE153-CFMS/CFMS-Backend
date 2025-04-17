@@ -22,6 +22,8 @@ namespace CFMS.Application.Features.TaskFeat.Create
         {
             try
             {
+                var taskType = _unitOfWork.SubCategoryRepository.Get(filter: t => t.SubCategoryId.Equals(request.TaskTypeId) && t.IsDeleted == false).FirstOrDefault();
+
                 foreach (var date in request.StartWorkDate)
                 {
                     foreach (var shiftId in request.ShiftIds)
@@ -31,16 +33,17 @@ namespace CFMS.Application.Features.TaskFeat.Create
                         task.StartWorkDate = date;
                         task.FarmId = request.FarmId;
                         task.Status = 0;
+                        task.IsHarvest = taskType.ToString().ToLower().Equals("harvest") ? 1 : 0;
 
-                        var existShitf = _unitOfWork.ShiftRepository.Get(noTracking: true, filter: s => s.ShiftId.Equals(shiftId) && s.IsDeleted == false).FirstOrDefault();
-                        if (existShitf == null)
+                        var existShift = _unitOfWork.ShiftRepository.Get(noTracking: true, filter: s => s.ShiftId.Equals(shiftId) && s.IsDeleted == false).FirstOrDefault();
+                        if (existShift == null)
                         {
                             return BaseResponse<bool>.FailureResponse(message: "Ca làm việc không tồn tại");
                         }
 
                         task.ShiftSchedules.Add(new ShiftSchedule
                         {
-                            ShiftId = existShitf.ShiftId,
+                            ShiftId = existShift.ShiftId,
                             Date = DateOnly.FromDateTime(DateTime.Now.ToLocalTime()),
                         });
 
