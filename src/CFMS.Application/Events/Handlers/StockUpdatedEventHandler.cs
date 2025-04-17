@@ -54,7 +54,7 @@ namespace CFMS.Application.Events.Handlers
                 if (notification.ResourceType.Equals("equipment"))
                     resource.EquipmentId = notification.ResourceId;
 
-                if (notification.ResourceType.Equals("havest_product"))
+                if (notification.ResourceType.Equals("harvest_product"))
                     resource.HarvestProductId = notification.ResourceId;
 
                 if (notification.ResourceType.Equals("breeding"))

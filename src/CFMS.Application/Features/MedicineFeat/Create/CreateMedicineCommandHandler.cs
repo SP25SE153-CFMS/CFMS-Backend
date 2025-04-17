@@ -50,6 +50,7 @@ namespace CFMS.Application.Features.MedicineFeat.Create
                         request.WareId,
                         true
                     ));
+
                 return BaseResponse<bool>.SuccessResponse("Thêm dược phẩm thành công");
             }
             catch (Exception ex)

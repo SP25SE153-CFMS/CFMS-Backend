@@ -67,6 +67,7 @@ namespace CFMS.Application.Features.EquipmentFeat.Create
                        request.WareId,
                        true
                     ));
+
                 return BaseResponse<bool>.SuccessResponse("Thêm trang thiết bị thành công");
             }
             catch (Exception ex)

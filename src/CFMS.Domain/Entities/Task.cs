@@ -14,7 +14,7 @@ public partial class Task : EntityAudit
 
     public string? Description { get; set; }
 
-    public int? IsHavest { get; set; }
+    public int? IsHarvest { get; set; }
 
     public int? Status { get; set; }
 

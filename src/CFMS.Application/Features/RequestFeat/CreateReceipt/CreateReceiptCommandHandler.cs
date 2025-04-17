@@ -88,7 +88,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                             ? existResource?.MedicineId
                                 : typeName.Equals("breeding")
                                     ? existResource?.ChickenId
-                                        : typeName.Equals("havest_product")
+                                        : typeName.Equals("harvest_product")
                                             ? existResource?.HarvestProductId
                                             : null;
 

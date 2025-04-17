@@ -71,6 +71,7 @@ namespace CFMS.Application.Features.ChickenFeat.Create
                 //}).ToList() ?? new List<ChickenDetail>();
 
                 //_unitOfWork.ChickenDetailRepository.InsertRange(chickenDetails);
+
                 return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
             }
             catch (Exception ex)
