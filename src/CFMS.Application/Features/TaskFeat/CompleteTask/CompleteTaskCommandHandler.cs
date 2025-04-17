@@ -57,6 +57,10 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                             .ThenInclude(s => s.Package)
                     .Include(t => t.TaskResources)
                         .ThenInclude(s => s.Unit)
+                    .Include(t => t.TaskLocations)
+                        .ThenInclude(s => s.Location)
+                    .Include(t => t.TaskLocations)
+                        .ThenInclude(s => s.LocationNavigation)
                 ).FirstOrDefault();
 
             if (existTask == null)
@@ -75,7 +79,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                 var requestType = _unitOfWork.SubCategoryRepository.Get(x => x.SubCategoryName.Equals("IMPORT") && x.IsDeleted == false).FirstOrDefault();
 
                 var location = existTask.TaskLocations.FirstOrDefault();
-                if (location?.LocationType.Equals("COOP") == true)
+                if (location?.LocationType?.Equals("COOP") == true)
                 {
                     var taskLog = new TaskLog
                     {
