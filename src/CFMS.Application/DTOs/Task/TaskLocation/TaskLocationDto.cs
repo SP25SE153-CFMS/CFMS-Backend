@@ -17,10 +17,10 @@ namespace CFMS.Application.DTOs.Task.TaskLocation
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Guid? WareId { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual ChickenCoop Location { get; set; } = null!;
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual CFMS.Domain.Entities.Warehouse LocationNavigation { get; set; } = null!;
     }
 }
