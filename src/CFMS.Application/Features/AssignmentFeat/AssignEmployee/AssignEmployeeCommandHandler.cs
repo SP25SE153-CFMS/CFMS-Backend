@@ -39,7 +39,7 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
                     var assignment = new Assignment
                     {
                         TaskId = request.TaskId,
-                        AssignedDate = DateTime.Now.ToLocalTime(),
+                        AssignedDate = request.AssignedDate,
                         AssignedToId = assignedToId,
                         Note = request.Note,
                         Status = request.Status,
