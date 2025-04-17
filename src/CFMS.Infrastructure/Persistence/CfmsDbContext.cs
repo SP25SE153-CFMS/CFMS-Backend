@@ -1422,9 +1422,9 @@ public partial class CfmsDbContext : DbContext
                 .HasForeignKey(d => d.RequestId)
                 .HasConstraintName("TaskRequest_RequestId_fkey");
 
-            entity.HasOne(d => d.TaskType).WithMany(p => p.TaskRequests)
-                .HasForeignKey(d => d.TaskTypeId)
-                .HasConstraintName("TaskRequest_TaskTypeId_fkey");
+            //entity.HasOne(d => d.TaskType).WithMany(p => p.TaskRequests)
+            //    .HasForeignKey(d => d.TaskTypeId)
+            //    .HasConstraintName("TaskRequest_TaskTypeId_fkey");
         });
 
         modelBuilder.Entity<TaskResource>(entity =>

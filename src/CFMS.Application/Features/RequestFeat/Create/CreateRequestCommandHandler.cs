@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Application.DTOs.Image;
+using CFMS.Application.DTOs.Request;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Linq;
 using System.Threading;
@@ -15,12 +18,14 @@ namespace CFMS.Application.Features.RequestFeat.Create
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IGoogleDriveService _googleDriveService;
 
-        public CreateRequestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUserService)
+        public CreateRequestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUserService, IGoogleDriveService googleDriveService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _currentUserService = currentUserService;
+            _googleDriveService = googleDriveService;
         }
 
         public async Task<BaseResponse<bool>> Handle(CreateRequestCommand request, CancellationToken cancellationToken)
@@ -76,12 +81,11 @@ namespace CFMS.Application.Features.RequestFeat.Create
                 var taskRequest = new TaskRequest
                 {
                     RequestId = newRequest.RequestId,
-                    TaskTypeId = request.TaskTypeId,
-                    Priority = request.Priority,
-                    Description = request.Description
+                    Title = request.TaskRequestRequest.Title,
+                    Priority = request.TaskRequestRequest.Priority,
+                    Description = request.TaskRequestRequest.Description,
+                    ImageUrl = null
                 };
-
-                _unitOfWork.TaskRequestRepository.Insert(taskRequest);
             }
 
             var result = await _unitOfWork.SaveChangesAsync();

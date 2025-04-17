@@ -9,13 +9,13 @@ public partial class TaskRequest
 
     public Guid? RequestId { get; set; }
 
-    public Guid? TaskTypeId { get; set; }
+    public string? Title  { get; set; }
 
     public int? Priority { get; set; }
 
     public string? Description { get; set; }
 
-    public virtual Request? Request { get; set; }
+    public string? ImageUrl { get; set; }
 
-    public virtual SubCategory? TaskType { get; set; }
+    public virtual Request? Request { get; set; }
 }

@@ -80,7 +80,7 @@ namespace CFMS.Application.Features.RequestFeat.Update
 
                 if (taskRequest != null)
                 {
-                    taskRequest.TaskTypeId = request.TaskTypeId ?? taskRequest.TaskTypeId;
+                    //taskRequest.TaskTypeId = request.TaskTypeId ?? taskRequest.TaskTypeId;
                     taskRequest.Priority = request.Priority ?? taskRequest.Priority;
                     taskRequest.Description = request.Description ?? taskRequest.Description;
                 }
