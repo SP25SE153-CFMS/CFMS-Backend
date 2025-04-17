@@ -50,6 +50,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWaresByFarmId
                         "food" => "Thực phẩm",
                         "equipment" => "Thiết bị",
                         "medicine" => "Dược phẩm",
+                        "breeding" => "Con giống",
+                        "harvest_product" => "Sản phẩm thu hoạch",
                         _ => subCategory.SubCategoryName
                     }
                     : "Không xác định",

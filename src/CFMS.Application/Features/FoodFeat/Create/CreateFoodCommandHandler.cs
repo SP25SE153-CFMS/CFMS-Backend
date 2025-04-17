@@ -30,7 +30,7 @@ namespace CFMS.Application.Features.FoodFeat.Create
         {
             try
             {
-                var existFood = _unitOfWork.FoodRepository.Get(filter: s => s.FoodCode.Equals(request.FoodCode) || s.FoodName.Equals(request.FoodName) && s.IsDeleted == false).FirstOrDefault();
+                var existFood = _unitOfWork.FoodRepository.Get(filter: s => s.FoodCode.Equals(request.FoodCode) && s.FoodName.Equals(request.FoodName) && s.IsDeleted == false).FirstOrDefault();
 
                 if (existFood == null)
                 {

@@ -11,46 +11,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFMS.Application.Features.MedicineFeat.Create
+namespace CFMS.Application.Features.HarvestProductFeat.Create
 {
-    public class CreateMedicineCommandHandler : IRequestHandler<CreateMedicineCommand, BaseResponse<bool>>
+    public class CreateHarvestProductCommandHandler : IRequestHandler<CreateHarvestProductCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public CreateMedicineCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediator mediator)
+        public CreateHarvestProductCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IMediator mediator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _mediator = mediator;
         }
 
-        public async Task<BaseResponse<bool>> Handle(CreateMedicineCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(CreateHarvestProductCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var existMedicine = _unitOfWork.MedicineRepository.Get(filter: s => s.MedicineCode.Equals(request.MedicineCode) && s.MedicineName.Equals(request.MedicineName) && s.IsDeleted == false).FirstOrDefault();
+                var existHarvest = _unitOfWork.HarvestProductRepository.Get(filter: s => s.HarvestProductCode.Equals(request.HarvestProductCode) && s.HarvestProductName.Equals(request.HarvestProductName) && s.IsDeleted == false).FirstOrDefault();
 
-                if (existMedicine == null)
+                if (existHarvest == null)
                 {
-                    existMedicine = _mapper.Map<Medicine>(request);
-                    _unitOfWork.MedicineRepository.Insert(existMedicine);
+                    existHarvest = _mapper.Map<HarvestProduct>(request);
+                    _unitOfWork.HarvestProductRepository.Insert(existHarvest);
                     var result = await _unitOfWork.SaveChangesAsync();
                 }
 
                 await _mediator.Publish(new StockUpdatedEvent
                      (
-                        existMedicine.MedicineId,
+                        existHarvest.HarvestProductId,
                         0,
                         request.UnitId,
-                        "medicine",
+                        "harvest_product",
                         request.PackageId,
                         request.PackageSize,
                         request.WareId,
                         true
                     ));
-                return BaseResponse<bool>.SuccessResponse("Thêm dược phẩm thành công");
+                return BaseResponse<bool>.SuccessResponse("Thêm sản phẩm thu hoạch thành công");
             }
             catch (Exception ex)
             {
