@@ -47,6 +47,7 @@ public partial class ChickenCoop : EntityAudit
 
     public virtual SubCategory? Purpose { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<TaskLocation> TaskLocations { get; set; } = new List<TaskLocation>();
 
     public virtual ICollection<TaskLog> TaskLogs { get; set; } = new List<TaskLog>();
