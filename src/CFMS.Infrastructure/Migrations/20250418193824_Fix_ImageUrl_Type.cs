@@ -20,7 +20,7 @@ namespace CFMS.Infrastructure.Migrations
             migrationBuilder.Sql(@"
             ALTER TABLE ""TaskRequest""
             ALTER COLUMN ""ImageUrl"" TYPE text
-            USING ""ImageUrl""[1];
+            USING ARRAY[""ImageUrl""];
         ");
         }
 

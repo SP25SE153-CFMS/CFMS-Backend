@@ -174,6 +174,8 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     }
                 }
 
+
+
                 if (request?.HarvestProducts != null)
                 {
                     Resource resource;
