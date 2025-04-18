@@ -9,7 +9,7 @@ namespace CFMS.Application.Features.RequestFeat.Create
 {
     public class CreateRequestCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateRequestCommand(bool isInventoryRequest, Guid? inventoryRequestTypeId, Guid? wareFromId, Guid? wareToId, List<InventoryRequestDetailDto>? inventoryDetails, TaskRequestDto? taskRequestRequest)
+        public CreateRequestCommand(bool isInventoryRequest, Guid? inventoryRequestTypeId, Guid? wareFromId, Guid? wareToId, List<InventoryRequestDetailDto>? inventoryDetails, TaskRequestDto? taskRequestRequest, string? reason, string? note, DateTime? expectedDate)
         {
             //RequestTypeId = requestTypeId;
             //Status = status;
@@ -17,8 +17,11 @@ namespace CFMS.Application.Features.RequestFeat.Create
             InventoryRequestTypeId = inventoryRequestTypeId;
             WareFromId = wareFromId;
             WareToId = wareToId;
+            Reason = reason;
+            Note = note;
             InventoryDetails = inventoryDetails;
             TaskRequestRequest = taskRequestRequest;
+            ExpectedDate = expectedDate;
         }
 
         //public Guid? RequestTypeId { get; set; }
@@ -30,6 +33,9 @@ namespace CFMS.Application.Features.RequestFeat.Create
         public Guid? InventoryRequestTypeId { get; set; }
         public Guid? WareFromId { get; set; }
         public Guid? WareToId { get; set; }
+        public string? Reason { get; set; }
+        public string? Note { get; set; }
+        public DateTime? ExpectedDate { get; set; }
         public List<InventoryRequestDetailDto>? InventoryDetails { get; set; }
 
         //TaskRequest
