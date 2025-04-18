@@ -40,8 +40,8 @@ namespace CFMS.Application.Features.RequestFeat.Create
                     .FirstOrDefault();
 
                 var requestType = request.IsInventoryRequest
-                    ? _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.ToLower().Contains("Xuất/Nhập")).FirstOrDefault()
-                    : _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.ToLower().Contains("Báo cáo")).FirstOrDefault();
+                    ? _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("Xuất/Nhập")).FirstOrDefault()
+                    : _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("Báo cáo")).FirstOrDefault();
 
                 if (lastRequest != null && (DateTime.Now - lastRequest.CreatedWhen).TotalSeconds < 10)
                 {
