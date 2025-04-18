@@ -43,10 +43,10 @@ namespace CFMS.Application.Features.RequestFeat.Create
                     ? _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("Xuất/Nhập")).FirstOrDefault()
                     : _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("Báo cáo")).FirstOrDefault();
 
-                if (lastRequest != null && (DateTime.Now.ToLocalTime() - lastRequest.CreatedWhen).TotalSeconds < 10)
-                {
-                    return BaseResponse<bool>.FailureResponse("Bạn không thể tạo yêu cầu quá nhanh. Vui lòng thử lại sau");
-                }
+                //if (lastRequest != null && (DateTime.Now.ToLocalTime() - lastRequest.CreatedWhen).TotalSeconds < 10)
+                //{
+                //    return BaseResponse<bool>.FailureResponse("Bạn không thể tạo yêu cầu quá nhanh. Vui lòng thử lại sau");
+                //}
                 
                 request.InventoryRequestTypeId = requestType?.SubCategoryId;
 
