@@ -8,6 +8,7 @@ using CFMS.Application.Features.RequestFeat.ApproveRequest;
 using CFMS.Application.Features.RequestFeat.Create;
 using CFMS.Application.Features.RequestFeat.Delete;
 using CFMS.Application.Features.RequestFeat.GetRequest;
+using CFMS.Application.Features.RequestFeat.GetRequestByCurrentUser;
 using CFMS.Application.Features.RequestFeat.GetRequests;
 using CFMS.Application.Features.RequestFeat.Update;
 using MediatR;
@@ -32,6 +33,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetRequest(Guid id)
         {
             var result = await Send(new GetRequestQuery(id));
+            return result;
+        }
+                
+        [HttpGet("byCurrentUser")]
+        public async Task<IActionResult> GetRequestByCurrentUser()
+        {
+            var result = await Send(new GetRequestByCurrentUserQuery());
             return result;
         }
 
