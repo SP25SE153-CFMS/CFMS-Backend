@@ -30,69 +30,84 @@ namespace CFMS.Application.Features.RequestFeat.Create
 
         public async Task<BaseResponse<bool>> Handle(CreateRequestCommand request, CancellationToken cancellationToken)
         {
-            var user = _currentUserService.GetUserId();
-
-            var lastRequest = _unitOfWork.RequestRepository
-                .Get(filter: r => r.CreatedByUser.UserId.ToString().Equals(user))
-                .OrderByDescending(r => r.CreatedWhen)
-                .FirstOrDefault();
-
-            if (lastRequest != null && (DateTime.Now - lastRequest.CreatedWhen).TotalSeconds < 10)
+            try
             {
-                return BaseResponse<bool>.FailureResponse("Bạn không thể tạo yêu cầu quá nhanh. Vui lòng thử lại sau");
-            }
+                var user = _currentUserService.GetUserId();
 
-            var newRequest = _mapper.Map<Request>(request);
+                var lastRequest = _unitOfWork.RequestRepository
+                    .Get(filter: r => r.CreatedByUser.UserId.ToString().Equals(user))
+                    .OrderByDescending(r => r.CreatedWhen)
+                    .FirstOrDefault();
 
-            _unitOfWork.RequestRepository.Insert(newRequest);
-            await _unitOfWork.SaveChangesAsync();
+                var requestType = request.IsInventoryRequest
+                    ? _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.ToString().ToLower().Contains("Xuất/Nhập")).FirstOrDefault()
+                    : _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.ToString().ToLower().Contains("Báo cáo")).FirstOrDefault();
 
-            if (request.IsInventoryRequest)
-            {
-                var inventoryRequest = new InventoryRequest
+                if (lastRequest != null && (DateTime.Now - lastRequest.CreatedWhen).TotalSeconds < 10)
                 {
-                    RequestId = newRequest.RequestId,
-                    InventoryRequestTypeId = request.InventoryRequestTypeId,
-                    WareFromId = request.WareFromId,
-                    WareToId = request.WareToId
-                };
+                    return BaseResponse<bool>.FailureResponse("Bạn không thể tạo yêu cầu quá nhanh. Vui lòng thử lại sau");
+                }
+                
+                request.InventoryRequestTypeId = requestType?.SubCategoryId;
 
-                _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
+                var newRequest = _mapper.Map<Request>(request);
+
+                _unitOfWork.RequestRepository.Insert(newRequest);
                 await _unitOfWork.SaveChangesAsync();
 
-                foreach (var detail in request.InventoryDetails)
+                if (request.IsInventoryRequest)
                 {
-                    var inventoryRequestDetail = new InventoryRequestDetail
+                    var inventoryRequest = new InventoryRequest
                     {
-                        InventoryRequestId = inventoryRequest.InventoryRequestId,
-                        ResourceId = detail.ResourceId,
-                        ResourceSupplierId = detail.ResourceSupplierId,
-                        ExpectedQuantity = detail.ExpectedQuantity,
-                        UnitId = detail.UnitId,
-                        Reason = detail.Reason,
-                        ExpectedDate = detail.ExpectedDate,
-                        Note = detail.Note
+                        RequestId = newRequest.RequestId,
+                        InventoryRequestTypeId = request.InventoryRequestTypeId,
+                        WareFromId = request.WareFromId,
+                        WareToId = request.WareToId
                     };
-                    _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);
+
+                    _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
+                    await _unitOfWork.SaveChangesAsync();
+
+                    foreach (var detail in request.InventoryDetails)
+                    {
+                        var inventoryRequestDetail = new InventoryRequestDetail
+                        {
+                            InventoryRequestId = inventoryRequest.InventoryRequestId,
+                            ResourceId = detail.ResourceId,
+                            ResourceSupplierId = detail.ResourceSupplierId,
+                            ExpectedQuantity = detail.ExpectedQuantity,
+                            UnitId = detail.UnitId,
+                            Reason = detail.Reason,
+                            ExpectedDate = detail.ExpectedDate,
+                            Note = detail.Note
+                        };
+                        _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);
+                    }
                 }
-            }
-            else
-            {
-                var taskRequest = new TaskRequest
+                else
                 {
-                    RequestId = newRequest.RequestId,
-                    Title = request.TaskRequestRequest.Title,
-                    Priority = request.TaskRequestRequest.Priority,
-                    Description = request.TaskRequestRequest.Description,
-                    ImageUrl = null
-                };
+                    var taskRequest = new TaskRequest
+                    {
+                        RequestId = newRequest.RequestId,
+                        Title = request.TaskRequestRequest.Title,
+                        Priority = request.TaskRequestRequest.Priority,
+                        Description = request.TaskRequestRequest.Description,
+                        ImageUrl = null
+                    };
+
+                    _unitOfWork.TaskRequestRepository.Insert(taskRequest);
+                }
+
+                var result = await _unitOfWork.SaveChangesAsync();
+
+                return result > 0
+                    ? BaseResponse<bool>.SuccessResponse("Tạo yêu cầu thành công")
+                    : BaseResponse<bool>.FailureResponse("Thêm thất bại");
             }
-
-            var result = await _unitOfWork.SaveChangesAsync();
-
-            return result > 0
-                ? BaseResponse<bool>.SuccessResponse("Tạo yêu cầu thành công")
-                : BaseResponse<bool>.FailureResponse("Thêm thất bại");
+            catch (Exception ex)
+            {
+                return BaseResponse<bool>.FailureResponse("Có lỗi xảy ra: " + ex.Message);
+            }
         }
     }
 }
