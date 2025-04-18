@@ -33,8 +33,10 @@ namespace CFMS.Application.Features.RequestFeat.GetRequestByCurrentUser
                     .ThenInclude(r => r.InventoryRequestDetails)
                 .Include(r => r.InventoryRequests)
                     .ThenInclude(r => r.WareFrom)
+                        .ThenInclude(r => r.Farm)
                 .Include(r => r.InventoryRequests)
                     .ThenInclude(r => r.WareTo)
+                        .ThenInclude(r => r.Farm)
                 .Include(r => r.TaskRequests)
                 ).ToList();
             if (existRequest == null)
