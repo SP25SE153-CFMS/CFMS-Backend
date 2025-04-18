@@ -80,20 +80,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                 var requestType = _unitOfWork.SubCategoryRepository.Get(x => x.SubCategoryName.Equals("IMPORT") && x.IsDeleted == false).FirstOrDefault();
 
-                var location = existTask.TaskLocations.FirstOrDefault();
-                if (location?.LocationType?.Equals("COOP") == true)
-                {
-                    var taskLog = new TaskLog
-                    {
-                        ChickenCoopId = location.CoopId,
-                        CompletedAt = DateTime.Now.ToLocalTime(),
-                        TaskId = existTask.TaskId,
-                        Note = request.Note,
-                    };
-
-                    _unitOfWork.TaskLogRepository.Insert(taskLog);
-                }
-
                 //var lastRequest = _unitOfWork.RequestRepository.Get(filter: r => r.CreatedByUser.UserId.ToString().Equals(leader.AssignedToId)).FirstOrDefault();
                 var newRequest = new Request()
                 {
@@ -138,7 +124,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     })
                     .ToList();
 
-
                     foreach (var group in groupedResources)
                     {
                         var ware = _unitOfWork.WarehouseRepository
@@ -175,8 +160,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                         await _unitOfWork.SaveChangesAsync();
                     }
                 }
-
-
 
                 if (request?.HarvestProducts != null)
                 {
@@ -254,6 +237,27 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
             catch (Exception ex)
             {
                 return BaseResponse<bool>.FailureResponse(message: ex.Message);
+            }
+            finally
+            {
+                var location = existTask.TaskLocations.FirstOrDefault();
+                if (location?.LocationType?.Equals("COOP") == true)
+                {
+                    var taskLog = new TaskLog
+                    {
+                        ChickenCoopId = location.CoopId,
+                        CompletedAt = DateTime.Now.ToLocalTime(),
+                        TaskId = existTask.TaskId,
+                        Note = request.Note,
+                    };
+
+                    _unitOfWork.TaskLogRepository.Insert(taskLog);
+                }
+
+                if (taskType.Equals("feed"))
+                {
+
+                }
             }
         }
     }

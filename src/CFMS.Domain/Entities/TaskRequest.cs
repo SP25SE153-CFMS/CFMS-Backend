@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -17,5 +18,6 @@ public partial class TaskRequest
 
     public string[]? ImageUrl { get; set; }
 
+    [JsonIgnore]
     public virtual Request? Request { get; set; }
 }

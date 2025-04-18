@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.RequestFeat.GetRequestByCurrentUser
 {
-    public class GetRequestByCurrentUserQuery : IRequest<BaseResponse<Request>>
+    public class GetRequestByCurrentUserQuery : IRequest<BaseResponse<IEnumerable<Request>>>
     {
     }
 }

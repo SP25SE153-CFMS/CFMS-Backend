@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -21,6 +22,7 @@ public partial class InventoryRequest : EntityAudit
 
     public virtual SubCategory? InventoryRequestType { get; set; }
 
+    [JsonIgnore]
     public virtual Request? Request { get; set; }
 
     public virtual Warehouse? WareFrom { get; set; }

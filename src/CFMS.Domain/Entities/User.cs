@@ -39,6 +39,7 @@ public partial class User
     [JsonIgnore]
     public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
+    [JsonIgnore]
     public virtual ICollection<Request> Requests { get; set; } = new List<Request>();
 
     public virtual ICollection<RevokedToken> RevokedTokens { get; set; } = new List<RevokedToken>();

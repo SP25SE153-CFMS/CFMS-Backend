@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.RequestFeat.GetRequestByCurrentUser
 {
-    public class GetRequestByCurrentUserQueryHandler : IRequestHandler<GetRequestQuery, BaseResponse<Request>>
+    public class GetRequestByCurrentUserQueryHandler : IRequestHandler<GetRequestByCurrentUserQuery, BaseResponse<IEnumerable<Request>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
@@ -23,22 +23,22 @@ namespace CFMS.Application.Features.RequestFeat.GetRequestByCurrentUser
             _currentUserService = currentUserService;
         }
 
-        public async Task<BaseResponse<Request>> Handle(GetRequestQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<IEnumerable<Request>>> Handle(GetRequestByCurrentUserQuery request, CancellationToken cancellationToken)
         {
             var currentUserId = _currentUserService.GetUserId();
 
-            var existRequest = _unitOfWork.RequestRepository.GetIncludeMultiLayer(filter: f => f.CreatedByUser.Equals(currentUserId) && f.IsDeleted == false,
+            var existRequest = _unitOfWork.RequestRepository.GetIncludeMultiLayer(filter: f => f.CreatedByUser.UserId.ToString().Equals(currentUserId) && f.IsDeleted == false,
                 include: x => x
                 .Include(r => r.InventoryRequests)
                     .ThenInclude(r => r.InventoryRequestDetails)
                 .Include(r => r.TaskRequests)
-                ).FirstOrDefault();
+                ).ToList();
             if (existRequest == null)
             {
-                return BaseResponse<Request>.FailureResponse(message: "Phiếu yêu cầu không tồn tại");
+                return BaseResponse<IEnumerable<Request>>.FailureResponse(message: "Phiếu yêu cầu không tồn tại");
             }
 
-            return BaseResponse<Request>.SuccessResponse(data: existRequest);
+            return BaseResponse<IEnumerable<Request>>.SuccessResponse(data: existRequest);
         }
     }
 }
