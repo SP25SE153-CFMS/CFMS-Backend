@@ -55,6 +55,7 @@ public partial class Resource : EntityAudit
 
     public virtual SubCategory? Unit { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<InventoryRequestDetail> InventoryRequestDetails { get; set; } = new List<InventoryRequestDetail>();
 
     [JsonIgnore]
