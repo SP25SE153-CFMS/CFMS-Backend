@@ -5,7 +5,7 @@ using CFMS.Infrastructure.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace CFMS.Application.Features.UserFeat.UploadImage
+namespace CFMS.Application.Features.RequestFeat.UploadImage
 {
     public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, BaseResponse<UploadImageResult>>
     {
@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.UserFeat.UploadImage
                     await request.File.CopyToAsync(stream, cancellationToken);
                 }
 
-                var folderName = "CFMS-Images";
+                var folderName = "CFMS-Reporters";
 
                 var fileId = await _googleDriveService.UploadFileAsync(tempPath, request.File.ContentType, $"{user}_{DateTime.UtcNow.Ticks}.jpg", folderName);
                 var result = new UploadImageResult
@@ -44,10 +44,6 @@ namespace CFMS.Application.Features.UserFeat.UploadImage
                     FileUrl = $"https://drive.usercontent.google.com/download?id={fileId}&export=view&authuser=0"
 
                 };
-
-                existUser.Avatar = result.FileUrl;
-                _unitOfWork.UserRepository.Update(existUser);
-                await _unitOfWork.SaveChangesAsync();
 
                 return BaseResponse<UploadImageResult>.SuccessResponse(result);
             }

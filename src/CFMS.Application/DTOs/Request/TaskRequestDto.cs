@@ -17,6 +17,6 @@ namespace CFMS.Application.DTOs.Request
 
         public string? Description { get; set; }
 
-        //public IFormFile? File { get; set; }
+        public string[]? ImageUrl { get; set; }
     }
 }

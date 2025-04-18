@@ -15,7 +15,7 @@ public partial class TaskRequest
 
     public string? Description { get; set; }
 
-    public string? ImageUrl { get; set; }
+    public string[]? ImageUrl { get; set; }
 
     public virtual Request? Request { get; set; }
 }

@@ -34,10 +34,10 @@ namespace CFMS.Application.Features.RequestFeat.Create
             {
                 var user = _currentUserService.GetUserId();
 
-                var lastRequest = _unitOfWork.RequestRepository
-                    .Get(filter: r => r.CreatedByUser.UserId.ToString().Equals(user))
-                    .OrderByDescending(r => r.CreatedWhen)
-                    .FirstOrDefault();
+                //var lastRequest = _unitOfWork.RequestRepository
+                //    .Get(filter: r => r.CreatedByUser.UserId.ToString().Equals(user))
+                //    .OrderByDescending(r => r.CreatedWhen)
+                //    .FirstOrDefault();
 
                 var requestType = request.IsInventoryRequest
                     ? _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("Xuất/Nhập")).FirstOrDefault()
@@ -48,11 +48,10 @@ namespace CFMS.Application.Features.RequestFeat.Create
                 //    return BaseResponse<bool>.FailureResponse("Bạn không thể tạo yêu cầu quá nhanh. Vui lòng thử lại sau");
                 //}
                 
-                request.InventoryRequestTypeId = requestType?.SubCategoryId;
-
                 var newRequest = _mapper.Map<Request>(request);
-
+                newRequest.RequestTypeId = requestType?.SubCategoryId;
                 _unitOfWork.RequestRepository.Insert(newRequest);
+
                 await _unitOfWork.SaveChangesAsync();
 
                 if (request.IsInventoryRequest)
@@ -89,10 +88,10 @@ namespace CFMS.Application.Features.RequestFeat.Create
                     var taskRequest = new TaskRequest
                     {
                         RequestId = newRequest.RequestId,
-                        Title = request.TaskRequestRequest.Title,
-                        Priority = request.TaskRequestRequest.Priority,
-                        Description = request.TaskRequestRequest.Description,
-                        ImageUrl = null
+                        Title = request?.TaskRequestRequest?.Title,
+                        Priority = request?.TaskRequestRequest?.Priority,
+                        Description = request?.TaskRequestRequest?.Description,
+                        ImageUrl = request?.TaskRequestRequest?.ImageUrl,
                     };
 
                     _unitOfWork.TaskRequestRepository.Insert(taskRequest);

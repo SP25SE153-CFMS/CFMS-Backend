@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CFMS.Application.Features.UserFeat.UploadImage
+namespace CFMS.Application.Features.RequestFeat.UploadImage
 {
     public class UploadImageCommand : IRequest<BaseResponse<UploadImageResult>>
     {
