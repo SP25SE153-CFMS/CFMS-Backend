@@ -10,6 +10,7 @@ using CFMS.Application.Features.CategoryFeat.Update;
 using CFMS.Application.Features.CategoryFeat.GetSubsByTypeAndFarm;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using CFMS.Application.Features.CategoryFeat.GetSub;
 
 namespace CFMS.Api.Controllers
 {
@@ -37,6 +38,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetByCategoryId(Guid id)
         {
             var result = await Send(new GetCategoryQuery(id));
+            return result;
+        }
+
+        [HttpGet("get-sub-cate/{id}")]
+        public async Task<IActionResult> GetSub(Guid subCategoryId)
+        {
+            var result = await Send(new GetSubQuery(subCategoryId));
             return result;
         }
 
