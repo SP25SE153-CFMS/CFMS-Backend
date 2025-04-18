@@ -4,6 +4,7 @@ using CFMS.Application.Features.UserFeat.GetUser;
 using CFMS.Application.Features.UserFeat.GetUserByCCCDByPhoneByEmail;
 using CFMS.Application.Features.UserFeat.GetUsers;
 using CFMS.Application.Features.UserFeat.Update;
+using CFMS.Application.Features.UserFeat.UploadImage;
 using Google.Apis.Drive.v3;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

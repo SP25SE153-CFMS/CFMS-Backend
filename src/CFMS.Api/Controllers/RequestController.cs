@@ -11,6 +11,7 @@ using CFMS.Application.Features.RequestFeat.GetRequest;
 using CFMS.Application.Features.RequestFeat.GetRequestByCurrentUser;
 using CFMS.Application.Features.RequestFeat.GetRequests;
 using CFMS.Application.Features.RequestFeat.Update;
+using CFMS.Application.Features.RequestFeat.UploadImage;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -73,6 +74,13 @@ namespace CFMS.Api.Controllers
         
         [HttpPost("/create-inventory-receipt")]
         public async Task<IActionResult> CreateInventoryReceipt(CreateInventoryReceiptCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPost("upload-image")]
+        public async Task<IActionResult> UploadImage(UploadImageCommand command)
         {
             var result = await Send(command);
             return result;
