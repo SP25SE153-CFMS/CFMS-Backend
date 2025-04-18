@@ -68,6 +68,8 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                 return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
             }
 
+            var taskType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(existTask.TaskTypeId) && x.IsDeleted == false).FirstOrDefault()?.SubCategoryName;
+
             try
             {
                 string[] keywords = { "thực phẩm", "dược phẩm", "thiết bị", "thu hoạch", "con giống" };
