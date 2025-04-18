@@ -2,6 +2,7 @@
 using CFMS.Application.Features.ShiftFeat.GetShift;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
+using Google.Apis.Util;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,6 +28,24 @@ namespace CFMS.Application.Features.RequestFeat.GetRequest
             include: x => x
                 .Include(r => r.InventoryRequests)
                     .ThenInclude(r => r.InventoryRequestDetails)
+                        .ThenInclude(r => r.Resource)
+                            .ThenInclude(r => r.Food)
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.InventoryRequestDetails)
+                        .ThenInclude(r => r.Resource)
+                            .ThenInclude(r => r.Equipment)
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.InventoryRequestDetails)
+                        .ThenInclude(r => r.Resource)
+                            .ThenInclude(r => r.Medicine)
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.InventoryRequestDetails)
+                        .ThenInclude(r => r.Resource)
+                            .ThenInclude(r => r.Chicken)
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.InventoryRequestDetails)
+                        .ThenInclude(r => r.Resource)
+                            .ThenInclude(r => r.HarvestProduct)
                 .Include(r => r.InventoryRequests)
                     .ThenInclude(r => r.WareFrom)
                         .ThenInclude(r => r.Farm)
