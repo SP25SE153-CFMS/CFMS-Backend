@@ -1417,6 +1417,7 @@ public partial class CfmsDbContext : DbContext
 
             entity.Property(e => e.TaskRequestId).HasDefaultValueSql("gen_random_uuid()");
             entity.Property(e => e.Description).HasColumnType("character varying");
+            entity.Property(e => e.ImageUrl);
 
             entity.HasOne(d => d.Request).WithMany(p => p.TaskRequests)
                 .HasForeignKey(d => d.RequestId)
