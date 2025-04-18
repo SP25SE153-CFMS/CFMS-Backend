@@ -254,6 +254,8 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     _unitOfWork.TaskLogRepository.Insert(taskLog);
                 }
 
+                var coop = _unitOfWork.ChickenCoopRepository.Get(filter: x => x.ChickenCoopId.Equals(location.CoopId) && x.IsDeleted == false, includeProperties: "ChickenBatches").FirstOrDefault();
+
                 if (taskType.Equals("feed"))
                 {
 
