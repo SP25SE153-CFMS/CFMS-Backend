@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.RequestFeat.UploadImage
                     await request.File.CopyToAsync(stream, cancellationToken);
                 }
 
-                var folderName = "CFMS-Reporters";
+                var folderName = "CFMS-Images";
 
                 var fileId = await _googleDriveService.UploadFileAsync(tempPath, request.File.ContentType, $"{user}_{DateTime.UtcNow.Ticks}.jpg", folderName);
                 var result = new UploadImageResult
