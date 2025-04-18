@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.CategoryFeat.GetSubByName
 
         public async Task<BaseResponse<SubCategory>> Handle(GetSubByNameQuery request, CancellationToken cancellationToken)
         {
-            var existSubCategory = _unitOfWork.SubCategoryRepository.Get(filter: c => c.SubCategoryId.Equals(request.SubCategoryName) && c.IsDeleted == false).FirstOrDefault();
+            var existSubCategory = _unitOfWork.SubCategoryRepository.Get(filter: c => c.SubCategoryName.Equals(request.SubCategoryName) && c.IsDeleted == false).FirstOrDefault();
             if (existSubCategory == null)
             {
                 return BaseResponse<SubCategory>.FailureResponse(message: "SubCategory không tồn tại");
