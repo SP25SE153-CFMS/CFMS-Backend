@@ -11,6 +11,7 @@ using CFMS.Application.Features.CategoryFeat.GetSubsByTypeAndFarm;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using CFMS.Application.Features.CategoryFeat.GetSub;
+using CFMS.Application.Features.CategoryFeat.GetSubByName;
 
 namespace CFMS.Api.Controllers
 {
@@ -45,6 +46,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetSub(Guid subCategoryId)
         {
             var result = await Send(new GetSubQuery(subCategoryId));
+            return result;
+        }
+
+        [HttpGet("get-sub-cate-by-name/{subCategoryName}")]
+        public async Task<IActionResult> GetSubByName(string subCategoryName)
+        {
+            var result = await Send(new GetSubByNameQuery(subCategoryName));
             return result;
         }
 
