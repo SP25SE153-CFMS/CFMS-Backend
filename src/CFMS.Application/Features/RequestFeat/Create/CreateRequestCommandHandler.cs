@@ -50,7 +50,6 @@ namespace CFMS.Application.Features.RequestFeat.Create
                 
                 var newRequest = _mapper.Map<Request>(request);
                 newRequest.RequestTypeId = requestType?.SubCategoryId;
-                newRequest.CreatedWhen = DateTime.Now.ToLocalTime().AddHours(7);
                 _unitOfWork.RequestRepository.Insert(newRequest);
 
                 await _unitOfWork.SaveChangesAsync();
