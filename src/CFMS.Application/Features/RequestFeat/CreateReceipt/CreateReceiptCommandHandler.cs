@@ -45,7 +45,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
             {
                 InventoryRequestId = request.InventoryRequestId,
                 ReceiptTypeId = request.ReceiptTypeId,
-                ReceiptCodeNumber = $"{receiptCodePrefix}-{DateTime.UtcNow.Ticks}"
+                ReceiptCodeNumber = $"{receiptCodePrefix}-{DateTime.Now.AddHours(7).Ticks}"
             };
 
             _unitOfWork.InventoryReceiptRepository.Insert(inventoryReceipt);
