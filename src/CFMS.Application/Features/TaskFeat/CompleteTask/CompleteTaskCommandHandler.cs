@@ -258,7 +258,19 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                 if (taskType.Equals("feed"))
                 {
-
+                    var feedLog = new FeedLog
+                    {
+                        ChickenBatchId = coop.ChickenBatches
+                                            .Where(x => x.EndDate == null)
+                                            .OrderByDescending(x => x.StartDate)
+                                            .Select(x => x.ChickenBatchId)
+                                            .FirstOrDefault(),
+                        FeedingDate = DateTime.Now.ToLocalTime(),
+                        //ActualFeedAmount = existTask.TaskId,
+                        //UnitId = request.Note,
+                        TaskId = request.TaskId,
+                        Note = request.Note,
+                    };
                 }
             }
         }
