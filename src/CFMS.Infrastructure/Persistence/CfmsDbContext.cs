@@ -155,7 +155,7 @@ public partial class CfmsDbContext : DbContext
         {
             entry.State = EntityState.Modified;
             ((EntityAudit)entry.Entity).IsDeleted = true;
-            ((EntityAudit)entry.Entity).DeletedWhen = DateTime.UtcNow.ToLocalTime();
+            ((EntityAudit)entry.Entity).DeletedWhen = DateTime.UtcNow.ToLocalTime().AddHours(7);
             break;
         }
     }
@@ -172,10 +172,10 @@ public partial class CfmsDbContext : DbContext
         {
             if (entry.State == EntityState.Added)
             {
-                ((EntityAudit)entry.Entity).CreatedWhen = DateTime.UtcNow.ToLocalTime();
+                ((EntityAudit)entry.Entity).CreatedWhen = DateTime.UtcNow.ToLocalTime().AddHours(7);
                 ((EntityAudit)entry.Entity).CreatedByUserId = currentUserId;
             }
-            ((EntityAudit)entry.Entity).LastEditedWhen = DateTime.UtcNow.ToLocalTime();
+            ((EntityAudit)entry.Entity).LastEditedWhen = DateTime.UtcNow.ToLocalTime().AddHours(7);
             ((EntityAudit)entry.Entity).LastEditedByUserId = currentUserId;
         }
     }
