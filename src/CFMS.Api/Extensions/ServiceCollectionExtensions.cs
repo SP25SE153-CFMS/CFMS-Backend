@@ -6,6 +6,7 @@ using CFMS.Application.Features.FarmFeat.Create;
 using CFMS.Application.Mappings;
 using CFMS.Application.Services;
 using CFMS.Application.Services.Impl;
+using CFMS.Application.Services.SignalR;
 using CFMS.Domain.Interfaces;
 using CFMS.Infrastructure;
 using CFMS.Infrastructure.Persistence;
@@ -27,6 +28,14 @@ namespace CFMS.Api.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            //SignalR
+            services.AddSignalR().AddJsonProtocol(options =>
+            {
+                options.PayloadSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                options.PayloadSerializerOptions.MaxDepth = 64;
+            });
+            services.AddTransient<NotiHub>();
+
             //DbContext
             services.AddDbContext<CfmsDbContext>(options =>
             {

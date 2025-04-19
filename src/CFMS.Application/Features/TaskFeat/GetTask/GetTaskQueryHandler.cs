@@ -21,38 +21,44 @@ namespace CFMS.Application.Features.TaskFeat.GetTask
 
         public async Task<BaseResponse<TaskResponse>> Handle(GetTaskQuery request, CancellationToken cancellationToken)
         {
-            var existTask = _unitOfWork.TaskRepository.GetIncludeMultiLayer(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false,
-                include: q => q
-                    .Include(t => t.Assignments)
-                        .ThenInclude(s => s.AssignedTo)
-                    .Include(t => t.TaskType)
-                    .Include(t => t.ShiftSchedules)
-                        .ThenInclude(s => s.Shift)
-                    .Include(t => t.TaskHarvests)
-                    .Include(t => t.TaskResources)
-                        .ThenInclude(s => s.Resource)
-                            .ThenInclude(r => r.Food)
-                    .Include(t => t.TaskResources)
-                        .ThenInclude(s => s.Resource)
-                            .ThenInclude(r => r.Medicine)
-                    .Include(t => t.TaskResources)
-                        .ThenInclude(s => s.Resource)
-                            .ThenInclude(r => r.Equipment)
-                    .Include(t => t.TaskResources)
-                        .ThenInclude(s => s.ResourceType)
-                    .Include(t => t.TaskResources)
-                        .ThenInclude(s => s.Resource)
-                            .ThenInclude(s => s.Unit)
-                    .Include(t => t.TaskResources)
-                        .ThenInclude(s => s.Resource)
-                            .ThenInclude(s => s.Package)
-                    .Include(t => t.TaskResources)
-                        .ThenInclude(s => s.Unit)
-                    .Include(t => t.TaskLocations)
-                        .ThenInclude(s => s.Location)
-                    .Include(t => t.TaskLocations)
-                        .ThenInclude(s => s.LocationNavigation)
+            //var existTask = _unitOfWork.TaskRepository.GetIncludeMultiLayer(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false,
+            //    include: q => q
+            //        .Include(t => t.Assignments)
+            //            .ThenInclude(s => s.AssignedTo)
+            //        .Include(t => t.TaskType)
+            //        .Include(t => t.ShiftSchedules)
+            //            .ThenInclude(s => s.Shift)
+            //        .Include(t => t.TaskHarvests)
+            //        .Include(t => t.TaskResources)
+            //            .ThenInclude(s => s.Resource)
+            //                .ThenInclude(r => r.Food)
+            //        .Include(t => t.TaskResources)
+            //            .ThenInclude(s => s.Resource)
+            //                .ThenInclude(r => r.Medicine)
+            //        .Include(t => t.TaskResources)
+            //            .ThenInclude(s => s.Resource)
+            //                .ThenInclude(r => r.Equipment)
+            //        .Include(t => t.TaskResources)
+            //            .ThenInclude(s => s.ResourceType)
+            //        .Include(t => t.TaskResources)
+            //            .ThenInclude(s => s.Resource)
+            //                .ThenInclude(s => s.Unit)
+            //        .Include(t => t.TaskResources)
+            //            .ThenInclude(s => s.Resource)
+            //                .ThenInclude(s => s.Package)
+            //        .Include(t => t.TaskResources)
+            //            .ThenInclude(s => s.Unit)
+            //        .Include(t => t.TaskLocations)
+            //            .ThenInclude(s => s.Location)
+            //        .Include(t => t.TaskLocations)
+            //            .ThenInclude(s => s.LocationNavigation)
+            //    ).FirstOrDefault();
+
+            var existTask = _unitOfWork.TaskRepository.Get(
+                    filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false,
+                    includeProperties: "Assignments,Assignments.AssignedTo,TaskType,ShiftSchedules,ShiftSchedules.Shift,TaskResources,TaskResources.ResourceType,TaskResources.Resource,TaskResources.Resource.Food,TaskResources.Resource.Medicine,TaskResources.Resource.Equipment,TaskLocations,TaskLocations.Location,TaskLocations.LocationNavigation"
                 ).FirstOrDefault();
+            //    include: q => q)
             if (existTask == null)
             {
                 return BaseResponse<TaskResponse>.FailureResponse(message: "Công việc không tồn tại");

@@ -1,5 +1,6 @@
 ﻿using CFMS.Api.Extensions;
 using CFMS.Api.Middlewares;
+using CFMS.Application.Services.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,8 @@ app.UseMiddleware<JwtBlacklistMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<NotiHub>("/noti");
 
 app.Run();
 
