@@ -68,7 +68,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                     ResourceId = d.ResourceId,
                     ResourceSupplierId = null,
                     ActualQuantity = d.ActualQuantity,
-                    ActualDate = DateTime.Now,
+                    ActualDate = DateTime.Now.ToLocalTime().AddHours(7),
                     Note = d.Note,
                     BatchNumber = d.BatchNumber
                 };
@@ -112,7 +112,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                     BatchNumber = d.BatchNumber,
                     TransactionType = existReceiptType.SubCategoryId,
                     Reason = d.Note,
-                    TransactionDate = DateTime.Now.ToLocalTime(),
+                    TransactionDate = DateTime.Now.ToLocalTime().AddHours(7),
                     LocationFromId = receiptCodePrefix == "PNK" ? request.WareToId : request.WareFromId,
                     LocationToId = receiptCodePrefix == "PNK" ? request.WareToId : request.WareFromId
                 };

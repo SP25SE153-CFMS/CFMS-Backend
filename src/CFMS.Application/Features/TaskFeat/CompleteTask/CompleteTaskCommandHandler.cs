@@ -9,6 +9,7 @@ using Google.Apis.Drive.v3.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Org.BouncyCastle.Utilities;
 using Twilio.Base;
 using Resource = CFMS.Domain.Entities.Resource;
 
@@ -270,6 +271,22 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                         //UnitId = request.Note,
                         TaskId = request.TaskId,
                         Note = request.Note,
+                    };
+                }
+
+                if (taskType.Equals("inject"))
+                {
+                    var vaccineLog = new VaccineLog
+                    {
+                        Notes = request.Note,
+                        Status = 1,
+                        //Reaction = ,
+                        ChickenBatchId = coop.ChickenBatches
+                                            .Where(x => x.EndDate == null)
+                                            .OrderByDescending(x => x.StartDate)
+                                            .Select(x => x.ChickenBatchId)
+                                            .FirstOrDefault(),
+                        TaskId = request.TaskId
                     };
                 }
             }
