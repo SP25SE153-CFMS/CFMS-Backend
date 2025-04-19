@@ -4,6 +4,7 @@ using CFMS.Application.Features.WarehouseFeat.GetWare;
 using CFMS.Application.Features.WarehouseFeat.GetWares;
 using CFMS.Application.Features.WarehouseFeat.GetWaresByFarmId;
 using CFMS.Application.Features.WarehouseFeat.GetWareStock;
+using CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarmId;
 using CFMS.Application.Features.WarehouseFeat.GetWareStocks;
 using CFMS.Application.Features.WarehouseFeat.Update;
 using MediatR;
@@ -35,6 +36,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetWareStock(Guid resourceId)
         {
             var result = await Send(new GetWareStockQuery(resourceId));
+            return result;
+        }
+
+        [HttpGet("warestock-resource-byFarm/{resourceTypeName}/{farmId}")]
+        public async Task<IActionResult> GetWarestockResourceTypeByFarmId(Guid farmId, string resourceTypeName)
+        {
+            var result = await Send(new GetWarestockResourceTypeByFarmIdQuery(resourceTypeName, farmId));
             return result;
         }
 
