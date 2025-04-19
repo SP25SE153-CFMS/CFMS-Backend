@@ -20,6 +20,8 @@ public partial class SubCategory : EntityAudit
 
     public Guid? FarmId { get; set; }
 
+    public int? IsHidden { get; set; }
+
     [JsonIgnore]
     public virtual Category? Category { get; set; }
 

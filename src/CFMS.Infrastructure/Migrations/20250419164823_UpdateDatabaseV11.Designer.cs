@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250418193824_Fix_ImageUrl_Type")]
-    partial class Fix_ImageUrl_Type
+    [Migration("20250419164823_UpdateDatabaseV11")]
+    partial class UpdateDatabaseV11
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -2039,6 +2039,9 @@ namespace CFMS.Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
+
+                    b.Property<int?>("IsHidden")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");

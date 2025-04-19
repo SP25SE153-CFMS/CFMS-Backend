@@ -2037,6 +2037,9 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<int?>("IsHidden")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("LastEditedByUserId")
                         .HasColumnType("uuid");
 
