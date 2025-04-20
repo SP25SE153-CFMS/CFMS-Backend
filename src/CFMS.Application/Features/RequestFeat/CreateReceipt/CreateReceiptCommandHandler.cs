@@ -30,7 +30,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
             if (existRequest == null)
                 return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu không tồn tại");
 
-            if (existRequest.Status == 1)
+            if (existRequest.Status == 2)
                 return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu đã bị từ chối");
 
             if (existRequest.Status == 0)
