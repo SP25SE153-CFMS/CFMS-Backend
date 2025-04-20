@@ -21,10 +21,10 @@ namespace CFMS.Api.Controllers
         {
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpGet("Farm/{farmId}")]
+        public async Task<IActionResult> GetCategoriesByFarmId(Guid farmId)
         {
-            var result = await Send(new GetCategoriesQuery());
+            var result = await Send(new GetCategoriesQuery(farmId));
             return result;
         }
 
