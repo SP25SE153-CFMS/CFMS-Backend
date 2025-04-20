@@ -60,8 +60,8 @@ namespace CFMS.Application.Features.RequestFeat.Create
                     {
                         RequestId = newRequest.RequestId,
                         InventoryRequestTypeId = request.InventoryRequestTypeId,
-                        WareFromId = request.WareFromId,
-                        WareToId = request.WareToId
+                        WareFromId = request.WareFromId ?? null,
+                        WareToId = request.WareToId ?? null
                     };
 
                     _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);

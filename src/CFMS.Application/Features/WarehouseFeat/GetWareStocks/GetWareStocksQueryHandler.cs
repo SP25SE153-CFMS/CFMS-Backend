@@ -3,6 +3,7 @@ using CFMS.Application.Common;
 using CFMS.Application.DTOs.WareStock;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
 {
@@ -57,7 +58,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
 
                     var quantity = resource?.WareStocks.FirstOrDefault(x => x.ResourceId.Equals(resource.ResourceId) && x.WareId.Equals(request.WareId))?.Quantity ?? 0;
 
-                    var ware = _unitOfWork.WarehouseRepository.Get(filter: f => f.WareId.Equals(request.WareId) && f.IsDeleted == false).FirstOrDefault();
+                    var ware = _unitOfWork.WarehouseRepository.GetIncludeMultiLayer(filter: f => f.WareId.Equals(request.WareId) && f.IsDeleted == false, include: x => x.Include(t => t.Farm)).FirstOrDefault();
 
                     var resourceSupplier = _unitOfWork.ResourceSupplierRepository.Get(filter: f => f.ResourceId.Equals(resource.ResourceId) && f.Supplier.FarmId.Equals(ware.FarmId) && f.IsDeleted == false).FirstOrDefault();
 
