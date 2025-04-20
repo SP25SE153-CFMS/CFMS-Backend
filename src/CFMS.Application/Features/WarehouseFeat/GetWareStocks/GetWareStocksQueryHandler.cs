@@ -60,7 +60,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
 
                     var ware = _unitOfWork.WarehouseRepository.GetIncludeMultiLayer(filter: f => f.WareId.Equals(request.WareId) && f.IsDeleted == false, include: x => x.Include(t => t.Farm)).FirstOrDefault();
 
-                    var resourceSupplier = _unitOfWork.ResourceSupplierRepository.Get(filter: f => f.ResourceId.Equals(resource.ResourceId) && f.Supplier.FarmId.Equals(ware.FarmId) && f.IsDeleted == false).FirstOrDefault();
+                    var resourceSupplier = _unitOfWork.ResourceSupplierRepository.GetIncludeMultiLayer(filter: f => f.ResourceId.Equals(resource.ResourceId) && f.Supplier.FarmId.Equals(ware.FarmId) && f.IsDeleted == false, include: x => x.Include(t => t.Supplier)).FirstOrDefault();
 
                     switch (existResourceType.SubCategoryName)
                     {
