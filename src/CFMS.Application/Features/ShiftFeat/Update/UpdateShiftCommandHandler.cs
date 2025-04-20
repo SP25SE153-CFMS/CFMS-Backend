@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.ShiftFeat.Update
             }
 
             var existName = _unitOfWork.ShiftRepository.Get(filter: s => s.ShiftName.Equals(request.ShiftName) && s.IsDeleted == false && s.ShiftId != request.ShiftId).FirstOrDefault();
-            if (existName != null)
+            if (existName == null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên ca làm đã tồn tại");
             }
