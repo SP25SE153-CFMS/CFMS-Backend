@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Application.DTOs.Supplier;
 using CFMS.Application.DTOs.WareStock;
 using CFMS.Application.Features.WarehouseFeat.GetWareStocks;
 using CFMS.Domain.Entities;
@@ -88,9 +89,15 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
-                                    .Select(rs => rs.Supplier?.SupplierName ?? "Chưa có nhà cung cấp")
-                                    .Distinct()
-                                    .ToArray()
+                                    .Where(rs => rs.Supplier != null)
+                                    .GroupBy(rs => rs?.Supplier?.SupplierId)
+                                    .Select(g => new SupplierResponse
+                                    {
+                                        SupplierId = g.First().Supplier?.SupplierId.ToString(),
+                                        SupplierCode = g.First().Supplier?.SupplierCode,
+                                        SupplierName = g.First().Supplier?.SupplierName
+                                    })
+                                    .ToList()
                             };
 
                         case "equipment":
@@ -115,9 +122,15 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
-                                    .Select(rs => rs.Supplier?.SupplierName ?? "Chưa có nhà cung cấp")
-                                    .Distinct()
-                                    .ToArray()
+                                    .Where(rs => rs.Supplier != null)
+                                    .GroupBy(rs => rs?.Supplier?.SupplierId)
+                                    .Select(g => new SupplierResponse
+                                    {
+                                        SupplierId = g.First().Supplier?.SupplierId.ToString(),
+                                        SupplierCode = g.First().Supplier?.SupplierCode,
+                                        SupplierName = g.First().Supplier?.SupplierName
+                                    })
+                                    .ToList()
                             };
 
                         case "medicine":
@@ -140,9 +153,15 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
-                                    .Select(rs => rs.Supplier?.SupplierName ?? "Chưa có nhà cung cấp")
-                                    .Distinct()
-                                    .ToArray()
+                                    .Where(rs => rs.Supplier != null)
+                                    .GroupBy(rs => rs?.Supplier?.SupplierId)
+                                    .Select(g => new SupplierResponse
+                                    {
+                                        SupplierId = g.First().Supplier?.SupplierId.ToString(),
+                                        SupplierCode = g.First().Supplier?.SupplierCode,
+                                        SupplierName = g.First().Supplier?.SupplierName
+                                    })
+                                    .ToList()
                             };
 
                         case "breeding":
@@ -160,9 +179,15 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
-                                    .Select(rs => rs.Supplier?.SupplierName ?? "Chưa có nhà cung cấp")
-                                    .Distinct()
-                                    .ToArray()
+                                    .Where(rs => rs.Supplier != null)
+                                    .GroupBy(rs => rs?.Supplier?.SupplierId)
+                                    .Select(g => new SupplierResponse
+                                    {
+                                        SupplierId = g.First().Supplier?.SupplierId.ToString(),
+                                        SupplierCode = g.First().Supplier?.SupplierCode,
+                                        SupplierName = g.First().Supplier?.SupplierName
+                                    })
+                                    .ToList()
                             };
 
                         case "harvest_product":
@@ -180,9 +205,15 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
-                                    .Select(rs => rs.Supplier?.SupplierName ?? "Chưa có nhà cung cấp")
-                                    .Distinct()
-                                    .ToArray()
+                                    .Where(rs => rs.Supplier != null)
+                                    .GroupBy(rs => rs?.Supplier?.SupplierId)
+                                    .Select(g => new SupplierResponse
+                                    {
+                                        SupplierId = g.First().Supplier?.SupplierId.ToString(),
+                                        SupplierCode = g.First().Supplier?.SupplierCode,
+                                        SupplierName = g.First().Supplier?.SupplierName
+                                    })
+                                    .ToList()
                             };
 
                         default:
