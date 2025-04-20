@@ -22,7 +22,7 @@ namespace CFMS.Application.Features.ShiftFeat.GetShiftByFarmId
 
         public async Task<BaseResponse<Shift>> Handle(GetShiftByFarmIdQuery request, CancellationToken cancellationToken)
         {
-            var existShift = _unitOfWork.ShiftRepository.Get(filter: f => f.FarmId == null && f.FarmId.Equals(request.FarmId) && f.IsDeleted == false).FirstOrDefault();
+            var existShift = _unitOfWork.ShiftRepository.Get(filter: f => (f.FarmId == null || f.FarmId.Equals(request.FarmId)) && f.IsDeleted == false).FirstOrDefault();
             if (existShift == null)
             {
                 return BaseResponse<Shift>.FailureResponse(message: "Ca làm không tồn tại");
