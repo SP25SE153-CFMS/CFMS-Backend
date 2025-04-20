@@ -1,12 +1,21 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Twilio.TwiML.Messaging;
 
 namespace CFMS.Application.Services.SignalR
 {
     public class NotiHub : Hub
     {
+        private IHubContext<NotiHub> _hubContext;
+
+        public NotiHub(IHubContext<NotiHub> hubContext)
+        {
+            _hubContext = hubContext;
+        }
+
         public async Task SendMessage(object data)
         {
-            await Clients.All.SendAsync("ReceiveMessage", data);
+            await _hubContext.Clients.All.SendAsync("SendMessage", data);
         }
     }
 }
