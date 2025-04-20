@@ -8,8 +8,9 @@ namespace CFMS.Application.DTOs.Supplier
 {
     public class SupplierResponse
     {
-        public string? SupplierId { get; set; }
+        public Guid? SupplierId { get; set; }
         public string? SupplierCode { get; set; }
         public string? SupplierName { get; set; }
+        public Guid? ResourceSupplierId { get; set; }
     }
 }

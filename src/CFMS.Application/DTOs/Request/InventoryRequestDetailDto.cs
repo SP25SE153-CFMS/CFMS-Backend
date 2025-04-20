@@ -13,7 +13,6 @@ namespace CFMS.Application.DTOs.Request
         public decimal? ExpectedQuantity { get; set; }
         public Guid? UnitId { get; set; }
         public string? Reason { get; set; }
-        public DateTime? ExpectedDate { get; set; }
         public string? Note { get; set; }
     }
 }

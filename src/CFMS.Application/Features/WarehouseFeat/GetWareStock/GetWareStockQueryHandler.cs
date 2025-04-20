@@ -91,11 +91,20 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
-                                    .Select(g => new SupplierResponse
+                                    .Select(g =>
                                     {
-                                        SupplierId = g.First().Supplier?.SupplierId.ToString(),
-                                        SupplierCode = g.First().Supplier?.SupplierCode,
-                                        SupplierName = g.First().Supplier?.SupplierName
+                                        var first = g.First();
+                                        var matchedResourceSupplier = g.FirstOrDefault(x =>
+                                            x.ResourceId == resource?.ResourceId &&
+                                            x.SupplierId == x.Supplier?.SupplierId);
+
+                                        return new SupplierResponse
+                                        {
+                                            SupplierId = first.Supplier?.SupplierId,
+                                            SupplierCode = first.Supplier?.SupplierCode,
+                                            SupplierName = first.Supplier?.SupplierName,
+                                            ResourceSupplierId = matchedResourceSupplier?.ResourceSupplierId
+                                        };
                                     })
                                     .ToList()
                             };
@@ -124,11 +133,20 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
-                                    .Select(g => new SupplierResponse
+                                    .Select(g =>
                                     {
-                                        SupplierId = g.First().Supplier?.SupplierId.ToString(),
-                                        SupplierCode = g.First().Supplier?.SupplierCode,
-                                        SupplierName = g.First().Supplier?.SupplierName
+                                        var first = g.First();
+                                        var matchedResourceSupplier = g.FirstOrDefault(x =>
+                                            x.ResourceId == resource?.ResourceId &&
+                                            x.SupplierId == x.Supplier?.SupplierId);
+
+                                        return new SupplierResponse
+                                        {
+                                            SupplierId = first.Supplier?.SupplierId,
+                                            SupplierCode = first.Supplier?.SupplierCode,
+                                            SupplierName = first.Supplier?.SupplierName,
+                                            ResourceSupplierId = matchedResourceSupplier?.ResourceSupplierId
+                                        };
                                     })
                                     .ToList()
                             };
@@ -155,11 +173,20 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
-                                    .Select(g => new SupplierResponse
+                                    .Select(g =>
                                     {
-                                        SupplierId = g.First().Supplier?.SupplierId.ToString(),
-                                        SupplierCode = g.First().Supplier?.SupplierCode,
-                                        SupplierName = g.First().Supplier?.SupplierName
+                                        var first = g.First();
+                                        var matchedResourceSupplier = g.FirstOrDefault(x =>
+                                            x.ResourceId == resource?.ResourceId &&
+                                            x.SupplierId == x.Supplier?.SupplierId);
+
+                                        return new SupplierResponse
+                                        {
+                                            SupplierId = first.Supplier?.SupplierId,
+                                            SupplierCode = first.Supplier?.SupplierCode,
+                                            SupplierName = first.Supplier?.SupplierName,
+                                            ResourceSupplierId = matchedResourceSupplier?.ResourceSupplierId
+                                        };
                                     })
                                     .ToList()
                             };
@@ -181,11 +208,20 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
-                                    .Select(g => new SupplierResponse
+                                    .Select(g =>
                                     {
-                                        SupplierId = g.First().Supplier?.SupplierId.ToString(),
-                                        SupplierCode = g.First().Supplier?.SupplierCode,
-                                        SupplierName = g.First().Supplier?.SupplierName
+                                        var first = g.First();
+                                        var matchedResourceSupplier = g.FirstOrDefault(x =>
+                                            x.ResourceId == resource?.ResourceId &&
+                                            x.SupplierId == x.Supplier?.SupplierId);
+
+                                        return new SupplierResponse
+                                        {
+                                            SupplierId = first.Supplier?.SupplierId,
+                                            SupplierCode = first.Supplier?.SupplierCode,
+                                            SupplierName = first.Supplier?.SupplierName,
+                                            ResourceSupplierId = matchedResourceSupplier?.ResourceSupplierId
+                                        };
                                     })
                                     .ToList()
                             };
@@ -207,11 +243,20 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
-                                    .Select(g => new SupplierResponse
+                                    .Select(g =>
                                     {
-                                        SupplierId = g.First().Supplier?.SupplierId.ToString(),
-                                        SupplierCode = g.First().Supplier?.SupplierCode,
-                                        SupplierName = g.First().Supplier?.SupplierName
+                                        var first = g.First();
+                                        var matchedResourceSupplier = g.FirstOrDefault(x =>
+                                            x.ResourceId == resource?.ResourceId &&
+                                            x.SupplierId == x.Supplier?.SupplierId);
+
+                                        return new SupplierResponse
+                                        {
+                                            SupplierId = first.Supplier?.SupplierId,
+                                            SupplierCode = first.Supplier?.SupplierCode,
+                                            SupplierName = first.Supplier?.SupplierName,
+                                            ResourceSupplierId = matchedResourceSupplier?.ResourceSupplierId
+                                        };
                                     })
                                     .ToList()
                             };
