@@ -28,9 +28,9 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
 
             try
             {
-                foreach (var assignedToId in request.AssignedToIds)
+                foreach (var assignedTo in request.AssignedTos)
                 {
-                    var existEmployee = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(assignedToId) && u.FarmEmployees.Any(fe => fe.FarmId.Equals(task.FarmId)) && u.Status == 1, includeProperties: "FarmEmployees").FirstOrDefault();
+                    var existEmployee = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(assignedTo.AssignedToId) && u.FarmEmployees.Any(fe => fe.FarmId.Equals(task.FarmId)) && u.Status == 1, includeProperties: "FarmEmployees").FirstOrDefault();
                     if (existEmployee == null)
                     {
                         return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
@@ -40,14 +40,14 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
                     {
                         TaskId = request.TaskId,
                         AssignedDate = request.AssignedDate,
-                        AssignedToId = assignedToId,
+                        AssignedToId = assignedTo.AssignedToId,
                         Note = request.Note,
-                        Status = request.Status,
+                        Status = assignedTo.Status,
                     };
 
                     var noti = new Notification
                     {
-                        UserId = assignedToId,
+                        UserId = assignedTo.AssignedToId,
                         NotificationName = "Thông báo giao việc",
                         NotificationType = "ASSIGNMENT_TASK",
                         Content = "Công việc " + task.TaskName + " đã được giao đến bạn, vui lòng hoàn thành đúng thời hạn",
