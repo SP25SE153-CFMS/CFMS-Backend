@@ -15,5 +15,6 @@ namespace CFMS.Domain.Interfaces
         DateTime? ToVietnamTime(DateTime utcDateTime);
         string CapitalizeFirstLetter(string input);
         string FormatVietnamPhoneNumber(string input);
+        int ExtractConversionRate(string description);
     }
 }

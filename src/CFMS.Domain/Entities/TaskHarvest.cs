@@ -10,13 +10,15 @@ public partial class TaskHarvest
 
     public Guid TaskId { get; set; }
 
+    public Guid? HarvestProductId { get; set; }
+
     public Guid? HarvestTypeId { get; set; }
 
-    public int? Quantity { get; set; }
+    public decimal? Quantity { get; set; }
 
-    public Guid? UnitId { get; set; }
+    //public Guid? UnitId { get; set; }
 
-    public string? Quality { get; set; }
+    //public string? Quality { get; set; }
 
     public virtual SubCategory? HarvestType { get; set; }
 

@@ -82,5 +82,15 @@ namespace CFMS.Application.Services.Impl
 
             return $"+84 {input.Substring(0, 3)} {input.Substring(3, 3)} {input.Substring(6)}";
         }
+
+        public int ExtractConversionRate(string description)
+        {
+            var parts = description.Split(' ');
+            if (parts.Length >= 1 && int.TryParse(parts[0], out int rate))
+            {
+                return rate;
+            }
+            return 1;
+        }
     }
 }
