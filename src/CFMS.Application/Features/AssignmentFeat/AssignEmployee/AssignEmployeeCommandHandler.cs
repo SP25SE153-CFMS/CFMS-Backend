@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Application.Services.SignalR;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
@@ -9,13 +10,14 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
     public class AssignEmployeeCommandHandler : IRequestHandler<AssignEmployeeCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
-
         private readonly IMapper _mapper;
+        private readonly NotiHub _hubContext;
 
-        public AssignEmployeeCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public AssignEmployeeCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, NotiHub hubContext)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _hubContext = hubContext;
         }
 
         public async Task<BaseResponse<bool>> Handle(AssignEmployeeCommand request, CancellationToken cancellationToken)
@@ -53,6 +55,8 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
                         Content = "Công việc " + task.TaskName + " đã được giao đến bạn, vui lòng hoàn thành đúng thời hạn",
                         IsRead = 0
                     };
+
+                    await _hubContext.SendMessage(noti);
 
                     _unitOfWork.NotificationRepository.Insert(noti);
                     _unitOfWork.AssignmentRepository.Insert(assignment);

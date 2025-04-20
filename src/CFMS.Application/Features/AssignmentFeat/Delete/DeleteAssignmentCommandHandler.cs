@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.Services.SignalR;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
@@ -8,10 +9,12 @@ namespace CFMS.Application.Features.AssignmentFeat.Delete
     public class DeleteAssignmentCommandHandler : IRequestHandler<DeleteAssignmentCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly NotiHub _hubContext;
 
-        public DeleteAssignmentCommandHandler(IUnitOfWork unitOfWork)
+        public DeleteAssignmentCommandHandler(IUnitOfWork unitOfWork, NotiHub hubContext)
         {
             _unitOfWork = unitOfWork;
+            _hubContext = hubContext;
         }
 
         public async Task<BaseResponse<bool>> Handle(DeleteAssignmentCommand request, CancellationToken cancellationToken)
@@ -40,6 +43,8 @@ namespace CFMS.Application.Features.AssignmentFeat.Delete
                     Content = "Công việc " + existTask.TaskName + " đã không còn giao cho bạn",
                     IsRead = 0
                 };
+
+                await _hubContext.SendMessage(noti);
 
                 _unitOfWork.NotificationRepository.Insert(noti);
                 _unitOfWork.TaskRepository.Update(existTask);

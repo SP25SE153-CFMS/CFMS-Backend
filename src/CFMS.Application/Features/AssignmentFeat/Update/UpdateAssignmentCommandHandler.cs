@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.Services.SignalR;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
@@ -8,10 +9,12 @@ namespace CFMS.Application.Features.AssignmentFeat.Update
     public class UpdateAssignmentCommandHandler : IRequestHandler<UpdateAssignmentCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly NotiHub _hubContext;
 
-        public UpdateAssignmentCommandHandler(IUnitOfWork unitOfWork)
+        public UpdateAssignmentCommandHandler(IUnitOfWork unitOfWork, NotiHub hubContext)
         {
             _unitOfWork = unitOfWork;
+            _hubContext = hubContext;
         }
 
         public async Task<BaseResponse<bool>> Handle(UpdateAssignmentCommand request, CancellationToken cancellationToken)
@@ -42,6 +45,8 @@ namespace CFMS.Application.Features.AssignmentFeat.Update
                     Content = "Công việc " + task.TaskName + " được giao đến bạn đã cập nhật, vui lòng kiểm tra lại thông tin",
                     IsRead = 0
                 };
+
+                await _hubContext.SendMessage(noti);
 
                 _unitOfWork.NotificationRepository.Insert(noti);
                 _unitOfWork.AssignmentRepository.Insert(existAssignment);
