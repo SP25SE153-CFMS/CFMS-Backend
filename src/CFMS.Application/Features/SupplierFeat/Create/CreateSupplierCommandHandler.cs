@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.SupplierFeat.Create
 
         public async Task<BaseResponse<bool>> Handle(CreateSupplierCommand request, CancellationToken cancellationToken)
         {
-            var existSupplier = _unitOfWork.SupplierRepository.Get(filter: s => s.SupplierCode.Equals(request.SupplierCode) || s.SupplierName.Equals(request.SupplierName) && s.IsDeleted == false).FirstOrDefault();
+            var existSupplier = _unitOfWork.SupplierRepository.Get(filter: s => (s.SupplierCode.Equals(request.SupplierCode) || s.SupplierName.Equals(request.SupplierName)) && s.FarmId.Equals(request.FarmId) && s.IsDeleted == false).FirstOrDefault();
             if (existSupplier != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên hoặc mã nhà cung cấp đã tồn tại");
