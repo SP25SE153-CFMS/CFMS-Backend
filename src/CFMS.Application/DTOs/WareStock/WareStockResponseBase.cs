@@ -20,5 +20,8 @@ namespace CFMS.Application.DTOs.WareStock
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? SupplierName { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string[]? SuppliersName { get; set; }
     }
 }
