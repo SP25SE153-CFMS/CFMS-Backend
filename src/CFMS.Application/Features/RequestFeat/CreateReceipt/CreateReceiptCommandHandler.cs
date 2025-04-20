@@ -30,7 +30,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
             if (existRequest == null)
                 return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu không tồn tại");
 
-            if (existRequest.Status == 1)
+            if (existRequest.Status == 2)
                 return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu đã bị từ chối");
 
             if (existRequest.Status == 0)
@@ -116,7 +116,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                     LocationFromId = receiptCodePrefix == "PNK" ? request.WareToId : request.WareFromId,
                     LocationToId = receiptCodePrefix == "PNK" ? request.WareToId : request.WareFromId
                 };
-                _unitOfWork.InventoryReceiptDetailRepository.Insert(inventoryReceiptDetail);
+                _unitOfWork.WareTransactionRepository.Insert(transaction);
             }
 
             await _unitOfWork.SaveChangesAsync();

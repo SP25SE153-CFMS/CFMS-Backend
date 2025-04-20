@@ -17,6 +17,7 @@ namespace CFMS.Application.Features.RequestFeat.Update
         public Guid? InventoryRequestTypeId { get; set; }
         public Guid? WareFromId { get; set; }
         public Guid? WareToId { get; set; }
+        public DateTime? ExpectedDate { get; set; }
         public List<InventoryRequestDetailDto>? InventoryDetails { get; set; }
 
         // Task Request
