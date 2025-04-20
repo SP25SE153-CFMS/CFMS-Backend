@@ -14,6 +14,8 @@ namespace CFMS.Application.DTOs.WareStock
 
         public Guid HarvestProductId { get; set; }
 
+        public string? HarvestProductCode { get; set; }
+
         public string? HarvestProductName { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
