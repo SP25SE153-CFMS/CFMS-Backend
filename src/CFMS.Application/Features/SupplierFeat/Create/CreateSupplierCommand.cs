@@ -10,13 +10,14 @@ namespace CFMS.Application.Features.SupplierFeat.Create
 { 
     public class CreateSupplierCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateSupplierCommand(string? supplierName, string? supplierCode, string? address, string? phoneNumber, string? bankAccount, int? status)
+        public CreateSupplierCommand(string? supplierName, string? supplierCode, string? address, string? phoneNumber, string? bankAccount, Guid? farmId, int? status)
         {
             SupplierName = supplierName;
             SupplierCode = supplierCode;
             Address = address;
             PhoneNumber = phoneNumber;
             BankAccount = bankAccount;
+            FarmId = farmId;
             Status = status;
         }
 
@@ -29,6 +30,8 @@ namespace CFMS.Application.Features.SupplierFeat.Create
         public string? PhoneNumber { get; set; }
 
         public string? BankAccount { get; set; }
+
+        public Guid? FarmId { get; set; }
 
         public int? Status { get; set; }
     }
