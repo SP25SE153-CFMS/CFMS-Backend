@@ -1,11 +1,13 @@
 ﻿using CFMS.Application.Features.SupplierFeat.AddResourceSupplier;
 using CFMS.Application.Features.SupplierFeat.Create;
 using CFMS.Application.Features.SupplierFeat.Delete;
+using CFMS.Application.Features.SupplierFeat.DeleteResourceSupplier;
 using CFMS.Application.Features.SupplierFeat.GetResourceSuppliers;
 using CFMS.Application.Features.SupplierFeat.GetSupplier;
 using CFMS.Application.Features.SupplierFeat.GetSuppliers;
 using CFMS.Application.Features.SupplierFeat.GetSuppliersByFarmId;
 using CFMS.Application.Features.SupplierFeat.Update;
+using CFMS.Application.Features.SupplierFeat.UpdateResourceSupplier;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,6 +72,20 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> AddResourceSupplier(AddResourceSupplierCommand command)
         {
             var result = await Send(command);
+            return result;
+        }
+
+        [HttpPut("update-resource-supplier")]
+        public async Task<IActionResult> UpdateResourceSupplier(UpdateResourceSupplierCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpDelete("delete-resource-supplier/{resourceSupplierId}")]
+        public async Task<IActionResult> DeleteResourceSupplier(Guid resourceSupplierId)
+        {
+            var result = await Send(new DeleteResourceSupplierCommand(resourceSupplierId));
             return result;
         }
     }
