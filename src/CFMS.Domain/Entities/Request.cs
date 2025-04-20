@@ -15,6 +15,8 @@ public partial class Request : EntityAudit
 
     public DateTime? ApprovedAt { get; set; }
 
+    public Guid? FarmId { get; set; }
+
     public virtual User? ApprovedBy { get; set; }
 
     public virtual ICollection<InventoryRequest> InventoryRequests { get; set; } = new List<InventoryRequest>();

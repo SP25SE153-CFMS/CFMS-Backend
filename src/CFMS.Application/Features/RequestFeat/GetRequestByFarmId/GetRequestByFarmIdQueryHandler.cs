@@ -2,6 +2,7 @@
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CFMS.Application.Features.RequestFeat.GetRequestByFarmId
 {
@@ -22,8 +23,20 @@ namespace CFMS.Application.Features.RequestFeat.GetRequestByFarmId
                 return BaseResponse<IEnumerable<Request>>.FailureResponse(message: "Farm không tồn tại");
             }
 
-            var requests = _unitOfWork.RequestRepository.Get(filter: r => r.CreatedByUser.FarmEmployees.Any(u => u.FarmId.Equals(request.FarmId)) && !r.IsDeleted);
-            return BaseResponse<IEnumerable<Request>>.SuccessResponse(data: requests);
+            var existRequest = _unitOfWork.RequestRepository.GetIncludeMultiLayer(filter: f => f.FarmId.Equals(request.FarmId) && f.IsDeleted == false,
+                include: x => x
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.InventoryRequestDetails)
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.WareFrom)
+                        .ThenInclude(r => r.Farm)
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.WareTo)
+                        .ThenInclude(r => r.Farm)
+                .Include(r => r.TaskRequests),
+                orderBy: q => q.OrderByDescending(x => x.CreatedWhen)
+                ).ToList();
+            return BaseResponse<IEnumerable<Request>>.SuccessResponse(data: existRequest);
         }
     }
 }
