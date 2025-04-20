@@ -1349,7 +1349,6 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("TaskHarvest");
 
             entity.Property(e => e.TaskHarvestId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.Quality).HasColumnType("character varying");
 
             entity.HasOne(d => d.HarvestType).WithMany(p => p.TaskHarvests)
                 .HasForeignKey(d => d.HarvestTypeId)

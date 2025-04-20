@@ -21,6 +21,8 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
         public string? Note { get; set; }
 
+        public string? Reaction { get; set; }
+
         public IEnumerable<TaskResourceRequest>? TaskResources { get; set; }
 
         public IEnumerable<HarvestProductRequest>? HarvestProducts { get; set; }

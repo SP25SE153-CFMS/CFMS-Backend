@@ -9,6 +9,7 @@ using Google.Apis.Drive.v3.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Org.BouncyCastle.Asn1.Cmp;
 using Org.BouncyCastle.Utilities;
 using Twilio.Base;
 using Resource = CFMS.Domain.Entities.Resource;
@@ -61,7 +62,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     .Include(t => t.TaskLocations)
                         .ThenInclude(s => s.Location)
                     .Include(t => t.TaskLocations)
-                        .ThenInclude(s => s.LocationNavigation) 
+                        .ThenInclude(s => s.LocationNavigation)
                 ).FirstOrDefault();
 
             if (existTask == null)
@@ -259,19 +260,48 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                 if (taskType.Equals("feed"))
                 {
-                    var feedLog = new FeedLog
+                    var groupResources = request?.TaskResources
+                        .Select(detail => new
+                        {
+                            Resource = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(
+                            filter: r => r.ResourceId == detail.ResourceId,
+                            include: x => x
+                                .Include(t => t.HarvestProduct))
+                                .FirstOrDefault(),
+                            ConsumedQuantity = detail.ConsumedQuantity,
+                        })
+                        .GroupBy(x => new
+                        {
+                            x?.Resource?.PackageSize,
+                            x?.Resource?.UnitId,
+                            x?.Resource?.PackageId
+                        })
+                        .ToList();
+
+                    var unit = _ = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("kg") && x.IsDeleted == false).FirstOrDefault();
+
+                    foreach (var group in groupResources)
                     {
-                        ChickenBatchId = coop.ChickenBatches
-                                            .Where(x => x.EndDate == null)
-                                            .OrderByDescending(x => x.StartDate)
-                                            .Select(x => x.ChickenBatchId)
-                                            .FirstOrDefault(),
-                        FeedingDate = DateTime.Now.ToLocalTime(),
-                        //ActualFeedAmount = existTask.TaskId,
-                        //UnitId = request.Note,
-                        TaskId = request.TaskId,
-                        Note = request.Note,
-                    };
+                        foreach (var detail in group)
+                        {
+                            var feedLog = new FeedLog
+                            {
+                                ChickenBatchId = coop?.ChickenBatches
+                                                    .Where(x => x.EndDate == null)
+                                                    .OrderByDescending(x => x.StartDate)
+                                                    .Select(x => x.ChickenBatchId)
+                                                    .FirstOrDefault(),
+                                FeedingDate = DateTime.Now.ToLocalTime(),
+                                ActualFeedAmount = group.Sum(x => x.ConsumedQuantity),
+                                UnitId = unit?.SubCategoryId,
+                                TaskId = request?.TaskId,
+                                Note = request?.Note,
+                            };
+
+
+                            _unitOfWork.FeedLogRepository.Insert(feedLog);
+                        }
+                    }
                 }
 
                 if (taskType.Equals("inject"))
@@ -280,15 +310,40 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     {
                         Notes = request.Note,
                         Status = 1,
-                        //Reaction = ,
-                        ChickenBatchId = coop.ChickenBatches
+                        Reaction = request.Reaction,
+                        ChickenBatchId = coop?.ChickenBatches
                                             .Where(x => x.EndDate == null)
                                             .OrderByDescending(x => x.StartDate)
                                             .Select(x => x.ChickenBatchId)
                                             .FirstOrDefault(),
                         TaskId = request.TaskId
                     };
+
+                    _unitOfWork.VaccineLogRepository.Insert(vaccineLog);
                 }
+
+                if (taskType.Equals("harvest"))
+                {
+                    foreach (var item in request.HarvestProducts)
+                    {
+                        var resource = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(filter: x => x.ResourceId.Equals(item.ResourceId) && x.IsDeleted == false,
+                            include: x => x
+                                .Include(t => t.HarvestProduct)
+                            ).FirstOrDefault();
+
+                        var harvestProduct = new TaskHarvest
+                        {
+                            HarvestProductId = item.ResourceId ?? Guid.Empty,
+                            HarvestTypeId = resource?.HarvestProduct?.HarvestProductTypeId,
+                            TaskId = request.TaskId,
+                            Quantity = item.Quantity
+                        };
+
+                        _unitOfWork.TaskHarvestRepository.Insert(harvestProduct);
+                    }
+                }
+
+                await _unitOfWork.SaveChangesAsync();
             }
         }
     }
