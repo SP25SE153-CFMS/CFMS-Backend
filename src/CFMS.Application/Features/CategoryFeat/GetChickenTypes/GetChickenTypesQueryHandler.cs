@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.CategoryFeat.GetChickenTypes
 
         public async Task<BaseResponse<IEnumerable<SubCategory>>> Handle(GetChickenTypesQuery request, CancellationToken cancellationToken)
         {
-            var subCategories = _unitOfWork.SubCategoryRepository.Get(filter: s => s.FarmId.Equals(request.FarmId) && s.Category.CategoryType.Equals("CHICKEN") && s.IsDeleted == false, includeProperties: [s => s.Category, s => s.Chickens]);
+            var subCategories = _unitOfWork.SubCategoryRepository.Get(filter: s => (s.FarmId == null || s.FarmId.Equals(request.FarmId)) && s.Category.CategoryType.Equals("CHICKEN") && s.IsDeleted == false, includeProperties: [s => s.Category, s => s.Chickens]);
             return BaseResponse<IEnumerable<SubCategory>>.SuccessResponse(data: subCategories);
         }
     }
