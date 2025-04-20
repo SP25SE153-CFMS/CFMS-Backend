@@ -66,14 +66,13 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpPut("/approve")]
+        [HttpPut("approve")]
         public async Task<IActionResult> Approve(ApproveRequestCommand command)
         {
             var result = await Send(command);
-            return result;
-        }
-
-        [HttpPost("/create-inventory-receipt")]
+            return result;     
+        
+        [HttpPost("create-inventory-receipt")]
         public async Task<IActionResult> CreateInventoryReceipt(CreateInventoryReceiptCommand command)
         {
             var result = await Send(command);
