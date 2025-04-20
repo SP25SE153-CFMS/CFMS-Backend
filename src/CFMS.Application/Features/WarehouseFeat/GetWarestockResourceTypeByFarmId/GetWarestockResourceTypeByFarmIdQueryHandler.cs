@@ -27,13 +27,13 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
         public async Task<BaseResponse<IEnumerable<object>>> Handle(GetWarestockResourceTypeByFarmIdQuery request, CancellationToken cancellationToken)
         {
             var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryName.Equals(request.ResourceTypeName) && f.IsDeleted == false).FirstOrDefault();
-            if (existResourceType == null)
+            if (!request.ResourceTypeName.Equals("all") && existResourceType == null)
             {
                 return BaseResponse<IEnumerable<object>>.FailureResponse("Loại hàng hoá không tồn tại");
             }
 
             var resources = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(
-                filter: f => f.ResourceTypeId.Equals(existResourceType.SubCategoryId) && f.WareStocks.Any(t => t.Ware.Farm.FarmId.Equals(request.FarmId)) && f.IsDeleted == false,
+                filter: f => request.ResourceTypeName.Equals("all") || f.ResourceTypeId.Equals(existResourceType.SubCategoryId) && f.WareStocks.Any(t => t.Ware.Farm.FarmId.Equals(request.FarmId)) && f.IsDeleted == false,
                 include: r => r
                 .Include(x => x.ResourceType)
                 .Include(x => x.ResourceSuppliers)
@@ -60,7 +60,11 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
                         return null;
                     }
 
-                    switch (existResourceType.SubCategoryName)
+                    var typeName = request.ResourceTypeName.Equals("all")
+                        ? resource?.ResourceType?.SubCategoryName?.ToLower()
+                        : existResourceType?.SubCategoryName?.ToLower();
+
+                    switch (typeName)
                     {
                         case "food":
                             return (WareStockResponseBase)new WareStockFoodResponse
@@ -100,8 +104,9 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
                             return new WareStockHavestProductResponse
                             {
                                 HarvestProductId = resource?.HarvestProductId ?? Guid.Empty,
+                                HarvestProductCode = resource?.HarvestProduct?.HarvestProductCode,
                                 HarvestProductName = resource?.HarvestProduct?.HarvestProductName,
-                                HarvestProductTypeId = existHarvestProductType.SubCategoryId,
+                                HarvestProductTypeId = existHarvestProductType?.SubCategoryId,
                                 HarvestProductTypeName = existHarvestProductType?.SubCategoryName,
                             };
 
@@ -110,6 +115,18 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
                     }
                 })
                 .Where(x => x != null)
+                .DistinctBy(x =>
+                {
+                    return x switch
+                    {
+                        WareStockFoodResponse food => food.FoodId,
+                        WareStockEquipmentResponse equip => equip.EquipmentId,
+                        WareStockMedicineResponse med => med.MedicineId,
+                        WareStockChickenBreedingResponse breed => breed.ChickenId,
+                        WareStockHavestProductResponse harvest => harvest.HarvestProductId,
+                        _ => Guid.NewGuid()
+                    };
+                })
                 .ToList();
 
             return BaseResponse<IEnumerable<object>>.SuccessResponse(wareStockFoodResponses);

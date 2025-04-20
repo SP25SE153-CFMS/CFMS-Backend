@@ -145,8 +145,9 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                             {
                                 ResourceId = resource?.ResourceId ?? Guid.Empty,
                                 HarvestProductId = resource?.HarvestProductId ?? Guid.Empty,
+                                HarvestProductCode = resource?.HarvestProduct?.HarvestProductName,
                                 HarvestProductName = resource?.HarvestProduct?.HarvestProductName,
-                                HarvestProductTypeId = existHarvestProductType.SubCategoryId,
+                                HarvestProductTypeId = existHarvestProductType?.SubCategoryId,
                                 HarvestProductTypeName = existHarvestProductType?.SubCategoryName,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
