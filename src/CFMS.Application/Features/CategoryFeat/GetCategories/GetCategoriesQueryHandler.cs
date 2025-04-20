@@ -20,7 +20,7 @@ namespace CFMS.Application.Features.CategoryFeat.GetCategories
 
         public async Task<BaseResponse<IEnumerable<Category>>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
         {
-            var categories = _unitOfWork.CategoryRepository.Get(filter: c => c.SubCategories.Any(s => s.FarmId.Equals(request.FarmId)) && c.IsDeleted == false, includeProperties: "SubCategories").ToList();
+            var categories = _unitOfWork.CategoryRepository.Get(filter: c => c.IsDeleted == false, includeProperties: "SubCategories").ToList();
             return BaseResponse<IEnumerable<Category>>.SuccessResponse(data: categories);
         }
     }
