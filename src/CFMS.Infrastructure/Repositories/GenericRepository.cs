@@ -260,5 +260,11 @@ namespace CFMS.Infrastructure.Repositories
                 _dbSet.Add(entity);
             }
         }
+
+        public virtual void UpdateWithoutDetach(TEntity entityToUpdate)
+        {
+            _dbSet.Attach(entityToUpdate);
+            _context.Entry(entityToUpdate).State = EntityState.Modified;
+        }
     }
 }
