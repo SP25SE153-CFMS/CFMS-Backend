@@ -91,10 +91,10 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpGet("get-chickentypes")]
-        public async Task<IActionResult> GetChickenTypes()
+        [HttpGet("Farm/{farmId}/get-chickentypes")]
+        public async Task<IActionResult> GetChickenTypes(Guid farmId)
         {
-            var result = await Send(new GetChickenTypesQuery());
+            var result = await Send(new GetChickenTypesQuery(farmId));
             return result;
         }
 
