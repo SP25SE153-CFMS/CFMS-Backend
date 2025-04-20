@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -17,6 +18,7 @@ public partial class InventoryReceipt : EntityAudit
 
     public virtual ICollection<InventoryReceiptDetail> InventoryReceiptDetails { get; set; } = new List<InventoryReceiptDetail>();
 
+    [JsonIgnore]
     public virtual InventoryRequest? InventoryRequest { get; set; }
 
     public virtual SubCategory? ReceiptType { get; set; }

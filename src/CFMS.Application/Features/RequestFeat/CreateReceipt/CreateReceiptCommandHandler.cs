@@ -116,7 +116,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                     LocationFromId = receiptCodePrefix == "PNK" ? request.WareToId : request.WareFromId,
                     LocationToId = receiptCodePrefix == "PNK" ? request.WareToId : request.WareFromId
                 };
-                _unitOfWork.InventoryReceiptDetailRepository.Insert(inventoryReceiptDetail);
+                _unitOfWork.WareTransactionRepository.Insert(transaction);
             }
 
             await _unitOfWork.SaveChangesAsync();
