@@ -14,10 +14,12 @@ namespace CFMS.Application.DTOs.WareStock
 
         public Guid HarvestProductId { get; set; }
 
+        public string? HarvestProductCode { get; set; }
+
         public string? HarvestProductName { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public Guid HarvestProductTypeId { get; set; }
+        public Guid? HarvestProductTypeId { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? HarvestProductTypeName { get; set; }
