@@ -9,6 +9,7 @@ using CFMS.Application.Features.RequestFeat.Create;
 using CFMS.Application.Features.RequestFeat.Delete;
 using CFMS.Application.Features.RequestFeat.GetRequest;
 using CFMS.Application.Features.RequestFeat.GetRequestByCurrentUser;
+using CFMS.Application.Features.RequestFeat.GetRequestByFarmId;
 using CFMS.Application.Features.RequestFeat.GetRequests;
 using CFMS.Application.Features.RequestFeat.Update;
 using CFMS.Application.Features.RequestFeat.UploadImage;
@@ -36,7 +37,7 @@ namespace CFMS.Api.Controllers
             var result = await Send(new GetRequestQuery(id));
             return result;
         }
-                
+
         [HttpGet("byCurrentUser")]
         public async Task<IActionResult> GetRequestByCurrentUser()
         {
@@ -69,8 +70,7 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Approve(ApproveRequestCommand command)
         {
             var result = await Send(command);
-            return result;
-        }        
+            return result;     
         
         [HttpPost("create-inventory-receipt")]
         public async Task<IActionResult> CreateInventoryReceipt(CreateInventoryReceiptCommand command)
@@ -83,6 +83,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> UploadImage(UploadImageCommand command)
         {
             var result = await Send(command);
+            return result;
+        }
+
+        [HttpGet("Farm/{farmId}")]
+        public async Task<IActionResult> GetRequestByFarmId(Guid farmId)
+        {
+            var result = await Send(new GetRequestByFarmIdQuery(farmId));
             return result;
         }
     }

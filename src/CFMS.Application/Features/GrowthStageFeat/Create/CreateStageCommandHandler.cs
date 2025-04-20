@@ -31,6 +31,21 @@ namespace CFMS.Application.Features.GrowthStageFeat.Create
                 return BaseResponse<bool>.FailureResponse(message: "Tên giai đoạn phát triển đã tồn tại");
             }
 
+            var groupStages = _unitOfWork.GrowthStageRepository.Get(
+                filter: s => s.StageCode.Equals(request.StageCode) && s.IsDeleted == false,
+                orderBy: s => s.OrderBy(s => s.MinAgeWeek)
+            ).ToList();
+
+            // 4. Kiểm tra khoảng tuần tuổi có chồng chéo với giai đoạn nào không
+            foreach (var stage in groupStages)
+            {
+                bool isOverlap = !(request.MaxAgeWeek < stage.MinAgeWeek || request.MinAgeWeek > stage.MaxAgeWeek);
+                if (isOverlap)
+                {
+                    return BaseResponse<bool>.FailureResponse($"Tuần tuổi {request.MinAgeWeek}-{request.MaxAgeWeek} bị chồng với giai đoạn '{stage.StageName}' ({stage.MinAgeWeek}-{stage.MaxAgeWeek})");
+                }
+            }
+
             try
             {
                 _unitOfWork.GrowthStageRepository.Insert(_mapper.Map<GrowthStage>(request));

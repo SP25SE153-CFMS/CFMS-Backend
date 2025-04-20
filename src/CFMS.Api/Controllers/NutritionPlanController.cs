@@ -3,6 +3,7 @@ using CFMS.Application.Features.NutritionPlanFeat.Create;
 using CFMS.Application.Features.NutritionPlanFeat.Delete;
 using CFMS.Application.Features.NutritionPlanFeat.DeleteFeedSession;
 using CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlan;
+using CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlanByFarmId;
 using CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlans;
 using CFMS.Application.Features.NutritionPlanFeat.Update;
 using CFMS.Application.Features.NutritionPlanFeat.UpdateFeedSession;
@@ -78,6 +79,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> UpdateNutritionPlanDetail(UpdateNutritionPlanDetailCommand command)
         {
             var result = await Send(command);
+            return result;
+        }
+
+        [HttpGet("Farm/{farmId}")]
+        public async Task<IActionResult> GetNutritionPlanByFarmId(Guid farmId)
+        {
+            var result = await Send(new GetNutritionPlanByFarmIdQuery(farmId));
             return result;
         }
     }
