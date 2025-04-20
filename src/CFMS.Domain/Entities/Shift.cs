@@ -13,5 +13,7 @@ public partial class Shift : EntityAudit
 
     public TimeOnly? EndTime { get; set; }
 
+    public Guid? FarmId { get; set; }
+
     public virtual ICollection<ShiftSchedule> ShiftSchedules { get; set; } = new List<ShiftSchedule>();
 }
