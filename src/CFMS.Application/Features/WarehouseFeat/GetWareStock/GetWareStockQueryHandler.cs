@@ -2,8 +2,10 @@
 using CFMS.Application.Common;
 using CFMS.Application.DTOs.WareStock;
 using CFMS.Application.Features.WarehouseFeat.GetWareStocks;
+using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,8 +52,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
             }
 
             var wareStockFoodResponses = resources
-                .SelectMany(r => r.ResourceSuppliers.DefaultIfEmpty(), (resource, supplier) =>
-                {
+                    .Select(resource =>
+                    {
                     var unit = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.UnitId) && f.IsDeleted == false).FirstOrDefault();
 
                     var package = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.PackageId) && f.IsDeleted == false).FirstOrDefault();
@@ -63,7 +65,12 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
 
                     var quantity = resource?.WareStocks.FirstOrDefault(x => x.ResourceId.Equals(resource.ResourceId))?.Quantity ?? 0;
 
-                    var resourceSupplier = _unitOfWork.ResourceSupplierRepository.Get(filter: f => f.ResourceId.Equals(resource.ResourceId) && f.IsDeleted == false).FirstOrDefault();
+                    var resourceSuppliers = _unitOfWork.ResourceSupplierRepository
+                        .GetIncludeMultiLayer(
+                            filter: f => f.ResourceId.Equals(resource.ResourceId)
+                                      && f.IsDeleted == false,
+                            include: x => x.Include(t => t.Supplier)
+                        ).ToList();
 
                     switch (existResourceType.SubCategoryName)
                     {
@@ -79,7 +86,11 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 ExpiryDate = resource?.Food?.ExpiryDate,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Chưa có nhà cung cấp"
+                                SupplierName = "Chưa có nhà cung cấp",
+                                SuppliersName = resourceSuppliers
+                                    .Select(rs => rs.Supplier?.SupplierName ?? "Chưa có nhà cung cấp")
+                                    .Distinct()
+                                    .ToArray()
                             };
 
                         case "equipment":
@@ -102,7 +113,11 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 PurchaseDate = resource?.Equipment?.PurchaseDate,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Chưa có nhà cung cấp"
+                                SupplierName = "Chưa có nhà cung cấp",
+                                SuppliersName = resourceSuppliers
+                                    .Select(rs => rs.Supplier?.SupplierName ?? "Chưa có nhà cung cấp")
+                                    .Distinct()
+                                    .ToArray()
                             };
 
                         case "medicine":
@@ -123,7 +138,11 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 ExpiryDate = resource?.Medicine?.ExpiryDate,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Chưa có nhà cung cấp"
+                                SupplierName = "Chưa có nhà cung cấp",
+                                SuppliersName = resourceSuppliers
+                                    .Select(rs => rs.Supplier?.SupplierName ?? "Chưa có nhà cung cấp")
+                                    .Distinct()
+                                    .ToArray()
                             };
 
                         case "breeding":
@@ -139,7 +158,11 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 ChickenTypeName = existChickenTypeName?.SubCategoryName,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Chưa có nhà cung cấp"
+                                SupplierName = "Chưa có nhà cung cấp",
+                                SuppliersName = resourceSuppliers
+                                    .Select(rs => rs.Supplier?.SupplierName ?? "Chưa có nhà cung cấp")
+                                    .Distinct()
+                                    .ToArray()
                             };
 
                         case "harvest_product":
@@ -155,7 +178,11 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 HarvestProductTypeName = existHarvestProductType?.SubCategoryName,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSupplier?.Supplier?.SupplierName ?? "Chưa có nhà cung cấp"
+                                SupplierName = "Chưa có nhà cung cấp",
+                                SuppliersName = resourceSuppliers
+                                    .Select(rs => rs.Supplier?.SupplierName ?? "Chưa có nhà cung cấp")
+                                    .Distinct()
+                                    .ToArray()
                             };
 
                         default:
@@ -163,7 +190,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                     }
                 })
                 .Where(x => x != null)
-                .FirstOrDefault();
+                .ToList();
 
             return BaseResponse<object>.SuccessResponse(wareStockFoodResponses);
         }
