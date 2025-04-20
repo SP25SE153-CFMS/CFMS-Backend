@@ -4,6 +4,7 @@ using CFMS.Application.Features.ShiftFeat.GetShifts;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,25 @@ namespace CFMS.Application.Features.RequestFeat.GetRequests
 
         public async Task<BaseResponse<IEnumerable<Request>>> Handle(GetRequestsQuery request, CancellationToken cancellationToken)
         {
-            var reqs = _unitOfWork.RequestRepository.Get(filter: f => f.IsDeleted == false);
-            return BaseResponse<IEnumerable<Request>>.SuccessResponse(_mapper.Map<IEnumerable<Request>>(reqs));
+            var existRequest = _unitOfWork.RequestRepository.GetIncludeMultiLayer(filter: f => f.IsDeleted == false,
+                include: x => x
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.InventoryRequestDetails)
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.WareFrom)
+                        .ThenInclude(r => r.Farm)
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.WareTo)
+                        .ThenInclude(r => r.Farm)
+                .Include(r => r.TaskRequests),
+                orderBy: q => q.OrderByDescending(x => x.CreatedWhen)
+                ).ToList();
+
+            if (existRequest == null)
+            {
+                return BaseResponse<IEnumerable<Request>>.FailureResponse(message: "Phiếu yêu cầu không tồn tại");
+            }
+            return BaseResponse<IEnumerable<Request>>.SuccessResponse(_mapper.Map<IEnumerable<Request>>(existRequest));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CFMS.Application.Features.ShiftFeat.Create;
 using CFMS.Application.Features.ShiftFeat.Delete;
 using CFMS.Application.Features.ShiftFeat.GetShift;
+using CFMS.Application.Features.ShiftFeat.GetShiftByFarmId;
 using CFMS.Application.Features.ShiftFeat.GetShifts;
 using CFMS.Application.Features.ShiftFeat.Update;
 using MediatR;
@@ -25,6 +26,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetShift(Guid id)
         {
             var result = await Send(new GetShiftQuery(id));
+            return result;
+        }        
+        
+        [HttpGet("byFarmId/{farmId}")]
+        public async Task<IActionResult> GetShiftByFarmId(Guid farmId)
+        {
+            var result = await Send(new GetShiftByFarmIdQuery(farmId));
             return result;
         }
 
