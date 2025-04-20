@@ -7,6 +7,8 @@ using CFMS.Application.Features.InventoryReceipts.Commands;
 using CFMS.Application.Features.RequestFeat.ApproveRequest;
 using CFMS.Application.Features.RequestFeat.Create;
 using CFMS.Application.Features.RequestFeat.Delete;
+using CFMS.Application.Features.RequestFeat.GetReceipt;
+using CFMS.Application.Features.RequestFeat.GetReceipts;
 using CFMS.Application.Features.RequestFeat.GetRequest;
 using CFMS.Application.Features.RequestFeat.GetRequestByCurrentUser;
 using CFMS.Application.Features.RequestFeat.GetRequestByFarmId;
@@ -70,6 +72,20 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Approve(ApproveRequestCommand command)
         {
             var result = await Send(command);
+            return result;
+        }
+
+        [HttpGet("receipts")]
+        public async Task<IActionResult> GeInventoryReceipts()
+        {
+            var result = await Send(new GetReceiptsQuery());
+            return result;
+        }
+
+        [HttpGet("receipt/{id}")]
+        public async Task<IActionResult> GetInventoryReceipt(Guid id)
+        {
+            var result = await Send(new GetReceiptQuery(id));
             return result;
         }
 
