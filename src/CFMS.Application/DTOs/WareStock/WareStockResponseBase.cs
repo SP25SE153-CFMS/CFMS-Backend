@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CFMS.Application.DTOs.Supplier;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,6 @@ namespace CFMS.Application.DTOs.WareStock
         public string? SupplierName { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string[]? SuppliersName { get; set; }
+        public List<SupplierResponse>? SuppliersName { get; set; }
     }
 }
