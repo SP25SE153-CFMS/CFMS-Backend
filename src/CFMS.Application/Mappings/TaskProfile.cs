@@ -72,6 +72,8 @@ namespace CFMS.Application.Mappings
                         src.Resource?.Food?.FoodName ??
                         src.Resource?.Medicine?.MedicineName ??
                         src.Resource?.Equipment?.EquipmentName ??
+                        src.Resource?.Chicken?.ChickenName ??
+                        src.Resource?.HarvestProduct?.HarvestProductName ??
                         "Không xác định";
 
                     var subType = src.ResourceType?.SubCategoryName?.ToLower();
@@ -84,6 +86,8 @@ namespace CFMS.Application.Mappings
                         "food" => "Thực phẩm",
                         "equipment" => "Thiết bị",
                         "medicine" => "Dược phẩm",
+                        "harvest_product" => "Thu hoạch",
+                        "chicken" => "Giống gà",
                         _ => "Không xác định"
                     };
                     dest.SpecQuantity = $"{src.Quantity} {src.Unit?.SubCategoryName}";
