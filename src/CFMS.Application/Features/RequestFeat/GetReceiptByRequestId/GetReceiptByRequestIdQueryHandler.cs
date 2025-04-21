@@ -23,7 +23,7 @@ namespace CFMS.Application.Features.RequestFeat.GetReceiptByRequestId
 
         public async Task<BaseResponse<IEnumerable<InventoryReceipt>>> Handle(GetReceiptByRequestIdQuery request, CancellationToken cancellationToken)
         {
-            var existRequest = _unitOfWork.InventoryReceiptRepository.GetIncludeMultiLayer(filter: f => f.InventoryRequestId.Equals(request.InventoryRequestId) && f.IsDeleted == false).FirstOrDefault();
+            var existRequest = _unitOfWork.InventoryRequestRepository.GetIncludeMultiLayer(filter: f => f.InventoryRequestId.Equals(request.InventoryRequestId) && f.IsDeleted == false).FirstOrDefault();
             
             if (existRequest == null)
             {
