@@ -42,7 +42,7 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpGet("get-sub-cate/{id}")]
+        [HttpGet("get-sub-cate/{subCategoryId}")]
         public async Task<IActionResult> GetSub(Guid subCategoryId)
         {
             var result = await Send(new GetSubQuery(subCategoryId));
