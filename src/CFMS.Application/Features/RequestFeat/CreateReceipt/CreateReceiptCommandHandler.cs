@@ -66,6 +66,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                 var inventoryReceiptDetail = new InventoryReceiptDetail
                 {
                     ResourceId = d.ResourceId,
+                    InventoryReceiptId = d.InventoryReceiptId,
                     ResourceSupplierId = null,
                     ActualQuantity = d.ActualQuantity,
                     ActualDate = DateTime.Now.ToLocalTime().AddHours(7),
