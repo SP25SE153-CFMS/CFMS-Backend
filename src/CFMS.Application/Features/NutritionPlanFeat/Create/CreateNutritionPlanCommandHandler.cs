@@ -30,7 +30,8 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
                 var nutritionPlan = new NutritionPlan
                 {
                     Name = request.Name,
-                    Description = request.Description
+                    Description = request.Description,
+                    FarmId = request.FarmId,
                 };
 
                 foreach (var nutritionPlanDetail in request.NutritionPlanDetails)
