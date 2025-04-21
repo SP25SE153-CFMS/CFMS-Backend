@@ -87,7 +87,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 ExpiryDate = resource?.Food?.ExpiryDate,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)

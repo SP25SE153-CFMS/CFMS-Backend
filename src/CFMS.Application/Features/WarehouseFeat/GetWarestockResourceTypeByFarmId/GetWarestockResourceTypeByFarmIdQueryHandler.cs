@@ -108,7 +108,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
                                 ExpiryDate = resource?.Food?.ExpiryDate,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -150,7 +150,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
                                 PurchaseDate = resource?.Equipment?.PurchaseDate,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -190,7 +190,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
                                 ExpiryDate = resource?.Medicine?.ExpiryDate,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -225,7 +225,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
                                 ChickenTypeName = existChickenTypeName?.SubCategoryName,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -260,7 +260,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
                                 HarvestProductTypeName = existHarvestProductType?.SubCategoryName,
                                 SpecQuantity = $"{quantity} {package.SubCategoryName} ({resource?.PackageSize * quantity} {unit.SubCategoryName})",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
