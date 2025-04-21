@@ -403,4 +403,4 @@ appsettings.Production.json
 appsettings.*.json
 credentials.json
 service-account.json
-
+*.claudiaideconfig
