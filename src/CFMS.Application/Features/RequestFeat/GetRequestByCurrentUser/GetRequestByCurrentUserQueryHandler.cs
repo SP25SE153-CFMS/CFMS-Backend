@@ -37,7 +37,10 @@ namespace CFMS.Application.Features.RequestFeat.GetRequestByCurrentUser
                 .Include(r => r.InventoryRequests)
                     .ThenInclude(r => r.WareTo)
                         .ThenInclude(r => r.Farm)
-                .Include(r => r.TaskRequests), 
+                .Include(r => r.TaskRequests)
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.InventoryReceipts)
+                        .ThenInclude(r => r.InventoryReceiptDetails),
                 orderBy: q => q.OrderByDescending(x => x.CreatedWhen)
                 ).ToList();
             if (existRequest == null)
