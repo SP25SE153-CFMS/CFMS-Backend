@@ -29,13 +29,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
 
         public async Task<BaseResponse<IEnumerable<object>>> Handle(GetWarestockResourceTypeByFarmIdQuery request, CancellationToken cancellationToken)
         {
-                var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryName.Equals(request.ResourceTypeName) && f.IsDeleted == false).FirstOrDefault();
-                if (request.ResourceTypeName.Equals("all") && !(existResourceType == null))
-            {
-                return BaseResponse<IEnumerable<object>>.FailureResponse("Loại hàng hoá không tồn tại");
-            }
-
             Expression<Func<Resource, bool>> filter;
+            string resourceTypeName = "all";
 
             if (request.ResourceTypeName == "all")
             {
@@ -43,10 +38,19 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
                     .Get(filter: f => f.SubCategoryName == "breeding" || f.SubCategoryName == "harvest_product")
                     .Select(f => f.SubCategoryId)
                     .ToList();
+
                 filter = f => f.WareStocks.Any(t => t.Ware.Farm.FarmId == request.FarmId) && !f.IsDeleted && !excludedSubCategoryIds.Contains(f.ResourceTypeId ?? Guid.Empty);
             }
             else
             {
+                var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryName.Equals(request.ResourceTypeName) && f.IsDeleted == false).FirstOrDefault();
+                if (existResourceType == null)
+                {
+                    return BaseResponse<IEnumerable<object>>.FailureResponse("Loại hàng hoá không tồn tại");
+                }
+
+                resourceTypeName = request.ResourceTypeName;
+
                 var subCategoryId = existResourceType?.SubCategoryId;
                 filter = f => f.ResourceTypeId == subCategoryId &&
                               f.WareStocks.Any(t => t.Ware.Farm.FarmId == request.FarmId) &&
@@ -96,7 +100,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
 
                     var typeName = request.ResourceTypeName.Equals("all")
                         ? resource?.ResourceType?.SubCategoryName?.ToLower()
-                        : existResourceType?.SubCategoryName?.ToLower();
+                        : resourceTypeName?.ToLower();
 
                     switch (typeName)
                     {
