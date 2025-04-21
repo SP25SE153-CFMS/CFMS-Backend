@@ -86,8 +86,8 @@ namespace CFMS.Application.Mappings
                         "food" => "Thực phẩm",
                         "equipment" => "Thiết bị",
                         "medicine" => "Dược phẩm",
-                        "harvest_product" => "Thu hoạch",
-                        "chicken" => "Giống gà",
+                        "breeding" => "Giống gà",
+                        "harvest_product" => "Sản phẩm thu hoạch",
                         _ => "Không xác định"
                     };
                     dest.SpecQuantity = $"{src.Quantity} {src.Unit?.SubCategoryName}";
