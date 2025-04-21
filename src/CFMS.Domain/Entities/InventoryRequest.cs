@@ -16,6 +16,8 @@ public partial class InventoryRequest : EntityAudit
 
     public Guid? WareToId { get; set; }
 
+    public int? IsFulfilled { get; set; }
+
     public virtual ICollection<InventoryReceipt> InventoryReceipts { get; set; } = new List<InventoryReceipt>();
 
     public virtual ICollection<InventoryRequestDetail> InventoryRequestDetails { get; set; } = new List<InventoryRequestDetail>();

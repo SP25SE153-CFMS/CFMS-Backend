@@ -131,7 +131,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
 
                 await _unitOfWork.SaveChangesAsync();
 
-                var inventoryRequest = _unitOfWork.InventoryRequestDetailRepository.GetIncludeMultiLayer(x => x.InventoryRequestId == request.InventoryRequestId).ToList();
+                var inventoryRequestDetail = _unitOfWork.InventoryRequestDetailRepository.GetIncludeMultiLayer(x => x.InventoryRequestId == request.InventoryRequestId).ToList();
 
                 var inventoryReceipts = _unitOfWork.InventoryReceiptRepository.GetIncludeMultiLayer(filter: x => x.InventoryRequestId.Equals(request.InventoryRequestId),
                     include: x => x
@@ -143,22 +143,25 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                     .GroupBy(d => d.ResourceId)
                     .ToDictionary(g => g.Key, g => g.Sum(x => x.ActualQuantity ?? 0));
 
-                int isAllEnough = inventoryRequest.All(req =>
+                int isAllEnough = inventoryRequestDetail.All(req =>
                 {
                     var expected = req.ExpectedQuantity ?? 0;
                     var actual = groupedReceiptDetails.ContainsKey(req.ResourceId)
                         ? groupedReceiptDetails[req.ResourceId]
-                        : 0;
+                        : 0;    
                     return actual >= expected;
                 }) ? 1 : 0;
 
-                inventoryReceipt.IsFulfilled = isAllEnough;
+                existRequest.InventoryRequests.FirstOrDefault().IsFulfilled = isAllEnough;
                 _unitOfWork.InventoryReceiptRepository.Update(inventoryReceipt);
                 await _unitOfWork.SaveChangesAsync();
-                return BaseResponse<bool>.SuccessResponse($"Tạo phiếu {(receiptCodePrefix.Equals("PNK") ? "nhập" : "xuất")} thành công");
+                return BaseResponse<bool>.SuccessResponse(true);
             });
 
-            return BaseResponse<bool>.FailureResponse("Tạo thất bại");
+            if (result.Data == false)
+                return BaseResponse<bool>.FailureResponse("Tạo thất bại:" + result.Message);
+
+            return BaseResponse<bool>.SuccessResponse($"Tạo phiếu {(receiptCodePrefix.Equals("PNK") ? "nhập" : "xuất")} thành công");
         }
         catch (Exception ex)
         {
