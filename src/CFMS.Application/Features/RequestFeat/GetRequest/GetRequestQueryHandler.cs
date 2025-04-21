@@ -1,15 +1,8 @@
 ﻿using CFMS.Application.Common;
-using CFMS.Application.Features.ShiftFeat.GetShift;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
-using Google.Apis.Util;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.RequestFeat.GetRequest
 {
@@ -53,6 +46,9 @@ namespace CFMS.Application.Features.RequestFeat.GetRequest
                     .ThenInclude(r => r.WareTo)
                         .ThenInclude(r => r.Farm)
                 .Include(r => r.TaskRequests)
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.InventoryReceipts)
+                        .ThenInclude(r => r.InventoryReceiptDetails)
                 ).FirstOrDefault();
             if (existRequest == null)
             {
