@@ -29,8 +29,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
 
         public async Task<BaseResponse<IEnumerable<object>>> Handle(GetWarestockResourceTypeByFarmIdQuery request, CancellationToken cancellationToken)
         {
-            var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryName.Equals(request.ResourceTypeName) && f.IsDeleted == false).FirstOrDefault();
-            if (request.ResourceTypeName.Equals("all") && !(existResourceType == null))
+                var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryName.Equals(request.ResourceTypeName) && f.IsDeleted == false).FirstOrDefault();
+                if (request.ResourceTypeName.Equals("all") && !(existResourceType == null))
             {
                 return BaseResponse<IEnumerable<object>>.FailureResponse("Loại hàng hoá không tồn tại");
             }
@@ -39,7 +39,11 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
 
             if (request.ResourceTypeName == "all")
             {
-                filter = f => f.WareStocks.Any(t => t.Ware.Farm.FarmId == request.FarmId) && !f.IsDeleted;
+                var excludedSubCategoryIds = _unitOfWork.SubCategoryRepository
+                    .Get(filter: f => f.SubCategoryName == "breeding" || f.SubCategoryName == "harvest_product")
+                    .Select(f => f.SubCategoryId)
+                    .ToList();
+                filter = f => f.WareStocks.Any(t => t.Ware.Farm.FarmId == request.FarmId) && !f.IsDeleted && !excludedSubCategoryIds.Contains(f.ResourceTypeId ?? Guid.Empty);
             }
             else
             {
