@@ -72,7 +72,7 @@ namespace CFMS.Application.Mappings
                         src.Resource?.Food?.FoodName ??
                         src.Resource?.Medicine?.MedicineName ??
                         src.Resource?.Equipment?.EquipmentName ??
-                      src.Resource?.Chicken?.ChickenName ??
+                        src.Resource?.Chicken?.ChickenName ??
                         src.Resource?.HarvestProduct?.HarvestProductName ??
                         "Không xác định";
 

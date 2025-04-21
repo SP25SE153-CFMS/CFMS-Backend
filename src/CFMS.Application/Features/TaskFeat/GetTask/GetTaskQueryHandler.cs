@@ -56,7 +56,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTask
 
             var existTask = _unitOfWork.TaskRepository.Get(
                     filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false,
-                    includeProperties: "Assignments,Assignments.AssignedTo,TaskType,ShiftSchedules,ShiftSchedules.Shift,TaskResources,TaskResources.ResourceType,TaskResources.Resource,TaskResources.Resource.Food,TaskResources.Resource.Medicine,TaskResources.Resource.Equipment,TaskLocations,TaskLocations.Location,TaskLocations.LocationNavigation"
+                    includeProperties: "Assignments,Assignments.AssignedTo,TaskType,ShiftSchedules,ShiftSchedules.Shift,TaskResources,TaskResources.ResourceType,TaskResources.Resource,TaskResources.Resource.Food,TaskResources.Resource.Medicine,TaskResources.Resource.Equipment,TaskResources.Resource.Chicken,TaskResources.Resource.HarvestProduct,TaskLocations,TaskLocations.Location,TaskLocations.LocationNavigation"
                 ).FirstOrDefault();
             //    include: q => q)
             if (existTask == null)
