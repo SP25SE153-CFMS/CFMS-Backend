@@ -8,7 +8,7 @@ namespace CFMS.Application.DTOs.Receipt
 {
     public class InventoryReceiptDetailDto
     {
-        public Guid? InventoryReceiptId { get; set; }
+        //public Guid? InventoryReceiptId { get; set; }
 
         public Guid? ResourceId { get; set; }
 
