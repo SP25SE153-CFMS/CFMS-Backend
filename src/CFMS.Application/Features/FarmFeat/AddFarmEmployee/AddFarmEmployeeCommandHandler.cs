@@ -19,13 +19,19 @@ namespace CFMS.Application.Features.FarmFeat.AddFarmEmployee
             var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmId.Equals(request.FarmId) && f.IsDeleted == false).FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Farm không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
             var existUser = _unitOfWork.UserRepository.Get(u => u.UserId.Equals(request.UserId) && u.Status == 1).FirstOrDefault();
             if (existUser == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
+            }
+
+            var existEmployee = _unitOfWork.FarmEmployeeRepository.Get(filter: fe => fe.UserId.Equals(request.UserId) && fe.FarmId.Equals(request.FarmId) && fe.IsDeleted == false).FirstOrDefault();
+            if (existEmployee != null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Người dùng đã là nhân viên của trang trại này");
             }
 
             try
