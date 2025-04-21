@@ -14,7 +14,7 @@ public partial class InventoryReceipt : EntityAudit
 
     public string? ReceiptCodeNumber { get; set; }
 
-    //public int? Status { get; set; }
+    public int? IsFulfilled { get; set; }
 
     public virtual ICollection<InventoryReceiptDetail> InventoryReceiptDetails { get; set; } = new List<InventoryReceiptDetail>();
 
