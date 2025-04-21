@@ -52,7 +52,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
                             var existResource = _unitOfWork.ResourceRepository.Get(filter: r => r.ResourceId.Equals(taskResource.ResourceId) && r.IsDeleted == false).FirstOrDefault();
                             if (existResource == null)
                             {
-                                return BaseResponse<bool>.FailureResponse(message: "Resource không tồn tại");
+                                return BaseResponse<bool>.FailureResponse(message: "Hàng hoá không tồn tại");
                             }
 
                             task.TaskResources.Add(new TaskResource
