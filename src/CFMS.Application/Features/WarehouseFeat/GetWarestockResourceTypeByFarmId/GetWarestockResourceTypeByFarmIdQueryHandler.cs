@@ -30,6 +30,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
         public async Task<BaseResponse<IEnumerable<object>>> Handle(GetWarestockResourceTypeByFarmIdQuery request, CancellationToken cancellationToken)
         {
             Expression<Func<Resource, bool>> filter;
+            string resourceTypeName = "all";
 
             if (request.ResourceTypeName == "all")
             {
@@ -47,6 +48,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
                 {
                     return BaseResponse<IEnumerable<object>>.FailureResponse("Loại hàng hoá không tồn tại");
                 }
+
+                resourceTypeName = request.ResourceTypeName;
 
                 var subCategoryId = existResourceType?.SubCategoryId;
                 filter = f => f.ResourceTypeId == subCategoryId &&
@@ -97,7 +100,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarm
 
                     var typeName = request.ResourceTypeName.Equals("all")
                         ? resource?.ResourceType?.SubCategoryName?.ToLower()
-                        : existResourceType?.SubCategoryName?.ToLower();
+                        : resourceTypeName?.ToLower();
 
                     switch (typeName)
                     {
