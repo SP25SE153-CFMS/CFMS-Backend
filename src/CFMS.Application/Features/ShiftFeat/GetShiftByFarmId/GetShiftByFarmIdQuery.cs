@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.ShiftFeat.GetShiftByFarmId
 {
-    public class GetShiftByFarmIdQuery : IRequest<BaseResponse<Shift>>
+    public class GetShiftByFarmIdQuery : IRequest<BaseResponse<IEnumerable<Shift>>>
     {
         public GetShiftByFarmIdQuery(Guid farmId)
         {

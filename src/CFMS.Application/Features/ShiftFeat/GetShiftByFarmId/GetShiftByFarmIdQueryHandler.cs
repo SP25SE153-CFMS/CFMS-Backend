@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.ShiftFeat.GetShiftByFarmId
 {
-    public class GetShiftByFarmIdQueryHandler : IRequestHandler<GetShiftByFarmIdQuery, BaseResponse<Shift>>
+    public class GetShiftByFarmIdQueryHandler : IRequestHandler<GetShiftByFarmIdQuery, BaseResponse<IEnumerable<Shift>>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -20,15 +20,10 @@ namespace CFMS.Application.Features.ShiftFeat.GetShiftByFarmId
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponse<Shift>> Handle(GetShiftByFarmIdQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<IEnumerable<Shift>>> Handle(GetShiftByFarmIdQuery request, CancellationToken cancellationToken)
         {
-            var existShift = _unitOfWork.ShiftRepository.Get(filter: f => (f.FarmId == null || f.FarmId.Equals(request.FarmId)) && f.IsDeleted == false).FirstOrDefault();
-            if (existShift == null)
-            {
-                return BaseResponse<Shift>.FailureResponse(message: "Ca làm không tồn tại");
-            }
-
-            return BaseResponse<Shift>.SuccessResponse(data: existShift);
+            var shifts = _unitOfWork.ShiftRepository.Get(filter: f => (f.FarmId == null || f.FarmId.Equals(request.FarmId)) && f.IsDeleted == false);
+            return BaseResponse<IEnumerable<Shift>>.SuccessResponse(data: shifts);
         }
     }
 }

@@ -10,12 +10,15 @@ namespace CFMS.Application.Features.ShiftFeat.Create
 {
     public class CreateShiftCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateShiftCommand(string? shiftName, TimeOnly? startTime, TimeOnly? endTime)
+        public CreateShiftCommand(string? shiftName, TimeOnly? startTime, TimeOnly? endTime, Guid farmId)
         {
             ShiftName = shiftName;
             StartTime = startTime;
             EndTime = endTime;
+            FarmId = farmId;
         }
+
+        public Guid FarmId { get; set; }
 
         public string? ShiftName { get; set; }
 
