@@ -19,19 +19,19 @@ namespace CFMS.Application.Features.FarmFeat.UpdateFarmEmployee
             var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmId.Equals(request.FarmId) && f.IsDeleted == false).FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Farm không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
             var exsitFarmEmployee = _unitOfWork.FarmEmployeeRepository.Get(u => u.UserId.Equals(request.FarmEmployeeId) && u.Status == 0).FirstOrDefault();
             if (exsitFarmEmployee == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "User không tồn tại trong Farm");
+                return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại trong trang trại");
             }
 
             try
             {
                 exsitFarmEmployee.StartDate = request.StartDate;
-                exsitFarmEmployee.EndDate = request.EndDate;
+                exsitFarmEmployee.EndDate = request.Status.Equals(2) ? DateTime.Now.ToLocalTime().AddHours(7) : request.EndDate;
                 exsitFarmEmployee.Status = request.Status;
                 exsitFarmEmployee.FarmRole = request.FarmRole;
 
