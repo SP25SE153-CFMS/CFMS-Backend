@@ -1,4 +1,6 @@
-﻿using CFMS.Application.Common;
+﻿using AutoMapper;
+using CFMS.Application.Common;
+using CFMS.Application.DTOs.ChickenBatch;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
@@ -7,16 +9,18 @@ using Twilio.TwiML.Voice;
 
 namespace CFMS.Application.Features.ChickenBatchFeat.GetBatch
 {
-    public class GetBatchQueryHandler : IRequestHandler<GetBatchQuery, BaseResponse<ChickenBatch>>
+    public class GetBatchQueryHandler : IRequestHandler<GetBatchQuery, BaseResponse<ChickenBatchResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GetBatchQueryHandler(IUnitOfWork unitOfWork)
+        public GetBatchQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<BaseResponse<ChickenBatch>> Handle(GetBatchQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<ChickenBatchResponse>> Handle(GetBatchQuery request, CancellationToken cancellationToken)
         {
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(
             filter: b => b.ChickenBatchId.Equals(request.Id) && !b.IsDeleted,
@@ -25,9 +29,19 @@ namespace CFMS.Application.Features.ChickenBatchFeat.GetBatch
 
             if (existBatch == null)
             {
-                return BaseResponse<ChickenBatch>.FailureResponse(message: "Lứa không tồn tại");
+                return BaseResponse<ChickenBatchResponse>.FailureResponse(message: "Lứa không tồn tại");
             }
-            return BaseResponse<ChickenBatch>.SuccessResponse(data: existBatch);
+
+            var totalChicken = existBatch.ChickenDetails.Sum(cd => cd.Quantity);
+            var deathChicken = existBatch.QuantityLogs.Where(l => l.LogType == 0).Sum(cd => cd.Quantity);
+            var aliveChicken = totalChicken - deathChicken;
+
+            var batch = _mapper.Map<ChickenBatchResponse>(existBatch);
+            batch.AliveChicken = aliveChicken.Value;
+            batch.DeathChicken = deathChicken.Value;
+            batch.TotalChicken = totalChicken.Value;
+
+            return BaseResponse<ChickenBatchResponse>.SuccessResponse(data: batch);
 
         }
     }
