@@ -22,4 +22,6 @@ public partial class InventoryReceiptDetail
 
     [JsonIgnore]
     public virtual InventoryReceipt? InventoryReceipt { get; set; }
+
+    public virtual Resource? Resource { get; set; }
 }

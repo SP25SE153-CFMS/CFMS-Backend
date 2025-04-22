@@ -34,6 +34,24 @@ namespace CFMS.Application.Features.RequestFeat.GetReceiptByRequestId
             var existReceipts = _unitOfWork.InventoryReceiptRepository.GetIncludeMultiLayer(filter: f => f.InventoryRequestId.Equals(request.InventoryRequestId) && f.IsDeleted == false,
                 include: x => x
                 .Include(r => r.InventoryReceiptDetails)
+                    .ThenInclude(r => r.Resource)
+                        .ThenInclude(r => r.ResourceSuppliers)
+                            .ThenInclude(r => r.Supplier)
+                .Include(r => r.InventoryReceiptDetails)
+                    .ThenInclude(r => r.Resource)
+                        .ThenInclude(r => r.Food)
+                .Include(r => r.InventoryReceiptDetails)
+                    .ThenInclude(r => r.Resource)
+                        .ThenInclude(r => r.Equipment)
+                .Include(r => r.InventoryReceiptDetails)
+                    .ThenInclude(r => r.Resource)
+                        .ThenInclude(r => r.Medicine)
+                .Include(r => r.InventoryReceiptDetails)
+                    .ThenInclude(r => r.Resource)
+                        .ThenInclude(r => r.Chicken)
+                .Include(r => r.InventoryReceiptDetails)
+                    .ThenInclude(r => r.Resource)
+                        .ThenInclude(r => r.HarvestProduct)
                 ).ToList();
 
             var result = new ReceiptDto
