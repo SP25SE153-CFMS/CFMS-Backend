@@ -21,7 +21,20 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmEmployees
         public async Task<BaseResponse<IEnumerable<FarmEmployeeResponse>>> Handle(GetFarmEmployeesQuery request, CancellationToken cancellationToken)
         {
             var employees = _unitOfWork.FarmEmployeeRepository.Get(filter: e => e.FarmId.Equals(request.FarmId) && e.IsDeleted == false, includeProperties: [e => e.User]);
-            return BaseResponse<IEnumerable<FarmEmployeeResponse>>.SuccessResponse(data: _mapper.Map<IEnumerable<FarmEmployeeResponse>>(employees));
+
+            var mappedEmployees = _mapper.Map<List<FarmEmployeeResponse>>(employees)
+                    .Select((dto, index) =>
+                    {
+                        var entity = employees.ElementAt(index);
+                        if (dto.User != null && entity.User != null)
+                        {
+                            dto.User.Mail = entity.Mail;
+                            dto.User.PhoneNumber = entity.PhoneNumber;
+                        }
+                        return dto;
+                    }).ToList();
+
+            return BaseResponse<IEnumerable<FarmEmployeeResponse>>.SuccessResponse(data: mappedEmployees);
         }
     }
 }
