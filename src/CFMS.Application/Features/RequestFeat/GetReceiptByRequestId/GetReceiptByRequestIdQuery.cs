@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.Request;
 using CFMS.Domain.Entities;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.RequestFeat.GetReceiptByRequestId
 {
-    public class GetReceiptByRequestIdQuery : IRequest<BaseResponse<IEnumerable<InventoryReceipt>>>
+    public class GetReceiptByRequestIdQuery : IRequest<BaseResponse<ReceiptDto>>
     {
         public GetReceiptByRequestIdQuery(Guid inventoryRequestId)
         {
