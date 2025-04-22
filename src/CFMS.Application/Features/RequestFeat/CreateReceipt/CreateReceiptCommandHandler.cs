@@ -50,15 +50,15 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
 
             if (existRequest.InventoryRequests.FirstOrDefault().IsFulfilled == 1)
                 return existReceiptType.SubCategoryName.Equals(RequestType.IMPORT.ToString())
-                    ? BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu này đã được nhập đủ số lượng")
-                    : BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu này đã được xuất đủ số lượng");
+                    ? BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu này đã được nhập đạt số lượng")
+                    : BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu này đã được xuất đạt số lượng");
 
             if (receiptCodePrefix == "PXK")
             {
-                foreach (var detail in existRequest?.InventoryRequests?.FirstOrDefault()?.InventoryRequestDetails?.ToList())
+                foreach (var detail in request?.ReceiptDetails?.ToList())
                 {
                     var stock = _unitOfWork.WareStockRepository.Get(x => x.ResourceId.Equals(detail.ResourceId) && x.WareId.Equals(request.WareFromId)).FirstOrDefault();
-                    if (stock == null || stock.Quantity < detail.ExpectedQuantity)
+                    if (stock == null || stock.Quantity < detail.ActualQuantity)
                         return BaseResponse<bool>.FailureResponse("Không đủ hàng trong kho để xuất");
                 }
             }
@@ -124,7 +124,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                         ResourceId = d.ResourceId,
                         Quantity = receiptCodePrefix == "PNK" ? (int)d.ActualQuantity : (int)-d.ActualQuantity,
                         UnitId = existResource?.UnitId,
-                        BatchNumber = d.BatchNumber,
+                        BatchNumber = request.BatchNumber,
                         TransactionType = existReceiptType.SubCategoryId,
                         Reason = d.Note,
                         TransactionDate = DateTime.Now.ToLocalTime().AddHours(7),
