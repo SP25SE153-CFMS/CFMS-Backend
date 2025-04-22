@@ -61,6 +61,7 @@ public partial class Resource : EntityAudit
     [JsonIgnore]
     public virtual ICollection<ResourceSupplier> ResourceSuppliers { get; set; } = new List<ResourceSupplier>();
 
+    [JsonIgnore]
     public virtual ICollection<InventoryReceiptDetail> InventoryReceiptDetails { get; set; } = new List<InventoryReceiptDetail>();
 
     public virtual ICollection<WareStock> WareStocks { get; set; } = new List<WareStock>();
