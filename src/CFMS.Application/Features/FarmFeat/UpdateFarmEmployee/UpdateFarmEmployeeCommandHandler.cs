@@ -22,20 +22,37 @@ namespace CFMS.Application.Features.FarmFeat.UpdateFarmEmployee
                 return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
-            var exsitFarmEmployee = _unitOfWork.FarmEmployeeRepository.Get(u => u.UserId.Equals(request.FarmEmployeeId) && u.Status == 0).FirstOrDefault();
-            if (exsitFarmEmployee == null)
+            var existFarmEmployee = _unitOfWork.FarmEmployeeRepository.Get(u => u.UserId.Equals(request.FarmEmployeeId) && u.Status == 0).FirstOrDefault();
+            if (existFarmEmployee == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại trong trang trại");
             }
 
             try
             {
-                exsitFarmEmployee.StartDate = request.StartDate;
-                exsitFarmEmployee.EndDate = request.Status.Equals(2) ? DateTime.Now.ToLocalTime().AddHours(7) : request.EndDate;
-                exsitFarmEmployee.Status = request.Status;
-                exsitFarmEmployee.FarmRole = request.FarmRole;
+                bool isUpdateFunc = true;
 
-                _unitOfWork.FarmEmployeeRepository.Update(exsitFarmEmployee);
+                if (request.StartDate == null 
+                    && request.EndDate == null 
+                    && request.FarmRole == null 
+                    && request.Mail == null
+                    && request.PhoneNumber == null
+                    && (request.Status.Equals(2) || request.Status.Equals(0)))
+                {
+                    isUpdateFunc = false;
+                }
+
+                existFarmEmployee.StartDate = isUpdateFunc ? request.StartDate : existFarmEmployee.StartDate;
+                existFarmEmployee.EndDate = isUpdateFunc ? request.EndDate
+                                                         : request.Status.Equals(2)
+                                                            ? DateTime.Now.ToLocalTime().AddHours(7)
+                                                            : existFarmEmployee.EndDate;
+                existFarmEmployee.Status = request.Status;
+                existFarmEmployee.Mail = isUpdateFunc ? request.Mail : existFarmEmployee.Mail;
+                existFarmEmployee.PhoneNumber = isUpdateFunc ? request.PhoneNumber : existFarmEmployee.PhoneNumber;
+                existFarmEmployee.FarmRole = isUpdateFunc ? request.FarmRole : existFarmEmployee.FarmRole;
+
+                _unitOfWork.FarmEmployeeRepository.Update(existFarmEmployee);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
