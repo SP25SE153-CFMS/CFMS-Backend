@@ -53,6 +53,16 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                     ? BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu này đã được nhập đủ số lượng")
                     : BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu này đã được xuất đủ số lượng");
 
+            if (receiptCodePrefix == "PXK")
+            {
+                foreach (var detail in existRequest?.InventoryRequests?.FirstOrDefault()?.InventoryRequestDetails?.ToList())
+                {
+                    var stock = _unitOfWork.WareStockRepository.Get(x => x.ResourceId.Equals(detail.ResourceId) && x.WareId.Equals(request.WareFromId)).FirstOrDefault();
+                    if (stock == null || stock.Quantity < detail.ExpectedQuantity)
+                        return BaseResponse<bool>.FailureResponse("Không đủ hàng trong kho để xuất");
+                }
+            }
+
             var result = await _unitOfWork.ExecuteInTransactionAsync<BaseResponse<bool>>(async () =>
             {
                 var inventoryReceipt = new InventoryReceipt
@@ -66,22 +76,12 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                 _unitOfWork.InventoryReceiptRepository.Insert(inventoryReceipt);
                 await _unitOfWork.SaveChangesAsync();
 
-                if (receiptCodePrefix == "PXK")
-                {
-                    foreach (var detail in inventoryReceipt.InventoryReceiptDetails)
-                    {
-                        var stock = _unitOfWork.WareStockRepository.Get(x => x.ResourceId.Equals(detail.ResourceId) && x.WareId.Equals(request.WareFromId)).FirstOrDefault();
-                        if (stock == null || stock.Quantity < detail.ActualQuantity)
-                            return BaseResponse<bool>.FailureResponse("Không đủ hàng trong kho để xuất");
-                    }
-                }
-
                 foreach (var d in request.ReceiptDetails)
                 {
                     var inventoryReceiptDetail = new InventoryReceiptDetail
                     {
                         ResourceId = d.ResourceId,
-                        InventoryReceiptId = inventoryReceipt.InventoryReceiptId,
+                        InventoryReceiptId = inventoryReceipt.InventoryReceiptId, 
                         ResourceSupplierId = null,
                         ActualQuantity = d.ActualQuantity,
                         ActualDate = DateTime.Now.ToLocalTime().AddHours(7),
