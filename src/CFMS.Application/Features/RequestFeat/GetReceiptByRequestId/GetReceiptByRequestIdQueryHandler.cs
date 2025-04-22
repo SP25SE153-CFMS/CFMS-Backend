@@ -66,7 +66,7 @@ namespace CFMS.Application.Features.RequestFeat.GetReceiptByRequestId
                             TotalQuantity = g.Sum(y => y.ActualQuantity ?? 0)
                         })
                         .ToList(),
-                InventoryReceipts = existReceipts
+                InventoryReceipts = existReceipts.OrderByDescending(x => x.CreatedWhen).ToList()
             };
 
             return BaseResponse<ReceiptDto>.SuccessResponse(data: result);
