@@ -4,6 +4,7 @@ using CFMS.Application.Services.SignalR;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
 {
@@ -26,6 +27,20 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
             if (task == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
+            }
+
+            var chosenLeader = request.AssignedTos.Any(x => x.Status == 1);
+
+            var isHaveLeader = task.Assignments.Any(x => x.Status == 1);
+
+            if (!chosenLeader && !isHaveLeader)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Công việc này chưa có đội trưởng đảm nhận");
+            }
+
+            if (chosenLeader && isHaveLeader)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Công việc này đã có đội trưởng đảm nhận");
             }
 
             try
