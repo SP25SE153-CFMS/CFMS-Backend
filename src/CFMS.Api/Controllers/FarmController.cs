@@ -114,7 +114,7 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpGet("{id}/get-employee")]
+        [HttpGet("get-employee/{id}")]
         public async Task<IActionResult> GetFarmEmployee(Guid id)
         {
             var result = await Send(new GetFarmEmployeeQuery(id));
