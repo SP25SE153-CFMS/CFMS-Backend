@@ -43,6 +43,12 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
                 return BaseResponse<bool>.FailureResponse(message: "Công việc này đã có đội trưởng đảm nhận");
             }
 
+            var existUserAssigned = task.Assignments.Any(x => request.AssignedTos.Select(t => t.AssignedToId).Contains(x.AssignedToId ?? Guid.Empty));
+            if (existUserAssigned)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Người dùng đã được giao công việc này");
+            }
+
             try
             {
                 foreach (var assignedTo in request.AssignedTos)
