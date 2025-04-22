@@ -15,15 +15,15 @@ namespace CFMS.Application.Features.FarmFeat.DeleteFarmEmployee
 
         public async Task<BaseResponse<bool>> Handle(DeleteFarmEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var exsitFarmEmployee = _unitOfWork.FarmEmployeeRepository.Get(u => u.UserId.Equals(request.FarmEmployeeId)).FirstOrDefault();
-            if (exsitFarmEmployee == null)
+            var existFarmEmployee = _unitOfWork.FarmEmployeeRepository.Get(u => u.FarmEmployeeId.Equals(request.FarmEmployeeId)).FirstOrDefault();
+            if (existFarmEmployee == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại trong Farm");
+                return BaseResponse<bool>.FailureResponse(message: "Người dùng không làm việc trong trang trại này");
             }
 
             try
             {
-                _unitOfWork.FarmEmployeeRepository.Delete(exsitFarmEmployee);
+                _unitOfWork.FarmEmployeeRepository.Delete(existFarmEmployee);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
