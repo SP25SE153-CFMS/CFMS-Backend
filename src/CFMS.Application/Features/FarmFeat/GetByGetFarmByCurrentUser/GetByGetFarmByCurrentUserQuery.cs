@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.Farm;
 using CFMS.Domain.Entities;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.FarmFeat.GetByGetFarmByCurrentUser
 {
-    public class GetByGetFarmByCurrentUserQuery : IRequest<BaseResponse<IEnumerable<Farm>>>
+    public class GetByGetFarmByCurrentUserQuery : IRequest<BaseResponse<IEnumerable<FarmWithRoleResponse>>>
     {
     }
 }
