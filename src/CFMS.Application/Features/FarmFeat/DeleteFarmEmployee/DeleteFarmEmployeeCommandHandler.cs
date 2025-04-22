@@ -23,10 +23,7 @@ namespace CFMS.Application.Features.FarmFeat.DeleteFarmEmployee
 
             try
             {
-                exsitFarmEmployee.Status = 0;
-                exsitFarmEmployee.EndDate = DateTime.Now.ToLocalTime();
-
-                _unitOfWork.FarmEmployeeRepository.Update(exsitFarmEmployee);
+                _unitOfWork.FarmEmployeeRepository.Delete(exsitFarmEmployee);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {

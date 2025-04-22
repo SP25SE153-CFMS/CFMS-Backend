@@ -99,7 +99,7 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpPut("delete-employee")]
+        [HttpDelete("delete-employee")]
         public async Task<IActionResult> DeleteFarmEmployee(DeleteFarmEmployeeCommand command)
         {
             var result = await Send(command);
