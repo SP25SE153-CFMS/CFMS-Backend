@@ -48,6 +48,11 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
 
             string receiptCodePrefix = existReceiptType.SubCategoryName.Equals(RequestType.IMPORT.ToString()) ? "PNK" : "PXK";
 
+            if (existRequest.InventoryRequests.FirstOrDefault().IsFulfilled == 1)
+                return existReceiptType.SubCategoryName.Equals(RequestType.IMPORT.ToString())
+                    ? BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu này đã được nhập đủ số lượng")
+                    : BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu này đã được xuất đủ số lượng");
+
             var result = await _unitOfWork.ExecuteInTransactionAsync<BaseResponse<bool>>(async () =>
             {
                 var inventoryReceipt = new InventoryReceipt
