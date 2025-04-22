@@ -59,7 +59,8 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                 {
                     InventoryRequestId = request.InventoryRequestId,
                     ReceiptTypeId = request.ReceiptTypeId,
-                    ReceiptCodeNumber = $"{receiptCodePrefix}-{DateTime.Now.AddHours(7).Ticks}"
+                    ReceiptCodeNumber = $"{receiptCodePrefix}-{DateTime.Now.AddHours(7).Ticks}",
+                    BatchNumber = request.BatchNumber
                 };
 
                 _unitOfWork.InventoryReceiptRepository.Insert(inventoryReceipt);
@@ -84,8 +85,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                         ResourceSupplierId = null,
                         ActualQuantity = d.ActualQuantity,
                         ActualDate = DateTime.Now.ToLocalTime().AddHours(7),
-                        Note = d.Note,
-                        BatchNumber = d.BatchNumber
+                        Note = d.Note
                     };
                     _unitOfWork.InventoryReceiptDetailRepository.Insert(inventoryReceiptDetail);
 

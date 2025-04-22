@@ -8,14 +8,15 @@ namespace CFMS.Application.Features.InventoryReceipts.Commands
 {
     public class CreateInventoryReceiptCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateInventoryReceiptCommand(Guid requestId, Guid inventoryRequestId, Guid receiptTypeId, List<InventoryReceiptDetailDto> receiptDetails, Guid? wareToId, Guid? wareFromId)
+        public CreateInventoryReceiptCommand(Guid requestId, Guid inventoryRequestId, Guid receiptTypeId, Guid? wareFromId, Guid? wareToId, int? batchNumber, List<InventoryReceiptDetailDto> receiptDetails)
         {
             RequestId = requestId;
             InventoryRequestId = inventoryRequestId;
             ReceiptTypeId = receiptTypeId;
-            ReceiptDetails = receiptDetails;
-            WareToId = wareToId;
             WareFromId = wareFromId;
+            WareToId = wareToId;
+            BatchNumber = batchNumber;
+            ReceiptDetails = receiptDetails;
         }
 
         public Guid RequestId { get; set; }
@@ -23,6 +24,7 @@ namespace CFMS.Application.Features.InventoryReceipts.Commands
         public Guid ReceiptTypeId { get; set; }
         public Guid? WareFromId { get; set; }
         public Guid? WareToId { get; set; }
+        public int? BatchNumber { get; set; }
         public List<InventoryReceiptDetailDto> ReceiptDetails { get; set; }
     }
 }
