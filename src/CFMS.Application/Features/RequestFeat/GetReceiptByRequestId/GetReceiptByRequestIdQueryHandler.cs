@@ -36,27 +36,6 @@ namespace CFMS.Application.Features.RequestFeat.GetReceiptByRequestId
                 .Include(r => r.InventoryReceiptDetails)
                 ).ToList();
 
-            var inventoryRequestDetail = _unitOfWork.InventoryRequestDetailRepository.GetIncludeMultiLayer(x => x.InventoryRequestId == request.InventoryRequestId).ToList();
-
-            var inventoryReceipts = _unitOfWork.InventoryReceiptRepository.GetIncludeMultiLayer(filter: x => x.InventoryRequestId.Equals(request.InventoryRequestId),
-                include: x => x
-                .Include(y => y.InventoryReceiptDetails)
-                ).ToList();
-
-            var groupedReceiptDetails = inventoryReceipts
-                .SelectMany(r => r?.InventoryReceiptDetails)
-                .GroupBy(d => d.ResourceId)
-                .ToDictionary(g => g.Key, g => g.Sum(x => x.ActualQuantity ?? 0));
-
-            int isAllEnough = inventoryRequestDetail.All(req =>
-            {
-                var expected = req.ExpectedQuantity ?? 0;
-                var actual = groupedReceiptDetails.ContainsKey(req.ResourceId)
-                    ? groupedReceiptDetails[req.ResourceId]
-                    : 0;
-                return actual >= expected;
-            }) ? 1 : 0;
-
             var result = new ReceiptDto
             {
                 AmountOfBatch = existReceipts.Count,

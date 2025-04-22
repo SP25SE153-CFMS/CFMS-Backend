@@ -18,6 +18,8 @@ public partial class InventoryRequest : EntityAudit
 
     public int? IsFulfilled { get; set; }
 
+    public int? BatchNumber { get; set; }
+
     public virtual ICollection<InventoryReceipt> InventoryReceipts { get; set; } = new List<InventoryReceipt>();
 
     public virtual ICollection<InventoryRequestDetail> InventoryRequestDetails { get; set; } = new List<InventoryRequestDetail>();

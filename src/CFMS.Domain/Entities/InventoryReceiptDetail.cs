@@ -20,8 +20,6 @@ public partial class InventoryReceiptDetail
 
     public string? Note { get; set; }
 
-    public int? BatchNumber { get; set; }
-
     [JsonIgnore]
     public virtual InventoryReceipt? InventoryReceipt { get; set; }
 }
