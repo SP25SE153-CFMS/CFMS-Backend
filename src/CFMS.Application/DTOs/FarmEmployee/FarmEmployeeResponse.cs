@@ -5,6 +5,8 @@ namespace CFMS.Application.DTOs.FarmEmployee
 {
     public class FarmEmployeeResponse
     {
+        public Guid FarmEmployeeId { get; set; }
+
         public Guid? FarmId { get; set; }
 
         public Guid? UserId { get; set; }
