@@ -50,8 +50,8 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
 
             if (existRequest.InventoryRequests.FirstOrDefault().IsFulfilled == 1)
                 return existReceiptType.SubCategoryName.Equals(RequestType.IMPORT.ToString())
-                    ? BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu này đã được nhập đạt số lượng")
-                    : BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu này đã được xuất đạt số lượng");
+                    ? BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu nhập này đã được đạt số lượng yêu cầu")
+                    : BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu xuất này đã được đạt số lượng yêu cầu");
 
             if (receiptCodePrefix == "PXK")
             {
