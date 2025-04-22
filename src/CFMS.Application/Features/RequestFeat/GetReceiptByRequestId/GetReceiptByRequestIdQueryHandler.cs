@@ -38,7 +38,7 @@ namespace CFMS.Application.Features.RequestFeat.GetReceiptByRequestId
 
             var result = new ReceiptDto
             {
-                AmountOfBatch = existReceipts.Count,
+                AmountOfBatch = existReceipts.Count + 1,
                 AmountOfActualQuantity = existReceipts
                         .SelectMany(x => x.InventoryReceiptDetails)
                         .GroupBy(d => d.ResourceId)
