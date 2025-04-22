@@ -32,7 +32,12 @@ namespace CFMS.Application.Features.FarmFeat.UpdateFarmEmployee
             {
                 bool isUpdateFunc = true;
 
-                if (request.StartDate == null && request.EndDate == null && request.FarmRole == null && (request.Status.Equals(2) || request.Status.Equals(0)))
+                if (request.StartDate == null 
+                    && request.EndDate == null 
+                    && request.FarmRole == null 
+                    && request.Mail == null
+                    && request.PhoneNumber == null
+                    && (request.Status.Equals(2) || request.Status.Equals(0)))
                 {
                     isUpdateFunc = false;
                 }
@@ -43,6 +48,8 @@ namespace CFMS.Application.Features.FarmFeat.UpdateFarmEmployee
                                                             ? DateTime.Now.ToLocalTime().AddHours(7)
                                                             : existFarmEmployee.EndDate;
                 existFarmEmployee.Status = request.Status;
+                existFarmEmployee.Mail = isUpdateFunc ? request.Mail : existFarmEmployee.Mail;
+                existFarmEmployee.PhoneNumber = isUpdateFunc ? request.PhoneNumber : existFarmEmployee.PhoneNumber;
                 existFarmEmployee.FarmRole = isUpdateFunc ? request.FarmRole : existFarmEmployee.FarmRole;
 
                 _unitOfWork.FarmEmployeeRepository.Update(existFarmEmployee);

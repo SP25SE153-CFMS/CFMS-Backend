@@ -20,6 +20,10 @@ public partial class FarmEmployee : EntityAudit
 
     public int? FarmRole { get; set; }
 
+    public string? Mail { get; set; }
+
+    public string? PhoneNumber { get; set; }
+
     [JsonIgnore]
     public virtual Farm? Farm { get; set; }
 
