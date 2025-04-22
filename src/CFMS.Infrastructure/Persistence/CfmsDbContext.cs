@@ -1005,6 +1005,10 @@ public partial class CfmsDbContext : DbContext
             entity.Property(e => e.ActualDate).HasColumnType("timestamp(6) without time zone");
             entity.Property(e => e.Note).HasColumnType("character varying");
 
+            entity.HasOne(d => d.Resource).WithMany(p => p.InventoryReceiptDetails)
+                .HasForeignKey(d => d.ResourceId)
+                .HasConstraintName("InventoryReceiptDetail_ResourceId_fkey");
+
             entity.HasOne(d => d.InventoryReceipt).WithMany(p => p.InventoryReceiptDetails)
                 .HasForeignKey(d => d.InventoryReceiptId)
                 .OnDelete(DeleteBehavior.Cascade)
