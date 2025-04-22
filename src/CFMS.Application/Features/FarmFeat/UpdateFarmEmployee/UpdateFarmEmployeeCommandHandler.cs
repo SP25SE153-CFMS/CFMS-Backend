@@ -22,7 +22,7 @@ namespace CFMS.Application.Features.FarmFeat.UpdateFarmEmployee
                 return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
-            var existFarmEmployee = _unitOfWork.FarmEmployeeRepository.Get(u => u.FarmEmployeeId.Equals(request.FarmEmployeeId) && u.Status == 0).FirstOrDefault();
+            var existFarmEmployee = _unitOfWork.FarmEmployeeRepository.Get(u => u.FarmEmployeeId.Equals(request.FarmEmployeeId)).FirstOrDefault();
             if (existFarmEmployee == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Người dùng không làm việc trong trang trại này");
