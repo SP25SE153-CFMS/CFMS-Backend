@@ -28,19 +28,19 @@ namespace CFMS.Application.Features.WarehouseFeat.Create
             var existWare = _unitOfWork.WarehouseRepository.Get(filter: s => s.FarmId.Equals(request.FarmId) && s.WarehouseName.Equals(request.WarehouseName) && s.IsDeleted == false).FirstOrDefault();
             if (existWare != null)
             {
-                return BaseResponse<bool>.FailureResponse("Tên kho đã tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Tên kho đã tồn tại");
             }
 
             var existFarm = _unitOfWork.FarmRepository.Get(filter: s => s.FarmId.Equals(request.FarmId) && s.IsDeleted == false).FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse("Trang trại không tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Trang trại không tồn tại");
             }
 
             var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.ResourceTypeId) && s.IsDeleted == false).FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse("Loại hàng hoá không tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Loại hàng hoá không tồn tại");
             }
 
             var ware = _mapper.Map<Warehouse>(request);
@@ -49,7 +49,7 @@ namespace CFMS.Application.Features.WarehouseFeat.Create
 
             return result > 0
                 ? BaseResponse<bool>.SuccessResponse("Thêm kho thành công")
-                : BaseResponse<bool>.FailureResponse("Thêm thất bại");
+                : BaseResponse<bool>.SuccessResponse("Thêm thất bại");
         }
     }
 }

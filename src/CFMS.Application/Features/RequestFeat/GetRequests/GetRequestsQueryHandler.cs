@@ -45,7 +45,7 @@ namespace CFMS.Application.Features.RequestFeat.GetRequests
 
             if (existRequest == null)
             {
-                return BaseResponse<IEnumerable<Request>>.FailureResponse(message: "Phiếu yêu cầu không tồn tại");
+                return BaseResponse<IEnumerable<Request>>.SuccessResponse(message: "Phiếu yêu cầu không tồn tại");
             }
             return BaseResponse<IEnumerable<Request>>.SuccessResponse(_mapper.Map<IEnumerable<Request>>(existRequest));
         }

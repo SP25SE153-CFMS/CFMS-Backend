@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.AddFeedSession
             var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: np => np.NutritionPlanId.Equals(request.NutritionPlanId) && np.IsDeleted == false).FirstOrDefault();
             if (existNutritionPlan == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Chế độ dinh dưỡng không tồn tại");
             }
 
             try
@@ -40,7 +40,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.AddFeedSession
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Thêm không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Thêm không thành công");
             }
             catch (Exception ex)
             {

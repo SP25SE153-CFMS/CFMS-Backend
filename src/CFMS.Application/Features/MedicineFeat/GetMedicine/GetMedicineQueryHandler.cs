@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.MedicineFeat.GetMedicine
             var existMedicine = _unitOfWork.MedicineRepository.Get(filter: f => f.MedicineId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existMedicine == null)
             {
-                return BaseResponse<Medicine>.FailureResponse(message: "Dược phẩm không tồn tại");
+                return BaseResponse<Medicine>.SuccessResponse(message: "Dược phẩm không tồn tại");
             }
 
             return BaseResponse<Medicine>.SuccessResponse(data: existMedicine);

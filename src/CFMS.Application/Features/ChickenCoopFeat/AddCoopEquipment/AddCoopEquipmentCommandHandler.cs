@@ -19,13 +19,13 @@ namespace CFMS.Application.Features.ChickenCoopFeat.AddCoopEquipment
             var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.ChickenCoopId) && c.IsDeleted == false).FirstOrDefault();
             if (existCoop == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Chuồng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Chuồng không tồn tại");
             }
 
             var existEquip = _unitOfWork.EquipmentRepository.Get(filter: e => e.EquipmentId.Equals(request.EquipmentId) && e.IsDeleted == false).FirstOrDefault();
             if (existEquip == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Trang thiết bị không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Trang thiết bị không tồn tại");
             }
 
             try
@@ -49,7 +49,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.AddCoopEquipment
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Thêm không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Thêm không thành công");
             }
             catch (Exception ex)
             {

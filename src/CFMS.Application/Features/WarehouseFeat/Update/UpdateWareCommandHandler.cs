@@ -24,25 +24,25 @@ namespace CFMS.Application.Features.WarehouseFeat.Update
             var existWare = _unitOfWork.WarehouseRepository.Get(filter: f => f.WareId.Equals(request.WareId) && f.IsDeleted == false).FirstOrDefault();
             if (existWare == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Kho không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Kho không tồn tại");
             }
 
             var existName = _unitOfWork.WarehouseRepository.Get(filter: s => s.WarehouseName.Equals(request.WarehouseName) && s.IsDeleted == false && s.WareId != request.WareId).FirstOrDefault();
             if (existWare != null)
             {
-                return BaseResponse<bool>.FailureResponse("Tên kho đã tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Tên kho đã tồn tại");
             }
 
             var existFarm = _unitOfWork.FarmRepository.Get(filter: s => s.FarmId.Equals(request.FarmId) && s.IsDeleted == false).FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse("Trang trại không tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Trang trại không tồn tại");
             }
 
             var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.ResourceTypeId) && s.IsDeleted == false).FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse("Loại hàng hoá không tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Loại hàng hoá không tồn tại");
             }
 
             try
@@ -63,7 +63,7 @@ namespace CFMS.Application.Features.WarehouseFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

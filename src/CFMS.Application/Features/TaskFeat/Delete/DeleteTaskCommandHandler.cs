@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.TaskFeat.Delete
             var existTask = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false).FirstOrDefault();
             if (existTask == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Công việc không tồn tại");
             }
 
             try
@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.TaskFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

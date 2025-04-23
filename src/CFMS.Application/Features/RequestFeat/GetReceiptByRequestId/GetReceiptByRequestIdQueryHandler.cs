@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.RequestFeat.GetReceiptByRequestId
             
             if (existRequest == null)
             {
-                return BaseResponse<ReceiptDto>.FailureResponse(message: "Phiếu yêu cầu không tồn tại");
+                return BaseResponse<ReceiptDto>.SuccessResponse(message: "Phiếu yêu cầu không tồn tại");
             }
 
             var existReceipts = _unitOfWork.InventoryReceiptRepository.GetIncludeMultiLayer(filter: f => f.InventoryRequestId.Equals(request.InventoryRequestId) && f.IsDeleted == false,

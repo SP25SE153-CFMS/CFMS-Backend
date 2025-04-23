@@ -52,7 +52,7 @@ namespace CFMS.Application.Features.RequestFeat.GetRequest
                 ).FirstOrDefault();
             if (existRequest == null)
             {
-                return BaseResponse<Request>.FailureResponse(message: "Phiếu yêu cầu không tồn tại");
+                return BaseResponse<Request>.SuccessResponse(message: "Phiếu yêu cầu không tồn tại");
             }
 
             return BaseResponse<Request>.SuccessResponse(data: existRequest);

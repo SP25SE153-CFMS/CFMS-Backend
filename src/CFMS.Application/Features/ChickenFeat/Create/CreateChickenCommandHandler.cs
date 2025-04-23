@@ -27,7 +27,7 @@ namespace CFMS.Application.Features.ChickenFeat.Create
                 //var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false).FirstOrDefault();
                 //if (existBatch == null)
                 //{
-                //    return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
+                //    return BaseResponse<bool>.SuccessResponse(message: "Lứa không tồn tại");
                 //}
 
                 var existChicken = _unitOfWork.ChickenRepository.Get(c => c.ChickenCode.Equals(request.ChickenCode) && c.ChickenName.Equals(request.ChickenName) && c.IsDeleted == false).FirstOrDefault();

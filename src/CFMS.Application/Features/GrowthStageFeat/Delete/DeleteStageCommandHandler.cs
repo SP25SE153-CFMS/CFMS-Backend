@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.Delete
             var existStage = _unitOfWork.GrowthStageRepository.Get(filter: f => f.GrowthStageId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existStage == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Giai đoạn phát triển không tồn tại");
             }
 
             try
@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

@@ -19,13 +19,13 @@ namespace CFMS.Application.Features.NutritionPlanFeat.AddFood
             var existFood = _unitOfWork.FoodRepository.Get(filter: f => f.FoodId.Equals(request.FoodId) && f.IsDeleted == false).FirstOrDefault();
             if (existFood == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Thức ăn không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Thức ăn không tồn tại");
             }
 
             var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: np => np.NutritionPlanId.Equals(request.NutritionPlanId) && np.IsDeleted == false).FirstOrDefault();
             if (existNutritionPlan == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Chế độ dinh dưỡng không tồn tại");
             }
 
             try
@@ -41,7 +41,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.AddFood
                 var result = await _unitOfWork.SaveChangesAsync();
                 return result > 0
                    ? BaseResponse<bool>.SuccessResponse(message: "Tạo thành công")
-                   : BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
+                   : BaseResponse<bool>.SuccessResponse(message: "Tạo không thành công");
             }
             catch (Exception ex)
             {

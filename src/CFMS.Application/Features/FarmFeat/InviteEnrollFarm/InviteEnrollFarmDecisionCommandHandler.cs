@@ -32,23 +32,23 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
             var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.ToString().Equals(userId)).FirstOrDefault();
             if (existUser == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Người dùng không tồn tại");
             }
 
             var existNoti = _unitOfWork.NotificationRepository.Get(filter: n => n.NotificationId.Equals(request.NotificationId)).FirstOrDefault();
             if (existNoti == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Thông báo không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Thông báo không tồn tại");
             }
 
             if (existNoti.IsRead.Equals(3))
             {
-                return BaseResponse<bool>.FailureResponse(message: "Yêu cầu này đã được chấp nhận");
+                return BaseResponse<bool>.SuccessResponse(message: "Yêu cầu này đã được chấp nhận");
             }
 
             if (existNoti.IsRead.Equals(4))
             {
-                return BaseResponse<bool>.FailureResponse(message: "Yêu cầu này đã bị từ chối");
+                return BaseResponse<bool>.SuccessResponse(message: "Yêu cầu này đã bị từ chối");
             }
 
             var input = existNoti.Content;
@@ -58,7 +58,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
             var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmCode.Equals(farmCode) && f.IsDeleted == false).FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Trang trại không tồn tại");
             }
 
             try

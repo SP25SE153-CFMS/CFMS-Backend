@@ -33,13 +33,13 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
 
             if (user == null)
             {
-                return BaseResponse<AuthResponse>.FailureResponse("Người dùng không tồn tại");
+                return BaseResponse<AuthResponse>.SuccessResponse("Người dùng không tồn tại");
             }
 
             bool isPasswordValid = _utilityService.VerifyPassword(request.Password, user.HashedPassword);
             if (!isPasswordValid)
             {
-                return BaseResponse<AuthResponse>.FailureResponse("Mail hoặc mật khẩu không hợp lệ");
+                return BaseResponse<AuthResponse>.SuccessResponse("Mail hoặc mật khẩu không hợp lệ");
             }
 
             var accessToken = _tokenService.GenerateAccessToken(user);

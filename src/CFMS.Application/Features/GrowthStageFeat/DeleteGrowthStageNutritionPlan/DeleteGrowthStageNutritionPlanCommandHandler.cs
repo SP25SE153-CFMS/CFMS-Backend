@@ -18,13 +18,13 @@ namespace CFMS.Application.Features.GrowthStageFeat.DeleteNutritionPlan
             var existGrowthStage = _unitOfWork.GrowthStageRepository.Get(filter: s => s.GrowthStageId.Equals(request.GrowthStageId) && s.IsDeleted == false).FirstOrDefault();
             if (existGrowthStage == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Giai đoạn phát triển không tồn tại");
             }
 
             var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: n => n.NutritionPlanId.Equals(request.NutritionPlanId) && n.IsDeleted == false).FirstOrDefault();
             if (existNutritionPlan == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Chế độ dinh dưỡng không tồn tại");
             }
 
             try
@@ -37,7 +37,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.DeleteNutritionPlan
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Xóa không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Xóa không thành công");
             }
             catch (Exception ex)
             {

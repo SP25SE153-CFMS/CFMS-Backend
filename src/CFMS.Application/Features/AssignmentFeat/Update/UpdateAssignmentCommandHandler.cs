@@ -22,13 +22,13 @@ namespace CFMS.Application.Features.AssignmentFeat.Update
             var task = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false).FirstOrDefault();
             if (task == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Task không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Công việc không tồn tại");
             }
 
             var existAssignment = _unitOfWork.AssignmentRepository.Get(filter: a => a.AssignmentId.Equals(request.AssignmentId) && a.IsDeleted == false).FirstOrDefault();
             if (existAssignment == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Assignment không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Phiên giao việc không tồn tại");
             }
 
             try
@@ -56,7 +56,7 @@ namespace CFMS.Application.Features.AssignmentFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Tạo không thành công");
             }
             catch (Exception ex)
             {

@@ -26,10 +26,10 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                 .FirstOrDefault();
 
             if (existParentBatch == null)
-                return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Lứa không tồn tại");
 
             if (existParentBatch.ChickenCoopId.Equals(request.ChickenCoopId))
-                return BaseResponse<bool>.FailureResponse(message: "Không thể chọn chung chuồng");
+                return BaseResponse<bool>.SuccessResponse(message: "Không thể chọn chung chuồng");
 
             // 2. Validate Chicken Coop
             var existCoop = _unitOfWork.ChickenCoopRepository
@@ -37,7 +37,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                 .FirstOrDefault();
 
             if (existCoop == null)
-                return BaseResponse<bool>.FailureResponse(message: "Chuồng gà không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Chuồng gà không tồn tại");
 
             // 3. Validate Growth Stages
             var stages = _unitOfWork.GrowthStageRepository
@@ -45,7 +45,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                 .ToList();
 
             if (stages.Count == 0)
-                return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Giai đoạn phát triển không tồn tại");
 
             try
             {
@@ -54,7 +54,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                 var totalChickenSplit = request.ChickenDetailRequests.Select(c => c.Quantity).Sum();
                 if (totalChickenInBatch - totalChickenSplit < systemConfig.SettingValue)
                 {
-                    return BaseResponse<bool>.FailureResponse(message: "Vượt quá số lượng tách đàn");
+                    return BaseResponse<bool>.SuccessResponse(message: "Vượt quá số lượng tách đàn");
                 }
 
                 // 4. Create new batch
@@ -73,7 +73,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                         .FirstOrDefault(c => c.Gender == chickenDetail.Gender);
 
                     if (matchedDetail == null || matchedDetail.Quantity < chickenDetail.Quantity)
-                        return BaseResponse<bool>.FailureResponse(message: "Gà không tồn tại hoặc đã vượt quá số lượng tách đàn");
+                        return BaseResponse<bool>.SuccessResponse(message: "Gà không tồn tại hoặc đã vượt quá số lượng tách đàn");
 
                     matchedDetail.Quantity -= chickenDetail.Quantity;
 
@@ -117,7 +117,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                 var result = await _unitOfWork.SaveChangesAsync();
                 return result > 0
                     ? BaseResponse<bool>.SuccessResponse(message: "Tạo thành công")
-                    : BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
+                    : BaseResponse<bool>.SuccessResponse(message: "Tạo không thành công");
             }
             catch (Exception ex)
             {

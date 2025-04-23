@@ -67,7 +67,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
             if (existTask == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Công việc không tồn tại");
             }
 
             var taskType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(existTask.TaskTypeId) && x.IsDeleted == false).FirstOrDefault()?.SubCategoryName;
@@ -234,7 +234,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật công việc thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

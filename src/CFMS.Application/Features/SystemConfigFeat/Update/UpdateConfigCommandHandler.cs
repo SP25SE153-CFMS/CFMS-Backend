@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.SystemConfigFeat.Update
             var existConfig = _unitOfWork.SystemConfigRepository.Get(filter: s => s.SettingName.Equals(request.SettingName) && s.IsDeleted == false).FirstOrDefault();
             if (existConfig == null)
             {
-                return BaseResponse<bool>.FailureResponse("Tên cấu hình đã tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Tên cấu hình đã tồn tại");
             }
 
             switch (request.EntityType)
@@ -36,7 +36,7 @@ namespace CFMS.Application.Features.SystemConfigFeat.Update
                         .FirstOrDefault();
                     if (coop == null)
                     {
-                        return BaseResponse<bool>.FailureResponse("Chuồng gà không tồn tại");
+                        return BaseResponse<bool>.SuccessResponse("Chuồng gà không tồn tại");
                     }
                     break;
 
@@ -46,12 +46,12 @@ namespace CFMS.Application.Features.SystemConfigFeat.Update
                         .FirstOrDefault();
                     if (warehouse == null)
                     {
-                        return BaseResponse<bool>.FailureResponse("Kho không tồn tại");
+                        return BaseResponse<bool>.SuccessResponse("Kho không tồn tại");
                     }
                     break;
 
                 default:
-                    return BaseResponse<bool>.FailureResponse("Đối tượng cấu hình không hợp lệ");
+                    return BaseResponse<bool>.SuccessResponse("Đối tượng cấu hình không hợp lệ");
             }
 
             try
@@ -71,7 +71,7 @@ namespace CFMS.Application.Features.SystemConfigFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

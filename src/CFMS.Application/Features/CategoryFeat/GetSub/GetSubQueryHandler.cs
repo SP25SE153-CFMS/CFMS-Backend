@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.CategoryFeat.GetSub
             var existSubCategory = _unitOfWork.SubCategoryRepository.Get(filter: c => c.SubCategoryId.Equals(request.SubCategoryId) && c.IsDeleted == false).FirstOrDefault();
             if (existSubCategory == null)
             {
-                return BaseResponse<SubCategory>.FailureResponse(message: "SubCategory không tồn tại");
+                return BaseResponse<SubCategory>.SuccessResponse(message: "Loại danh mục con không tồn tại");
             }
             return BaseResponse<SubCategory>.SuccessResponse(data: existSubCategory);
         }

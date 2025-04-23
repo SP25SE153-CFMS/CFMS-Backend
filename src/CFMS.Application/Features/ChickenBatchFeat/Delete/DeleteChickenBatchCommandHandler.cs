@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.Delete
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.Id) && b.IsDeleted == false).FirstOrDefault();
             if (existBatch == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Lứa không tồn tại");
             }
 
             try
@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

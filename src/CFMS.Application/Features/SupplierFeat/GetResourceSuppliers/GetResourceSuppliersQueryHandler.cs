@@ -31,7 +31,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
 
             if (suppliers.Count == 0)
             {
-                return BaseResponse<IEnumerable<object>>.FailureResponse("Nhà cung cấp không tồn tại");
+                return BaseResponse<IEnumerable<object>>.SuccessResponse("Nhà cung cấp không tồn tại");
             }
 
             var resourceSupplierResponses = suppliers

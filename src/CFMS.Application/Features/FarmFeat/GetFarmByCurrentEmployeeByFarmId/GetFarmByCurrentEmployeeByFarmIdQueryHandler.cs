@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmByCurrentEmployeeByFarmId
 
             if (existFarm == null)
             {
-                return BaseResponse<FarmResponse>.FailureResponse(message: "Trang trại không tồn tại");
+                return BaseResponse<FarmResponse>.SuccessResponse(message: "Trang trại không tồn tại");
             }
 
             var tasks = _unitOfWork.TaskRepository.Get(

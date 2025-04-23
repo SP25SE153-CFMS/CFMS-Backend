@@ -38,7 +38,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.CurrentUser
 
             if (currentUser == null)
             {
-                return BaseResponse<CurrentUserResponse>.FailureResponse("Người dùng không hợp lệ");
+                return BaseResponse<CurrentUserResponse>.SuccessResponse("Người dùng không hợp lệ");
             }
 
             return BaseResponse<CurrentUserResponse>.SuccessResponse(currentUser);

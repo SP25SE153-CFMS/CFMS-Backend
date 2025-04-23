@@ -34,7 +34,7 @@ namespace CFMS.Application.Features.RequestFeat.GetReceipts
 
             if (existReceipt == null)
             {
-                return BaseResponse<IEnumerable<InventoryReceipt>>.FailureResponse(message: "Phiếu nhập không tồn tại");
+                return BaseResponse<IEnumerable<InventoryReceipt>>.SuccessResponse(message: "Phiếu nhập không tồn tại");
             }
             return BaseResponse<IEnumerable<InventoryReceipt>>.SuccessResponse(_mapper.Map<IEnumerable<InventoryReceipt>>(existReceipt));
         }

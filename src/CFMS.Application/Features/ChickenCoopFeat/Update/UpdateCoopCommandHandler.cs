@@ -18,13 +18,13 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
             var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.ChickenCoopId) && c.IsDeleted == false).FirstOrDefault();
             if (existCoop == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Chuồng gà không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Chuồng gà không tồn tại");
             }
 
             var existNameCode = _unitOfWork.ChickenCoopRepository.Get(filter: c => (c.ChickenCoopCode.Equals(request.ChickenCoopCode) || c.ChickenCoopName.Equals(request.ChickenCoopName)) && c.IsDeleted == false && c.ChickenCoopId != request.ChickenCoopId).FirstOrDefault();
             if (existNameCode != null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã chuồng gà đã tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Tên hoặc mã chuồng gà đã tồn tại");
             }
 
             try
@@ -46,7 +46,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

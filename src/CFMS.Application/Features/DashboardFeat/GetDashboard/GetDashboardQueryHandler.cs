@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.DashboardFeat.GetDashboard
             var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmId.Equals(request.FarmId) && f.IsDeleted == false, includeProperties: "BreedingAreas,BreedingAreas.ChickenCoops.ChickenBatches.ChickenDetails,FarmEmployees,FarmEmployees.User").FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<DashboardResponse>.FailureResponse(message: "Farm không tồn tại");
+                return BaseResponse<DashboardResponse>.SuccessResponse(message: "Farm không tồn tại");
             }
 
             var users = _unitOfWork.FarmEmployeeRepository.Get(

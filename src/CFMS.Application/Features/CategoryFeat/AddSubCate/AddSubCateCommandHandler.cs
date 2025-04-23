@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.CategoryFeat.AddSubCate
             var existCate = _unitOfWork.CategoryRepository.Get(filter: c => c.CategoryId.Equals(request.CategoryId) & c.IsDeleted == false).FirstOrDefault();
             if (existCate == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Loại danh mục không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Loại danh mục không tồn tại");
             }
 
             try
@@ -44,7 +44,7 @@ namespace CFMS.Application.Features.CategoryFeat.AddSubCate
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo danh mục thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Tạo  danh mục không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Tạo  danh mục không thành công");
             }
             catch (Exception ex)
             {
