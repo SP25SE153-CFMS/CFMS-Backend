@@ -22,7 +22,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.Create
             var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.ChickenCoopId) && c.IsDeleted == false).FirstOrDefault();
             if (existCoop == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Chuồng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Chuồng không tồn tại");
             }
 
             try

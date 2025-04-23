@@ -18,13 +18,13 @@ namespace CFMS.Application.Features.ChickenBatchFeat.DeleteVaccineLog
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.BatchId) && b.IsDeleted == false).FirstOrDefault();
             if (existBatch == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Lứa nuôi không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Lứa nuôi không tồn tại");
             }
 
             var existVaccineLog = _unitOfWork.VaccineLogRepository.Get(filter: ql => ql.VaccineLogId.Equals(request.VaccineLogId) && ql.IsDeleted == false).FirstOrDefault();
             if (existVaccineLog == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Log không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Log không tồn tại");
             }
 
             try
@@ -40,7 +40,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.DeleteVaccineLog
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Thêm không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Thêm không thành công");
             }
             catch (Exception ex)
             {

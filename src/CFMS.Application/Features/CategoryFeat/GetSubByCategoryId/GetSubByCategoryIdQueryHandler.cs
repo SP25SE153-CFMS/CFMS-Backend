@@ -23,7 +23,7 @@ namespace CFMS.Application.Features.CategoryFeat.GetSubByCategoryId
             var subCategories = _unitOfWork.SubCategoryRepository.Get(filter: c => (c.FarmId == null || c.FarmId.Equals(request.FarmId)) && c.CategoryId.Equals(request.CategoryId) && c.IsDeleted == false).ToList();
             if (subCategories == null)
             {
-                return BaseResponse<IEnumerable<SubCategory>>.FailureResponse(message: "Không có danh mục con nào tồn tại" +
+                return BaseResponse<IEnumerable<SubCategory>>.SuccessResponse(message: "Không có danh mục con nào tồn tại" +
                     "");
             }
             return BaseResponse<IEnumerable<SubCategory>>.SuccessResponse(data: subCategories);

@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.HarvestProductFeat.Delete
             var existHavest = _unitOfWork.HarvestProductRepository.Get(filter: f => f.HarvestProductId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existHavest == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Thực phẩm không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Thực phẩm không tồn tại");
             }
 
             try
@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.HarvestProductFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

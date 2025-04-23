@@ -44,7 +44,7 @@ namespace CFMS.Application.Features.CategoryFeat.AddSubCate
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo danh mục thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Tạo  danh mục không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Tạo  danh mục không thành công");
             }
             catch (Exception ex)
             {

@@ -41,13 +41,13 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                 ).FirstOrDefault();
             if (existUser == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Người dùng không tồn tại");
             }
 
             var method = request.MethodAccess.ToLower();
             if (method != "invite" && method != "enroll" && method != "invitation" && method != "enrollment")
             {
-                return BaseResponse<bool>.FailureResponse(message: "Phương thức không hợp lệ");
+                return BaseResponse<bool>.SuccessResponse(message: "Phương thức không hợp lệ");
             }
 
             var existFarm = _unitOfWork.FarmRepository.GetIncludeMultiLayer(filter: f => f.FarmCode.Equals(request.FarmCode) && f.IsDeleted == false,
@@ -57,7 +57,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                 ).FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Trang trại không tồn tại");
             }
 
             try
@@ -67,13 +67,13 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                     if (existUser.FarmEmployees.FirstOrDefault(x => x.FarmId.Equals(existFarm.FarmId))?.FarmRole < 4
                         || existUser.FarmEmployees.FirstOrDefault(x => x.FarmId.Equals(existFarm.FarmId)) == null)
                     {
-                        return BaseResponse<bool>.FailureResponse("Bạn không có quyền mời người khác tham gia trang trại");
+                        return BaseResponse<bool>.SuccessResponse("Bạn không có quyền mời người khác tham gia trang trại");
                     }
 
                     var existInvitedUsers = existFarm.FarmEmployees.FirstOrDefault(t => request.employessInvitation.Select(x => x.UserId).Contains(t.UserId ?? Guid.Empty));
                     if (existInvitedUsers != null)
                     {
-                        return BaseResponse<bool>.FailureResponse(message: $"{existInvitedUsers?.User?.FullName} đã thuộc trang trại này rồi");
+                        return BaseResponse<bool>.SuccessResponse(message: $"{existInvitedUsers?.User?.FullName} đã thuộc trang trại này rồi");
                     }
 
                     var invitedNoti = _unitOfWork.NotificationRepository.GetIncludeMultiLayer(filter: x => request.employessInvitation.Select(x => x.UserId).Contains(x.UserId) 
@@ -106,7 +106,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
 
                             if (invitedUser != null)
                             {
-                                return BaseResponse<bool>.FailureResponse(message: $"Bạn đã mời {invitedUser?.User?.FullName} vào trang trại {existFarm.FarmCode} ({existFarm.FarmName}) rồi. Hãy đợi phản hồi");
+                                return BaseResponse<bool>.SuccessResponse(message: $"Bạn đã mời {invitedUser?.User?.FullName} vào trang trại {existFarm.FarmCode} ({existFarm.FarmName}) rồi. Hãy đợi phản hồi");
                             }
                         }
                     }
@@ -171,7 +171,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
 
                     if (existEnrolledUser != null)
                     {
-                        return BaseResponse<bool>.FailureResponse(message: "Bạn đã tham gia trang trại này rồi");
+                        return BaseResponse<bool>.SuccessResponse(message: "Bạn đã tham gia trang trại này rồi");
                     }
 
                     var enrolledNoti = _unitOfWork.NotificationRepository.GetIncludeMultiLayer(filter: x => x.CreatedByUserId.Equals(existUser.UserId)
@@ -201,7 +201,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
 
                             if (invitedUser != null)
                             {
-                                return BaseResponse<bool>.FailureResponse(message: $"Bạn đã gửi lời yêu cầu tham gia trang trại {existFarm.FarmCode} ({existFarm.FarmName}) rồi. Hãy đợi phê duyệt");
+                                return BaseResponse<bool>.SuccessResponse(message: $"Bạn đã gửi lời yêu cầu tham gia trang trại {existFarm.FarmCode} ({existFarm.FarmName}) rồi. Hãy đợi phê duyệt");
                             }
                         }
                     }
@@ -251,8 +251,8 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
             catch (Exception ex)
             {
                 return method.Equals("invite") || method.Equals("invitation")
-                    ? BaseResponse<bool>.SuccessResponse(message: "Gửi lời mời thất bại: " + ex.Message)
-                    : BaseResponse<bool>.SuccessResponse(message: "Gửi yêu cầu tham gia thất bại: " + ex.Message);
+                    ? BaseResponse<bool>.FailureResponse(message: "Gửi lời mời thất bại: " + ex.Message)
+                    : BaseResponse<bool>.FailureResponse(message: "Gửi yêu cầu tham gia thất bại: " + ex.Message);
             }
         }
     }

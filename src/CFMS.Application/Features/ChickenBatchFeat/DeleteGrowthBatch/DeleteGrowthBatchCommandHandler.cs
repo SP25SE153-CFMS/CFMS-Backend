@@ -18,13 +18,13 @@ namespace CFMS.Application.Features.ChickenBatchFeat.DeleteGrowthBatch
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false).FirstOrDefault();
             if (existBatch == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Lứa không tồn tại");
             }
 
             var existGrowthBatch = _unitOfWork.GrowthBatchRepository.Get(filter: gb => gb.GrowthBatchId.Equals(request.GrowthBatchId) && gb.IsDeleted == false).FirstOrDefault();
             if (existGrowthBatch == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Giai đoạn phát triển không tồn tại");
             }
 
             try
@@ -37,7 +37,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.DeleteGrowthBatch
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Xóa không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Xóa không thành công");
             }
             catch (Exception ex)
             {

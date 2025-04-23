@@ -26,7 +26,7 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmByUserId
             var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.CreatedByUserId.Equals(existUser.UserId) && f.IsDeleted == false, includeProperties: "BreedingAreas").ToList();
             if (existFarm == null)
             {
-                return BaseResponse<IEnumerable<Farm>>.FailureResponse(message: "Trang trại không tồn tại");
+                return BaseResponse<IEnumerable<Farm>>.SuccessResponse(message: "Trang trại không tồn tại");
             }
 
             return BaseResponse<IEnumerable<Farm>>.SuccessResponse(data: existFarm);

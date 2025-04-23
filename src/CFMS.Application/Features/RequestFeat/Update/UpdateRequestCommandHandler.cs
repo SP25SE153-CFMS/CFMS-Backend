@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.RequestFeat.Update
                     ]).FirstOrDefault();
 
             if (existingRequest == null)
-                return BaseResponse<bool>.FailureResponse("Phiếu không tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Phiếu không tồn tại");
 
             existingRequest.RequestTypeId = request.RequestTypeId ?? existingRequest.RequestTypeId;
             existingRequest.Status = request.Status ?? existingRequest.Status;
@@ -89,7 +89,7 @@ namespace CFMS.Application.Features.RequestFeat.Update
             var result = await _unitOfWork.SaveChangesAsync();
             return result > 0
                 ? BaseResponse<bool>.SuccessResponse("Cập nhật phiếu thành công")
-                : BaseResponse<bool>.FailureResponse("Cập nhật thất bại");
+                : BaseResponse<bool>.SuccessResponse("Cập nhật thất bại");
         }
     }
 }

@@ -34,7 +34,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignUp
 
             if (existUser != null)
             {
-                return BaseResponse<AuthResponse>.FailureResponse("Người dùng đã tồn tại");
+                return BaseResponse<AuthResponse>.SuccessResponse("Người dùng đã tồn tại");
             }
 
             var user = new User

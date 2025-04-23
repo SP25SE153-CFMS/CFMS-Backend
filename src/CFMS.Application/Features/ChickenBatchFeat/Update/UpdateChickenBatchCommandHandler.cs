@@ -20,7 +20,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.Update
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.Id) && b.IsDeleted == false).FirstOrDefault();
             if (existBatch == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Lứa không tồn tại");
             }
 
             try
@@ -36,7 +36,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

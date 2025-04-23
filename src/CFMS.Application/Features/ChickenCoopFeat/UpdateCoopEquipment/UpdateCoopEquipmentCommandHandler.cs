@@ -19,19 +19,19 @@ namespace CFMS.Application.Features.ChickenCoopFeat.UpdateCoopEquipment
             var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.ChickenCoopId) && c.IsDeleted == false).FirstOrDefault();
             if (existCoop == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Chuồng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Chuồng không tồn tại");
             }
 
             var existEquip = _unitOfWork.EquipmentRepository.Get(filter: e => e.EquipmentId.Equals(request.EquipmentId) && e.IsDeleted == false).FirstOrDefault();
             if (existEquip == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Trang thiết bị không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Trang thiết bị không tồn tại");
             }
 
             var existCoopEquip = _unitOfWork.CoopEquipmentRepository.Get(ce => ce.CoopEquipmentId.Equals(request.CoopEquipmentId) && ce.IsDeleted == false).FirstOrDefault();
             if (existCoopEquip == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Trang thiết bị trong chuồng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Trang thiết bị trong chuồng không tồn tại");
             }
 
             try
@@ -52,7 +52,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.UpdateCoopEquipment
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.EquipmentFeat.Delete
             var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: f => f.EquipmentId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existEquipment == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Thực phẩm không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Thực phẩm không tồn tại");
 
             }
 
@@ -40,7 +40,7 @@ namespace CFMS.Application.Features.EquipmentFeat.Delete
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
 
-                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

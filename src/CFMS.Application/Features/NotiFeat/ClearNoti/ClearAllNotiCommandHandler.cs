@@ -26,12 +26,12 @@ namespace CFMS.Application.Features.NotiFeat.ClearNoti
             var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(Guid.Parse(currentUser))).FirstOrDefault();
             if (existUser == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Người dùng không tồn tại");
             }
             var notiList = _unitOfWork.NotificationRepository.Get(filter: u => u.UserId.Equals(Guid.Parse(currentUser))).ToList();
             if (notiList == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Người dùng không có thông báo nào");
+                return BaseResponse<bool>.SuccessResponse(message: "Người dùng không có thông báo nào");
             }
 
             try
@@ -47,7 +47,7 @@ namespace CFMS.Application.Features.NotiFeat.ClearNoti
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xoá thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

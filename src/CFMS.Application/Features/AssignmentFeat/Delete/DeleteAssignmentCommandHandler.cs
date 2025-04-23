@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.AssignmentFeat.Delete
             var existAssignment = _unitOfWork.AssignmentRepository.Get(filter: a => a.AssignmentId.Equals(request.AssignmentId) && a.IsDeleted == false).FirstOrDefault();
             if (existAssignment == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Phiên làm việc không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Phiên giao việc không tồn tại");
             }
 
             try

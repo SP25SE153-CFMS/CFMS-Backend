@@ -18,13 +18,13 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddChicken
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false).FirstOrDefault();
             if (existBatch == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Lứa không tồn tại");
             }
 
             var existChicken = _unitOfWork.ChickenRepository.Get(filter: c => c.ChickenId.Equals(request.ChickenId) && c.IsDeleted == false).FirstOrDefault();
             if (existChicken == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Gà không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Gà không tồn tại");
             }
 
             try
@@ -38,7 +38,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddChicken
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Thêm không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Thêm không thành công");
             }
             catch (Exception ex)
             {

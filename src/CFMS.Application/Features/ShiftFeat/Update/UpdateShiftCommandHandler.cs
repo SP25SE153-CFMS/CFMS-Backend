@@ -24,13 +24,13 @@ namespace CFMS.Application.Features.ShiftFeat.Update
             var existShift = _unitOfWork.ShiftRepository.Get(filter: f => f.ShiftId.Equals(request.ShiftId) && f.IsDeleted == false).FirstOrDefault();
             if (existShift == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Ca làm không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Ca làm không tồn tại");
             }
 
             var existName = _unitOfWork.ShiftRepository.Get(filter: s => s.ShiftName.Equals(request.ShiftName) && s.IsDeleted == false && s.ShiftId != request.ShiftId).FirstOrDefault();
             if (existName == null)
             {
-                return BaseResponse<bool>.FailureResponse("Tên ca làm đã tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Tên ca làm đã tồn tại");
             }
 
             try
@@ -45,7 +45,7 @@ namespace CFMS.Application.Features.ShiftFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

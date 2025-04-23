@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.DashboardChickenBatch
                     ).FirstOrDefault();
             if (existBatch == null)
             {
-                return BaseResponse<DashboardChickenBatchResponse>.FailureResponse(message: "Lứa không tồn tại");
+                return BaseResponse<DashboardChickenBatchResponse>.SuccessResponse(message: "Lứa không tồn tại");
             }
 
             var totalChicken = existBatch.ChickenDetails.Sum(cd => cd.Quantity);

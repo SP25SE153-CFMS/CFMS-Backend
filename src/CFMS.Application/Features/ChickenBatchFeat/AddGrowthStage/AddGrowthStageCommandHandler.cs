@@ -19,13 +19,13 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddGrowthStage
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false).FirstOrDefault();
             if (existBatch == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Lứa nuôi không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Lứa nuôi không tồn tại");
             }
 
             var existStage = _unitOfWork.GrowthStageRepository.Get(filter: s => s.GrowthStageId.Equals(request.GrowthStageId) && s.IsDeleted == false).FirstOrDefault();
             if (existStage == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Giai đoạn phát triển không tồn tại");
             }
 
             try
@@ -49,7 +49,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddGrowthStage
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Thêm không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Thêm không thành công");
             }
             catch (Exception ex)
             {

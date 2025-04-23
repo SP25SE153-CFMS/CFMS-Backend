@@ -22,13 +22,13 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddHealthLog
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false).FirstOrDefault();
             if (existBatch == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Lứa không tồn tại");
             }
 
             var existTask = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false).FirstOrDefault();
             if (existBatch == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Công việc không tồn tại");
             }
 
             try
@@ -50,7 +50,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddHealthLog
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Thêm ko thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Thêm ko thành công");
             }
             catch (Exception ex)
             {

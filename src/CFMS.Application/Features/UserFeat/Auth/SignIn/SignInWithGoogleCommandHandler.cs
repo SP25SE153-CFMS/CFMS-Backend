@@ -43,11 +43,11 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
             var storedState = _httpContextAccessor.HttpContext.Request.Cookies["oauth_state"];
             if (storedState != request.State)
             {
-                return BaseResponse<AuthResponse>.FailureResponse("Trạng thái xác thực không hợp lệ");
+                return BaseResponse<AuthResponse>.SuccessResponse("Trạng thái xác thực không hợp lệ");
             }
 
             if (string.IsNullOrEmpty(request.AuthorizationCode))
-                return BaseResponse<AuthResponse>.FailureResponse("Thiếu mã xác thực");
+                return BaseResponse<AuthResponse>.SuccessResponse("Thiếu mã xác thực");
 
             var tokenRequest = new Dictionary<string, string>
         {

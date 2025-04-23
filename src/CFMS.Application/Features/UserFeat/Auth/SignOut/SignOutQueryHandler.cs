@@ -38,14 +38,14 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignOut
             var context = _httpContextAccessor.HttpContext;
             if (context == null)
             {
-                return BaseResponse<string>.FailureResponse("Có lỗi xảy ra");
+                return BaseResponse<string>.SuccessResponse("Có lỗi xảy ra");
             }
 
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer ", "");
 
             if (string.IsNullOrEmpty(token))
             {
-                return BaseResponse<string>.FailureResponse("Thiếu Token");
+                return BaseResponse<string>.SuccessResponse("Thiếu Token");
             }
 
             await _cache.SetStringAsync($"blacklist_{token}", "true", new DistributedCacheEntryOptions
