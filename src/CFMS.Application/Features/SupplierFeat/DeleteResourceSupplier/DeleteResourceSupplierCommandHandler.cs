@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.SupplierFeat.DeleteResourceSupplier
             var existResourceSupplier = _unitOfWork.ResourceSupplierRepository.Get(filter: f => f.ResourceSupplierId.Equals(request.ResourceSupplierId) && f.IsDeleted == false).FirstOrDefault();
             if (existResourceSupplier == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Nhà cung cấp không có loại hàng hoá này");
+                return BaseResponse<bool>.FailureResponse(message: "Nhà cung cấp không có loại hàng hoá này");
             }
 
             try
@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.SupplierFeat.DeleteResourceSupplier
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

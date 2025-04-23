@@ -21,7 +21,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.Update
 
             if (existStage == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Giai đoạn phát triển không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
             }
 
             // Lấy tất cả các stage thuộc cùng nhóm StageCode
@@ -69,7 +69,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

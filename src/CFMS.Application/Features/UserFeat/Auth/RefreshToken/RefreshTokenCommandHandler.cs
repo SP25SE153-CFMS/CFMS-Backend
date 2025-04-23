@@ -27,14 +27,14 @@ namespace CFMS.Application.Features.UserFeat.Auth.RefreshToken
 
             if (existToken == null)
             {
-                return BaseResponse<AuthResponse>.SuccessResponse("Token không hợp lệ hoặc hết hạn");
+                return BaseResponse<AuthResponse>.FailureResponse("Token không hợp lệ hoặc hết hạn");
             }
 
             var newTokens = _tokenService.RefreshAccessTokenAsync(existToken);
 
             if (newTokens.Result == null)
             {
-                return BaseResponse<AuthResponse>.SuccessResponse("Token không hợp lệ hoặc hết hạn");
+                return BaseResponse<AuthResponse>.FailureResponse("Token không hợp lệ hoặc hết hạn");
             }
 
             return BaseResponse<AuthResponse>.SuccessResponse(newTokens.Result);

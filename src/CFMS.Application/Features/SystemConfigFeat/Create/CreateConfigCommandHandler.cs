@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.SystemConfigFeat.Create
             var existConfig = _unitOfWork.SystemConfigRepository.Get(filter: s => s.SettingName.Equals(request.SettingName) && s.IsDeleted == false).FirstOrDefault();
             if (existConfig != null)
             {
-                return BaseResponse<bool>.SuccessResponse("Tên cấu hình đã tồn tại");
+                return BaseResponse<bool>.FailureResponse("Tên cấu hình đã tồn tại");
             }
 
             switch (request.EntityType)
@@ -40,7 +40,7 @@ namespace CFMS.Application.Features.SystemConfigFeat.Create
                         .FirstOrDefault();
                     if (coop == null)
                     {
-                        return BaseResponse<bool>.SuccessResponse("Chuồng gà không tồn tại");
+                        return BaseResponse<bool>.FailureResponse("Chuồng gà không tồn tại");
                     }
                     break;
 
@@ -50,12 +50,12 @@ namespace CFMS.Application.Features.SystemConfigFeat.Create
                         .FirstOrDefault();
                     if (warehouse == null)
                     {
-                        return BaseResponse<bool>.SuccessResponse("Kho không tồn tại");
+                        return BaseResponse<bool>.FailureResponse("Kho không tồn tại");
                     }
                     break;
 
                 default:
-                    return BaseResponse<bool>.SuccessResponse("Đối tượng cấu hình không hợp lệ");
+                    return BaseResponse<bool>.FailureResponse("Đối tượng cấu hình không hợp lệ");
             }
 
             var config = _mapper.Map<SystemConfig>(request);
@@ -64,7 +64,7 @@ namespace CFMS.Application.Features.SystemConfigFeat.Create
 
             return result > 0
                 ? BaseResponse<bool>.SuccessResponse("Thêm cấu hình thành công")
-                : BaseResponse<bool>.SuccessResponse("Thêm thất bại");
+                : BaseResponse<bool>.FailureResponse("Thêm thất bại");
         }
     }
 }

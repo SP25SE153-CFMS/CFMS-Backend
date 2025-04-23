@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.CategoryFeat.GetSubsByTypeAndFarm
 
         public async Task<BaseResponse<IEnumerable<SubCategory>>> Handle(GetSubsByTypeAndFarmQuery request, CancellationToken cancellationToken)
         {
-            var subs = _unitOfWork.SubCategoryRepository.Get(filter: c => (c.FarmId == null || c.FarmId.Equals(request.FarmId)) && c.Category.CategoryType.Equals(request.CategoryType) && c.IsDeleted == false, includeProperties: [x => x.Category]).ToList();
+            var subs = _unitOfWork.SubCategoryRepository.Get(filter: c => (c.FarmId == null || c.FarmId.Equals(request.FarmId)) && c.Category.CategoryType.Equals(request.CategoryType) && c.Status == 1 && c.IsDeleted == false, includeProperties: [x => x.Category]).ToList();
             return BaseResponse<IEnumerable<SubCategory>>.SuccessResponse(data: subs);
         }
     }

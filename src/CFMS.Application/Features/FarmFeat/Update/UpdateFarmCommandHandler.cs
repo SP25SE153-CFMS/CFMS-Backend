@@ -18,13 +18,13 @@ namespace CFMS.Application.Features.FarmFeat.Update
             var existFarm = _unitOfWork.FarmRepository.GetByID(request.FarmId);
             if (existFarm == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Trang trại không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
             var farms = _unitOfWork.FarmRepository.Get(filter: f => f.FarmCode.Equals(request.FarmCode) && f.IsDeleted == false && f.FarmId != request.FarmId);
             if (farms.Any())
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Mã trang trại đã tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Mã trang trại đã tồn tại");
             }
 
             try
@@ -46,7 +46,7 @@ namespace CFMS.Application.Features.FarmFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessRFailureResponseesponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

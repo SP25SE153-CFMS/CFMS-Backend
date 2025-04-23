@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.ShiftFeat.Create
             var existShift = _unitOfWork.ShiftRepository.Get(filter: s => s.ShiftName.Equals(request.ShiftName) && s.IsDeleted == false).FirstOrDefault();
             if (existShift != null)
             {
-                return BaseResponse<bool>.SuccessResponse("Tên ca làm đã tồn tại");
+                return BaseResponse<bool>.FailureResponse("Tên ca làm đã tồn tại");
             }
 
             var shift = _mapper.Map<Shift>(request);
@@ -37,7 +37,7 @@ namespace CFMS.Application.Features.ShiftFeat.Create
 
             return result > 0
                 ? BaseResponse<bool>.SuccessResponse("Thêm ca làm thành công")
-                : BaseResponse<bool>.SuccessResponse("Thêm thất bại");
+                : BaseResponse<bool>.FailureResponse("Thêm thất bại");
         }
     }
 }

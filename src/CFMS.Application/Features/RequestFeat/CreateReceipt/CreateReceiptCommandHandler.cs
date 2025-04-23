@@ -34,24 +34,24 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                 ).FirstOrDefault();
 
             if (existRequest == null)
-                return BaseResponse<bool>.SuccessResponse("Phiếu yêu cầu không tồn tại");
+                return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu không tồn tại");
 
             if (existRequest.Status == 2)
-                return BaseResponse<bool>.SuccessResponse("Phiếu yêu cầu đã bị từ chối");
+                return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu đã bị từ chối");
 
             if (existRequest.Status == 0)
-                return BaseResponse<bool>.SuccessResponse("Phiếu yêu cầu đang chờ duyệt");
+                return BaseResponse<bool>.FailureResponse("Phiếu yêu cầu đang chờ duyệt");
 
             var existReceiptType = _unitOfWork.SubCategoryRepository.Get(x => x.SubCategoryId.Equals(request.ReceiptTypeId) && !x.IsDeleted).FirstOrDefault();
             if (existReceiptType == null)
-                return BaseResponse<bool>.SuccessResponse("Loại phiếu không tồn tại");
+                return BaseResponse<bool>.FailureResponse("Loại phiếu không tồn tại");
 
             string receiptCodePrefix = existReceiptType.SubCategoryName.Equals(RequestType.IMPORT.ToString()) ? "PNK" : "PXK";
 
             if (existRequest.InventoryRequests.FirstOrDefault().IsFulfilled == 1)
                 return existReceiptType.SubCategoryName.Equals(RequestType.IMPORT.ToString())
-                    ? BaseResponse<bool>.SuccessResponse($"Phiếu yêu cầu nhập này đã được đạt số lượng yêu cầu")
-                    : BaseResponse<bool>.SuccessResponse($"Phiếu yêu cầu xuất này đã được đạt số lượng yêu cầu");
+                    ? BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu nhập này đã được đạt số lượng yêu cầu")
+                    : BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu xuất này đã được đạt số lượng yêu cầu");
 
             if (receiptCodePrefix == "PXK")
             {
@@ -59,7 +59,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                 {
                     var stock = _unitOfWork.WareStockRepository.Get(x => x.ResourceId.Equals(detail.ResourceId) && x.WareId.Equals(request.WareFromId)).FirstOrDefault();
                     if (stock == null || stock.Quantity < detail.ActualQuantity)
-                        return BaseResponse<bool>.SuccessResponse("Không đủ hàng trong kho để xuất");
+                        return BaseResponse<bool>.FailureResponse("Không đủ hàng trong kho để xuất");
                 }
             }
 
@@ -164,7 +164,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
             });
 
             if (result.Data == false)
-                return BaseResponse<bool>.SuccessResponse("Tạo thất bại:" + result.Message);
+                return BaseResponse<bool>.FailureResponse("Tạo thất bại:" + result.Message);
 
             return BaseResponse<bool>.SuccessResponse($"Tạo phiếu {(receiptCodePrefix.Equals("PNK") ? "nhập" : "xuất")} thành công");
         }

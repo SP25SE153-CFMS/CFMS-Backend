@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.NotiFeat.ClearNoti
             var existNoti = _unitOfWork.NotificationRepository.Get(filter: n => n.NotificationId.Equals(request.NotificationId)).FirstOrDefault();
             if (existNoti == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Thông báo không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Thông báo không tồn tại");
             }
 
             try
@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.NotiFeat.ClearNoti
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xoá thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

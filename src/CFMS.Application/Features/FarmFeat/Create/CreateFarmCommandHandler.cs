@@ -37,7 +37,7 @@ namespace CFMS.Application.Features.FarmFeat.Create
             var farms = _unitOfWork.FarmRepository.Get(filter: f => (f.FarmCode.Equals(request.FarmCode) || f.FarmName.Equals(request.FarmName)) && f.IsDeleted == false);
             if (farms.Any())
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Tên hoặc mã trang trại đã tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã trang trại đã tồn tại");
             }
 
             try
@@ -58,7 +58,7 @@ namespace CFMS.Application.Features.FarmFeat.Create
                 var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmCode.Equals(request.FarmCode) && f.FarmName.Equals(request.FarmName) && f.IsDeleted == false).FirstOrDefault();
                 if (existFarm == null)
                 {
-                    return BaseResponse<bool>.SuccessResponse(message: "Không tìm thấy trang trại");
+                    return BaseResponse<bool>.FailureResponse(message: "Không tìm thấy trang trại");
                 }
 
                 await _mediator.Publish(new WareCreatedEvent(existFarm.FarmId));
@@ -66,7 +66,7 @@ namespace CFMS.Application.Features.FarmFeat.Create
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo trang trại thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Tạo trang trại không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Tạo trang trại không thành công");
             }
             catch (Exception ex)
             {

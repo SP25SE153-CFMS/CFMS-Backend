@@ -30,7 +30,7 @@ namespace CFMS.Application.Features.RequestFeat.Delete
 
                 if (existingRequest == null)
                 {
-                    return BaseResponse<bool>.SuccessResponse("Yêu cầu không tồn tại");
+                    return BaseResponse<bool>.FailureResponse("Yêu cầu không tồn tại");
                 }
 
                 if (existingRequest.InventoryRequests != null)

@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.GetNutritionPlan
             var existPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.NutritionPlanId.Equals(request.Id) && p.IsDeleted == false, includeProperties: "FeedSessions,NutritionPlanDetails,NutritionPlanDetails.Food").FirstOrDefault();
             if (existPlan == null)
             {
-                return BaseResponse<NutritionPlan>.SuccessResponse(message: "Chế độ dinh dưỡng không tồn tại");
+                return BaseResponse<NutritionPlan>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
             }
             return BaseResponse<NutritionPlan>.SuccessResponse(data: existPlan);
         }

@@ -101,7 +101,7 @@ namespace CFMS.Application.Features.RequestFeat.Create
 
                 return result > 0
                     ? BaseResponse<bool>.SuccessResponse("Tạo yêu cầu thành công")
-                    : BaseResponse<bool>.SuccessResponse("Thêm thất bại");
+                    : BaseResponse<bool>.FailureResponse("Thêm thất bại");
             }
             catch (Exception ex)
             {

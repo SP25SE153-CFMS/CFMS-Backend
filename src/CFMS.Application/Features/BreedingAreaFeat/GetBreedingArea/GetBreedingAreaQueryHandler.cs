@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.GetBreedingArea
             var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaId.Equals(request.Id) && ba.IsDeleted == false, includeProperties: "ChickenCoops").FirstOrDefault();
             if (existBreedingArea == null)
             {
-                return BaseResponse<BreedingArea>.SuccessResponse(message: "Khu nuôi không tồn tại");
+                return BaseResponse<BreedingArea>.FailureResponse(message: "Khu nuôi không tồn tại");
             }
             return BaseResponse<BreedingArea>.SuccessResponse(data: existBreedingArea);
         }

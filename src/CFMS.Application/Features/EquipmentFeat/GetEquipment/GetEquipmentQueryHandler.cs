@@ -26,7 +26,7 @@ namespace CFMS.Application.Features.EquipmentFeat.GetEquipment
             var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: f => f.EquipmentId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existEquipment == null)
             {
-                return BaseResponse<Equipment>.SuccessResponse(message: "Trang thiết bị không tồn tại");
+                return BaseResponse<Equipment>.FailureResponse(message: "Trang thiết bị không tồn tại");
             }
 
             return BaseResponse<Equipment>.SuccessResponse(data: existEquipment);

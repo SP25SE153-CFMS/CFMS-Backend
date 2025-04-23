@@ -18,13 +18,13 @@ namespace CFMS.Application.Features.NutritionPlanFeat.DeleteFeedSession
             var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: np => np.NutritionPlanId.Equals(request.NutritionPlanId) && np.IsDeleted == false).FirstOrDefault();
             if (existNutritionPlan == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Chế độ dinh dưỡng không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
             }
 
             var existFeedSession = _unitOfWork.FeedSessionRepository.Get(filter: f => f.FeedSessionId.Equals(request.FeedSessionId) && f.IsDeleted == false).FirstOrDefault();
             if (existFeedSession == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Phiên cho ăn không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Phiên cho ăn không tồn tại");
             }
 
             try
@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.DeleteFeedSession
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
+                    return BaseResponse<bool>.FailureResponse(message: "Xóa thành công");
                 }
                 return BaseResponse<bool>.SuccessResponse(message: "Xóa không thành công");
             }

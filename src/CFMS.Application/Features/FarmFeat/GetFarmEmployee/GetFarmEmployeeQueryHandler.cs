@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmEmployee
             var existFarmEmployee = _unitOfWork.FarmEmployeeRepository.Get(filter: f => f.FarmEmployeeId.Equals(request.Id) && f.IsDeleted == false, includeProperties: [e => e.User]).FirstOrDefault();
             if (existFarmEmployee == null)
             {
-                return BaseResponse<FarmEmployeeResponse>.SuccessResponse(message: "Nhân viên không làm việc trong trang trại này");
+                return BaseResponse<FarmEmployeeResponse>.FailureResponse(message: "Nhân viên không làm việc trong trang trại này");
             }
 
             var employee = _mapper.Map<FarmEmployeeResponse>(existFarmEmployee);

@@ -34,7 +34,7 @@ namespace CFMS.Application.Features.UserFeat.Update
             var existUser = _unitOfWork.UserRepository.GetByID(request.UserId);
             if (existUser == null)
             {
-                return BaseResponse<bool>.SuccessResponse("Người dùng không tồn tại");
+                return BaseResponse<bool>.FailureResponse("Người dùng không tồn tại");
             }
 
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
@@ -46,7 +46,7 @@ namespace CFMS.Application.Features.UserFeat.Update
 
                 if (!string.IsNullOrEmpty(request.Password) && existUser.HashedPassword.Equals(BCrypt.Net.BCrypt.HashPassword(request.Password)))
                 {
-                    return BaseResponse<bool>.SuccessResponse("Mật khẩu mới không được trùng với mật khẩu cũ");
+                    return BaseResponse<bool>.FailureResponse("Mật khẩu mới không được trùng với mật khẩu cũ");
                 }
 
                 if (_currentUserService.GetUserRole().Equals(GeneralRole.ADMIN_ROLE))
@@ -69,7 +69,7 @@ namespace CFMS.Application.Features.UserFeat.Update
                 var result = await _unitOfWork.SaveChangesAsync();
                 return result > 0
                     ? BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công")
-                    : BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
+                    : BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
             });
         }
     }

@@ -34,7 +34,7 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmByCurrentUserId
 
             if (existFarm == null)
             {
-                return BaseResponse<IEnumerable<Farm>>.SuccessResponse(message: "Trang trại không tồn tại");
+                return BaseResponse<IEnumerable<Farm>>.FailureResponse(message: "Trang trại không tồn tại");
             }
 
             return BaseResponse<IEnumerable<Farm>>.SuccessResponse(data: existFarm);

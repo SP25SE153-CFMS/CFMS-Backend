@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.FeedLogFeat.GetFeedLog
             var existFeedLog = _unitOfWork.FeedLogRepository.Get(filter: f => f.FeedLogId.Equals(request.FeedLogId) && f.IsDeleted == false).FirstOrDefault();
             if (existFeedLog == null)
             {
-                return BaseResponse<FeedLog>.SuccessResponse(message: "FeedLog không tồn tại");
+                return BaseResponse<FeedLog>.FailureResponse(message: "Lịch sử cho ăn không tồn tại");
             }
             return BaseResponse<FeedLog>.SuccessResponse(data: existFeedLog);
         }

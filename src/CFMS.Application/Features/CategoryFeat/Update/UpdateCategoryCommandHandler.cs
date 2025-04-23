@@ -18,12 +18,12 @@ namespace CFMS.Application.Features.CategoryFeat.Update
             var existCategory = _unitOfWork.CategoryRepository.Get(filter: c => c.CategoryId.Equals(request.CategoryId) && c.IsDeleted == false).FirstOrDefault();
             if (existCategory == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Danh mục không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Danh mục không tồn tại");
             }
 
             if (existCategory.CategoryName.Equals(request.CategoryName) == null && existCategory.CategoryId != request.CategoryId)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Mã danh mục đã tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Mã danh mục đã tồn tại");
             }
 
             try
@@ -39,7 +39,7 @@ namespace CFMS.Application.Features.CategoryFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

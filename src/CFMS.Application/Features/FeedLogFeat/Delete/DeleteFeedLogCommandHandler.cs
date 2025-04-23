@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.FeedLogFeat.Delete
             var existFeedLog = _unitOfWork.FeedLogRepository.Get(filter: f => f.FeedLogId.Equals(request.FeedLogId) && f.IsDeleted == false).FirstOrDefault();
             if (existFeedLog == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "FeedLog không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "FeedLog không tồn tại");
             }
 
             try
@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.FeedLogFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Xóa không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Xóa không thành công");
             }
             catch (Exception ex)
             {

@@ -28,13 +28,13 @@ namespace CFMS.Application.Features.SupplierFeat.AddResourceSupplier
             var existResource = _unitOfWork.ResourceRepository.Get(filter: r => r.ResourceId.Equals(request.ResourceId) && r.IsDeleted == false).FirstOrDefault();
             if (existResource == null)
             {
-                return BaseResponse<bool>.SuccessResponse("Hàng hoá không tồn tại");
+                return BaseResponse<bool>.FailureResponse("Hàng hoá không tồn tại");
             }
 
             var existSupplier = _unitOfWork.SupplierRepository.Get(filter: s => s.SupplierId.Equals(request.SupplierId) && s.IsDeleted == false).FirstOrDefault();
             if (existSupplier == null)
             {
-                return BaseResponse<bool>.SuccessResponse("Nhà cung cấp không tồn tại");
+                return BaseResponse<bool>.FailureResponse("Nhà cung cấp không tồn tại");
             }
 
             var resourceSupplier = _mapper.Map<ResourceSupplier>(request);
@@ -43,7 +43,7 @@ namespace CFMS.Application.Features.SupplierFeat.AddResourceSupplier
 
             return result > 0
                 ? BaseResponse<bool>.SuccessResponse("Thêm hàng hoá cho nhà cung cấp thành công")
-                : BaseResponse<bool>.SuccessResponse("Thêm thất bại");
+                : BaseResponse<bool>.FailureResponse("Thêm thất bại");
         }
     }
 }

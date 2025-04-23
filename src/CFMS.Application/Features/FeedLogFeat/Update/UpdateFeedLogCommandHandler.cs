@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.FeedLogFeat.Update
             var existFeedLog = _unitOfWork.FeedLogRepository.Get(filter: f => f.FeedLogId.Equals(request.FeedLogId) && f.IsDeleted == false).FirstOrDefault();
             if (existFeedLog == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "FeedLog không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Lịch sử cho ăn không tồn tại");
             }
 
             try
@@ -33,7 +33,7 @@ namespace CFMS.Application.Features.FeedLogFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

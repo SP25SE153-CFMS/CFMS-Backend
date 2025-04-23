@@ -27,7 +27,7 @@ namespace CFMS.Application.Features.SupplierFeat.Create
             var existSupplier = _unitOfWork.SupplierRepository.Get(filter: s => (s.SupplierCode.Equals(request.SupplierCode) || s.SupplierName.Equals(request.SupplierName)) && s.FarmId.Equals(request.FarmId) && s.IsDeleted == false).FirstOrDefault();
             if (existSupplier != null)
             {
-                return BaseResponse<bool>.SuccessResponse("Tên hoặc mã nhà cung cấp đã tồn tại");
+                return BaseResponse<bool>.FailureResponse("Tên hoặc mã nhà cung cấp đã tồn tại");
             }
 
             var supplier = _mapper.Map<Supplier>(request);
@@ -36,7 +36,7 @@ namespace CFMS.Application.Features.SupplierFeat.Create
 
             return result > 0
                 ? BaseResponse<bool>.SuccessResponse("Thêm nhà cung cấp thành công")
-                : BaseResponse<bool>.SuccessResponse("Thêm thất bại");
+                : BaseResponse<bool>.FailureResponse("Thêm thất bại");
         }
     }
 }
