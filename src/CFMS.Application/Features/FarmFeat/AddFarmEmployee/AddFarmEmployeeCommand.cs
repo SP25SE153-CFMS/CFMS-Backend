@@ -20,5 +20,7 @@ namespace CFMS.Application.Features.FarmFeat.AddFarmEmployee
         public int? Status { get; set; }
 
         public int? FarmRole { get; set; }
+
+        //public int? ForceAdd { get; set; }
     }
 }

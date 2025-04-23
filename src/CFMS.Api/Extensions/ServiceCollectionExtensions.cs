@@ -19,6 +19,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -35,6 +36,8 @@ namespace CFMS.Api.Extensions
                 options.PayloadSerializerOptions.MaxDepth = 64;
             });
             services.AddTransient<NotiHub>();
+            services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+
 
             //DbContext
             services.AddDbContext<CfmsDbContext>(options =>

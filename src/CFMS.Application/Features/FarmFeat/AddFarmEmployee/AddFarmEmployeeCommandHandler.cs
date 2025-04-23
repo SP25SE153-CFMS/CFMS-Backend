@@ -2,6 +2,7 @@
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CFMS.Application.Features.FarmFeat.AddFarmEmployee
 {
@@ -28,10 +29,20 @@ namespace CFMS.Application.Features.FarmFeat.AddFarmEmployee
                 return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
             }
 
-            var existEmployee = _unitOfWork.FarmEmployeeRepository.Get(filter: fe => fe.UserId.Equals(request.UserId) && fe.FarmId.Equals(request.FarmId) && fe.IsDeleted == false).FirstOrDefault();
+            var existEmployee = _unitOfWork.FarmEmployeeRepository.GetIncludeMultiLayer(filter: fe => fe.UserId.Equals(request.UserId) && fe.FarmId.Equals(request.FarmId) && fe.IsDeleted == false,
+                include: x => x
+                .Include(t => t.User)
+                ).FirstOrDefault();
             if (existEmployee != null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Người dùng đã là nhân viên của trang trại này");
+                return BaseResponse<bool>.FailureResponse(message:
+                    $"{existEmployee.Status switch
+                    {
+                        0 => "Người dùng đang bị đình chỉ hoặc tạm ngưng làm việc trong trang trại này",
+                        1 => "Người dùng này đang làm việc trong trang trại này",
+                        //2 => "Người dùng này dã từng bị sa thải. Có chắc chắn muốn thêm không?"
+                        _ => "Người dùng này có trạng thái không xác định"
+                    }}");
             }
 
             try
@@ -40,8 +51,8 @@ namespace CFMS.Application.Features.FarmFeat.AddFarmEmployee
                 {
                     FarmId = request.FarmId,
                     UserId = request.UserId,
-                    StartDate = DateTime.UtcNow.ToLocalTime(),
-                    Status = request.Status,
+                    StartDate = DateTime.Now.ToLocalTime().AddHours(7),
+                    Status = (request.Status > 0 && request.Status < 6) ? request.Status : 3,
                     FarmRole = request.FarmRole,
                 });
 

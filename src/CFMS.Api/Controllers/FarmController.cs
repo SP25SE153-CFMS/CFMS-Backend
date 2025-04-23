@@ -10,6 +10,7 @@ using CFMS.Application.Features.FarmFeat.GetFarmByUserId;
 using CFMS.Application.Features.FarmFeat.GetFarmEmployee;
 using CFMS.Application.Features.FarmFeat.GetFarmEmployees;
 using CFMS.Application.Features.FarmFeat.GetFarms;
+using CFMS.Application.Features.FarmFeat.InviteEnrollFarm;
 using CFMS.Application.Features.FarmFeat.Update;
 using CFMS.Application.Features.FarmFeat.UpdateFarmEmployee;
 using MediatR;
@@ -118,6 +119,20 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetFarmEmployee(Guid id)
         {
             var result = await Send(new GetFarmEmployeeQuery(id));
+            return result;
+        }
+
+        [HttpPost("invite-enroll")]
+        public async Task<IActionResult> InviteEnrollFarm(InviteEnrollFarmCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPost("invite-enroll-decision")]
+        public async Task<IActionResult> InviteEnrollDecisionFarm(InviteEnrollFarmDecisionCommand command)
+        {
+            var result = await Send(command);
             return result;
         }
     }
