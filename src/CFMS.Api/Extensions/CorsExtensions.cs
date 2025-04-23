@@ -11,9 +11,10 @@ namespace CFMS.Api.Extensions
             {
                 options.AddPolicy("AllowAll", policy =>
                 {
-                    policy.AllowAnyOrigin()
+                    policy.WithOrigins("http://localhost:3000/", "https://cfms.site/", "https://farm.hdang09.me/", "https://cfms.hdang09.me/")
                           .AllowAnyMethod()
-                          .AllowAnyHeader();
+                          .AllowAnyHeader()
+                          .AllowCredentials();
                 });
             });
 
