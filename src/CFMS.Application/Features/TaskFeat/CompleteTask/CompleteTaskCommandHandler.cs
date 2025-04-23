@@ -63,11 +63,20 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                         .ThenInclude(s => s.Location)
                     .Include(t => t.TaskLocations)
                         .ThenInclude(s => s.LocationNavigation)
+                    .Include(t => t.FeedLogs)
+                    .Include(t => t.VaccineLogs)
+                    .Include(t => t.TaskLogs)
+                    .Include(t => t.HealthLogs)
                 ).FirstOrDefault();
 
             if (existTask == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
+            }
+
+            if (existTask.Status.Equals(1))
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Công việc này đã được báo cáo rồi");
             }
 
             var taskType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(existTask.TaskTypeId) && x.IsDeleted == false).FirstOrDefault()?.SubCategoryName;
@@ -91,6 +100,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                 var newRequest = new Request()
                 {
                     RequestTypeId = requestType?.SubCategoryId,
+                    FarmId = existTask.FarmId,
                     Status = 0
                 };
 
@@ -304,6 +314,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 UnitId = unit?.SubCategoryId,
                                 TaskId = request?.TaskId,
                                 Note = request?.Note,
+                                ResourceId = detail?.Resource?.ResourceId
                             };
 
                             _unitOfWork.FeedLogRepository.Insert(feedLog);

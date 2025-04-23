@@ -20,6 +20,8 @@ public partial class FeedLog : EntityAudit
 
     public string? Note { get; set; }
 
+    public Guid? ResourceId { get; set; }
+
     [JsonIgnore]
     public virtual ChickenBatch? ChickenBatch { get; set; }
 
@@ -28,4 +30,6 @@ public partial class FeedLog : EntityAudit
 
     [JsonIgnore]
     public virtual SubCategory? Unit { get; set; }
+
+    public virtual Resource? Resource { get; set; }
 }
