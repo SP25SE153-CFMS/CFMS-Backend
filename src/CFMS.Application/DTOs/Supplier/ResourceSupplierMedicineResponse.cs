@@ -8,6 +8,8 @@ namespace CFMS.Application.DTOs.Supplier
 {
     public class ResourceSupplierMedicineResponse : ResourceSupplierResponseBase
     {
+        public Guid MedicineId { get; set; }
+
         public string? MedicineCode { get; set; }
 
         public string? MedicineName { get; set; }

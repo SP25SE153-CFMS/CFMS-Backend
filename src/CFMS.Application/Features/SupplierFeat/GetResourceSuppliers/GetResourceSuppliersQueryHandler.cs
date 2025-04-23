@@ -41,7 +41,8 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
                         includeProperties: [
                             r => r.Food,
                             r => r.Equipment,
-                            r => r.Medicine
+                            r => r.Medicine,
+                            r => r.Chicken
                             ]).FirstOrDefault();
 
                     var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(existResource.ResourceTypeId) && f.IsDeleted == false).FirstOrDefault();
@@ -66,6 +67,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
                         case "food":
                             return new ResourceSupplierFoodResponse
                             {
+                                FoodId = existResource?.Food?.FoodId ?? Guid.Empty,
                                 FoodCode = existResource?.Food?.FoodCode ?? "Không xác định",
                                 FoodName = existResource?.Food?.FoodName ?? "Không xác định",
                                 ResourceType = "Thực phẩm",
@@ -82,6 +84,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
 
                             return new ResourceSupplierEquipmentResponse
                             {
+                                EquipmentId = existResource?.Equipment?.EquipmentId ?? Guid.Empty,
                                 EquipmentCode = existResource?.Equipment?.EquipmentCode ?? "Không xác định",
                                 EquipmentName = existResource?.Equipment?.EquipmentName ?? "Không xác định",
                                 ResourceType = "Thiết bị",
@@ -90,7 +93,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
                                 Warranty = existResource?.Equipment?.Warranty,
                                 Size = 0,
                                 Weight = 0,
-                                PurchaseDate = existResource?.Equipment.PurchaseDate,
+                                PurchaseDate = existResource?.Equipment?.PurchaseDate,
                                 UnitSpecification = $"{existResource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 Description = resourceSupplier?.Description,
                                 Price = resourceSupplier?.Price
@@ -101,8 +104,9 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
 
                             return new ResourceSupplierMedicineResponse
                             {
-                                MedicineCode = existResource?.Medicine.MedicineCode ?? "Không xác định",
-                                MedicineName = existResource?.Medicine.MedicineName ?? "Không xác định",
+                                MedicineId = existResource?.Medicine?.MedicineId ?? Guid.Empty,
+                                MedicineCode = existResource?.Medicine?.MedicineCode ?? "Không xác định",
+                                MedicineName = existResource?.Medicine?.MedicineName ?? "Không xác định",
                                 ResourceType = "Dược phẩm",
                                 Usage = existResource?.Medicine?.Usage,
                                 DosageForm = existResource?.Medicine?.DosageForm,
@@ -120,6 +124,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetResourceSuppliers
 
                             return new ResourceSupplierChickenResponse
                             {
+                                ChickenId = existResource?.Chicken?.ChickenId ?? Guid.Empty,
                                 ChickenCode = existResource?.Chicken?.ChickenCode ?? "Không xác định",
                                 ChickenName = existResource?.Chicken?.ChickenName ?? "Không xác định",
                                 ResourceType = "Giống gà",
