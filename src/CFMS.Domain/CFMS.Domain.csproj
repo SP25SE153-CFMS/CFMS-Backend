@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Entities\FarmEmployee.cs~RF1ce86865.TMP" />
     <None Remove="Entities\GrowthStage.cs~RF2fb5f2c0.TMP" />
   </ItemGroup>
 

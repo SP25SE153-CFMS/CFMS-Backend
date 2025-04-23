@@ -17,5 +17,10 @@ namespace CFMS.Application.Services.SignalR
         {
             await _hubContext.Clients.All.SendAsync("SendMessage", data);
         }
+
+        public async Task SendMessageToUser(string userId, object data)
+        {
+            await _hubContext.Clients.User(userId).SendAsync("SendMessage", data);
+        }
     }
 }
