@@ -9,6 +9,5 @@ namespace CFMS.Application.DTOs.Farm
     public class FarmEmployeeInvitationRequest
     {
         public Guid? UserId { get; set; }
-        public int? FarmRole { get; set; }
     }
 }

@@ -113,7 +113,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
 
                     foreach (var x in request.employessInvitation)
                     {
-                        var role = x.FarmRole switch
+                        var role = request.FarmRole switch
                         {
                             3 => "nhân viên",
                             4 => "quản lý",
@@ -140,7 +140,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         userInvited = _unitOfWork.UserRepository.Get(filter: x => x.UserId.Equals(request.employessInvitation.FirstOrDefault().UserId)).FirstOrDefault()?.FullName;
                     }
 
-                    var roleName = request?.employessInvitation?.FirstOrDefault()?.FarmRole switch
+                    var roleName = request.FarmRole switch
                     {
                         3 => "nhân viên",
                         4 => "quản lý",
