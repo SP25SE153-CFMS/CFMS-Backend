@@ -22,13 +22,13 @@ namespace CFMS.Application.Features.AssignmentFeat.Delete
             var existTask = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false).FirstOrDefault();
             if (existTask == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Công việc không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
             }
 
             var existAssignment = _unitOfWork.AssignmentRepository.Get(filter: a => a.AssignmentId.Equals(request.AssignmentId) && a.IsDeleted == false).FirstOrDefault();
             if (existAssignment == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Phiên giao việc không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Phiên giao việc không tồn tại");
             }
 
             try
