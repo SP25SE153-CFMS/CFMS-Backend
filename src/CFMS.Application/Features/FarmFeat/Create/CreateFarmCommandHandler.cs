@@ -14,22 +14,26 @@ namespace CFMS.Application.Features.FarmFeat.Create
         private readonly IMapper _mapper;
         private readonly IUtilityService _utilityService;
         private readonly IMediator _mediator;
+        private readonly ICurrentUserService _currentUserService;
 
-        public CreateFarmCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IUtilityService utilityService, IMediator mediator)
+        public CreateFarmCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IUtilityService utilityService, IMediator mediator, ICurrentUserService currentUserService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _utilityService = utilityService;
             _mediator = mediator;
+            _currentUserService = currentUserService;
         }
 
         public async Task<BaseResponse<bool>> Handle(CreateFarmCommand request, CancellationToken cancellationToken)
         {
-            //var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(request.OwnerId));
-            //if (existUser == null)
-            //{
-            //    return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
-            //}
+            var ownerId = Guid.Parse(_currentUserService.GetUserId());
+            var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(ownerId) && u.Status == 1).FirstOrDefault();
+            if (existUser == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
+            }
+
             var farms = _unitOfWork.FarmRepository.Get(filter: f => (f.FarmCode.Equals(request.FarmCode) || f.FarmName.Equals(request.FarmName)) && f.IsDeleted == false);
             if (farms.Any())
             {
@@ -38,7 +42,15 @@ namespace CFMS.Application.Features.FarmFeat.Create
 
             try
             {
-                _unitOfWork.FarmRepository.Insert(_mapper.Map<Farm>(request));
+                var farm = _mapper.Map<Farm>(request);
+                farm.FarmEmployees.Add(new FarmEmployee
+                {
+                    UserId = existUser.UserId,
+                    Mail = existUser.Mail,
+                    PhoneNumber = existUser.PhoneNumber,
+                });
+
+                _unitOfWork.FarmRepository.Insert(farm);
                 var result = await _unitOfWork.SaveChangesAsync();
 
                 var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmCode.Equals(request.FarmCode) && f.FarmName.Equals(request.FarmName) && f.IsDeleted == false).FirstOrDefault();
