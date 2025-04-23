@@ -9,9 +9,9 @@ namespace CFMS.Application.DTOs.Supplier
 {
     public abstract class ResourceSupplierResponseBase
     {
-        public string ResourceType { get; set; }
+        public string? ResourceType { get; set; }
 
-        public string UnitSpecification { get; set; }
+        public string? UnitSpecification { get; set; }
 
         public string? Description { get; set; }
 
