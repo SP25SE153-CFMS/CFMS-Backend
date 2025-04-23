@@ -43,13 +43,13 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
 
             if (resources.Count == 0)
             {
-                return BaseResponse<object>.FailureResponse("Không có hàng hoá nào");
+                return BaseResponse<object>.SuccessResponse("Không có hàng hoá nào");
             }
 
             var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resources.FirstOrDefault().ResourceTypeId) && f.IsDeleted == false).FirstOrDefault();
             if (existResourceType == null)
             {
-                return BaseResponse<object>.FailureResponse("Loại hàng hoá không tồn tại");
+                return BaseResponse<object>.SuccessResponse("Loại hàng hoá không tồn tại");
             }
 
             var wareStockFoodResponses = resources

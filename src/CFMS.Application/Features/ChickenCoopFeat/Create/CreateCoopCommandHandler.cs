@@ -27,19 +27,19 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
             var existBreedingArea = _unitOfWork.BreedingAreaRepository.Get(filter: ba => ba.BreedingAreaId.Equals(request.BreedingAreaId) && ba.IsDeleted == false).FirstOrDefault();
             if (existBreedingArea == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Khu nuôi không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Khu nuôi không tồn tại");
             }
 
             var existPurpose = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.PurposeId) && s.IsDeleted == false).FirstOrDefault();
             if (existPurpose == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Mục đích nuôi không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Mục đích nuôi không tồn tại");
             }
 
             var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopCode.Equals(request.ChickenCoopCode) && c.BreedingAreaId.Equals(request.BreedingAreaId) && c.IsDeleted == false).FirstOrDefault();
             if (existCoop != null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Mã chuồng gà đã tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Mã chuồng gà đã tồn tại");
             }
 
             try

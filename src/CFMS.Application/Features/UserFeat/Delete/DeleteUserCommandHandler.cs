@@ -28,8 +28,8 @@ namespace CFMS.Application.Features.UserFeat.Delete
             return await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
                 var existUser = _unitOfWork.UserRepository.GetByID(request.UserId);
-                if (existUser == null) return BaseResponse<bool>.FailureResponse("Người dùng không tồn tại");
-                if (existUser.Status.Equals(UserStatus.INACTIVE_STATUS.ToString())) return BaseResponse<bool>.FailureResponse("Người dùng đã bị xoá");
+                if (existUser == null) return BaseResponse<bool>.SuccessResponse("Người dùng không tồn tại");
+                if (existUser.Status.Equals(UserStatus.INACTIVE_STATUS.ToString())) return BaseResponse<bool>.SuccessResponse("Người dùng đã bị xoá");
                 existUser.Status = (int)UserStatus.INACTIVE_STATUS;
                 _unitOfWork.UserRepository.Update(existUser);
 
@@ -45,7 +45,7 @@ namespace CFMS.Application.Features.UserFeat.Delete
                 var result = await _unitOfWork.SaveChangesAsync();
                 return result > 0
                     ? BaseResponse<bool>.SuccessResponse("Xóa thành công")
-                    : BaseResponse<bool>.FailureResponse("Xóa không thành công");
+                    : BaseResponse<bool>.SuccessResponse("Xóa không thành công");
             });
         }
     }

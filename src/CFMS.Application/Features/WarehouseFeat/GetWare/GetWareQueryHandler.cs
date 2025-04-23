@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWare
             var existWare = _unitOfWork.WarehouseRepository.Get(filter: f => f.WareId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existWare == null)
             {
-                return BaseResponse<Warehouse>.FailureResponse(message: "Kho không tồn tại");
+                return BaseResponse<Warehouse>.SuccessResponse(message: "Kho không tồn tại");
             }
 
             return BaseResponse<Warehouse>.SuccessResponse(data: existWare);

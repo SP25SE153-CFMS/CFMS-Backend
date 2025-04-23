@@ -26,7 +26,7 @@ namespace CFMS.Application.Features.TaskFeat.Update
                     .FirstOrDefault();
 
                 if (existingTask == null)
-                    return BaseResponse<bool>.FailureResponse("Công việc không tồn tại");
+                    return BaseResponse<bool>.SuccessResponse("Công việc không tồn tại");
 
                 var taskType = _unitOfWork.SubCategoryRepository
                     .Get(filter: t => t.SubCategoryId == request.TaskTypeId && !t.IsDeleted)
@@ -47,7 +47,7 @@ namespace CFMS.Application.Features.TaskFeat.Update
                             .FirstOrDefault();
 
                         if (existShift == null)
-                            return BaseResponse<bool>.FailureResponse("Ca làm việc không tồn tại");
+                            return BaseResponse<bool>.SuccessResponse("Ca làm việc không tồn tại");
 
                         existingTask.ShiftSchedules.Add(new ShiftSchedule
                         {
@@ -67,7 +67,7 @@ namespace CFMS.Application.Features.TaskFeat.Update
                             .FirstOrDefault();
 
                         if (existResource == null)
-                            return BaseResponse<bool>.FailureResponse("Vật phẩm không tồn tại");
+                            return BaseResponse<bool>.SuccessResponse("Vật phẩm không tồn tại");
 
                         existingTask.TaskResources.Add(new TaskResource
                         {
@@ -97,7 +97,7 @@ namespace CFMS.Application.Features.TaskFeat.Update
 
                 return result > 0
                     ? BaseResponse<bool>.SuccessResponse("Cập nhật thành công")
-                    : BaseResponse<bool>.FailureResponse("Cập nhật thất bại");
+                    : BaseResponse<bool>.SuccessResponse("Cập nhật thất bại");
             }
             catch (Exception ex)
             {

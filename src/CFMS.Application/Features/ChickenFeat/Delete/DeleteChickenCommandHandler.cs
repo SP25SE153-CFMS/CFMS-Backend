@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.ChickenFeat.Delete
             var existChicken = _unitOfWork.ChickenRepository.Get(filter: c => c.ChickenId.Equals(request.Id) && c.IsDeleted == false).FirstOrDefault();
             if (existChicken == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Gà không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Gà không tồn tại");
             }
 
             try
@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.ChickenFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Xóa không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Xóa không thành công");
             }
             catch (Exception ex)
             {

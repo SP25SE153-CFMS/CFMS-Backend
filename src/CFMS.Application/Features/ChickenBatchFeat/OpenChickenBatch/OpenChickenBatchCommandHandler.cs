@@ -23,19 +23,19 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
             var existChicken = _unitOfWork.ChickenRepository.Get(filter: c => c.ChickenId.Equals(request.ChickenId) && c.IsDeleted == false).FirstOrDefault();
             if (existChicken == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Gà không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Gà không tồn tại");
             }
 
             var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.ChickenCoopId) && c.IsDeleted == false).FirstOrDefault();
             if (existCoop == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Chuồng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Chuồng không tồn tại");
             }
 
             var totalChicken = request.ChickenDetailRequests.Select(c => c.Quantity).Sum();
             if (totalChicken > existCoop.MaxQuantity)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Vượt quá số lượng cho phép");
+                return BaseResponse<bool>.SuccessResponse(message: "Vượt quá số lượng cho phép");
             }
 
             var stages = _unitOfWork.GrowthStageRepository.Get(
@@ -44,7 +44,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
                 );
             if (!stages.Any())
             {
-                return BaseResponse<bool>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Giai đoạn phát triển không tồn tại");
             }
 
             try
@@ -79,7 +79,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Tạo không thành công");
             }
             catch (Exception ex)
             {

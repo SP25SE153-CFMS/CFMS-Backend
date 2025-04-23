@@ -39,7 +39,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTasksByStatus
 
             if (existFarm == null)
             {
-                return BaseResponse<IEnumerable<TaskDto>>.FailureResponse(message: "Trang trại không tồn tại");
+                return BaseResponse<IEnumerable<TaskDto>>.SuccessResponse(message: "Trang trại không tồn tại");
             }
 
             var tasks = _unitOfWork.TaskRepository.GetIncludeMultiLayer(

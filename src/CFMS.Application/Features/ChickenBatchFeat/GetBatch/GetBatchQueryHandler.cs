@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.GetBatch
 
             if (existBatch == null)
             {
-                return BaseResponse<ChickenBatchResponse>.FailureResponse(message: "Lứa không tồn tại");
+                return BaseResponse<ChickenBatchResponse>.SuccessResponse(message: "Lứa không tồn tại");
             }
 
             var totalChicken = existBatch.ChickenDetails.Sum(cd => cd.Quantity);

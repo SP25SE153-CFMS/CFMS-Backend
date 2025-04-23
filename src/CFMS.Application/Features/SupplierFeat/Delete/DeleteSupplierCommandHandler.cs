@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.SupplierFeat.Delete
             var existSupplier = _unitOfWork.SupplierRepository.Get(filter: f => f.SupplierId.Equals(request.SupplierId) && f.IsDeleted == false).FirstOrDefault();
             if (existSupplier == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Nhà cung cấp không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Nhà cung cấp không tồn tại");
             }
 
             try
@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.SupplierFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

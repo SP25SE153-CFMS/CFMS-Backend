@@ -24,13 +24,13 @@ namespace CFMS.Application.Features.FoodFeat.Update
             var existFood = _unitOfWork.FoodRepository.Get(filter: f => f.FoodId.Equals(request.FoodId) && f.IsDeleted == false).FirstOrDefault();
             if (existFood == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Thực phẩm không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Thực phẩm không tồn tại");
             }
 
             //var existNameCode = _unitOfWork.FoodRepository.Get(filter: s => s.FoodCode.Equals(request.FoodCode) && s.IsDeleted == false && s.FoodId != request.FoodId).FirstOrDefault();
             //if (existNameCode != null)
             //{
-            //    return BaseResponse<bool>.FailureResponse("Mã thực phẩm đã tồn tại");
+            //    return BaseResponse<bool>.SuccessResponse("Mã thực phẩm đã tồn tại");
             //}
 
             try
@@ -47,7 +47,7 @@ namespace CFMS.Application.Features.FoodFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

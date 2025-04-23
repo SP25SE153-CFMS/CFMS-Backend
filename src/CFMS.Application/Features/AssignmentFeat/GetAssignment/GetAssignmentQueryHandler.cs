@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.AssignmentFeat.GetAssignment
             var existAssignment = _unitOfWork.AssignmentRepository.Get(filter: a => a.AssignmentId.Equals(request.AssignmentId) && a.IsDeleted == false, includeProperties: "AssignedTo").FirstOrDefault();
             if (existAssignment == null)
             {
-                return BaseResponse<Assignment>.FailureResponse(message: "Assignment không tồn tại");
+                return BaseResponse<Assignment>.SuccessResponse(message: "Phiên giao việc không tồn tại");
             }
             return BaseResponse<Assignment>.SuccessResponse(data: existAssignment);
         }

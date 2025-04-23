@@ -20,13 +20,13 @@ namespace CFMS.Application.Features.FarmFeat.AddFarmEmployee
             var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmId.Equals(request.FarmId) && f.IsDeleted == false).FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Trang trại không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Trang trại không tồn tại");
             }
 
             var existUser = _unitOfWork.UserRepository.Get(u => u.UserId.Equals(request.UserId) && u.Status == 1).FirstOrDefault();
             if (existUser == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Người dùng không tồn tại");
             }
 
             var existEmployee = _unitOfWork.FarmEmployeeRepository.GetIncludeMultiLayer(filter: fe => fe.UserId.Equals(request.UserId) && fe.FarmId.Equals(request.FarmId) && fe.IsDeleted == false,
@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.FarmFeat.AddFarmEmployee
                 ).FirstOrDefault();
             if (existEmployee != null)
             {
-                return BaseResponse<bool>.FailureResponse(message:
+                return BaseResponse<bool>.SuccessResponse(message:
                     $"{existEmployee.Status switch
                     {
                         0 => "Người dùng đang bị đình chỉ hoặc tạm ngưng làm việc trong trang trại này",
@@ -62,7 +62,7 @@ namespace CFMS.Application.Features.FarmFeat.AddFarmEmployee
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Thêm không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Thêm không thành công");
             }
             catch (Exception ex)
             {

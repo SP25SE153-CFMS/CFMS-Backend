@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.FarmFeat.DeleteFarmEmployee
             var existFarmEmployee = _unitOfWork.FarmEmployeeRepository.Get(u => u.FarmEmployeeId.Equals(request.FarmEmployeeId)).FirstOrDefault();
             if (existFarmEmployee == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Người dùng không làm việc trong trang trại này");
+                return BaseResponse<bool>.SuccessResponse(message: "Người dùng không làm việc trong trang trại này");
             }
 
             try
@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.FarmFeat.DeleteFarmEmployee
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Xóa không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Xóa không thành công");
             }
             catch (Exception ex)
             {

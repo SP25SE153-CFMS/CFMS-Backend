@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.RequestFeat.GetReceipt
                 ).FirstOrDefault();
             if (existReceipt == null)
             {
-                return BaseResponse<InventoryReceipt>.FailureResponse(message: "Phiếu yêu cầu không tồn tại");
+                return BaseResponse<InventoryReceipt>.SuccessResponse(message: "Phiếu yêu cầu không tồn tại");
             }
 
             return BaseResponse<InventoryReceipt>.SuccessResponse(data: existReceipt);

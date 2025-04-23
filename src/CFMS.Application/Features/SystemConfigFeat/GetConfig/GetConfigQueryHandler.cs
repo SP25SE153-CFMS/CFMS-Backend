@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.SystemConfigFeat.GetConfig
             var existSystemConfig = _unitOfWork.SystemConfigRepository.Get(filter: f => f.SystemConfigId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existSystemConfig == null)
             {
-                return BaseResponse<SystemConfig>.FailureResponse(message: "Cấu hình hệ thống không tồn tại");
+                return BaseResponse<SystemConfig>.SuccessResponse(message: "Cấu hình hệ thống không tồn tại");
             }
 
             return BaseResponse<SystemConfig>.SuccessResponse(data: existSystemConfig);

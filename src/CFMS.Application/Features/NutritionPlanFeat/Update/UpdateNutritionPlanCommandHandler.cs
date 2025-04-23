@@ -21,7 +21,7 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
         var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: np => np.NutritionPlanId.Equals(request.NutritionPlanId) && np.IsDeleted == false).FirstOrDefault();
         if (existNutritionPlan == null)
         {
-            return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
+            return BaseResponse<bool>.SuccessResponse(message: "Chế độ dinh dưỡng không tồn tại");
         }
 
         try
@@ -34,13 +34,13 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
                 var existNutritionPlanDetail = _unitOfWork.NutritionPlanDetailRepository.Get(filter: npd => npd.NutritionPlanId.Equals(existNutritionPlan.NutritionPlanId) && npd.NutritionPlanDetailId.Equals(nutritionPlanDetail.NutritionPlanDetailId)).FirstOrDefault();
                 if (existNutritionPlanDetail == null)
                 {
-                    return BaseResponse<bool>.FailureResponse(message: "Chi tiết không tồn tại");
+                    return BaseResponse<bool>.SuccessResponse(message: "Chi tiết không tồn tại");
                 }
 
                 var existFood = _unitOfWork.FoodRepository.Get(filter: f => f.FoodId.Equals(nutritionPlanDetail.FoodId)).FirstOrDefault();
                 if (existFood == null)
                 {
-                    return BaseResponse<bool>.FailureResponse(message: "Thức ăn không tồn tại");
+                    return BaseResponse<bool>.SuccessResponse(message: "Thức ăn không tồn tại");
                 }
 
                 existNutritionPlanDetail.FoodId = nutritionPlanDetail.FoodId;
@@ -55,7 +55,7 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
                 var existFeedSession = _unitOfWork.FeedSessionRepository.Get(f => f.NutritionPlanId.Equals(existNutritionPlan.NutritionPlanId) && f.FeedSessionId.Equals(feedSession.FeedSessionId) && f.IsDeleted == false).FirstOrDefault();
                 if (existFeedSession == null)
                 {
-                    return BaseResponse<bool>.FailureResponse(message: "Cữ cho ăn không tồn tại");
+                    return BaseResponse<bool>.SuccessResponse(message: "Cữ cho ăn không tồn tại");
                 }
 
                 existFeedSession.FeedAmount = feedSession.FeedAmount;
@@ -70,7 +70,7 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
             var result = await _unitOfWork.SaveChangesAsync();
             return result > 0
                 ? BaseResponse<bool>.SuccessResponse(message: "Tạo thành công")
-                : BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
+                : BaseResponse<bool>.SuccessResponse(message: "Tạo không thành công");
         }
         catch (Exception ex)
         {

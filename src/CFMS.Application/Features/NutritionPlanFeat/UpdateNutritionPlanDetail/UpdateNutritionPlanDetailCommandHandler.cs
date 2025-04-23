@@ -18,13 +18,13 @@ namespace CFMS.Application.Features.NutritionPlanFeat.UpdateNutritionPlanDetail
             var existNutritionPlanDetail = _unitOfWork.NutritionPlanDetailRepository.Get(filter: n => n.NutritionPlanDetailId.Equals(request.NutritionPlanDetailId)).FirstOrDefault();
             if (existNutritionPlanDetail == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "NutritionPlanDetail không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "NutritionPlanDetail không tồn tại");
             }
 
             var existFood = _unitOfWork.FoodRepository.Get(filter: f => f.FoodId.Equals(request.FoodId) && f.IsDeleted == false).FirstOrDefault();
             if (existFood == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Thức ăn không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Thức ăn không tồn tại");
             }
 
             try
@@ -39,7 +39,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.UpdateNutritionPlanDetail
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

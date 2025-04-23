@@ -24,25 +24,25 @@ namespace CFMS.Application.Features.EquipmentFeat.Update
             var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: e => e.EquipmentId.Equals(request.EquipmentId) && e.IsDeleted == false).FirstOrDefault();
             if (existEquipment == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Trang thiết bị không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Trang thiết bị không tồn tại");
             }
 
             //var existNameCode = _unitOfWork.EquipmentRepository.Get(filter: s => s.EquipmentCode.Equals(request.EquipmentCode) && s.IsDeleted == false && s.EquipmentId != request.EquipmentId).FirstOrDefault();
             //if (existNameCode != null)
             //{
-            //    return BaseResponse<bool>.FailureResponse("Mã trang thiết bị đã tồn tại");
+            //    return BaseResponse<bool>.SuccessResponse("Mã trang thiết bị đã tồn tại");
             //}
 
             var existSizeUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.SizeUnitId) && s.IsDeleted == false).FirstOrDefault();
             if (existSizeUnit == null)
             {
-                return BaseResponse<bool>.FailureResponse("Đơn vị đo kích cỡ không tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Đơn vị đo kích cỡ không tồn tại");
             }
 
             var existWeightUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.WeightUnitId) && s.IsDeleted == false).FirstOrDefault();
             if (existWeightUnit == null)
             {
-                return BaseResponse<bool>.FailureResponse("Đơn vị đo khối lượng không tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Đơn vị đo khối lượng không tồn tại");
             }
 
             try
@@ -64,7 +64,7 @@ namespace CFMS.Application.Features.EquipmentFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

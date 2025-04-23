@@ -29,26 +29,26 @@ namespace CFMS.Application.Features.ResourceFeat.Create
 
             if (existResourceType != null)
             {
-                return BaseResponse<bool>.FailureResponse("Loại hàng hoá không tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Loại hàng hoá không tồn tại");
             }
 
             var existUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.UnitId) && s.IsDeleted == false).FirstOrDefault();
 
             if (existUnit != null)
             {
-                return BaseResponse<bool>.FailureResponse("Đơn vị đo không tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Đơn vị đo không tồn tại");
             }
 
             var existPackage = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.PackageId) && s.IsDeleted == false).FirstOrDefault();
 
             if (existPackage != null)
             {
-                return BaseResponse<bool>.FailureResponse("Loại đóng gói không tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Loại đóng gói không tồn tại");
             }
 
             if (request.FoodId == null && request.EquipmentId == null && request.MedicineId == null)
             {
-                return BaseResponse<bool>.FailureResponse("Hàng hoá đính kèm không tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Hàng hoá đính kèm không tồn tại");
             }
 
             var resource = _mapper.Map<Resource>(request);
@@ -57,7 +57,7 @@ namespace CFMS.Application.Features.ResourceFeat.Create
 
             return result > 0
                 ? BaseResponse<bool>.SuccessResponse("Thêm hàng hoá thành công")
-                : BaseResponse<bool>.FailureResponse("Thêm thất bại");
+                : BaseResponse<bool>.SuccessResponse("Thêm thất bại");
         }
     }
 }

@@ -24,13 +24,13 @@ namespace CFMS.Application.Features.SupplierFeat.Update
             var existSupplier = _unitOfWork.SupplierRepository.Get(filter: s => s.SupplierId.Equals(request.SupplierId) && s.IsDeleted == false).FirstOrDefault();
             if (existSupplier == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Nhà cung cấp không tồn tại");
+                return BaseResponse<bool>.SuccessResponse(message: "Nhà cung cấp không tồn tại");
             }
 
             var existNameCode = _unitOfWork.SupplierRepository.Get(filter: s => (s.SupplierCode.Equals(request.SupplierCode) || s.SupplierName.Equals(request.SupplierName)) && s.IsDeleted == false && s.SupplierId != request.SupplierId).FirstOrDefault();
             if (existNameCode != null)
             {
-                return BaseResponse<bool>.FailureResponse("Tên hoặc mã nhà cung cấp đã tồn tại");
+                return BaseResponse<bool>.SuccessResponse("Tên hoặc mã nhà cung cấp đã tồn tại");
             }
 
             try
@@ -48,7 +48,7 @@ namespace CFMS.Application.Features.SupplierFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

@@ -61,7 +61,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTask
             //    include: q => q)
             if (existTask == null)
             {
-                return BaseResponse<TaskResponse>.FailureResponse(message: "Công việc không tồn tại");
+                return BaseResponse<TaskResponse>.SuccessResponse(message: "Công việc không tồn tại");
             }
 
             return BaseResponse<TaskResponse>.SuccessResponse(data: _mapper.Map<TaskResponse>(existTask));

@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
             var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(request.ResourceTypeId) && f.IsDeleted == false).FirstOrDefault();
             if (existResourceType == null)
             {
-                return BaseResponse<IEnumerable<object>>.FailureResponse("Loại hàng hoá không tồn tại");
+                return BaseResponse<IEnumerable<object>>.SuccessResponse("Loại hàng hoá không tồn tại");
             }
 
             var resources = _unitOfWork.ResourceRepository.Get(
@@ -43,7 +43,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
 
             if (resources.Count == 0)
             {
-                return BaseResponse<IEnumerable<object>>.FailureResponse("Không có hàng hoá nào");
+                return BaseResponse<IEnumerable<object>>.SuccessResponse("Không có hàng hoá nào");
             }
 
             var wareStockFoodResponses = resources

@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.UserFeat.GetUser
             var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(request.UserId)).FirstOrDefault();
             if (existUser == null)
             {
-                return BaseResponse<UserResponse>.FailureResponse("Người dùng không tồn tại");
+                return BaseResponse<UserResponse>.SuccessResponse("Người dùng không tồn tại");
             }
             return BaseResponse<UserResponse>.SuccessResponse(_mapper.Map<UserResponse>(existUser));
         }

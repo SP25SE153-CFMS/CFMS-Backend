@@ -38,7 +38,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
                         var existShift = _unitOfWork.ShiftRepository.Get(noTracking: true, filter: s => s.ShiftId.Equals(shiftId) && s.IsDeleted == false).FirstOrDefault();
                         if (existShift == null)
                         {
-                            return BaseResponse<bool>.FailureResponse(message: "Ca làm việc không tồn tại");
+                            return BaseResponse<bool>.SuccessResponse(message: "Ca làm việc không tồn tại");
                         }
 
                         task.ShiftSchedules.Add(new ShiftSchedule
@@ -52,7 +52,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
                             var existResource = _unitOfWork.ResourceRepository.Get(filter: r => r.ResourceId.Equals(taskResource.ResourceId) && r.IsDeleted == false).FirstOrDefault();
                             if (existResource == null)
                             {
-                                return BaseResponse<bool>.FailureResponse(message: "Hàng hoá không tồn tại");
+                                return BaseResponse<bool>.SuccessResponse(message: "Hàng hoá không tồn tại");
                             }
 
                             task.TaskResources.Add(new TaskResource
@@ -71,7 +71,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
                                 .FirstOrDefault();
 
                             if (coopExists == null)
-                                return BaseResponse<bool>.FailureResponse("Chuồng gà không tồn tại");
+                                return BaseResponse<bool>.SuccessResponse("Chuồng gà không tồn tại");
 
                             task.TaskLocations.Add(new TaskLocation
                             {
@@ -86,7 +86,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
                                 .FirstOrDefault();
 
                             if (wareExists == null)
-                                return BaseResponse<bool>.FailureResponse("Kho không tồn tại");
+                                return BaseResponse<bool>.SuccessResponse("Kho không tồn tại");
 
                             task.TaskLocations.Add(new TaskLocation
                             {
@@ -96,7 +96,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
                         }
                         else
                         {
-                            return BaseResponse<bool>.FailureResponse("Loại vị trí không hợp lệ");
+                            return BaseResponse<bool>.SuccessResponse("Loại vị trí không hợp lệ");
                         }
 
                         _unitOfWork.TaskRepository.Insert(task);
@@ -108,7 +108,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
+                return BaseResponse<bool>.SuccessResponse(message: "Tạo không thành công");
             }
             catch (Exception e)
             {
