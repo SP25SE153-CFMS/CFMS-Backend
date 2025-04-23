@@ -32,19 +32,19 @@ namespace CFMS.Application.Features.EquipmentFeat.Create
                 var existSizeUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.SizeUnitId) && s.IsDeleted == false).FirstOrDefault();
                 if (existSizeUnit == null)
                 {
-                    return BaseResponse<bool>.SuccessResponse("Đơn vị đo kích cỡ không tồn tại");
+                    return BaseResponse<bool>.FailureResponse("Đơn vị đo kích cỡ không tồn tại");
                 }
 
                 var existWeightUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.WeightUnitId) && s.IsDeleted == false).FirstOrDefault();
                 if (existWeightUnit == null)
                 {
-                    return BaseResponse<bool>.SuccessResponse("Đơn vị đo khối lượng không tồn tại");
+                    return BaseResponse<bool>.FailureResponse("Đơn vị đo khối lượng không tồn tại");
                 }
 
                 var equipmentType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Equals("equipment") && x.IsDeleted == false).FirstOrDefault();
                 if (equipmentType == null)
                 {
-                    return BaseResponse<bool>.SuccessResponse("Không tìm thấy loại trang thiết bị");
+                    return BaseResponse<bool>.FailureResponse("Không tìm thấy loại trang thiết bị");
                 }
 
                 var existEquipment = _unitOfWork.EquipmentRepository.Get(filter: s => s.EquipmentCode.Equals(request.EquipmentCode) && s.EquipmentName.Equals(request.EquipmentName) && s.IsDeleted == false).FirstOrDefault();

@@ -24,33 +24,33 @@ namespace CFMS.Application.Features.ResourceFeat.Update
             var existResource = _unitOfWork.ResourceRepository.Get(filter: f => f.ResourceId.Equals(request.ResourceId)&& f.IsDeleted == false).FirstOrDefault();
             if (existResource == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Hàng hoá không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Hàng hoá không tồn tại");
             }
 
             if (existResource != null && existResource.FoodId == null && existResource.EquipmentId == null && existResource.MedicineId == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Hàng hoá không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Hàng hoá không tồn tại");
             }
 
             var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.ResourceTypeId) && s.IsDeleted == false).FirstOrDefault();
 
             if (existResourceType != null)
             {
-                return BaseResponse<bool>.SuccessResponse("Loại hàng hoá không tồn tại");
+                return BaseResponse<bool>.FailureResponse("Loại hàng hoá không tồn tại");
             }
 
             var existUnit = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.UnitId) && s.IsDeleted == false).FirstOrDefault();
 
             if (existUnit != null)
             {
-                return BaseResponse<bool>.SuccessResponse("Đơn vị đo không tồn tại");
+                return BaseResponse<bool>.FailureResponse("Đơn vị đo không tồn tại");
             }
 
             var existPackage = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.PackageId) && s.IsDeleted == false).FirstOrDefault();
 
             if (existPackage != null)
             {
-                return BaseResponse<bool>.SuccessResponse("Loại đóng gói không tồn tại");
+                return BaseResponse<bool>.FailureResponse("Loại đóng gói không tồn tại");
             }
 
             try
@@ -70,7 +70,7 @@ namespace CFMS.Application.Features.ResourceFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

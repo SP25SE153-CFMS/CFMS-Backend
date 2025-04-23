@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.GetCoop
             var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(request.Id) && c.IsDeleted == false, includeProperties: "ChickenBatches,CoopEquipments,DensityUnit,TaskLogs,TaskLogs.Task.TaskHarvests,AreaUnit").FirstOrDefault();
             if (existCoop == null)
             {
-                return BaseResponse<ChickenCoop>.SuccessResponse(message: "Chuồng gà không tồn tại");
+                return BaseResponse<ChickenCoop>.FailureResponse(message: "Chuồng gà không tồn tại");
             }
 
             existCoop.ChickenBatches = existCoop.ChickenBatches.OrderBy(cb => cb.Status).ToList();

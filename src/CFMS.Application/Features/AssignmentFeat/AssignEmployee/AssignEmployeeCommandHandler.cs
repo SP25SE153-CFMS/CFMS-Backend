@@ -26,7 +26,7 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
             var task = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false && t.Status == 0).FirstOrDefault();
             if (task == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Công việc không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
             }
 
             var chosenLeader = request.AssignedTos.Any(x => x.Status == 1);
@@ -35,18 +35,18 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
 
             if (!chosenLeader && !isHaveLeader)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Công việc này chưa có đội trưởng đảm nhận");
+                return BaseResponse<bool>.FailureResponse(message: "Công việc này chưa có đội trưởng đảm nhận");
             }
 
             if (chosenLeader && isHaveLeader)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Công việc này đã có đội trưởng đảm nhận");
+                return BaseResponse<bool>.FailureResponse(message: "Công việc này đã có đội trưởng đảm nhận");
             }
 
             var existUserAssigned = task.Assignments.Any(x => request.AssignedTos.Select(t => t.AssignedToId).Contains(x.AssignedToId ?? Guid.Empty));
             if (existUserAssigned)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Người dùng đã được giao công việc này");
+                return BaseResponse<bool>.FailureResponse(message: "Người dùng đã được giao công việc này");
             }
 
             try
@@ -56,7 +56,7 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
                     var existEmployee = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(assignedTo.AssignedToId) && u.FarmEmployees.Any(fe => fe.FarmId.Equals(task.FarmId)) && u.Status == 1, includeProperties: "FarmEmployees").FirstOrDefault();
                     if (existEmployee == null)
                     {
-                        return BaseResponse<bool>.SuccessResponse(message: "Người dùng không tồn tại");
+                        return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
                     }
 
                     var assignment = new Assignment
@@ -88,7 +88,7 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Tạo không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
             }
             catch (Exception ex)
             {

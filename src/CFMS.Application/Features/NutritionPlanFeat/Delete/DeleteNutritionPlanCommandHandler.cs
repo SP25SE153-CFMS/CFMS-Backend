@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Delete
             var existPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.NutritionPlanId.Equals(request.Id) && p.IsDeleted == false).FirstOrDefault();
             if (existPlan == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Chế độ dinh dưỡng không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Chế độ dinh dưỡng không tồn tại");
             }
 
             try
@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Xóa không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Xóa không thành công");
             }
             catch (Exception ex)
             {

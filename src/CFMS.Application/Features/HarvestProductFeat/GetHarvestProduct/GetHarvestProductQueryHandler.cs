@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.HarvestProductFeat.GetHarvestProduct
             var existHarvest = _unitOfWork.HarvestProductRepository.Get(filter: f => f.HarvestProductId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existHarvest == null)
             {
-                return BaseResponse<HarvestProduct>.SuccessResponse(message: "Sản phẩm thu hoạch không tồn tại");
+                return BaseResponse<HarvestProduct>.FailureResponse(message: "Sản phẩm thu hoạch không tồn tại");
             }
 
             return BaseResponse<HarvestProduct>.SuccessResponse(data: existHarvest);

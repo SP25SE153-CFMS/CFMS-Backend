@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.FoodFeat.Delete
             var existFood = _unitOfWork.FoodRepository.Get(filter: f => f.FoodId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existFood == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Thực phẩm không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Thực phẩm không tồn tại");
             }
 
             try
@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.FoodFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

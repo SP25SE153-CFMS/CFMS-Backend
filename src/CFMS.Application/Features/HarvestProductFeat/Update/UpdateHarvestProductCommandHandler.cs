@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.HarvestProductFeat.Update
             var existHarvest = _unitOfWork.HarvestProductRepository.Get(filter: f => f.HarvestProductId.Equals(request.HarvestProductId) && f.IsDeleted == false).FirstOrDefault();
             if (existHarvest == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Sản phẩm thu hoạch không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Sản phẩm thu hoạch không tồn tại");
             }
 
             //var existNameCode = _unitOfWork.FoodRepository.Get(filter: s => s.FoodCode.Equals(request.FoodCode) && s.IsDeleted == false && s.FoodId != request.HarvestProductId).FirstOrDefault();
@@ -45,7 +45,7 @@ namespace CFMS.Application.Features.HarvestProductFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

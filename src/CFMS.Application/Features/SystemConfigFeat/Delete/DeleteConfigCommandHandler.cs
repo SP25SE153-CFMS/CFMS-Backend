@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.SystemConfigFeat.Delete
             var existConfig = _unitOfWork.SystemConfigRepository.Get(filter: f => f.SystemConfigId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existConfig == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Cấu hình hệ thống không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Cấu hình hệ thống không tồn tại");
             }
 
             try
@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.SystemConfigFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

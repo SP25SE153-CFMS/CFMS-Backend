@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.ChickenFeat.GetChicken
             var existChicken = _unitOfWork.ChickenRepository.Get(filter: c => c.ChickenId.Equals(request.Id) && c.IsDeleted == false, includeProperties: [c => c.ChickenDetails]).FirstOrDefault();
             if (existChicken == null)
             {
-                return BaseResponse<Chicken>.SuccessResponse(message: "Gà không tồn tại");
+                return BaseResponse<Chicken>.FailureResponse(message: "Gà không tồn tại");
             }
             return BaseResponse<Chicken>.SuccessResponse(data: existChicken);
         }

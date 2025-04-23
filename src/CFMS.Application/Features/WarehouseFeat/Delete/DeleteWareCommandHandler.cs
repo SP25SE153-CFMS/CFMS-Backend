@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.WarehouseFeat.Delete
             var existWare = _unitOfWork.WarehouseRepository.Get(filter: f => f.WareId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existWare == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Kho không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Kho không tồn tại");
             }
 
             try
@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.WarehouseFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

@@ -27,7 +27,7 @@ namespace CFMS.Application.Features.RequestFeat.ApproveRequest
             var existRequest = _unitOfWork.RequestRepository.Get(filter: f => f.RequestId.Equals(request.RequestId) && f.IsDeleted == false).FirstOrDefault();
             if (existRequest == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Phiếu yêu cầu không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Phiếu yêu cầu không tồn tại");
             }
 
             var user = _currentUserService.GetUserId();
@@ -49,7 +49,7 @@ namespace CFMS.Application.Features.RequestFeat.ApproveRequest
 
             return existRequest.Status.Equals(2) 
                 ? BaseResponse<bool>.SuccessResponse("Duyệt thành công") 
-                : BaseResponse<bool>.SuccessResponse("Từ chối thành công");
+                : BaseResponse<bool>.FailureResponse("Từ chối thành công");
         }
     }
 }

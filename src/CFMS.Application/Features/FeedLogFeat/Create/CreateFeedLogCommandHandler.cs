@@ -23,13 +23,13 @@ namespace CFMS.Application.Features.FeedLogFeat.Create
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false).FirstOrDefault();
             if (existBatch == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Lứa không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
             }
 
             var existTask = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false).FirstOrDefault();
             if (existTask == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Task không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Task không tồn tại");
             }
 
             try
@@ -40,7 +40,7 @@ namespace CFMS.Application.Features.FeedLogFeat.Create
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Tạo không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
             }
             catch (Exception ex)
             {

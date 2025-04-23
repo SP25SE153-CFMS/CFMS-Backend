@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Delete
             var existBreeding = _unitOfWork.BreedingAreaRepository.Get(filter: b => b.BreedingAreaId.Equals(request.Id) && b.IsDeleted == false).FirstOrDefault();
             if (existBreeding == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Khu nuôi không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Khu nuôi không tồn tại");
             }
 
             try
@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Delete
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Xóa thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Xoá không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Xoá không thành công");
             }
             catch (Exception ex)
             {

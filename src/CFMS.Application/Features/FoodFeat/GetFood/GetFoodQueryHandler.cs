@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.FoodFeat.GetFood
             var existFood = _unitOfWork.FoodRepository.Get(filter: f => f.FoodId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existFood == null)
             {
-                return BaseResponse<Food>.SuccessResponse(message: "Thức ăn không tồn tại");
+                return BaseResponse<Food>.FailureResponse(message: "Thức ăn không tồn tại");
             }
 
             return BaseResponse<Food>.SuccessResponse(data: existFood);

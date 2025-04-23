@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
                 var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) && p.IsDeleted == false).FirstOrDefault();
                 if (existNutritionPlan != null)
                 {
-                    return BaseResponse<bool>.SuccessResponse("Tên chế độ dinh dưỡng đã tồn tại");
+                    return BaseResponse<bool>.FailureResponse("Tên chế độ dinh dưỡng đã tồn tại");
                 }
 
                 var nutritionPlan = new NutritionPlan
@@ -62,7 +62,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Tạo không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
             }
             catch (Exception ex)
             {

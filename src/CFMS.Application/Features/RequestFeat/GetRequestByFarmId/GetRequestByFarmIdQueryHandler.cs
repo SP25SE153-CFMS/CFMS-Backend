@@ -20,7 +20,7 @@ namespace CFMS.Application.Features.RequestFeat.GetRequestByFarmId
             var existFarm = _unitOfWork.FarmRepository.Get(filter: f => f.FarmId.Equals(request.FarmId) && !f.IsDeleted).FirstOrDefault();
             if (existFarm == null)
             {
-                return BaseResponse<IEnumerable<Request>>.SuccessResponse(message: "Farm không tồn tại");
+                return BaseResponse<IEnumerable<Request>>.FailureResponse(message: "Farm không tồn tại");
             }
 
             var existRequest = _unitOfWork.RequestRepository.GetIncludeMultiLayer(filter: f => f.FarmId.Equals(request.FarmId) && f.IsDeleted == false,

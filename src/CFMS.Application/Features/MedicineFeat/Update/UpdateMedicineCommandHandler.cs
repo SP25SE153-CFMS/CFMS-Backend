@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.MedicineFeat.Update
             var existMedicine = _unitOfWork.MedicineRepository.Get(filter: s => s.MedicineId.Equals(request.MedicineId) && s.IsDeleted == false).FirstOrDefault();
             if (existMedicine == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Dược phẩm không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Dược phẩm không tồn tại");
             }
 
             //var existName = _unitOfWork.MedicineRepository.Get(filter: s => s.MedicineCode.Equals(request.MedicineCode) && s.IsDeleted == false && s.MedicineId != request.MedicineId).FirstOrDefault();
@@ -50,7 +50,7 @@ namespace CFMS.Application.Features.MedicineFeat.Update
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

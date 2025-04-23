@@ -18,7 +18,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.UpdateFeedSession
             var existFeedSession = _unitOfWork.FeedSessionRepository.Get(filter: f => f.FeedSessionId.Equals(request.FeedSessionId) && f.IsDeleted == false).FirstOrDefault();
             if (existFeedSession == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Phiên cho ăn không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Phiên cho ăn không tồn tại");
             }
 
             try
@@ -35,7 +35,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.UpdateFeedSession
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
             }
             catch (Exception ex)
             {

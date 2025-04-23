@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.ShiftFeat.GetShift
             var existShift = _unitOfWork.ShiftRepository.Get(filter: f => f.ShiftId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existShift == null)
             {
-                return BaseResponse<Shift>.SuccessResponse(message: "Ca làm không tồn tại");
+                return BaseResponse<Shift>.FailureResponse(message: "Ca làm không tồn tại");
             }
 
             return BaseResponse<Shift>.SuccessResponse(data: existShift);

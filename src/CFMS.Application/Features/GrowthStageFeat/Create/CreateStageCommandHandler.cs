@@ -22,13 +22,13 @@ namespace CFMS.Application.Features.GrowthStageFeat.Create
             var existChickenType = _unitOfWork.SubCategoryRepository.Get(filter: t => t.IsDeleted == false && t.SubCategoryId.Equals(request.ChickenType)).FirstOrDefault();
             if (existChickenType == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Loại gà không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Loại gà không tồn tại");
             }
 
             var existStage = _unitOfWork.GrowthStageRepository.Get(filter: t => t.IsDeleted == false && t.StageName.Equals(request.StageName)).FirstOrDefault();
             if (existStage != null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Tên giai đoạn phát triển đã tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Tên giai đoạn phát triển đã tồn tại");
             }
 
             var groupStages = _unitOfWork.GrowthStageRepository.Get(
@@ -42,7 +42,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.Create
                 bool isOverlap = !(request.MaxAgeWeek < stage.MinAgeWeek || request.MinAgeWeek > stage.MaxAgeWeek);
                 if (isOverlap)
                 {
-                    return BaseResponse<bool>.SuccessResponse($"Tuần tuổi {request.MinAgeWeek}-{request.MaxAgeWeek} bị chồng với giai đoạn '{stage.StageName}' ({stage.MinAgeWeek}-{stage.MaxAgeWeek})");
+                    return BaseResponse<bool>.FailureResponse($"Tuần tuổi {request.MinAgeWeek}-{request.MaxAgeWeek} bị chồng với giai đoạn '{stage.StageName}' ({stage.MinAgeWeek}-{stage.MaxAgeWeek})");
                 }
             }
 
@@ -54,7 +54,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.Create
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Tạo không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Tạo không thành công");
             }
             catch (Exception ex)
             {

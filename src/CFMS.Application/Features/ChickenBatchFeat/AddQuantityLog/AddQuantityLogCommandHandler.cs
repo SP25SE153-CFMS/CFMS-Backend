@@ -19,7 +19,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false).FirstOrDefault();
             if (existBatch == null)
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Lứa nuôi không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Lứa nuôi không tồn tại");
             }
 
             try
@@ -39,7 +39,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Thêm thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Thêm không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Thêm không thành công");
             }
             catch (Exception ex)
             {

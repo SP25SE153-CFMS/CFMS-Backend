@@ -27,7 +27,7 @@ namespace CFMS.Application.Features.ResourceFeat.GetResource
             var existResource = _unitOfWork.ResourceRepository.Get(filter: f => f.ResourceId.Equals(request.Id) && f.IsDeleted == false, includeProperties: "Food,Equipment,Medicine").FirstOrDefault();
             if (existResource == null)
             {
-                return BaseResponse<Resource>.SuccessResponse(message: "Hàng hoá không tồn tại");
+                return BaseResponse<Resource>.FailureResponse(message: "Hàng hoá không tồn tại");
             }
 
             return BaseResponse<Resource>.SuccessResponse(data: existResource);

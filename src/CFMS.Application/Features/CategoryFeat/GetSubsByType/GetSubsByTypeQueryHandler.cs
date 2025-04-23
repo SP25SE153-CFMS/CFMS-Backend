@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.CategoryFeat.GetSubsByType
 
         public async Task<BaseResponse<IEnumerable<SubCategory>>> Handle(GetSubsByTypeQuery request, CancellationToken cancellationToken)
         {
-            var subs = _unitOfWork.SubCategoryRepository.Get(filter: c => c.Category.CategoryType.Equals(request.CategoryType) && c.IsDeleted == false, includeProperties:[x => x.Category]).ToList();
+            var subs = _unitOfWork.SubCategoryRepository.Get(filter: c => c.Category.CategoryType.Equals(request.CategoryType) && c.Status == 1 && c.IsDeleted == false, includeProperties:[x => x.Category]).ToList();
             return BaseResponse<IEnumerable<SubCategory>>.SuccessResponse(data: subs);
         }
     }

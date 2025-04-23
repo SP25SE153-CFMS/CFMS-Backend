@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.CategoryFeat.Create
                 var existCategory = _unitOfWork.CategoryRepository.Get(filter: c => (c.CategoryName.Equals(request.CategoryName) || c.CategoryType.Equals(request.CategoryType)) && c.IsDeleted == false).FirstOrDefault();
                 if (existCategory != null)
                 {
-                    return BaseResponse<bool>.SuccessResponse(message: "Tên hoặc loại danh mục đã tồn tại");
+                    return BaseResponse<bool>.FailureResponse(message: "Tên hoặc loại danh mục đã tồn tại");
                 }
 
                 _unitOfWork.CategoryRepository.Insert(_mapper.Map<Category>(request));
@@ -33,7 +33,7 @@ namespace CFMS.Application.Features.CategoryFeat.Create
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo danh mục thành công");
                 }
-                return BaseResponse<bool>.SuccessResponse(message: "Tạo danh mục không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Tạo danh mục không thành công");
             }
             catch (Exception ex)
             {
