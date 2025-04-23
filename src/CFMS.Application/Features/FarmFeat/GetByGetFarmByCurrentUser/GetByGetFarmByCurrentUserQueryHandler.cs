@@ -42,6 +42,7 @@ namespace CFMS.Application.Features.FarmFeat.GetByGetFarmByCurrentUser
                     Address = f.Address,
                     Area = f.Area,
                     AreaUnitId = f.AreaUnitId,
+                    AreaUnitName = _unitOfWork.SubCategoryRepository.FirstOrDefaultAsync(x => x.SubCategoryId.Equals(f.AreaUnitId) && x.IsDeleted == false).Result?.SubCategoryName,
                     Scale = f.Scale,
                     Longitude = f.Longitude,
                     Latitude = f.Latitude,

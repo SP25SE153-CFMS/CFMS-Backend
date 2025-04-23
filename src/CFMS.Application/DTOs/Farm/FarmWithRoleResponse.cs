@@ -20,6 +20,8 @@ namespace CFMS.Application.DTOs.Farm
 
         public Guid? AreaUnitId { get; set; }
 
+        public string? AreaUnitName { get; set; }
+
         public int? Scale { get; set; }
 
         public decimal? Longitude { get; set; }
