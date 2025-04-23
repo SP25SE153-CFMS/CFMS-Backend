@@ -9,6 +9,8 @@ namespace CFMS.Application.DTOs.Supplier
 {
     public class ResourceSupplierFoodResponse : ResourceSupplierResponseBase
     {
+        public Guid FoodId { get; set; }
+
         public string? FoodCode { get; set; }
 
         public string? FoodName { get; set; }

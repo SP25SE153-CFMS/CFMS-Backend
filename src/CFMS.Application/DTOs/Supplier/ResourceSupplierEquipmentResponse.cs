@@ -8,6 +8,8 @@ namespace CFMS.Application.DTOs.Supplier
 {
     public class ResourceSupplierEquipmentResponse : ResourceSupplierResponseBase
     {
+        public Guid EquipmentId { get; set; }
+
         public string? EquipmentCode { get; set; }
 
         public string? EquipmentName { get; set; }
