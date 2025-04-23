@@ -72,9 +72,13 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
             var taskType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(existTask.TaskTypeId) && x.IsDeleted == false).FirstOrDefault()?.SubCategoryName;
 
+            var totalConsumed = request?.TaskResources?.Sum(x => x.ConsumedQuantity) ?? 0;
+            var totalSupplied = request?.TaskResources?.Sum(x => x.SuppliedQuantity) ?? 0;
+            var isRedundant = totalSupplied - totalConsumed > 0 ? true : false;
+
             try
             {
-                string[] keywords = { "thực phẩm", "dược phẩm", "thiết bị", "thu hoạch", "con giống" };
+                //string[] keywords = { "thực phẩm", "dược phẩm", "thiết bị", "thu hoạch", "con giống" };
 
                 existTask.Status = 1;
                 //var leader = existTask.Assignments.Where(x => x.Status.Equals(1)).FirstOrDefault();
@@ -83,83 +87,87 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                 var requestType = _unitOfWork.SubCategoryRepository.Get(x => x.SubCategoryName.Equals("IMPORT") && x.IsDeleted == false).FirstOrDefault();
 
                 //var lastRequest = _unitOfWork.RequestRepository.Get(filter: r => r.CreatedByUser.UserId.ToString().Equals(leader.AssignedToId)).FirstOrDefault();
+
                 var newRequest = new Request()
                 {
                     RequestTypeId = requestType?.SubCategoryId,
                     Status = 0
                 };
 
-                _unitOfWork.RequestRepository.Insert(newRequest);
-                await _unitOfWork.SaveChangesAsync();
-
-                if (request?.TaskResources != null)
+                if (isRedundant || (request?.HarvestProducts?.ToList().Count > 0))
                 {
-                    Resource resource;
+                    _unitOfWork.RequestRepository.Insert(newRequest);
+                    await _unitOfWork.SaveChangesAsync();
 
-                    var groupedResources = request?.TaskResources?
-                    .Select(detail => new
+                    if (request?.TaskResources != null)
                     {
+                        Resource resource;
 
-                        Resource = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(
-                            filter: r => r.ResourceId == detail.ResourceId,
-                            include: x => x
-                                .Include(t => t.Food)
-                                .Include(t => t.Equipment)
-                                .Include(t => t.Medicine)
-                                .Include(t => t.Chicken)
-                                .Include(t => t.HarvestProduct)
-                                .Include(t => t.ResourceType)
-                                .Include(t => t.ResourceSuppliers))
-                                .FirstOrDefault(),
-                        SuppliedQuantity = detail.SuppliedQuantity,
-                        ConsumedQuantity = detail.ConsumedQuantity,
-                    })
-                    .GroupBy(x =>
-                    {
-                        var resource = x.Resource;
-                        if (resource?.Food != null) return "Kho thực phẩm";
-                        if (resource?.Medicine != null) return "Kho dược phẩm";
-                        if (resource?.Equipment != null) return "Kho thiết bị";
-                        if (resource?.Chicken != null) return "Kho con giống";
-                        if (resource?.HarvestProduct != null) return "Kho thu hoạch";
-                        return "Kho khác";
-                    })
-                    .ToList();
-
-                    foreach (var group in groupedResources)
-                    {
-                        var ware = _unitOfWork.WarehouseRepository
-                            .Get(filter: w => w.WarehouseName.Equals(group.Key) && w.IsDeleted == false)
-                            .FirstOrDefault();
-
-                        var inventoryRequest = new InventoryRequest
+                        var groupedResources = request?.TaskResources?
+                        .Select(detail => new
                         {
-                            RequestId = newRequest.RequestId,
-                            InventoryRequestTypeId = requestType?.SubCategoryId,
-                            WareToId = ware?.WareId,
-                        };
 
-                        _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
-                        await _unitOfWork.SaveChangesAsync();
-
-                        foreach (var detail in group)
+                            Resource = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(
+                                filter: r => r.ResourceId == detail.ResourceId,
+                                include: x => x
+                                    .Include(t => t.Food)
+                                    .Include(t => t.Equipment)
+                                    .Include(t => t.Medicine)
+                                    .Include(t => t.Chicken)
+                                    .Include(t => t.HarvestProduct)
+                                    .Include(t => t.ResourceType)
+                                    .Include(t => t.ResourceSuppliers))
+                                    .FirstOrDefault(),
+                            SuppliedQuantity = detail.SuppliedQuantity,
+                            ConsumedQuantity = detail.ConsumedQuantity,
+                        })
+                        .GroupBy(x =>
                         {
-                            var inventoryRequestDetail = new InventoryRequestDetail
+                            var resource = x.Resource;
+                            if (resource?.Food != null) return "Kho thực phẩm";
+                            if (resource?.Medicine != null) return "Kho dược phẩm";
+                            if (resource?.Equipment != null) return "Kho thiết bị";
+                            if (resource?.Chicken != null) return "Kho con giống";
+                            if (resource?.HarvestProduct != null) return "Kho thu hoạch";
+                            return "Kho khác";
+                        })
+                        .ToList();
+
+                        foreach (var group in groupedResources)
+                        {
+                            var ware = _unitOfWork.WarehouseRepository
+                                .Get(filter: w => w.WarehouseName.Equals(group.Key) && w.IsDeleted == false)
+                                .FirstOrDefault();
+
+                            var inventoryRequest = new InventoryRequest
                             {
-                                InventoryRequestId = inventoryRequest.InventoryRequestId,
-                                ResourceId = detail?.Resource?.ResourceId,
-                                ResourceSupplierId = detail?.Resource?.ResourceSuppliers?.Where(t => t.ResourceId.Equals(detail?.Resource?.ResourceId)).FirstOrDefault()?.ResourceSupplierId,
-                                ExpectedQuantity = detail?.SuppliedQuantity - detail?.ConsumedQuantity,
-                                UnitId = detail?.Resource?.UnitId,
-                                Reason = request?.Reason,
-                                ExpectedDate = DateTime.Now.ToLocalTime(),
-                                Note = request?.Note
+                                RequestId = newRequest.RequestId,
+                                InventoryRequestTypeId = requestType?.SubCategoryId,
+                                WareToId = ware?.WareId,
                             };
 
-                            _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);
-                        }
+                            _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
+                            await _unitOfWork.SaveChangesAsync();
 
-                        await _unitOfWork.SaveChangesAsync();
+                            foreach (var detail in group)
+                            {
+                                var inventoryRequestDetail = new InventoryRequestDetail
+                                {
+                                    InventoryRequestId = inventoryRequest.InventoryRequestId,
+                                    ResourceId = detail?.Resource?.ResourceId,
+                                    ResourceSupplierId = detail?.Resource?.ResourceSuppliers?.Where(t => t.ResourceId.Equals(detail?.Resource?.ResourceId)).FirstOrDefault()?.ResourceSupplierId,
+                                    ExpectedQuantity = detail?.SuppliedQuantity - detail?.ConsumedQuantity,
+                                    UnitId = detail?.Resource?.UnitId,
+                                    Reason = request?.Reason,
+                                    ExpectedDate = DateTime.Now.ToLocalTime(),
+                                    Note = request?.Note
+                                };
+
+                                _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);
+                            }
+
+                            await _unitOfWork.SaveChangesAsync();
+                        }
                     }
                 }
 
@@ -256,10 +264,12 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     _unitOfWork.TaskLogRepository.Insert(taskLog);
                 }
 
-                var coop = _unitOfWork.ChickenCoopRepository.Get(filter: x => x.ChickenCoopId.Equals(location.CoopId) && x.IsDeleted == false, includeProperties: "ChickenBatches").FirstOrDefault();
-
                 if (taskType.Equals("feed"))
                 {
+                    var coop = _unitOfWork.ChickenCoopRepository.Get(filter: x => x.ChickenCoopId.Equals(location.CoopId) && x.IsDeleted == false, includeProperties: "ChickenBatches").FirstOrDefault();
+
+                    var unit = _ = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("kg") && x.IsDeleted == false).FirstOrDefault();
+
                     var groupResources = request?.TaskResources
                         .Select(detail => new
                         {
@@ -277,8 +287,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                             x?.Resource?.PackageId
                         })
                         .ToList();
-
-                    var unit = _ = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("kg") && x.IsDeleted == false).FirstOrDefault();
 
                     foreach (var group in groupResources)
                     {
@@ -298,7 +306,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 Note = request?.Note,
                             };
 
-
                             _unitOfWork.FeedLogRepository.Insert(feedLog);
                         }
                     }
@@ -306,6 +313,8 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                 if (taskType.Equals("inject"))
                 {
+                    var coop = _unitOfWork.ChickenCoopRepository.Get(filter: x => x.ChickenCoopId.Equals(location.CoopId) && x.IsDeleted == false, includeProperties: "ChickenBatches").FirstOrDefault();
+
                     var vaccineLog = new VaccineLog
                     {
                         Notes = request.Note,
