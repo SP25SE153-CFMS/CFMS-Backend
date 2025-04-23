@@ -100,6 +100,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                 var newRequest = new Request()
                 {
                     RequestTypeId = requestType?.SubCategoryId,
+                    FarmId = existTask.FarmId,
                     Status = 0
                 };
 
@@ -313,6 +314,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 UnitId = unit?.SubCategoryId,
                                 TaskId = request?.TaskId,
                                 Note = request?.Note,
+                                ResourceId = detail?.Resource?.ResourceId
                             };
 
                             _unitOfWork.FeedLogRepository.Insert(feedLog);

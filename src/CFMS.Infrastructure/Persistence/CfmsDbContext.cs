@@ -850,6 +850,10 @@ public partial class CfmsDbContext : DbContext
                 .HasForeignKey(d => d.TaskId)
                 .HasConstraintName("FeedLog_TaskId_fkey");
 
+            entity.HasOne(d => d.Resource).WithMany(p => p.FeedLogs)
+                .HasForeignKey(d => d.ResourceId)
+                .HasConstraintName("FeedLog_ResourceId_fkey");
+
             entity.HasOne(d => d.Unit).WithMany(p => p.FeedLogs)
                 .HasForeignKey(d => d.UnitId)
                 .HasConstraintName("FeedLog_UnitId_fkey");

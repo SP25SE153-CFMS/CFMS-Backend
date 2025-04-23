@@ -68,4 +68,7 @@ public partial class Resource : EntityAudit
 
     [JsonIgnore]
     public virtual ICollection<TaskResource> TaskResources { get; set; } = new List<TaskResource>();
+
+    [JsonIgnore]
+    public virtual ICollection<FeedLog> FeedLogs { get; set; } = new List<FeedLog>();
 }
