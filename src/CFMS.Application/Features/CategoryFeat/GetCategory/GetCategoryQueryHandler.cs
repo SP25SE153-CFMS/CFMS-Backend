@@ -23,7 +23,7 @@ namespace CFMS.Application.Features.CategoryFeat.GetCategory
             var existCategory = _unitOfWork.CategoryRepository.Get(filter: c => c.CategoryId.Equals(request.CategoryId) && c.IsDeleted == false, includeProperties: "SubCategories").FirstOrDefault();
             if (existCategory == null)
             {
-                return BaseResponse<Category>.FailureResponse(message: "Category không tồn tại");
+                return BaseResponse<Category>.FailureResponse(message: "Danh mục không tồn tại");
             }
             return BaseResponse<Category>.SuccessResponse(data: existCategory);
         }
