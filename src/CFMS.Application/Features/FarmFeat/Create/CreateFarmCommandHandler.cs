@@ -48,6 +48,8 @@ namespace CFMS.Application.Features.FarmFeat.Create
                     UserId = existUser.UserId,
                     Mail = existUser.Mail,
                     PhoneNumber = existUser.PhoneNumber,
+                    FarmRole = 5,
+                    StartDate = DateTime.Now.ToLocalTime()
                 });
 
                 _unitOfWork.FarmRepository.Insert(farm);

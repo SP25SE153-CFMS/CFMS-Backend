@@ -20,7 +20,7 @@ namespace CFMS.Application.Features.FarmFeat.GetFarmEmployees
 
         public async Task<BaseResponse<IEnumerable<FarmEmployeeResponse>>> Handle(GetFarmEmployeesQuery request, CancellationToken cancellationToken)
         {
-            var employees = _unitOfWork.FarmEmployeeRepository.Get(filter: e => e.FarmId.Equals(request.FarmId) && e.IsDeleted == false, includeProperties: [e => e.User]);
+            var employees = _unitOfWork.FarmEmployeeRepository.Get(filter: e => (e.FarmRole == 4 || e.FarmRole == 3) && e.FarmId.Equals(request.FarmId) && e.IsDeleted == false, includeProperties: [e => e.User]);
 
             var mappedEmployees = _mapper.Map<List<FarmEmployeeResponse>>(employees)
                     .Select((dto, index) =>
