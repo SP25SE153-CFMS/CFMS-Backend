@@ -7,7 +7,7 @@ using CFMS.Domain.Entities;
 using Task = CFMS.Domain.Entities.Task;
 using CFMS.Application.DTOs.Task.Assignment;
 using CFMS.Application.DTOs.Task.TaskLocation;
-using CFMS.Application.DTOs.Task.Logs;
+using CFMS.Application.DTOs.Task.Loggers;
 
 namespace CFMS.Application.Mappings
 {

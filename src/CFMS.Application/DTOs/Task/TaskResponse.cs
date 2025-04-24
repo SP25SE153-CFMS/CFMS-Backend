@@ -1,5 +1,5 @@
 ﻿using CFMS.Application.DTOs.Task.Assignment;
-using CFMS.Application.DTOs.Task.Logs;
+using CFMS.Application.DTOs.Task.Loggers;
 using CFMS.Application.DTOs.Task.ShiftSchedule;
 using CFMS.Application.DTOs.Task.TaskLocation;
 using CFMS.Application.DTOs.Task.TaskResource;
