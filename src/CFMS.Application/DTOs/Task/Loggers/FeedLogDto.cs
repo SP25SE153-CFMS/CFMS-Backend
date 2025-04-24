@@ -8,7 +8,7 @@ namespace CFMS.Application.DTOs.Task.Loggers
 {
     public class FeedLogDto
     {
-        //public Guid? ResourceId { get; set; }
+        public Guid? ResourceId { get; set; }
 
         public string? ResourceName { get; set; }
 

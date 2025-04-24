@@ -128,6 +128,8 @@ namespace CFMS.Application.Mappings
                     //    src.Resource?.HarvestProduct?.HarvestProductId ??
                     //    Guid.Empty;
 
+                    dest.ResourceId = src.ResourceId;
+
                     dest.ResourceName =
                         src.Resource?.Food?.FoodName ??
                         src.Resource?.Medicine?.MedicineName ??
