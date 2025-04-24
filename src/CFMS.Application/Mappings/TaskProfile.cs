@@ -69,14 +69,8 @@ namespace CFMS.Application.Mappings
             CreateMap<TaskResource, TaskResourceDto>()
                 .AfterMap((src, dest) =>
                 {
-                    //dest.ResourceId =
-                    //    src.Resource?.Food?.FoodId ??
-                    //    src.Resource?.Medicine?.MedicineId ??
-                    //    src.Resource?.Equipment?.EquipmentId ??
-                    //    src.Resource?.Chicken?.ChickenId ??
-                    //    src.Resource?.HarvestProduct?.HarvestProductId ??
-                    //    Guid.Empty;                   
-                    
+                    dest.ResourceId = src.ResourceId;
+
                     dest.ResourceName =
                         src.Resource?.Food?.FoodName ??
                         src.Resource?.Medicine?.MedicineName ??
