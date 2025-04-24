@@ -311,8 +311,8 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                                     .OrderByDescending(x => x.StartDate)
                                                     .Select(x => x.ChickenBatchId)
                                                     .FirstOrDefault(),
-                                FeedingDate = DateTime.Now.ToLocalTime(),
-                                ActualFeedAmount = group.Sum(x => x.ConsumedQuantity),
+                                FeedingDate = DateTime.Now.ToLocalTime().AddHours(7),
+                                ActualFeedAmount = detail.ConsumedQuantity,
                                 UnitId = unit?.SubCategoryId,
                                 TaskId = request?.TaskId,
                                 Note = request?.Note,
@@ -351,6 +351,10 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                         var resource = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(filter: x => x.ResourceId.Equals(item.ResourceId) && x.IsDeleted == false,
                             include: x => x
                                 .Include(t => t.HarvestProduct)
+                                .Include(t => t.Food)
+                                .Include(t => t.Medicine)
+                                .Include(t => t.Chicken)
+                                .Include(t => t.Equipment)
                             ).FirstOrDefault();
 
                         var harvestProduct = new TaskHarvest
