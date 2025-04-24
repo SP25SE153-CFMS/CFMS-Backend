@@ -286,12 +286,17 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                             Resource = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(
                             filter: r => r.ResourceId == detail.ResourceId,
                             include: x => x
-                                .Include(t => t.HarvestProduct))
+                                .Include(t => t.HarvestProduct)
+                                .Include(t => t.Food)
+                                .Include(t => t.Medicine)
+                                .Include(t => t.Chicken)
+                                .Include(t => t.Equipment))
                                 .FirstOrDefault(),
                             ConsumedQuantity = detail.ConsumedQuantity,
                         })
                         .GroupBy(x => new
                         {
+                            x?.Resource?.ResourceId,
                             x?.Resource?.PackageSize,
                             x?.Resource?.UnitId,
                             x?.Resource?.PackageId
@@ -314,7 +319,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 UnitId = unit?.SubCategoryId,
                                 TaskId = request?.TaskId,
                                 Note = request?.Note,
-                                ResourceId = detail?.Resource?.ResourceId
+                                ResourceId = group.Key.ResourceId
                             };
 
                             _unitOfWork.FeedLogRepository.Insert(feedLog);
