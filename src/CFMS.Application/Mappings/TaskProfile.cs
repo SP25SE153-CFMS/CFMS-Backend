@@ -7,6 +7,7 @@ using CFMS.Domain.Entities;
 using Task = CFMS.Domain.Entities.Task;
 using CFMS.Application.DTOs.Task.Assignment;
 using CFMS.Application.DTOs.Task.TaskLocation;
+using CFMS.Application.DTOs.Task.Logs;
 
 namespace CFMS.Application.Mappings
 {
@@ -68,12 +69,28 @@ namespace CFMS.Application.Mappings
             CreateMap<TaskResource, TaskResourceDto>()
                 .AfterMap((src, dest) =>
                 {
+                    //dest.ResourceId =
+                    //    src.Resource?.Food?.FoodId ??
+                    //    src.Resource?.Medicine?.MedicineId ??
+                    //    src.Resource?.Equipment?.EquipmentId ??
+                    //    src.Resource?.Chicken?.ChickenId ??
+                    //    src.Resource?.HarvestProduct?.HarvestProductId ??
+                    //    Guid.Empty;                   
+                    
                     dest.ResourceName =
                         src.Resource?.Food?.FoodName ??
                         src.Resource?.Medicine?.MedicineName ??
                         src.Resource?.Equipment?.EquipmentName ??
                         src.Resource?.Chicken?.ChickenName ??
                         src.Resource?.HarvestProduct?.HarvestProductName ??
+                        "Không xác định";
+
+                    dest.ResourceCode =
+                        src.Resource?.Food?.FoodCode ??
+                        src.Resource?.Medicine?.MedicineCode  ??
+                        src.Resource?.Equipment?.EquipmentCode ??
+                        src.Resource?.Chicken?.ChickenCode ??
+                        src.Resource?.HarvestProduct?.HarvestProductCode ??
                         "Không xác định";
 
                     var subType = src.ResourceType?.SubCategoryName?.ToLower();
@@ -98,6 +115,41 @@ namespace CFMS.Application.Mappings
                 .AfterMap((src, dest) =>
                 {
                     dest.AssignedTo = src.AssignedTo?.FullName ?? "Không xác định";
+                });            
+            
+            CreateMap<FeedLog, FeedLogDto>()
+                .AfterMap((src, dest) =>
+                {
+                    //dest.ResourceId =
+                    //    src.Resource?.Food?.FoodId ??
+                    //    src.Resource?.Medicine?.MedicineId ??
+                    //    src.Resource?.Equipment?.EquipmentId ??
+                    //    src.Resource?.Chicken?.ChickenId ??
+                    //    src.Resource?.HarvestProduct?.HarvestProductId ??
+                    //    Guid.Empty;
+
+                    dest.ResourceName =
+                        src.Resource?.Food?.FoodName ??
+                        src.Resource?.Medicine?.MedicineName ??
+                        src.Resource?.Equipment?.EquipmentName ??
+                        src.Resource?.Chicken?.ChickenName ??
+                        src.Resource?.HarvestProduct?.HarvestProductName ??
+                        "Không xác định";
+
+                    dest.ResourceCode =
+                        src.Resource?.Food?.FoodCode ??
+                        src.Resource?.Medicine?.MedicineCode ??
+                        src.Resource?.Equipment?.EquipmentCode ??
+                        src.Resource?.Chicken?.ChickenCode ??
+                        src.Resource?.HarvestProduct?.HarvestProductCode ??
+                        "Không xác định";
+
+                    var package = src.Resource?.Package?.SubCategoryName;
+                    var unit = src.Resource?.Unit?.SubCategoryName;
+                    var packageSize = src.Resource?.PackageSize;
+
+                    dest.ActualQuantity = src.ActualFeedAmount;
+                    dest.UnitSpecification = $"{packageSize} {unit}/{package}";
                 });
         }
     }

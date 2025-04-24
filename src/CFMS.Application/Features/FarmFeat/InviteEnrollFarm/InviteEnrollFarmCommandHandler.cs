@@ -123,7 +123,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
 
                         var notiSend = new Notification
                         {
-                            UserId = x.UserId,
+                            UserId = existUser.UserId,
                             NotificationName = "Thông báo mời tham gia trang trại",
                             NotificationType = "INVITE_FARM",
                             Content = $"{existUser.FullName} đã mời bạn đảm nhận vị trí {role} trong trang trại {existFarm.FarmCode} ({existFarm.FarmName})",
@@ -131,7 +131,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         };
 
                         _unitOfWork.NotificationRepository.Insert(notiSend);
-                        await _hubContext.SendMessageToUser(notiSend?.UserId?.ToString(), notiSend);
+                        await _hubContext.SendMessageToUser(x?.UserId?.ToString(), notiSend);
                     }
 
                     string? userInvited = "";
@@ -216,7 +216,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         {
                             var msg = new Notification
                             {
-                                UserId = mf.UserId,
+                                UserId = existUser.UserId,
                                 NotificationName = "Thông báo yêu cầu tham gia trang trại",
                                 NotificationType = "ENROLL_FARM",
                                 Content = $"{existUser.FullName} gửi yêu cầu tham gia trang trại {existFarm.FarmCode} ({existFarm.FarmName})",
