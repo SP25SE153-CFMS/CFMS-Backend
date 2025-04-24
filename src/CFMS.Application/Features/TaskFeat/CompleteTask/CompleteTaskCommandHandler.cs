@@ -296,10 +296,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                         })
                         .GroupBy(x => new
                         {
-                            x?.Resource?.ResourceId,
-                            x?.Resource?.PackageSize,
-                            x?.Resource?.UnitId,
-                            x?.Resource?.PackageId
+                            x?.Resource?.ResourceId
                         })
                         .ToList();
 
