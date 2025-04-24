@@ -11,6 +11,21 @@ namespace CFMS.Application.Services.Impl
 {
     public class UtilityService : IUtilityService
     {
+        private static readonly Dictionary<string, decimal> UnitToSquareMeter = new()
+        {
+            { "m²", 1 },
+            { "ha", 10000 },
+            // Add more units as needed
+        };
+
+        public decimal ConvertToSquareMeters(decimal value, string unitName)
+        {
+            if (!UnitToSquareMeter.TryGetValue(unitName.ToLower(), out var factor))
+                throw new ArgumentException($"Unknown area unit: {unitName}");
+
+            return value * factor;
+        }
+
         public string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
