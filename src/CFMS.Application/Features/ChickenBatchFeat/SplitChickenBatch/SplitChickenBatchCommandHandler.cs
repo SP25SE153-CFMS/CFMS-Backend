@@ -20,7 +20,6 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
 
         public async Task<BaseResponse<bool>> Handle(SplitChickenBatchCommand request, CancellationToken cancellationToken)
         {
-            // 1. Validate Parent Batch
             var existParentBatch = _unitOfWork.ChickenBatchRepository
                 .Get(filter: pb => pb.ChickenBatchId == request.ParentBatchId && !pb.IsDeleted, includeProperties: "ChickenDetails")
                 .FirstOrDefault();
@@ -31,7 +30,6 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
             if (existParentBatch.ChickenCoopId.Equals(request.ChickenCoopId))
                 return BaseResponse<bool>.FailureResponse(message: "Không thể chọn chung chuồng");
 
-            // 2. Validate Chicken Coop
             var existCoop = _unitOfWork.ChickenCoopRepository
                 .Get(filter: c => c.ChickenCoopId == request.ChickenCoopId && c.Status == 0 && !c.IsDeleted)
                 .FirstOrDefault();
@@ -39,7 +37,6 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
             if (existCoop == null)
                 return BaseResponse<bool>.FailureResponse(message: "Chuồng gà không tồn tại");
 
-            // 3. Validate Growth Stages
             var stages = _unitOfWork.GrowthStageRepository
                 .Get(filter: s => s.StageCode == request.StageCode, orderBy: q => q.OrderBy(s => s.OrderNum))
                 .ToList();
@@ -57,15 +54,12 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                     return BaseResponse<bool>.FailureResponse(message: "Vượt quá số lượng tách đàn");
                 }
 
-                // 4. Create new batch
                 var newBatch = _mapper.Map<ChickenBatch>(request);
                 var currentDate = DateOnly.FromDateTime(DateTime.Now);
                 var startDate = DateOnly.FromDateTime(newBatch.StartDate!.Value);
 
                 newBatch.Status = startDate > currentDate ? 0 : 1;
                 newBatch.CurrentStageId = stages.First().GrowthStageId;
-
-                // 5. Handle Chicken Details
 
                 foreach (var chickenDetail in request.ChickenDetailRequests)
                 {
@@ -91,7 +85,6 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                     });
                 }
 
-                // 6. Add quantity log
                 existParentBatch.QuantityLogs.Add(new QuantityLog
                 {
                     LogDate = DateTime.Now,
@@ -100,7 +93,6 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                     Quantity = request.ChickenDetailRequests.Sum(x => x.Quantity)
                 });
 
-                // 7. Add growth stages
                 foreach (var stage in stages)
                 {
                     newBatch.GrowthBatches.Add(new GrowthBatch
@@ -121,7 +113,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
             }
             catch (Exception ex)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra");
+                return BaseResponse<bool>.FailureResponse(message: "Có lỗi xảy ra: " + ex.Message);
             }
         }
     }
