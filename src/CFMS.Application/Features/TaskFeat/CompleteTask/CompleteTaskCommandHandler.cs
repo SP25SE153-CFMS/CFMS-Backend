@@ -74,7 +74,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                 return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");
             }
 
-            if (existTask.Status.Equals(1))
+            if (existTask.Status.Equals(2))
             {
                 return BaseResponse<bool>.FailureResponse(message: "Công việc này đã được báo cáo rồi");
             }
