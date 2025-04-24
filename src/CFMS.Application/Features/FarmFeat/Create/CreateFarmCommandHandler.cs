@@ -34,7 +34,7 @@ namespace CFMS.Application.Features.FarmFeat.Create
                 return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
             }
 
-            var farms = _unitOfWork.FarmRepository.Get(filter: f => (f.FarmCode.Equals(request.FarmCode) || f.FarmName.Equals(request.FarmName)) && f.IsDeleted == false);
+            var farms = _unitOfWork.FarmRepository.Get(filter: f => f.FarmCode.Equals(request.FarmCode) && f.IsDeleted == false);
             if (farms.Any())
             {
                 return BaseResponse<bool>.FailureResponse(message: "Tên hoặc mã trang trại đã tồn tại");
