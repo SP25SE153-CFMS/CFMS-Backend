@@ -316,7 +316,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 UnitId = unit?.SubCategoryId,
                                 TaskId = request?.TaskId,
                                 Note = request?.Note,
-                                ResourceId = group.Key.ResourceId
+                                ResourceId = detail.Resource?.ResourceId
                             };
 
                             _unitOfWork.FeedLogRepository.Insert(feedLog);
