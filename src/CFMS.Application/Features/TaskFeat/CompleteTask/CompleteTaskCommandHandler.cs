@@ -89,7 +89,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
             {
                 //string[] keywords = { "thực phẩm", "dược phẩm", "thiết bị", "thu hoạch", "con giống" };
 
-                existTask.Status = 1;
+                existTask.Status = 2;
                 //var leader = existTask.Assignments.Where(x => x.Status.Equals(1)).FirstOrDefault();
                 //leader.Note = request.Note;
 
@@ -316,7 +316,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 UnitId = unit?.SubCategoryId,
                                 TaskId = request?.TaskId,
                                 Note = request?.Note,
-                                ResourceId = group.Key.ResourceId
+                                ResourceId = detail.Resource?.ResourceId
                             };
 
                             _unitOfWork.FeedLogRepository.Insert(feedLog);
