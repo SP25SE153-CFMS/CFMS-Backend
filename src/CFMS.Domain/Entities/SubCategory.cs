@@ -43,7 +43,7 @@ public partial class SubCategory : EntityAudit
     [JsonIgnore]
     public virtual ICollection<ChickenCoop> ChickenCoopPurposes { get; set; } = new List<ChickenCoop>();
 
-    //[JsonIgnore]
+    [JsonIgnore]
     public virtual ICollection<Chicken> Chickens { get; set; } = new List<Chicken>();
 
     [JsonIgnore]

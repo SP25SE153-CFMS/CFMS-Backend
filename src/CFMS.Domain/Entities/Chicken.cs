@@ -27,7 +27,7 @@ public partial class Chicken : EntityAudit
 
     public virtual SystemConfig ChickenNavigation { get; set; } = null!;
 
-    [JsonIgnore]
+    //[JsonIgnore]
     public virtual SubCategory? ChickenType { get; set; }
 
     public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
