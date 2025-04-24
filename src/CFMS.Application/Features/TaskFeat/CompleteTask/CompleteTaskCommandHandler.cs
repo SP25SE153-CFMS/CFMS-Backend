@@ -89,7 +89,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
             {
                 //string[] keywords = { "thực phẩm", "dược phẩm", "thiết bị", "thu hoạch", "con giống" };
 
-                existTask.Status = 1;
+                existTask.Status = 2;
                 //var leader = existTask.Assignments.Where(x => x.Status.Equals(1)).FirstOrDefault();
                 //leader.Note = request.Note;
 
