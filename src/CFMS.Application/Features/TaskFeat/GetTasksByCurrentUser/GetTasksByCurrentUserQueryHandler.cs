@@ -32,7 +32,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTasksByCurrentUser
             var currentUser = _currentUserService.GetUserId();
             Guid userId = Guid.Parse(_currentUserService.GetUserId());
 
-            var existTasks = _unitOfWork.TaskRepository.GetIncludeMultiLayer(filter: f => (f.FarmId.ToString().Equals(request.FarmId) && f.Assignments.Select(x => x.AssignedToId).Contains(userId)) && f.IsDeleted == false,
+            var existTasks = _unitOfWork.TaskRepository.GetIncludeMultiLayer(filter: f => (f.FarmId.Equals(request.FarmId) && f.Assignments.Select(x => x.AssignedToId).Contains(userId)) && f.IsDeleted == false,
                include: q => q
                     .Include(t => t.Assignments)
                         .ThenInclude(s => s.AssignedTo)
