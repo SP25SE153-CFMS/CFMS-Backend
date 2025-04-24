@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CFMS.Application.DTOs.Task.Logs;
+using CFMS.Application.DTOs.Task.Loggers;
 
 namespace CFMS.Application.DTOs.Task
 {
