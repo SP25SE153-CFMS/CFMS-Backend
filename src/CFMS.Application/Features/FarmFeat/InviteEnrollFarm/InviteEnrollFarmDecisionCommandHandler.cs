@@ -170,7 +170,8 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         UserId = existUser.UserId,
                         NotificationName = "Thông báo yêu cầu tham gia trang trại",
                         NotificationType = "ENROLL_FARM_DECISION",
-                        Content = $"Bạn {request.Decision switch {1 => "đã chấp nhận", 0 => "đã bị từ chối", _ => "vẫn đang phê duyệt"}} yêu cầu tham gia trang trại {existFarm.FarmCode} ({existFarm.FarmName} của {existUser.FullName})",
+                        Content = $"Bạn {request.Decision switch {1 => "đã chấp nhận", 0 => "đã bị từ chối", _ => "vẫn đang phê duyệt"}} yêu cầu tham gia trang trại {existFarm.FarmCode} ({existFarm.FarmName}) của {existNoti?.User?.FullName}",
+
                         IsRead = 0,
                     };
 

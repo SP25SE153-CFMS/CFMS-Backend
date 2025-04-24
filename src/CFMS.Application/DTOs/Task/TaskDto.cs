@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CFMS.Application.DTOs.Task.Logs;
 
 namespace CFMS.Application.DTOs.Task
 {
@@ -31,5 +32,7 @@ namespace CFMS.Application.DTOs.Task
         public List<TaskResourceDto> resourceList { get; set; } = new List<TaskResourceDto>();
 
         public List<AssignmentDto> assignmentList { get; set; } = new List<AssignmentDto>();
+
+        public List<FeedLogDto> feedLogList { get; set; } = new List<FeedLogDto>();
     }
 }

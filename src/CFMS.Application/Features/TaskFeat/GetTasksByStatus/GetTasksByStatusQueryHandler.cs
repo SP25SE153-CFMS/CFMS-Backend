@@ -74,6 +74,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTasksByStatus
                         .ThenInclude(s => s.Location)
                     .Include(t => t.TaskLocations)
                         .ThenInclude(s => s.LocationNavigation)
+
             );
 
             var taskDtos = _mapper.Map<IEnumerable<TaskDto>>(tasks);

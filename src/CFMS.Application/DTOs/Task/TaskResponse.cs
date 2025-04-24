@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.DTOs.Task.Assignment;
+using CFMS.Application.DTOs.Task.Logs;
 using CFMS.Application.DTOs.Task.ShiftSchedule;
 using CFMS.Application.DTOs.Task.TaskLocation;
 using CFMS.Application.DTOs.Task.TaskResource;
@@ -35,5 +36,7 @@ namespace CFMS.Application.DTOs.Task
         public virtual ICollection<AssignmentDto> Assignments { get; set; } = new List<AssignmentDto>();
 
         public virtual ICollection<TaskResourceDto> TaskResources { get; set; } = new List<TaskResourceDto>();
+
+        public virtual ICollection<FeedLogDto> FeedLogs { get; set; } = new List<FeedLogDto>();
     }
 }
