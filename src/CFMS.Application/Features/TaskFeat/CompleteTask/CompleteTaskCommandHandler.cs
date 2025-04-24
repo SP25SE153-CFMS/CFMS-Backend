@@ -268,7 +268,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                         ChickenCoopId = location.CoopId,
                         CompletedAt = DateTime.Now.ToLocalTime(),
                         TaskId = existTask.TaskId,
-                        Note = request.Note,
+                        Note = request?.Note,
                     };
 
                     _unitOfWork.TaskLogRepository.Insert(taskLog);
