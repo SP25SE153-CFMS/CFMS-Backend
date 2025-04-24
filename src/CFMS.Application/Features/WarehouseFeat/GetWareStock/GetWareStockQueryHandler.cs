@@ -43,7 +43,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
 
             if (resources.Count == 0)
             {
-                return BaseResponse<object>.FailureResponse("Không có hàng hoá nào");
+                return BaseResponse<object>.FailureResponse("Hàng hoá không tồn tại");
             }
 
             var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resources.FirstOrDefault().ResourceTypeId) && f.IsDeleted == false).FirstOrDefault();
