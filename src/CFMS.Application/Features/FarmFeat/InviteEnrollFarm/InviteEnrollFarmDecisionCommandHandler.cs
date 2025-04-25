@@ -100,7 +100,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                     var sendTasks = managerFarms
                         .Select(mf =>
                         {
-                            var msg = new Notification
+                            var sendNoti = new Notification
                             {
                                 UserId = mf.UserId,
                                 NotificationName = "Thông báo mời tham gia trang trại",
@@ -109,8 +109,8 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                                 IsRead = 0,
                             };
 
-                            _unitOfWork.NotificationRepository.Insert(msg);
-                            return _hubContext.SendMessageToUser(mf.UserId.ToString(), msg);
+                            _unitOfWork.NotificationRepository.Insert(sendNoti);
+                            return _hubContext.SendMessageToUser(mf?.UserId?.ToString(), sendNoti);
                         });
 
                     await System.Threading.Tasks.Task.WhenAll(sendTasks);
@@ -138,7 +138,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         existFarm.FarmEmployees.Add(new FarmEmployee
                         {
                             FarmId = existFarm.FarmId,
-                            UserId = existNoti.UserId,
+                            UserId = existNoti.CreatedByUserId,
                             StartDate = DateTime.Now.ToLocalTime().AddHours(7),
                             Status = 1,
                             FarmRole = farmRole switch
@@ -155,7 +155,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
 
                     var notiSend = new Notification
                     {
-                        UserId = existNoti.UserId,
+                        UserId = existNoti.CreatedByUserId,
                         NotificationName = "Thông báo yêu cầu tham gia trang trại",
                         NotificationType = "ENROLL_FARM_DECISION",
                         Content = $"Bạn {request.Decision switch {1 => "đã được chấp nhận", 0 => "đã bị từ chối", _ => "vẫn đang chờ phê duyệt"}} tham gia trang trại {existFarm.FarmCode} ({existFarm.FarmName})",
@@ -170,7 +170,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         UserId = existUser.UserId,
                         NotificationName = "Thông báo yêu cầu tham gia trang trại",
                         NotificationType = "ENROLL_FARM_DECISION",
-                        Content = $"Bạn {request.Decision switch {1 => "đã chấp nhận", 0 => "đã bị từ chối", _ => "vẫn đang phê duyệt"}} yêu cầu tham gia trang trại {existFarm.FarmCode} ({existFarm.FarmName}) của {existNoti?.User?.FullName}",
+                        Content = $"Bạn {request.Decision switch {1 => "đã chấp nhận", 0 => "đã từ chối", _ => "vẫn đang phê duyệt"}} yêu cầu tham gia trang trại {existFarm.FarmCode} ({existFarm.FarmName}) của {existNoti?.User?.FullName}",
 
                         IsRead = 0,
                     };

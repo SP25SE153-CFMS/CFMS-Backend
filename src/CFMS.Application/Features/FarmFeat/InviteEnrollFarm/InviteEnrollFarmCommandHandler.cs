@@ -104,7 +104,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                                 .Include(f => f.User)
                                 ).FirstOrDefault();
 
-                            if ((invitedUser != null) && (DateTime.Now.AddHours(7) - invitedUser.CreatedWhen).TotalMinutes > 5)
+                            if ((invitedUser != null) && (DateTime.Now.AddHours(7) - invitedUser.CreatedWhen).TotalMinutes < 3)
                             {
                                 return BaseResponse<bool>.FailureResponse(message: $"Bạn đã mời {invitedUser?.User?.FullName} vào trang trại {existFarm.FarmCode} ({existFarm.FarmName}) rồi. Hãy đợi phản hồi");
                             }
@@ -123,7 +123,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
 
                         var notiSend = new Notification
                         {
-                            UserId = existUser.UserId,
+                            UserId = x.UserId,
                             NotificationName = "Thông báo mời tham gia trang trại",
                             NotificationType = "INVITE_FARM",
                             Content = $"{existUser.FullName} đã mời bạn đảm nhận vị trí {role} trong trang trại {existFarm.FarmCode} ({existFarm.FarmName})",
@@ -199,7 +199,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                                 .Include(f => f.User)
                                 ).FirstOrDefault();
 
-                            if ((invitedUser != null) && (DateTime.Now.AddHours(7) - invitedUser.CreatedWhen).TotalMinutes > 5)
+                            if ((invitedUser != null) && (DateTime.Now.AddHours(7) - invitedUser.CreatedWhen).TotalMinutes < 3)
                             {
                                 return BaseResponse<bool>.FailureResponse(message: $"Bạn đã gửi lời yêu cầu tham gia trang trại {existFarm.FarmCode} ({existFarm.FarmName}) rồi. Hãy đợi phê duyệt");
                             }
@@ -214,17 +214,17 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                     var sendTasks = managerFarms
                         .Select(mf =>
                         {
-                            var msg = new Notification
+                            var notiSend = new Notification
                             {
-                                UserId = existUser.UserId,
+                                UserId = mf.UserId,
                                 NotificationName = "Thông báo yêu cầu tham gia trang trại",
                                 NotificationType = "ENROLL_FARM",
                                 Content = $"{existUser.FullName} gửi yêu cầu tham gia trang trại {existFarm.FarmCode} ({existFarm.FarmName})",
                                 IsRead = 0,
                             };
 
-                            _unitOfWork.NotificationRepository.Insert(msg);
-                            return _hubContext.SendMessageToUser(mf.UserId.ToString(), msg);
+                            _unitOfWork.NotificationRepository.Insert(notiSend);
+                            return _hubContext.SendMessageToUser(mf?.UserId?.ToString(), notiSend);
                         });
 
                     await System.Threading.Tasks.Task.WhenAll(sendTasks);
