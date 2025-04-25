@@ -30,10 +30,13 @@ namespace CFMS.Application.Features.RequestFeat.ApproveRequest
                 return BaseResponse<bool>.FailureResponse(message: "Phiếu yêu cầu không tồn tại");
             }
 
-            var user = _currentUserService.GetUserId();
-            int isApproved = request.IsApproved;
+            if ((request.IsApproved != 1) && (request.IsApproved != 2))
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Hành động không hợp lệ");
+            }
 
-            existRequest.Status = isApproved.Equals(2) ? 2 : 1;
+            var user = _currentUserService.GetUserId();
+            existRequest.Status = request.IsApproved;
 
             if (Guid.TryParse(user, out Guid id))
             {
@@ -49,7 +52,9 @@ namespace CFMS.Application.Features.RequestFeat.ApproveRequest
 
             return existRequest.Status.Equals(2) 
                 ? BaseResponse<bool>.SuccessResponse("Duyệt thành công") 
-                : BaseResponse<bool>.FailureResponse("Từ chối thành công");
+                : existRequest.Status.Equals(1) 
+                    ? BaseResponse<bool>.FailureResponse("Từ chối thành công")
+                    : BaseResponse<bool>.FailureResponse("Duyệt thất bại");
         }
     }
 }
