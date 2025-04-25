@@ -34,12 +34,14 @@ namespace CFMS.Application.Features.ChickenBatchFeat.GetBatch
 
             var totalChicken = existBatch.ChickenDetails.Sum(cd => cd.Quantity);
             var deathChicken = existBatch.QuantityLogs.Where(l => l.LogType == 0).Sum(cd => cd.Quantity);
-            var aliveChicken = totalChicken - deathChicken;
+            var soldChicken = existBatch.QuantityLogs.Where(l => l.LogType == 3).Sum(cd => cd.Quantity);
+            var aliveChicken = totalChicken - deathChicken - soldChicken;
 
             var batch = _mapper.Map<ChickenBatchResponse>(existBatch);
             batch.AliveChicken = aliveChicken.Value;
             batch.DeathChicken = deathChicken.Value;
             batch.TotalChicken = totalChicken.Value;
+            batch.SoldChicken = soldChicken.Value;
 
             return BaseResponse<ChickenBatchResponse>.SuccessResponse(data: batch);
 

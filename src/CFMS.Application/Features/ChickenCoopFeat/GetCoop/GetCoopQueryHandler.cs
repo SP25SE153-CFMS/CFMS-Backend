@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.GetCoop
 
             existCoop.ChickenBatches = existCoop.ChickenBatches.OrderBy(cb => cb.Status).ToList();
             var batch = existCoop.ChickenBatches.FirstOrDefault();
-            var totalChicken = batch?.ChickenDetails.Select(cd => cd.Quantity).Sum();
+            var totalChicken = batch?.ChickenDetails.Sum(cd => cd.Quantity);
             existCoop.CurrentQuantity = totalChicken;
 
             return BaseResponse<ChickenCoop>.SuccessResponse(data: existCoop);

@@ -25,6 +25,8 @@ namespace CFMS.Application.DTOs.ChickenBatch
 
         public int MaxGrowDays { get; set; }
 
+        public int SoldChicken { get; set; }
+
         public int AliveChicken { get; set; }
 
         public int DeathChicken { get; set; }
