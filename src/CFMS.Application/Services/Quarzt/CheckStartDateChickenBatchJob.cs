@@ -29,7 +29,7 @@ namespace CFMS.Application.Services.Quartz
                     filter: cb => cb.IsDeleted == false
                                && cb.StartDate != null
                                && cb.StartDate.Value.Date <= today
-                               && cb.Status != 1
+                               && cb.Status == 0
                 );
 
                 foreach (var batch in chickenBatches)
