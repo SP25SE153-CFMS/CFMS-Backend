@@ -15,10 +15,16 @@ namespace CFMS.Application.Features.ChickenBatchFeat.CloseChickenBatch
 
         public async Task<BaseResponse<bool>> Handle(CloseChickenBatchCommand request, CancellationToken cancellationToken)
         {
-            var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false).FirstOrDefault();
+            var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false, includeProperties: "ChickenCoop").FirstOrDefault();
             if (existBatch == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Lứa không tồn tại");
+            }
+
+            var existCoop = _unitOfWork.ChickenCoopRepository.Get(filter: c => c.ChickenCoopId.Equals(existBatch.ChickenCoopId) && !c.IsDeleted).FirstOrDefault();
+            if (existCoop == null)
+            {
+                return BaseResponse<bool>.FailureResponse(message: "Chuồng không tồn tại");
             }
 
             try
@@ -26,9 +32,12 @@ namespace CFMS.Application.Features.ChickenBatchFeat.CloseChickenBatch
                 existBatch.EndDate = DateTime.Now.ToLocalTime();
                 existBatch.Status = 2;
 
+                existCoop.Status = 0;
+
+                _unitOfWork.ChickenCoopRepository.Update(existCoop);
                 _unitOfWork.ChickenBatchRepository.Update(existBatch);
                 var result = await _unitOfWork.SaveChangesAsync();
-                if (result > 0)
+                if (result >= 2)
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Cập nhật thành công");
                 }

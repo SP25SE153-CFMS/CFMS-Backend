@@ -73,9 +73,12 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
                     });
                 }
 
+                existCoop.Status = 1;
+                _unitOfWork.ChickenCoopRepository.Update(existCoop);
                 _unitOfWork.ChickenBatchRepository.Insert(batch);
+
                 var result = await _unitOfWork.SaveChangesAsync();
-                if (result > 0)
+                if (result >= 2)
                 {
                     return BaseResponse<bool>.SuccessResponse(message: "Tạo thành công");
                 }
