@@ -34,7 +34,7 @@ namespace CFMS.Application.Services.Quartz
 
                 foreach (var batch in chickenBatches)
                 {
-                    batch.Status = 1;
+                    batch.Status = 1; 
                     _unitOfWork.ChickenBatchRepository.UpdateWithoutDetach(batch);
                 }
 
