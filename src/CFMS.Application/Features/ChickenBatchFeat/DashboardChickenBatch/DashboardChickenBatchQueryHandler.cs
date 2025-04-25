@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.DashboardChickenBatch
             }
 
             var totalChicken = existBatch.ChickenDetails.Sum(cd => cd.Quantity);
-            var deathChicken = existBatch.QuantityLogs.Sum(cd => cd.Quantity);
+            var deathChicken = existBatch.QuantityLogs.Where(l => l.LogType == 0).Sum(cd => cd.Quantity);
             var aliveChicken = totalChicken - deathChicken;
 
             var dashboardChickenBatch = new DashboardChickenBatchResponse

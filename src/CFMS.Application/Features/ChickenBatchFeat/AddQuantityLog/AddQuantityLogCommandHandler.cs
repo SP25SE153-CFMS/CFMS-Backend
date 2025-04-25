@@ -16,7 +16,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog
 
         public async Task<BaseResponse<bool>> Handle(AddQuantityLogCommand request, CancellationToken cancellationToken)
         {
-            var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false).FirstOrDefault();
+            var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false, includeProperties: "ChickenDetails,QuantityLogs").FirstOrDefault();
             if (existBatch == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Lứa nuôi không tồn tại");
@@ -24,6 +24,14 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog
 
             try
             {
+                var totalChicken = existBatch.ChickenDetails.Sum(cd => cd.Quantity);
+                var totalLoggedQuantity = existBatch.QuantityLogs?.Sum(q => q.Quantity) ?? 0;
+
+                if (request.Quantity > (totalChicken - totalLoggedQuantity))
+                {
+                    return BaseResponse<bool>.FailureResponse(message: "Tổng số lượng log vượt quá số lượng hiện tại của lứa nuôi");
+                }
+
                 existBatch.QuantityLogs.Add(new QuantityLog
                 {
                     ChickenBatchId = request.ChickenBatchId,
