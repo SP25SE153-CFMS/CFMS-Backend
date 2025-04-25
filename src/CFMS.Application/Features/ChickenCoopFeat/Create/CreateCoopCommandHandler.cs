@@ -61,7 +61,7 @@ namespace CFMS.Application.Features.ChickenCoopFeat.Create
                 decimal usedAreaInM2 = 0;
                 foreach (var existingCoop in existBreedingArea.ChickenCoops)
                 {
-                    if (existingCoop.Area.HasValue && existingCoop.AreaUnit != null)
+                    if (existingCoop.Area.HasValue && existingCoop.AreaUnit != null && !existingCoop.IsDeleted)
                     {
                         usedAreaInM2 += _utilityService.ConvertToSquareMeters(existingCoop.Area.Value, existingCoop.AreaUnit.SubCategoryName);
                     }
