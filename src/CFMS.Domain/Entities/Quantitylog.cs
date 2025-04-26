@@ -18,6 +18,10 @@ public partial class QuantityLog : EntityAudit
 
     public int? LogType { get; set; }
 
+    public string? ImageUrl { get; set; }
+
     [JsonIgnore]
     public virtual ChickenBatch? ChickenBatch { get; set; }
+
+    public virtual ICollection<QuantityLogDetail> QuantityLogDetails { get; set; } = new List<QuantityLogDetail>();
 }

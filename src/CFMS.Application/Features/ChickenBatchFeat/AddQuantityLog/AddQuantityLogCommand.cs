@@ -1,16 +1,17 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.QuantityLog;
 using MediatR;
 
 namespace CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog
 {
     public class AddQuantityLogCommand : IRequest<BaseResponse<bool>>
     {
-        public AddQuantityLogCommand(Guid? chickenBatchId, DateTime? logDate, string? notes, int? quantity, int? logType)
+        public AddQuantityLogCommand(Guid? chickenBatchId, DateTime? logDate, string? notes, IEnumerable<QuantityLogDetailRequest> quantityLogDetails, int? logType)
         {
             ChickenBatchId = chickenBatchId;
             LogDate = logDate;
             Notes = notes;
-            Quantity = quantity;
+            QuantityLogDetails = quantityLogDetails;
             LogType = logType;
         }
 
@@ -20,8 +21,10 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog
 
         public string? Notes { get; set; }
 
-        public int? Quantity { get; set; }
+        public IEnumerable<QuantityLogDetailRequest> QuantityLogDetails { get; set; }
 
         public int? LogType { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

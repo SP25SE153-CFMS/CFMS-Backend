@@ -1,9 +1,5 @@
-﻿using CFMS.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using CFMS.Domain.Entities;
 
 namespace CFMS.Application.DTOs.ChickenBatch
 {
@@ -31,7 +27,7 @@ namespace CFMS.Application.DTOs.ChickenBatch
 
         public int DeathChicken { get; set; }
 
-        public int TotalChicken { get; set; }
+        public int InitChickenQuantity { get; set; }
 
         public Guid? ChickenId { get; set; }
 
@@ -58,7 +54,7 @@ namespace CFMS.Application.DTOs.ChickenBatch
 
         public virtual ICollection<HealthLog> HealthLogs { get; set; } = new List<HealthLog>();
 
-        public virtual ICollection<QuantityLog> QuantityLogs { get; set; } = new List<QuantityLog>();
+        public virtual ICollection<Domain.Entities.QuantityLog> QuantityLogs { get; set; } = new List<Domain.Entities.QuantityLog>();
 
         public virtual ICollection<VaccineLog> VaccineLogs { get; set; } = new List<VaccineLog>();
 

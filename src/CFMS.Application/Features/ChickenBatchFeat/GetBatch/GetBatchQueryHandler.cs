@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.GetBatch
         {
             var existBatch = _unitOfWork.ChickenBatchRepository.Get(
             filter: b => b.ChickenBatchId.Equals(request.Id) && !b.IsDeleted,
-            includeProperties: "Chicken,GrowthBatches,GrowthBatches.GrowthStage,GrowthBatches.GrowthStage.NutritionPlan,FeedLogs,HealthLogs,QuantityLogs,VaccineLogs,ChickenDetails"
+            includeProperties: "Chicken,GrowthBatches,GrowthBatches.GrowthStage,GrowthBatches.GrowthStage.NutritionPlan,FeedLogs,HealthLogs,QuantityLogs,QuantityLogs.QuantityLogDetails,VaccineLogs,ChickenDetails"
             ).FirstOrDefault();
 
             if (existBatch == null)
@@ -32,15 +32,15 @@ namespace CFMS.Application.Features.ChickenBatchFeat.GetBatch
                 return BaseResponse<ChickenBatchResponse>.SuccessResponse(message: "Lứa không tồn tại");
             }
 
-            var totalChicken = existBatch.ChickenDetails.Sum(cd => cd.Quantity);
+            //var initChicken = existBatch.ChickenDetails.Sum(cd => cd.Quantity);
             var deathChicken = existBatch.QuantityLogs.Where(l => l.LogType == 0).Sum(cd => cd.Quantity);
             var soldChicken = existBatch.QuantityLogs.Where(l => l.LogType == 3).Sum(cd => cd.Quantity);
-            var aliveChicken = totalChicken - deathChicken - soldChicken;
+            var aliveChicken = existBatch.ChickenDetails.Sum(cd => cd.Quantity);
 
             var batch = _mapper.Map<ChickenBatchResponse>(existBatch);
             batch.AliveChicken = aliveChicken.Value;
             batch.DeathChicken = deathChicken.Value;
-            batch.TotalChicken = totalChicken.Value;
+            //batch.TotalChicken = initChicken.Value;
             batch.SoldChicken = soldChicken.Value;
 
             return BaseResponse<ChickenBatchResponse>.SuccessResponse(data: batch);

@@ -74,6 +74,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch
                 }
 
                 existCoop.Status = 1;
+                batch.InitChickenQuantity = request.ChickenDetailRequests.Sum(x => x.Quantity);
                 _unitOfWork.ChickenCoopRepository.Update(existCoop);
                 _unitOfWork.ChickenBatchRepository.Insert(batch);
 

@@ -22,6 +22,8 @@ public partial class ChickenBatch : EntityAudit
 
     public int MaxGrowDays { get; set; }
 
+    public int InitChickenQuantity { get; set; }
+
     public Guid? ChickenId { get; set; }
 
     public Guid? ChickenCoopId { get; set; }

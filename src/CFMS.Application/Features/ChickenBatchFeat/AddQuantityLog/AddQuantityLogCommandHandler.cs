@@ -16,7 +16,10 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog
 
         public async Task<BaseResponse<bool>> Handle(AddQuantityLogCommand request, CancellationToken cancellationToken)
         {
-            var existBatch = _unitOfWork.ChickenBatchRepository.Get(filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false, includeProperties: "ChickenDetails,QuantityLogs").FirstOrDefault();
+            var existBatch = _unitOfWork.ChickenBatchRepository.Get(
+                filter: b => b.ChickenBatchId.Equals(request.ChickenBatchId) && b.IsDeleted == false,
+                includeProperties: "ChickenDetails,QuantityLogs"
+                ).FirstOrDefault();
             if (existBatch == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Lứa nuôi không tồn tại");
@@ -25,21 +28,51 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog
             try
             {
                 var totalChicken = existBatch.ChickenDetails.Sum(cd => cd.Quantity);
-                var totalLoggedQuantity = existBatch.QuantityLogs?.Sum(q => q.Quantity) ?? 0;
+                //var totalLoggedQuantity = existBatch.QuantityLogs?.Sum(q => q.Quantity) ?? 0;
+                var totalLogQuantityRequest = request.QuantityLogDetails.Sum(q => q.Quantity);
 
-                if (request.Quantity > (totalChicken - totalLoggedQuantity))
+                if (totalLogQuantityRequest > totalChicken)
                 {
                     return BaseResponse<bool>.FailureResponse(message: "Tổng số lượng log vượt quá số lượng hiện tại của lứa nuôi");
                 }
 
-                existBatch.QuantityLogs.Add(new QuantityLog
+                var quantityLog = new QuantityLog
                 {
                     ChickenBatchId = request.ChickenBatchId,
-                    Quantity = request.Quantity,
+                    Quantity = totalLogQuantityRequest,
                     LogDate = request.LogDate,
                     LogType = request.LogType,
                     Notes = request.Notes,
-                });
+                    ImageUrl = request.ImageUrl,
+                };
+
+                foreach (var quantityLogDetail in request.QuantityLogDetails)
+                {
+                    var chickenDetail = existBatch.ChickenDetails
+                        .FirstOrDefault(cd => cd.Gender == quantityLogDetail.Gender);
+
+                    if (chickenDetail != null)
+                    {
+                        chickenDetail.Quantity -= quantityLogDetail.Quantity;
+
+                        if (chickenDetail.Quantity < 0)
+                        {
+                            return BaseResponse<bool>.FailureResponse(message: "Số lượng gà theo giới tính không đủ");
+                        }
+                    }
+                    else
+                    {
+                        return BaseResponse<bool>.FailureResponse(message: $"Không tìm thấy thông tin gà với giới tính {(quantityLogDetail.Gender == 0 ? "trống" : "mái")}");
+                    }
+
+                    quantityLog.QuantityLogDetails.Add(new QuantityLogDetail
+                    {
+                        Quantity = quantityLogDetail.Quantity,
+                        Gender = quantityLogDetail.Gender,
+                    });
+                }
+
+                existBatch.QuantityLogs.Add(quantityLog);
 
                 _unitOfWork.ChickenBatchRepository.Update(existBatch);
                 var result = await _unitOfWork.SaveChangesAsync();

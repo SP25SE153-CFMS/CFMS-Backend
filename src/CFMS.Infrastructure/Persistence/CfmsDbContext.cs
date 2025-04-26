@@ -133,6 +133,8 @@ public partial class CfmsDbContext : DbContext
 
     public virtual DbSet<HarvestProduct> HarvestProducts { get; set; }
 
+    public virtual DbSet<QuantityLogDetail> QuantityLogDetails { get; set; }
+
     private void OnBeforeSaving()
     {
         var entities = ChangeTracker.Entries()
@@ -489,6 +491,20 @@ public partial class CfmsDbContext : DbContext
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<QuantityLogDetail>(entity =>
+        {
+            entity.HasKey(e => e.QuantityLogDetailId).HasName("QuantityLogDetail_pkey");
+
+            entity.ToTable("QuantityLogDetail");
+
+            entity.Property(e => e.QuantityLogDetailId).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.HasOne(d => d.QuantityLog).WithMany(p => p.QuantityLogDetails)
+                .HasForeignKey(d => d.QuantityLogId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("QuantityLogDetail_QuantityLogId_fkey");
+        });
+        
         modelBuilder.Entity<HarvestProduct>(entity =>
         {
             entity.HasKey(e => e.HarvestProductId).HasName("HarvestProduct_pkey");
