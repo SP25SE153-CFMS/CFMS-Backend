@@ -45,6 +45,11 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignOut
 
             if (string.IsNullOrEmpty(token))
             {
+                token = context.Request.Cookies["accessToken"];
+            }
+
+            if (string.IsNullOrEmpty(token))
+            {
                 return BaseResponse<string>.FailureResponse("Thiếu Token");
             }
 
@@ -55,9 +60,18 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignOut
 
             var user = _currentUserService.GetUserId();
             var requiredRevokedToken = _unitOfWork.RevokedTokenRepository.Get(filter: x => user.Equals(x.UserId.ToString()) && x.RevokedAt == null).FirstOrDefault();
-            requiredRevokedToken.RevokedAt = DateTime.UtcNow.ToLocalTime();
+            requiredRevokedToken.RevokedAt = DateTime.UtcNow.ToLocalTime().AddHours(7);
             _unitOfWork.RevokedTokenRepository.Update(requiredRevokedToken);
             await _unitOfWork.SaveChangesAsync();
+
+            if (context.Request.Cookies.ContainsKey("accessToken"))
+            {
+                context.Response.Cookies.Delete("accessToken");
+            }
+            if (context.Request.Cookies.ContainsKey("refreshToken"))
+            {
+                context.Response.Cookies.Delete("refreshToken");
+            }
 
             return BaseResponse<string>.SuccessResponse("Đăng xuất thành công" );
         }

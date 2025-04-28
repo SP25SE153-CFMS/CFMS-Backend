@@ -96,7 +96,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
                         Token = refreshToken,
                         TokenType = (int)TokenType.REFRESH_TOKEN,
                         UserId = user.UserId,
-                        ExpiryDate = _utilityService.ToVietnamTime(_tokenService.GetExpiryDate(refreshToken) ?? default)
+                        ExpiryDate = _tokenService.GetExpiryDate(refreshToken)
                     };
 
                     _unitOfWork.RevokedTokenRepository.Insert(revokedToken);
@@ -117,7 +117,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
                         Token = refreshToken,
                         TokenType = (int)TokenType.REFRESH_TOKEN,
                         UserId = user.UserId,
-                        ExpiryDate = _utilityService.ToVietnamTime(_tokenService.GetExpiryDate(refreshToken) ?? default)
+                        ExpiryDate = _tokenService.GetExpiryDate(refreshToken)
                     };
                     _unitOfWork.RevokedTokenRepository.Insert(existRevokedToken);
                     await _unitOfWork.SaveChangesAsync();
