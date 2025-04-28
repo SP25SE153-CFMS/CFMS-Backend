@@ -104,6 +104,13 @@ namespace CFMS.Api.Controllers
             return Redirect($"https://cfms.site/check-login?token={Uri.EscapeDataString(token?.AccessToken)}&refreshToken={Uri.EscapeDataString(token?.RefreshToken)}");
         }
 
+        [HttpPost("google-signin-mobile")]
+        public async Task<IActionResult> SignInWithGoogleMobile([FromBody] GoogleSignInMobileCommand command)
+        {
+            var response = await Send(command);
+            return response;
+        }
+
         [HttpPost("signout")]
         public async Task<IActionResult> SignOut()
         {
