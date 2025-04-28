@@ -67,12 +67,41 @@ namespace CFMS.Api.Controllers
         [HttpGet("google-callback")]
         public async Task<IActionResult> SignInWithGoogle([FromQuery] string code, [FromQuery] string state)
         {
-            var response = await Send(new SignInWithGoogleCommand
+            var response = await _mediator.Send(new SignInWithGoogleCommand
             {
                 AuthorizationCode = code,
                 State = state
             });
-            return response;
+            //return response;
+
+            if (!response.Success)
+            {
+                return Redirect($"https://cfms.site/auth/error?message={Uri.EscapeDataString(response.Message)}");
+            }
+
+            var token = response.Data;
+            //Response.Cookies.Append("accessToken", token?.AccessToken ?? "", new CookieOptions
+            //{
+            //    HttpOnly = true,   
+            //    Secure = true,       
+            //    SameSite = SameSiteMode.Lax, 
+            //    Path = "/",
+            //    Expires = DateTimeOffset.UtcNow.AddHours(1),
+            //    Domain = "cfms.site"
+            //});
+
+            //Response.Cookies.Append("refreshToken", token?.RefreshToken ?? "", new CookieOptions
+            //{
+            //    HttpOnly = true,
+            //    Secure = true,
+            //    SameSite = SameSiteMode.Strict,
+            //    Path = "/",
+            //    Expires = DateTimeOffset.UtcNow.AddDays(30),
+            //    Domain = "cfms.site"
+            //});
+
+            //return Redirect("https://cfms.site");
+            return Redirect($"https://cfms.site/check-login?token={Uri.EscapeDataString(token?.AccessToken)}&refreshToken={Uri.EscapeDataString(token?.RefreshToken)}");
         }
 
         [HttpPost("signout")]
