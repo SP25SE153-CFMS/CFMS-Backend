@@ -2,6 +2,7 @@
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CFMS.Application.Features.NotiFeat.GetNotiByUser
 {
@@ -24,7 +25,11 @@ namespace CFMS.Application.Features.NotiFeat.GetNotiByUser
                 return BaseResponse<IEnumerable<Notification>>.FailureResponse(message: "User không tồn tại");
             }
 
-            var notis = _unitOfWork.NotificationRepository.Get(filter: n => n.UserId.Equals(existUser.UserId) && n.IsDeleted == false, includeProperties: "User", orderBy: x => x.OrderByDescending(x => x.CreatedWhen));
+            var notis = _unitOfWork.NotificationRepository.GetIncludeMultiLayer(filter: n => n.UserId.Equals(existUser.UserId) && n.IsDeleted == false,
+                include: x => x
+                .Include(t => t.User)
+                .Include(t => t.CreatedByUser
+                ), orderBy: x => x.OrderByDescending(x => x.CreatedWhen));
             return BaseResponse<IEnumerable<Notification>>.SuccessResponse(data: notis);
         }
     }
