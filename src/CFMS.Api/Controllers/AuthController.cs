@@ -1,20 +1,11 @@
-﻿using CFMS.Domain.Interfaces;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using CFMS.Application.Features.UserFeat.Auth.SignUp;
 using CFMS.Application.Features.UserFeat.Auth.SignIn;
 using CFMS.Application.Features.UserFeat.Auth.RefreshToken;
 using CFMS.Application.Features.UserFeat.Auth.CurrentUser;
 using CFMS.Application.Features.UserFeat.Auth.SignOut;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication;
 using CFMS.Application.Services;
-using Microsoft.AspNetCore.Identity;
-using CFMS.Application.DTOs.Auth;
-using System.Text.Json;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using CFMS.Application.Features.UserFeat.Auth.VerifyPassword;
 
 namespace CFMS.Api.Controllers
