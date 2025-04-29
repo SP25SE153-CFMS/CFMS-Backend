@@ -111,6 +111,13 @@ namespace CFMS.Api.Controllers
             return response;
         }
 
+        [HttpGet("google-callback-mobile")]
+        public IActionResult GoogleCallback(string code, string state)
+        {
+            var redirectUrl = $"cfms://auth?code={code}&state={state}";
+            return Redirect(redirectUrl);
+        }
+
         [HttpPost("signout")]
         public async Task<IActionResult> SignOut()
         {
