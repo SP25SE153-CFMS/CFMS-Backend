@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
@@ -19,6 +20,7 @@ public partial class NutritionPlan : EntityAudit
 
     public virtual ICollection<FeedSession> FeedSessions { get; set; } = new List<FeedSession>();
 
+    [JsonIgnore]
     public virtual ICollection<GrowthStage> GrowthStages { get; set; } = new List<GrowthStage>();
 
     public virtual ICollection<NutritionPlanDetail> NutritionPlanDetails { get; set; } = new List<NutritionPlanDetail>();
