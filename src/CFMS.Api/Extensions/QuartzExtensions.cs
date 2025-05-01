@@ -43,7 +43,7 @@ namespace CFMS.Api.Extensions
                 q.AddTrigger(opts => opts
                     .ForJob(jobKey)
                     .WithIdentity("CheckWareStockJob-trigger")
-                    .WithCronSchedule(configuration["Quartz:CheckWareStockJob"] ?? "0 0 0 * * ?")
+                    .WithCronSchedule(configuration["Quartz:CheckWareStockJob"] ?? "0 0 0 ? * 1")
                 );
             });
 
