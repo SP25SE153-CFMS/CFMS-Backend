@@ -12,6 +12,12 @@ namespace CFMS.Application.Services.Impl
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        private Guid? _systemId;
+
+        public bool IsSystem => _systemId.HasValue;
+
+        public Guid? SystemId => _systemId;
+
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -45,6 +51,11 @@ namespace CFMS.Application.Services.Impl
         public bool? IsUser()
         {
             return _httpContextAccessor.HttpContext?.User.IsInRole(GeneralRole.USER_ROLE.ToString());
+        }
+
+        public void SetSystemId(Guid systemId)
+        {
+            _systemId = systemId;
         }
     }
 }
