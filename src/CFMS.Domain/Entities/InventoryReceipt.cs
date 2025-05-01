@@ -16,6 +16,8 @@ public partial class InventoryReceipt : EntityAudit
 
     public int? BatchNumber { get; set; }
 
+    public Guid? FarmId { get; set; }
+
     public virtual ICollection<InventoryReceiptDetail> InventoryReceiptDetails { get; set; } = new List<InventoryReceiptDetail>();
 
     [JsonIgnore]
