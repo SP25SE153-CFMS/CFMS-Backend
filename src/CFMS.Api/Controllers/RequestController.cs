@@ -8,6 +8,7 @@ using CFMS.Application.Features.RequestFeat.ApproveRequest;
 using CFMS.Application.Features.RequestFeat.Create;
 using CFMS.Application.Features.RequestFeat.Delete;
 using CFMS.Application.Features.RequestFeat.GetReceipt;
+using CFMS.Application.Features.RequestFeat.GetReceiptByFarmId;
 using CFMS.Application.Features.RequestFeat.GetReceiptByRequestId;
 using CFMS.Application.Features.RequestFeat.GetReceipts;
 using CFMS.Application.Features.RequestFeat.GetRequest;
@@ -108,6 +109,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetRequestByFarmId(Guid farmId)
         {
             var result = await Send(new GetRequestByFarmIdQuery(farmId));
+            return result;
+        }
+
+        [HttpGet("receipts-Farm/{farmId}")]
+        public async Task<IActionResult> GetReceiptByFarmId(Guid farmId)
+        {
+            var result = await Send(new GetReceiptByFarmIdQuery(farmId));
             return result;
         }
 
