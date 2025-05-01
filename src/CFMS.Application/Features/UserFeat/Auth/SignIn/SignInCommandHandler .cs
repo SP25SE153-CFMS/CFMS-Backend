@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignIn
 
         public async Task<BaseResponse<AuthResponse>> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
-            var user = _unitOfWork.UserRepository.Get(filter: x => x.Mail == request.Mail)
+            var user = _unitOfWork.UserRepository.Get(filter: x => x.Mail == request.Mail && x.GoogleId == null)
                 .FirstOrDefault();
 
             if (user == null)

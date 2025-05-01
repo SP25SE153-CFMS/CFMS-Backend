@@ -17,5 +17,6 @@ namespace CFMS.Domain.Interfaces
         string FormatVietnamPhoneNumber(string input);
         int ExtractConversionRate(string description);
         decimal ConvertToSquareMeters(decimal value, string unitName);
+        string GenerateOTP();
     }
 }
