@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Services
 {
-    public interface IMailService
+    public interface ISmsService
     {
-        Task SendAsync(string to, string subject, string body);
-        Task SendOtpAsync(string toEmail, string otp);
+        Task SendAsync(string phoneNumber, string message);
     }
 }

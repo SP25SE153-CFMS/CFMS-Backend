@@ -8,10 +8,6 @@ using CFMS.Domain.Interfaces;
 using Google.Apis.Drive.v3.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Org.BouncyCastle.Asn1.Cmp;
-using Org.BouncyCastle.Utilities;
-using Twilio.Base;
 using Resource = CFMS.Domain.Entities.Resource;
 
 namespace CFMS.Application.Features.TaskFeat.CompleteTask

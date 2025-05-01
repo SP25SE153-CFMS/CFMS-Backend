@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using System.Text.Json;
 
 namespace CFMS.Api.Extensions
@@ -72,6 +73,9 @@ namespace CFMS.Api.Extensions
             services.AddScoped<IUtilityService, UtilityService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IGoogleDriveService, GoogleDriveService>();
+            services.AddScoped<ISmsService, SmsService>();
+            services.AddScoped<IRedisService, RedisService>();
+            services.AddScoped<IMailService, MailService>();
             services.AddScoped<DriveService>(provider =>
             {
                 var configuration = provider.GetRequiredService<IConfiguration>();

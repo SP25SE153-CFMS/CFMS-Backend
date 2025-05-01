@@ -16,6 +16,9 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using CFMS.Application.Features.UserFeat.Auth.VerifyPassword;
+using CFMS.Application.Features.UserFeat.Auth.SentOtp;
+using CFMS.Application.Features.UserFeat.Auth.ForgotPassword;
+using CFMS.Application.Features.UserFeat.Auth.ResetPassword;
 
 namespace CFMS.Api.Controllers
 {
@@ -129,6 +132,27 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> VerifyPassword(string password)
         {
             var response = await Send(new VerifyPasswordQuery(password));
+            return response;
+        }        
+        
+        [HttpGet("forgot-password")]
+        public async Task<IActionResult> ForgotPassword()
+        {
+            var response = await Send(new ForgotPasswordQuery());
+            return response;
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
+        {
+            var response = await Send(command);
+            return response;
+        }
+
+        [HttpGet("sms-otp/{phoneNumber}")]
+        public async Task<IActionResult> SendSmsOtp(string phoneNumber)
+        {
+            var response = await Send(new SendOtpCommand(phoneNumber));
             return response;
         }
     }
