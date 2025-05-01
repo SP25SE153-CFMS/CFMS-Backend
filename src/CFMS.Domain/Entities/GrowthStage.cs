@@ -26,7 +26,6 @@ public partial class GrowthStage : EntityAudit
 
     public Guid? NutritionPlanId { get; set; }
 
-    [JsonIgnore]
     public virtual NutritionPlan? NutritionPlan { get; set; }
 
     public virtual SubCategory? ChickenTypeNavigation { get; set; }

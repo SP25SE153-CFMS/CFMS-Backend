@@ -2,6 +2,7 @@
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CFMS.Application.Features.GrowthStageFeat.GetStage
 {
@@ -16,7 +17,11 @@ namespace CFMS.Application.Features.GrowthStageFeat.GetStage
 
         public async Task<BaseResponse<GrowthStage>> Handle(GetStageQuery request, CancellationToken cancellationToken)
         {
-            var existStage = _unitOfWork.GrowthStageRepository.Get(filter: s => s.GrowthStageId.Equals(request.StageId) && s.IsDeleted == false, includeProperties: [g => g.NutritionPlan]).FirstOrDefault();
+            var existStage = _unitOfWork.GrowthStageRepository.GetIncludeMultiLayer(filter: s => s.GrowthStageId.Equals(request.StageId) && s.IsDeleted == false,
+                include: x => x
+                .Include(t => t.NutritionPlan)
+                    .ThenInclude(t => t.NutritionPlanDetails)
+                ).FirstOrDefault();
             if (existStage == null)
             {
                 return BaseResponse<GrowthStage>.FailureResponse(message: "Giai đoạn phát triển không tồn tại");
