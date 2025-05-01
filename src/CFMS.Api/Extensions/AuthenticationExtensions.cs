@@ -31,6 +31,25 @@ namespace CFMS.Api.Extensions
                         Convert.FromBase64String(configuration["Jwt:AccessSecretKey"])
                     )
                 };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+
+                        if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                        {
+                            context.Token = authHeader.Substring("Bearer ".Length).Trim();
+                        }
+                        else
+                        {
+                            context.Token = context.Request.Cookies["accessToken"];
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
             })
             .AddCookie()
             .AddGoogle(options =>

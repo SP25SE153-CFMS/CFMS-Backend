@@ -34,7 +34,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignUp
 
             if (existUser != null)
             {
-                return BaseResponse<AuthResponse>.FailureResponse("Người dùng đã tồn tại");
+                return BaseResponse<AuthResponse>.FailureResponse("Email này đã được sử dụng cho một tài khoản khác");
             }
 
             var user = new User
@@ -46,7 +46,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.SignUp
                 SystemRole = (int)GeneralRole.USER_ROLE,
                 Status = (int)UserStatus.ACTIVE_STATUS
             };
-
+                 
             var authResponse = await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
                 _unitOfWork.UserRepository.Insert(user);

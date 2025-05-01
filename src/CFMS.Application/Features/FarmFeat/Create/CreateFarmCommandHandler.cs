@@ -31,7 +31,7 @@ namespace CFMS.Application.Features.FarmFeat.Create
             var existUser = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(ownerId) && u.Status == 1).FirstOrDefault();
             if (existUser == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "User không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
             }
 
             var farms = _unitOfWork.FarmRepository.Get(filter: f => f.FarmCode.Equals(request.FarmCode) && f.IsDeleted == false);
