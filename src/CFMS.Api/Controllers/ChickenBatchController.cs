@@ -11,6 +11,7 @@ using CFMS.Application.Features.ChickenBatchFeat.FeedLogChart;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatch;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatchs;
 using CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch;
+using CFMS.Application.Features.ChickenBatchFeat.QuantityLogDetail;
 using CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch;
 using CFMS.Application.Features.ChickenBatchFeat.Update;
 using MediatR;
@@ -147,6 +148,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> ChartData(Guid batchId)
         {
             var result = await Send(new FeedLogChartQuery(batchId));
+            return result;
+        }
+
+        [HttpGet("QuantityLog/{id}")]
+        public async Task<IActionResult> QuantityLogDetail(Guid id)
+        {
+            var result = await Send(new QuantityLogDetailQuery(id));
             return result;
         }
     }
