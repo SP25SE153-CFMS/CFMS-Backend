@@ -27,19 +27,19 @@ namespace CFMS.Application.Features.ShiftFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Ca làm không tồn tại");
             }
 
-            var existName = _unitOfWork.ShiftRepository.Get(filter: s => s.ShiftName.Equals(request.ShiftName) && s.IsDeleted == false && s.ShiftId != request.ShiftId).FirstOrDefault();
-            if (existName == null)
-            {
-                return BaseResponse<bool>.FailureResponse("Tên ca làm đã tồn tại");
-            }
+            //var existName = _unitOfWork.ShiftRepository.Get(filter: s => s.ShiftName.Equals(request.ShiftName) && s.IsDeleted == false && s.ShiftId.Equals(request.ShiftId)).FirstOrDefault();
+            //if (existName == null)
+            //{
+            //    return BaseResponse<bool>.FailureResponse("Tên ca làm đã tồn tại");
+            //}
 
             try
             {
-                existName.ShiftName = request.ShiftName;
-                existName.StartTime = request.StartTime;
-                existName.EndTime = request.EndTime;
+                existShift.ShiftName = request.ShiftName;
+                existShift.StartTime = request.StartTime;
+                existShift.EndTime = request.EndTime;
 
-                _unitOfWork.ShiftRepository.Update(existName);
+                _unitOfWork.ShiftRepository.Update(existShift);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
