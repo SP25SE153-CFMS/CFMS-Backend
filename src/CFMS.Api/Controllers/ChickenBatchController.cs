@@ -7,6 +7,7 @@ using CFMS.Application.Features.ChickenBatchFeat.DashboardChickenBatch;
 using CFMS.Application.Features.ChickenBatchFeat.Delete;
 using CFMS.Application.Features.ChickenBatchFeat.DeleteHealthLog;
 using CFMS.Application.Features.ChickenBatchFeat.DeleteQuantityLog;
+using CFMS.Application.Features.ChickenBatchFeat.FeedLogChart;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatch;
 using CFMS.Application.Features.ChickenBatchFeat.GetBatchs;
 using CFMS.Application.Features.ChickenBatchFeat.OpenChickenBatch;
@@ -139,6 +140,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> SplitChickenBatch(SplitChickenBatchCommand command)
         {
             var result = await Send(command);
+            return result;
+        }
+
+        [HttpGet("{batchId}/chart-data")]
+        public async Task<IActionResult> ChartData(Guid batchId)
+        {
+            var result = await Send(new FeedLogChartQuery(batchId));
             return result;
         }
     }
