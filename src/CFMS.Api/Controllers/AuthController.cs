@@ -126,10 +126,10 @@ namespace CFMS.Api.Controllers
             return response;
         }
 
-        [HttpGet("forgot-password/{email}")]
-        public async Task<IActionResult> ForgotPassword(string? email)
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordCommand command)
         {
-            var response = await Send(new ForgotPasswordQuery(email));
+            var response = await Send(command);
             return response;
         }
 
