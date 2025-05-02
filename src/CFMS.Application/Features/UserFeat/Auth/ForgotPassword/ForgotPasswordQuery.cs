@@ -10,5 +10,11 @@ namespace CFMS.Application.Features.UserFeat.Auth.ForgotPassword
 {
     public class ForgotPasswordQuery : IRequest<BaseResponse<bool>>
     {
+        public string? Email { get; set; }
+
+        public ForgotPasswordQuery(string? email)
+        {
+            Email = email;
+        }
     }
 }

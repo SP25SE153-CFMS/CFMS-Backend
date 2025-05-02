@@ -130,7 +130,7 @@ namespace CFMS.Application.Services.Impl
                   <div style=""max-width: 600px; margin: auto; background-color: #fff; padding: 20px; border-radius: 10px;"">
                     <h2 style=""text-align: center; color: #2d87f0;"">Quên mật khẩu</h2>
                     <p style=""text-align: center; font-size: 32px; color: #2d87f0; font-weight: bold;"">{otp}</p>
-                    <p style=""text-align: center;"">Hãy dùng mã OTP phía trên để xác minh tài khoản.</p>
+                    <p style=""text-align: center;"">Mã OTP có hiệu lực trong vòng 60 giây.</p>
                     <div style=""text-align: center; margin: 30px 0;"">
                       <a href=""https://cfms.site/forgot-password/input-OTP?otp={otp}"" style=""padding: 12px 24px; background-color: #2d87f0; color: white; text-decoration: none; border-radius: 5px;"">Xác minh ngay</a>
                     </div>

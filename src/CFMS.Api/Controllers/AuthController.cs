@@ -124,12 +124,12 @@ namespace CFMS.Api.Controllers
         {
             var response = await Send(new VerifyPasswordQuery(password));
             return response;
-        }        
-        
-        [HttpGet("forgot-password")]
-        public async Task<IActionResult> ForgotPassword()
+        }
+
+        [HttpGet("forgot-password/{email}")]
+        public async Task<IActionResult> ForgotPassword(string? email)
         {
-            var response = await Send(new ForgotPasswordQuery());
+            var response = await Send(new ForgotPasswordQuery(email));
             return response;
         }
 
