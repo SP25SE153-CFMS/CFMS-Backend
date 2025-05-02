@@ -85,7 +85,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 Note = resource?.Food?.Note,
                                 ProductionDate = resource?.Food?.ProductionDate,
                                 ExpiryDate = resource?.Food?.ExpiryDate,
-                                SpecQuantity = $"{(int)(quantity / resource?.PackageSize)} {package.SubCategoryName} (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})",
+                                SpecQuantity = $"{(int)(quantity / resource?.PackageSize)} {package.SubCategoryName}" +
+                                               $"{(quantity % resource?.PackageSize != 0 ? $" (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})" : "")}",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
@@ -127,7 +128,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 WeightUnitId = resource?.Equipment?.WeightUnitId,
                                 Weight = resource?.Equipment?.Weight,
                                 PurchaseDate = resource?.Equipment?.PurchaseDate,
-                                SpecQuantity = $"{(int)(quantity / resource?.PackageSize)} {package.SubCategoryName} (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})",
+                                SpecQuantity = $"{(int)(quantity / resource?.PackageSize)} {package.SubCategoryName}" +
+                                               $"{(quantity % resource?.PackageSize != 0 ? $" (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})" : "")}",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
@@ -167,7 +169,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 Disease = existDisease?.SubCategoryName,
                                 ProductionDate = resource?.Medicine?.ProductionDate,
                                 ExpiryDate = resource?.Medicine?.ExpiryDate,
-                                SpecQuantity = $"{(int)(quantity / resource?.PackageSize)} {package.SubCategoryName} (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})",
+                                SpecQuantity = $"{(int)(quantity / resource?.PackageSize)} {package.SubCategoryName}" +
+                                               $"{(quantity % resource?.PackageSize != 0 ? $" (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})" : "")}",
                                 UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
@@ -202,7 +205,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 ChickenName = resource?.Chicken?.ChickenName,
                                 Description = resource?.Chicken?.Description,
                                 ChickenTypeName = existChickenTypeName?.SubCategoryName,
-                                SpecQuantity = $"{(int)(quantity / resource?.PackageSize)} {package.SubCategoryName} (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})",
+                                SpecQuantity = $"{(int)(quantity / resource?.PackageSize)} {package.SubCategoryName}" +
+                                               $"{(quantity % resource?.PackageSize != 0 ? $" (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})" : "")}",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
@@ -237,7 +241,8 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStock
                                 HarvestProductName = resource?.HarvestProduct?.HarvestProductName,
                                 HarvestProductTypeId = existHarvestProductType?.SubCategoryId,
                                 HarvestProductTypeName = existHarvestProductType?.SubCategoryName,
-                                SpecQuantity = $"{(int)(quantity / resource?.PackageSize)} {package.SubCategoryName} (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})",
+                                SpecQuantity = $"{(int)(quantity / resource?.PackageSize)} {package.SubCategoryName}" +
+                                               $"{(quantity % resource?.PackageSize != 0 ? $" (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})" : "")}",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                                 SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                                 SuppliersName = resourceSuppliers
