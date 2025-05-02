@@ -32,10 +32,10 @@ namespace CFMS.Application.Features.UserFeat.Auth.ResetPassword
                 return BaseResponse<bool>.FailureResponse("Không có người dùng nào có gmail này");
             }
 
-            if (string.IsNullOrEmpty(request.NewPassword) || string.IsNullOrEmpty(request.ConfirmPassword))
-            {
-                return BaseResponse<bool>.FailureResponse("Mật khẩu không được để trống");
-            }
+            //if (string.IsNullOrEmpty(request.NewPassword) || string.IsNullOrEmpty(request.ConfirmPassword))
+            //{
+            //    return BaseResponse<bool>.FailureResponse("Mật khẩu không được để trống");
+            //}
 
             if (request.NewPassword != request.ConfirmPassword)
             {
@@ -60,6 +60,11 @@ namespace CFMS.Application.Features.UserFeat.Auth.ResetPassword
             if (createdAt.AddMinutes(1) < DateTime.Now.ToLocalTime().AddHours(7))
             {
                 return BaseResponse<bool>.FailureResponse("Mã xác thực đã hết hạn");
+            }
+
+            if (cachedOtp == request.Otp && string.IsNullOrEmpty(request.NewPassword) && string.IsNullOrEmpty(request.ConfirmPassword))
+            {
+                return BaseResponse<bool>.SuccessResponse("Xác minh thành công");
             }
 
             user.HashedPassword = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
