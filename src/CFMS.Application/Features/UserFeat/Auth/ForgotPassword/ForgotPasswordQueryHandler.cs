@@ -31,15 +31,10 @@ namespace CFMS.Application.Features.UserFeat.Auth.ForgotPassword
 
         public async Task<BaseResponse<bool>> Handle(ForgotPasswordQuery request, CancellationToken cancellationToken)
         {
-            var user = _unitOfWork.UserRepository.Get(filter: x => x.UserId.ToString().Equals(_currentUserService.GetUserId())).FirstOrDefault();
+            var user = _unitOfWork.UserRepository.Get(filter: x => x.Mail == request.Email && x.GoogleId == null).FirstOrDefault();
             if (user == null)
             {
-                return BaseResponse<bool>.FailureResponse("Người dùng không tồn tại");
-            }
-
-            if (string.IsNullOrEmpty(user.Mail))
-            {
-                return BaseResponse<bool>.FailureResponse("Người dùng này chưa cập nhật email");
+                return BaseResponse<bool>.FailureResponse("Không có người dùng nào có gmail này");
             }
 
             try
