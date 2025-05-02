@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.UserFeat.Auth.ForgotPassword
 {
-    public class ForgotPasswordQueryHandler : IRequestHandler<ForgotPasswordQuery, BaseResponse<bool>>
+    public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, BaseResponse<bool>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMailService _mailService;
@@ -20,7 +20,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.ForgotPassword
         private readonly IUtilityService _utilityService;
         private readonly IRedisService _redis;
 
-        public ForgotPasswordQueryHandler(IUnitOfWork unitOfWork, IMailService mailService, ICurrentUserService currentUserService, IUtilityService utilityService, IRedisService redis)
+        public ForgotPasswordCommandHandler(IUnitOfWork unitOfWork, IMailService mailService, ICurrentUserService currentUserService, IUtilityService utilityService, IRedisService redis)
         {
             _unitOfWork = unitOfWork;
             _mailService = mailService;
@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.ForgotPassword
             _redis = redis;
         }
 
-        public async Task<BaseResponse<bool>> Handle(ForgotPasswordQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<bool>> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
         {
             var user = _unitOfWork.UserRepository.Get(filter: x => x.Mail == request.Email && x.GoogleId == null).FirstOrDefault();
             if (user == null)

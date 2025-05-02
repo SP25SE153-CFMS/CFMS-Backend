@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.UserFeat.Auth.ForgotPassword
 {
-    public class ForgotPasswordQuery : IRequest<BaseResponse<bool>>
+    public class ForgotPasswordCommand : IRequest<BaseResponse<bool>>
     {
         public string? Email { get; set; }
 
-        public ForgotPasswordQuery(string? email)
+        public ForgotPasswordCommand(string? email)
         {
             Email = email;
         }

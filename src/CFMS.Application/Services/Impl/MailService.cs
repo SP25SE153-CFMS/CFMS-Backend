@@ -121,7 +121,7 @@ namespace CFMS.Application.Services.Impl
                     }}
 
                     .button-container {{
-                        text-align: center; /* This ensures the button is centered */
+                        text-align: center;
                         margin-top: 30px;
                     }}
                 </style>
