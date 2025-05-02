@@ -26,10 +26,10 @@ namespace CFMS.Application.Features.UserFeat.Auth.ResetPassword
 
         public async Task<BaseResponse<bool>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
         {
-            var user = _unitOfWork.UserRepository.Get(filter: x => x.UserId.ToString().Equals(_currentUserService.GetUserId())).FirstOrDefault();
+            var user = _unitOfWork.UserRepository.Get(filter: x => x.Mail == request.Email && x.GoogleId == null).FirstOrDefault();
             if (user == null)
             {
-                return BaseResponse<bool>.FailureResponse("Người dùng không tồn tại");
+                return BaseResponse<bool>.FailureResponse("Không có người dùng nào có gmail này");
             }
 
             if (string.IsNullOrEmpty(request.NewPassword) || string.IsNullOrEmpty(request.ConfirmPassword))
