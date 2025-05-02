@@ -132,7 +132,7 @@ namespace CFMS.Application.Services.Impl
                     <p style=""text-align: center; font-size: 32px; color: #2d87f0; font-weight: bold;"">{otp}</p>
                     <p style=""text-align: center;"">Mã OTP có hiệu lực trong vòng 60 giây.</p>
                     <div style=""text-align: center; margin: 30px 0;"">
-                      <a href=""https://cfms.site/forgot-password/input-OTP?otp={otp}"" style=""padding: 12px 24px; background-color: #2d87f0; color: white; text-decoration: none; border-radius: 5px;"">Xác minh ngay</a>
+                      <a href=""https://cfms.site/forgot-password/input-OTP?otp={otp}&email={toEmail}"" style=""padding: 12px 24px; background-color: #2d87f0; color: white; text-decoration: none; border-radius: 5px;"">Xác minh ngay</a>
                     </div>
                     <p style=""text-align: center; font-size: 12px; color: #777;"">Nếu bạn không yêu cầu OTP, bạn có thể bỏ qua email này.</p>
                   </div>

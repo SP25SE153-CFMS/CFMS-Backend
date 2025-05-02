@@ -11,6 +11,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.ResetPassword
 {
     public class ResetPasswordCommand : IRequest<BaseResponse<bool>>
     {
+        public string? Email { get; set; }
         public string? NewPassword { get; set; }
         public string? ConfirmPassword { get; set; }
         public string? Otp { get; set; }

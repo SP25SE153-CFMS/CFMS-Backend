@@ -43,7 +43,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.ForgotPassword
 
                 var otp = _utilityService.GenerateOTP();
 
-                await _redis.SetOtpAsync(user.UserId.ToString(), otp, TimeSpan.FromMinutes(5));
+                await _redis.SetOtpAsync(user.UserId.ToString(), otp, TimeSpan.FromMinutes(1));
 
                 await _mailService.SendOtpAsync(user.Mail, otp);
             }
