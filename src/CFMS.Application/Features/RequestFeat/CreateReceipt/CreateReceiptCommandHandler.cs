@@ -69,7 +69,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                 {
                     InventoryRequestId = request.InventoryRequestId,
                     ReceiptTypeId = request.ReceiptTypeId,
-                    ReceiptCodeNumber = $"{receiptCodePrefix}-{DateTime.Now.AddHours(7).Ticks}",
+                    ReceiptCodeNumber = $"{receiptCodePrefix}-{DateTime.Now.ToLocalTime().Ticks}",
                     BatchNumber = request.BatchNumber
                 };
 
@@ -84,7 +84,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                         InventoryReceiptId = inventoryReceipt.InventoryReceiptId, 
                         ResourceSupplierId = null,
                         ActualQuantity = d.ActualQuantity,
-                        ActualDate = DateTime.Now.ToLocalTime().AddHours(7),
+                        ActualDate = DateTime.Now.ToLocalTime(),
                         Note = d.Note
                     };
                     _unitOfWork.InventoryReceiptDetailRepository.Insert(inventoryReceiptDetail);
@@ -127,7 +127,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                         BatchNumber = request.BatchNumber,
                         TransactionType = existReceiptType.SubCategoryId,
                         Reason = d.Note,
-                        TransactionDate = DateTime.Now.ToLocalTime().AddHours(7),
+                        TransactionDate = DateTime.Now.ToLocalTime(),
                         LocationFromId = receiptCodePrefix == "PNK" ? request.WareToId : request.WareFromId,
                         LocationToId = receiptCodePrefix == "PNK" ? request.WareToId : request.WareFromId
                     };

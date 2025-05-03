@@ -103,7 +103,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                                 .Include(f => f.User)
                                 ).FirstOrDefault();
 
-                            if ((invitedUser != null) && (DateTime.Now.AddHours(7) - invitedUser.CreatedWhen).TotalMinutes < 3)
+                            if ((invitedUser != null) && (DateTime.Now.ToLocalTime() - invitedUser.CreatedWhen).TotalMinutes < 3)
                             {
                                 return BaseResponse<bool>.FailureResponse(message: $"Bạn đã mời {invitedUser?.User?.FullName} vào trang trại {existFarm.FarmCode} ({existFarm.FarmName}) rồi. Hãy đợi phản hồi");
                             }
@@ -198,7 +198,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                                 .Include(f => f.User)
                                 ).FirstOrDefault();
 
-                            if ((invitedUser != null) && (DateTime.Now.AddHours(7) - invitedUser.CreatedWhen).TotalMinutes < 3)
+                            if ((invitedUser != null) && (DateTime.Now.ToLocalTime() - invitedUser.CreatedWhen).TotalMinutes < 3)
                             {
                                 return BaseResponse<bool>.FailureResponse(message: $"Bạn đã gửi lời yêu cầu tham gia trang trại {existFarm.FarmCode} ({existFarm.FarmName}) rồi. Hãy đợi phê duyệt");
                             }

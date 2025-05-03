@@ -307,7 +307,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                                     .OrderByDescending(x => x.StartDate)
                                                     .Select(x => x.ChickenBatchId)
                                                     .FirstOrDefault(),
-                                FeedingDate = DateTime.Now.ToLocalTime().AddHours(7),
+                                FeedingDate = DateTime.Now.ToLocalTime(),
                                 ActualFeedAmount = detail.ConsumedQuantity,
                                 UnitId = unit?.SubCategoryId,
                                 TaskId = request?.TaskId,

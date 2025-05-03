@@ -157,7 +157,7 @@ public partial class CfmsDbContext : DbContext
         {
             entry.State = EntityState.Modified;
             ((EntityAudit)entry.Entity).IsDeleted = true;
-            ((EntityAudit)entry.Entity).DeletedWhen = DateTime.UtcNow.ToLocalTime();
+            ((EntityAudit)entry.Entity).DeletedWhen = DateTime.UtcNow.ToLocalTime().AddHours(7);
             break;
         }
     }

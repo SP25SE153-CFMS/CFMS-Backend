@@ -18,6 +18,8 @@ public partial class TaskRequest
 
     public string[]? ImageUrl { get; set; }
 
+    public string? Note { get; set; }
+
     [JsonIgnore]
     public virtual Request? Request { get; set; }
 }
