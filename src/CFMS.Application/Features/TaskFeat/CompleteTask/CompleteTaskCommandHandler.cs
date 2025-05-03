@@ -367,7 +367,35 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                 if (taskType.Equals("inspect"))
                 {
-                    
+                    var coop = _unitOfWork.ChickenCoopRepository.Get(filter: x => x.ChickenCoopId.Equals(location.CoopId) && x.IsDeleted == false, includeProperties: "ChickenBatches").FirstOrDefault();
+
+                    var healthLog = new HealthLog
+                    {
+                        StartDate = existTask.StartWorkDate,
+                        EndDate = existTask.EndWorkDate,
+                        Notes = request?.Note,
+                        ChickenBatchId = coop?.ChickenBatches
+                                            .Where(x => x.EndDate == null)
+                                            .OrderByDescending(x => x.StartDate)
+                                            .Select(x => x.ChickenBatchId)
+                                            .FirstOrDefault(),
+                        CheckedAt = DateTime.Now.ToLocalTime(),
+                        Location = "COOP",
+                        TaskId = request?.TaskId
+                    };
+
+                    foreach (var detail in request.HealthLogDetails)
+                    {
+                        var healthLogDetail = new HealthLogDetail
+                        {
+                            HealthLogId = healthLog.HealthLogId,
+                            CriteriaId = detail.CriteriaId,
+                            Result = detail.Result,
+                        };
+                        _unitOfWork.HealthLogDetailRepository.Insert(healthLogDetail);
+                    }
+
+                    _unitOfWork.HealthLogRepository.Insert(healthLog);
                 }
 
                 await _unitOfWork.SaveChangesAsync();
