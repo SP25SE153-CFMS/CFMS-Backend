@@ -9,11 +9,14 @@ namespace CFMS.Domain.Interfaces
 {
     public interface ICurrentUserService
     {
+        public bool IsSystem { get; }
+        public Guid? SystemId { get; }
         ClaimsPrincipal? GetCurrentUser();
         string? GetUserId();
         string? GetUserRole();
         string? GetUserEmail();
         bool? IsAdmin();
         bool? IsUser();
+        void SetSystemId(Guid systemId);
     }
 }

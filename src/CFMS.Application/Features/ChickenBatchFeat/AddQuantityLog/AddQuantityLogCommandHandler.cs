@@ -65,7 +65,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.AddQuantityLog
                         return BaseResponse<bool>.FailureResponse(message: $"Không tìm thấy thông tin gà với giới tính {(quantityLogDetail.Gender == 0 ? "trống" : "mái")}");
                     }
 
-                    quantityLog.QuantityLogDetails.Add(new QuantityLogDetail
+                    quantityLog.QuantityLogDetails.Add(new Domain.Entities.QuantityLogDetail
                     {
                         Quantity = quantityLogDetail.Quantity,
                         Gender = quantityLogDetail.Gender,
