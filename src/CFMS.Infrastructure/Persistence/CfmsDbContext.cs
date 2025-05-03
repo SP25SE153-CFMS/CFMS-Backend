@@ -157,7 +157,7 @@ public partial class CfmsDbContext : DbContext
         {
             entry.State = EntityState.Modified;
             ((EntityAudit)entry.Entity).IsDeleted = true;
-            ((EntityAudit)entry.Entity).DeletedWhen = DateTime.UtcNow.ToLocalTime().AddHours(7);
+            ((EntityAudit)entry.Entity).DeletedWhen = DateTime.UtcNow.ToLocalTime();
             break;
         }
     }
@@ -168,7 +168,7 @@ public partial class CfmsDbContext : DbContext
         .Where(x => x.State == EntityState.Added
                 || x.State == EntityState.Modified);
 
-        var currentUserId = Guid.Parse(_currentUserService?.GetUserId()!);
+        var currentUserId = _currentUserService!.IsSystem ? _currentUserService.SystemId!.Value : Guid.Parse(_currentUserService?.GetUserId()!);
 
         foreach (var entry in filtered)
         {
@@ -504,7 +504,7 @@ public partial class CfmsDbContext : DbContext
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("QuantityLogDetail_QuantityLogId_fkey");
         });
-        
+
         modelBuilder.Entity<HarvestProduct>(entity =>
         {
             entity.HasKey(e => e.HarvestProductId).HasName("HarvestProduct_pkey");

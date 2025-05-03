@@ -1,5 +1,4 @@
-﻿
-using CFMS.Domain.Entities;
+﻿using CFMS.Domain.Entities;
 
 namespace CFMS.Application.DTOs.ChickenBatch
 {
@@ -48,7 +47,7 @@ namespace CFMS.Application.DTOs.ChickenBatch
 
         public virtual Domain.Entities.Chicken? Chicken { get; set; }
 
-        public virtual ICollection<FeedLog> FeedLogs { get; set; } = new List<FeedLog>();
+        public virtual ICollection<Domain.Entities.FeedLog> FeedLogs { get; set; } = new List<Domain.Entities.FeedLog>();
 
         public virtual ICollection<GrowthBatch> GrowthBatches { get; set; } = new List<GrowthBatch>();
 

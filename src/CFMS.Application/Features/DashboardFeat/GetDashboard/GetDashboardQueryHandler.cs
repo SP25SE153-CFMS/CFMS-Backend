@@ -25,7 +25,8 @@ namespace CFMS.Application.Features.DashboardFeat.GetDashboard
             var users = _unitOfWork.FarmEmployeeRepository.Get(
                 filter:
                     fe => fe.FarmId.Equals(request.FarmId) &&
-                    fe.User!.Status == 1,
+                    fe.User!.Status == 1 &&
+                    fe.FarmRole != 5,
                 includeProperties: "User"
                 );
 

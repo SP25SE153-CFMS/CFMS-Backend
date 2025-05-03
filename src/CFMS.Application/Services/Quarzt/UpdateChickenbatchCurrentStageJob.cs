@@ -8,13 +8,16 @@ namespace CFMS.Application.Services.Quartz
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<UpdateChickenbatchCurrentStageJob> _logger;
+        private readonly ICurrentUserService _currentUserService;
 
         public UpdateChickenbatchCurrentStageJob(
             IUnitOfWork unitOfWork,
-            ILogger<UpdateChickenbatchCurrentStageJob> logger)
+            ILogger<UpdateChickenbatchCurrentStageJob> logger,
+            ICurrentUserService currentUserService)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _currentUserService = currentUserService;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -23,6 +26,9 @@ namespace CFMS.Application.Services.Quartz
 
             try
             {
+                var systemId = _unitOfWork.UserRepository.Get(filter: u => u.SystemRole == -1).FirstOrDefault()?.UserId;
+                _currentUserService.SetSystemId(systemId.Value);
+
                 var today = DateTime.Now.Date;
 
                 var chickenBatches = _unitOfWork.ChickenBatchRepository.Get(
@@ -49,8 +55,8 @@ namespace CFMS.Application.Services.Quartz
                     }
                 }
 
-                //await _unitOfWork.SaveChangesAsync();
-                _unitOfWork.Save();
+                await _unitOfWork.SaveChangesAsync();
+                //_unitOfWork.Save();
 
                 _logger.LogInformation("Finished job: {JobName}", nameof(UpdateChickenbatchCurrentStageJob));
             }
