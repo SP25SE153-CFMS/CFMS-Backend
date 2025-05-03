@@ -365,6 +365,11 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     }
                 }
 
+                if (taskType.Equals("inspect"))
+                {
+                    
+                }
+
                 await _unitOfWork.SaveChangesAsync();
             }
         }
