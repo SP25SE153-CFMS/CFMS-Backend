@@ -1,5 +1,6 @@
 ﻿using CFMS.Application.Common;
 using CFMS.Application.DTOs.HarvestProduct;
+using CFMS.Application.DTOs.Task.HealthLogDetail;
 using CFMS.Application.DTOs.TaskResource;
 using CFMS.Domain.Entities;
 using MediatR;
@@ -22,6 +23,8 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
         public string? Note { get; set; }
 
         public string? Reaction { get; set; }
+
+        public List<HealthLogDetailDto>? HealthLogDetails { get; set; } = new List<HealthLogDetailDto>();
 
         public IEnumerable<TaskResourceRequest>? TaskResources { get; set; }
 
