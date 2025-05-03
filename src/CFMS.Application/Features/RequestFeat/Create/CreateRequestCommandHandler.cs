@@ -6,6 +6,7 @@ using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading;
@@ -64,8 +65,19 @@ namespace CFMS.Application.Features.RequestFeat.Create
                         WareToId = request.WareToId ?? null
                     };
 
+                    var wareId = request.WareFromId != null
+                                    ? request.WareFromId
+                                    : request.WareToId != null
+                                        ? request.WareToId
+                                        : null;
+
                     _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
                     await _unitOfWork.SaveChangesAsync();
+
+                    var ware = _unitOfWork.WarehouseRepository.GetIncludeMultiLayer(filter: x => x.WareId.Equals(wareId) && x.IsDeleted == false,
+                        include: x => x
+                        .Include(t => t.Farm)
+                        ).FirstOrDefault();
 
                     foreach (var detail in request.InventoryDetails)
                     {
@@ -82,6 +94,9 @@ namespace CFMS.Application.Features.RequestFeat.Create
                         };
                         _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);
                     }
+
+                    newRequest.FarmId = ware?.FarmId;
+                    _unitOfWork.RequestRepository.Update(newRequest);
                 }
                 else
                 {
@@ -95,6 +110,9 @@ namespace CFMS.Application.Features.RequestFeat.Create
                     };
 
                     _unitOfWork.TaskRequestRepository.Insert(taskRequest);
+
+                    newRequest.FarmId = request?.TaskRequestRequest?.FarmId;
+                    _unitOfWork.RequestRepository.Update(newRequest);
                 }
 
                 var result = await _unitOfWork.SaveChangesAsync();
