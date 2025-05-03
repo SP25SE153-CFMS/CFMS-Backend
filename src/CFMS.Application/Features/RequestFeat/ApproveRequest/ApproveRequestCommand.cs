@@ -12,11 +12,13 @@ namespace CFMS.Application.Features.RequestFeat.ApproveRequest
     {
         public Guid RequestId { get; set; }
         public int IsApproved { get; set; }
+        public string? Note { get; set; }
 
-        public ApproveRequestCommand(int isApproved, Guid requestId)
+        public ApproveRequestCommand(int isApproved, Guid requestId, string? note)
         {
             IsApproved = isApproved;
             RequestId = requestId;
+            Note = note;
         }
     }
 }

@@ -77,7 +77,7 @@ namespace CFMS.Application.Features.RequestFeat.Create
                             ExpectedQuantity = detail.ExpectedQuantity,
                             UnitId = detail.UnitId,
                             Reason = request?.Reason,
-                            ExpectedDate = request?.ExpectedDate.Value.ToLocalTime().AddHours(7),
+                            ExpectedDate = request?.ExpectedDate.Value.ToLocalTime(),
                             Note = request?.Note
                         };
                         _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);

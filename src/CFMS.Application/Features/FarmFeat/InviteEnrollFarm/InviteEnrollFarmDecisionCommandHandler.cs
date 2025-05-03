@@ -78,7 +78,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         {
                             FarmId = existFarm.FarmId,
                             UserId = existUser.UserId,
-                            StartDate = DateTime.Now.ToLocalTime().AddHours(7),
+                            StartDate = DateTime.Now.ToLocalTime(),
                             Status = 1,
                             FarmRole = farmRole switch
                             {
@@ -139,7 +139,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         {
                             FarmId = existFarm.FarmId,
                             UserId = existNoti.CreatedByUserId,
-                            StartDate = DateTime.Now.ToLocalTime().AddHours(7),
+                            StartDate = DateTime.Now.ToLocalTime(),
                             Status = 1,
                             FarmRole = farmRole switch
                             {
