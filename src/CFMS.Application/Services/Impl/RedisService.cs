@@ -59,7 +59,7 @@ namespace CFMS.Application.Services.Impl
             }
 
             var createdAt = DateTime.Parse(otpData.CreatedAt.ToString());
-            var expiryTime = createdAt.AddMinutes(1);
+            var expiryTime = createdAt.AddMinutes(5);
             if (DateTime.Now.ToLocalTime().AddHours(7) > expiryTime)
             {
                 await RemoveOtpAsync(userId);
