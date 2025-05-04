@@ -3,6 +3,7 @@ using CFMS.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using StackExchange.Redis;
+using Twilio.TwiML.Messaging;
 
 namespace CFMS.Application.Services.Quarzt
 {
@@ -82,17 +83,20 @@ namespace CFMS.Application.Services.Quarzt
                             {
                                 foreach (var recipient in recipients)
                                 {
-                                    var notiSend = new Domain.Entities.Notification
+                                    if (recipient.FarmEmployees.Any(r => r.FarmId.Equals(farm.FarmId)))
                                     {
-                                        UserId = recipient!.UserId,
-                                        NotificationName = "Cảnh báo kho sắp hết",
-                                        NotificationType = "WARESTOCK_WARNING",
-                                        Content = $"Kho: {ware.WarehouseName} sắp hết ({totalStock}/{maxCapacity})",
-                                        IsRead = 0,
-                                    };
+                                        var notiSend = new Domain.Entities.Notification
+                                        {
+                                            UserId = recipient!.UserId,
+                                            NotificationName = "Cảnh báo kho sắp hết",
+                                            NotificationType = "WARESTOCK_WARNING",
+                                            Content = $"Kho: {ware.WarehouseName} sắp hết ({totalStock}/{maxCapacity})",
+                                            IsRead = 0,
+                                        };
 
-                                    _unitOfWork.NotificationRepository.Insert(notiSend);
-                                    await _hubContext.SendMessageToUser(recipient!.UserId.ToString(), notiSend);
+                                        _unitOfWork.NotificationRepository.Insert(notiSend);
+                                        await _hubContext.SendMessageToUser(recipient!.UserId.ToString(), notiSend);
+                                    }
                                 }
                             }
                         }

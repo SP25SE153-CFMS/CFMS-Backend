@@ -23,6 +23,19 @@ namespace CFMS.Api.Extensions
             
             services.AddQuartz(q =>
             {
+                var jobKey = new JobKey("CheckMaintenanceScheduleJob");
+
+                q.AddJob<CheckMaintenanceScheduleJob>(opts => opts.WithIdentity(jobKey));
+
+                q.AddTrigger(opts => opts
+                    .ForJob(jobKey)
+                    .WithIdentity("CheckMaintenanceScheduleJob-trigger")
+                    .WithCronSchedule(configuration["Quartz:CheckMaintenanceScheduleJob"] ?? "0 0 0 * * ?")
+                );
+            });
+            
+            services.AddQuartz(q =>
+            {
                 var jobKey = new JobKey("CheckStartDateChickenBatchJob");
 
                 q.AddJob<CheckStartDateChickenBatchJob>(opts => opts.WithIdentity(jobKey));
