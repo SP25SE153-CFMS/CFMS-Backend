@@ -130,6 +130,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         };
 
                         _unitOfWork.NotificationRepository.Insert(notiSend);
+                        await _unitOfWork.SaveChangesAsync();
                         await _hubContext.SendMessageToUser(x?.UserId?.ToString(), notiSend);
                     }
 
@@ -161,6 +162,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                     };
 
                     _unitOfWork.NotificationRepository.Insert(notiReceive);
+                    await _unitOfWork.SaveChangesAsync();
                     await _hubContext.SendMessageToUser(notiReceive?.UserId?.ToString(), notiReceive);
                 }
 
@@ -225,7 +227,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                             _unitOfWork.NotificationRepository.Insert(notiSend);
                             return _hubContext.SendMessageToUser(mf?.UserId?.ToString(), notiSend);
                         });
-
+                    await _unitOfWork.SaveChangesAsync();
                     await System.Threading.Tasks.Task.WhenAll(sendTasks);
 
                     var notiReceive = new Notification
@@ -238,10 +240,9 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                     };
 
                     _unitOfWork.NotificationRepository.Insert(notiReceive);
+                    await _unitOfWork.SaveChangesAsync();
                     await _hubContext.SendMessageToUser(notiReceive?.UserId?.ToString(), notiReceive);
                 }
-
-                await _unitOfWork.SaveChangesAsync();
 
                 return method.Equals("invite") || method.Equals("invitation")
                     ? BaseResponse<bool>.SuccessResponse(message: "Gửi lời mời thành công")
