@@ -35,7 +35,10 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                 return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
             }
 
-            var existNoti = _unitOfWork.NotificationRepository.Get(filter: n => n.NotificationId.Equals(request.NotificationId)).FirstOrDefault();
+            var existNoti = _unitOfWork.NotificationRepository.GetIncludeMultiLayer(filter: n => n.NotificationId.Equals(request.NotificationId),
+                include: x => x
+                .Include(t => t.CreatedByUser)
+                ).FirstOrDefault();
             if (existNoti == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Thông báo không tồn tại");
@@ -86,7 +89,9 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                                 "quản lý" => 4,
                                 "chủ trang trại" => 5,
                                 _ => 3
-                            }
+                            },
+                            Mail = existUser.Mail,
+                            PhoneNumber = existUser.PhoneNumber
                         });
 
                         _unitOfWork.FarmRepository.Update(existFarm);
@@ -147,7 +152,9 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                                 "quản lý" => 4,
                                 "chủ trang trại" => 5,
                                 _ => 3
-                            }
+                            },
+                            Mail = existNoti.CreatedByUser.Mail,
+                            PhoneNumber = existNoti.CreatedByUser.PhoneNumber
                         });
 
                         _unitOfWork.FarmRepository.Update(existFarm);
