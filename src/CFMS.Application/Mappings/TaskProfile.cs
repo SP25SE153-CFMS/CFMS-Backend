@@ -108,6 +108,7 @@ namespace CFMS.Application.Mappings
             CreateMap<Assignment, AssignmentDto>()
                 .AfterMap((src, dest) =>
                 {
+                    dest.AssignedToId = src.AssignedTo?.UserId ?? Guid.Empty;
                     dest.AssignedTo = src.AssignedTo?.FullName ?? "Không xác định";
                 });            
             

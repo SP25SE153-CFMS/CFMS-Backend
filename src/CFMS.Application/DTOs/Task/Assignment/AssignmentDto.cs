@@ -10,6 +10,8 @@ namespace CFMS.Application.DTOs.Task.Assignment
     {
         public Guid AssignmentId { get; set; }
 
+        public Guid? AssignedToId { get; set; }
+
         public string? AssignedTo { get; set; }
 
         public DateTime? AssignedDate { get; set; }
