@@ -11,6 +11,7 @@ namespace CFMS.Domain.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
+        IGenericRepository<StockReceipt> StockReceiptRepository { get; }
         IGenericRepository<Assignment> AssignmentRepository { get; }
         IGenericRepository<BreedingArea> BreedingAreaRepository { get; }
         IGenericRepository<Category> CategoryRepository { get; }

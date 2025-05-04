@@ -135,6 +135,10 @@ public partial class CfmsDbContext : DbContext
 
     public virtual DbSet<QuantityLogDetail> QuantityLogDetails { get; set; }
 
+    public virtual DbSet<StockReceipt> StockReceipts { get; set; }
+
+    public virtual DbSet<StockReceiptDetail> StockReceiptDetails { get; set; }
+
     private void OnBeforeSaving()
     {
         var entities = ChangeTracker.Entries()
@@ -239,6 +243,18 @@ public partial class CfmsDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<StockReceipt>()
+        .HasOne(a => a.CreatedByUser)
+        .WithMany()
+        .HasForeignKey(a => a.CreatedByUserId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<StockReceipt>()
+        .HasOne(a => a.CreatedByUser)
+        .WithMany()
+        .HasForeignKey(a => a.LastEditedByUserId)
+        .OnDelete(DeleteBehavior.Restrict);
+
         modelBuilder.Entity<HarvestProduct>()
         .HasOne(a => a.CreatedByUser)
         .WithMany()
@@ -491,6 +507,29 @@ public partial class CfmsDbContext : DbContext
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<StockReceipt>(entity =>
+        {
+            entity.HasKey(e => e.StockReceiptId).HasName("StockReceipt_pkey");
+
+            entity.ToTable("StockReceipt");
+
+            entity.Property(e => e.StockReceiptId).HasDefaultValueSql("gen_random_uuid()");
+        });
+        
+        modelBuilder.Entity<StockReceiptDetail>(entity =>
+        {
+            entity.HasKey(e => e.StockReceiptDetailId).HasName("StockReceiptDetail_pkey");
+
+            entity.ToTable("StockReceiptDetail");
+
+            entity.Property(e => e.StockReceiptDetailId).HasDefaultValueSql("gen_random_uuid()");
+
+            entity.HasOne(d => d.StockReceipt).WithMany(p => p.StockReceiptDetails)
+                .HasForeignKey(d => d.StockReceiptId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("StockReceiptDetail_StockReceiptId_fkey");
+        });
+        
         modelBuilder.Entity<QuantityLogDetail>(entity =>
         {
             entity.HasKey(e => e.QuantityLogDetailId).HasName("QuantityLogDetail_pkey");

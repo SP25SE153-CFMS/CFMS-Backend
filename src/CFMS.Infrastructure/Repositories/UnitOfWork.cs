@@ -67,12 +67,14 @@ namespace CFMS.Infrastructure.Repositories
         private GenericRepository<SystemConfig> systemConfigRepository;
         private GenericRepository<Supplier> supplierRepository;
         private GenericRepository<QuantityLogDetail> quantityLogDetailRepository;
+        private GenericRepository<StockReceipt> stockReceiptRepository;
 
         public UnitOfWork(CfmsDbContext _context)
         {
             context = _context;
         }
 
+        public IGenericRepository<StockReceipt> StockReceiptRepository => stockReceiptRepository ??= new GenericRepository<StockReceipt>(context);
         public IGenericRepository<Assignment> AssignmentRepository => assignmentRepository ??= new GenericRepository<Assignment>(context);
         public IGenericRepository<BreedingArea> BreedingAreaRepository => breedingAreaRepository ??= new GenericRepository<BreedingArea>(context);
         public IGenericRepository<Category> CategoryRepository => categoryRepository ??= new GenericRepository<Category>(context);
