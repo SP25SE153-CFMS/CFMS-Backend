@@ -37,7 +37,7 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
 
             var isHaveLeader = task.Assignments.Any(x => x.Status == 1);
 
-            if (!chosenLeader && isHaveLeader)
+            if (!chosenLeader && !isHaveLeader)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Công việc này chưa có đội trưởng đảm nhận");
             }
@@ -80,6 +80,9 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
                         Content = "Công việc " + task.TaskName + " đã được giao đến bạn, vui lòng hoàn thành đúng thời hạn",
                         IsRead = 0
                     };
+
+                    task.Status = 1;
+                    _unitOfWork.TaskRepository.Update(task);
 
                     await _hubContext.SendMessage(noti);
 
