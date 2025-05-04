@@ -4,6 +4,7 @@ using CFMS.Application.Services.SignalR;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
@@ -23,7 +24,10 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
 
         public async Task<BaseResponse<bool>> Handle(AssignEmployeeCommand request, CancellationToken cancellationToken)
         {
-            var task = _unitOfWork.TaskRepository.Get(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false && t.Status == 0).FirstOrDefault();
+            var task = _unitOfWork.TaskRepository.GetIncludeMultiLayer(filter: t => t.TaskId.Equals(request.TaskId) && t.IsDeleted == false && t.Status == 0,
+                include: x => x
+                .Include(i => i.Assignments)
+                ).FirstOrDefault();
             if (task == null)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Công việc không tồn tại");

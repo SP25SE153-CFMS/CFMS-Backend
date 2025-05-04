@@ -84,9 +84,9 @@ namespace CFMS.Application.Features.RequestFeat.ApproveRequest
             _unitOfWork.RequestRepository.Update(existRequest);
             await _unitOfWork.SaveChangesAsync();
 
-            return existRequest.Status.Equals(2) 
+            return existRequest.Status.Equals(1) 
                 ? BaseResponse<bool>.SuccessResponse("Duyệt thành công") 
-                : existRequest.Status.Equals(1) 
+                : existRequest.Status.Equals(2) 
                     ? BaseResponse<bool>.SuccessResponse("Từ chối thành công")
                     : BaseResponse<bool>.FailureResponse("Duyệt thất bại");
         }
