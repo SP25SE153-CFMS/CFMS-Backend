@@ -1,10 +1,8 @@
-﻿using CFMS.Application.Features.AssignmentFeat.AssignEmployee;
-using CFMS.Application.Features.AssignmentFeat.Delete;
-using CFMS.Application.Features.AssignmentFeat.GetAssignment;
-using CFMS.Application.Features.AssignmentFeat.GetAssignmentByFarmId;
-using CFMS.Application.Features.AssignmentFeat.GetAssignments;
+﻿using CFMS.Application.Features.AssignmentFeat.Delete;
 using CFMS.Application.Features.AssignmentFeat.Update;
 using CFMS.Application.Features.StockReceipt.Create;
+using CFMS.Application.Features.StockReceipt.GetStockReceipt;
+using CFMS.Application.Features.StockReceipt.GetStockReceipts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,14 +17,14 @@ namespace CFMS.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStockReceipt(Guid id)
         {
-            var result = await Send(new GetAssignmentQuery(id));
+            var result = await Send(new GetStockReceiptQuery(id));
             return result;
         }
 
         [HttpGet("Farm/{farmId}")]
         public async Task<IActionResult> GetStockReceiptByFarmId(Guid farmId)
         {
-            var result = await Send(new GetAssignmentByFarmIdQuery(farmId));
+            var result = await Send(new GetStockReceiptsQuery(farmId));
             return result;
         }
 
