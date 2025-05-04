@@ -74,6 +74,24 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
             {
                 return BaseResponse<bool>.FailureResponse(message: "Công việc này đã được báo cáo rồi");
             }
+            var chickenBatch = Guid.Empty;
+            var location = existTask.TaskLocations.FirstOrDefault();
+            if (location?.LocationType?.Equals("COOP") == true)
+            {
+                var coop = _unitOfWork.ChickenCoopRepository.Get(filter: x => x.ChickenCoopId.Equals(location.CoopId) && x.IsDeleted == false, includeProperties: "ChickenBatches").FirstOrDefault();
+
+                chickenBatch = coop?.ChickenBatches
+                                .Where(x => x.EndDate == null)
+                                .OrderByDescending(x => x.StartDate)
+                                .Select(x => x.ChickenBatchId)
+                                .FirstOrDefault() ?? Guid.Empty;
+
+                if (chickenBatch == Guid.Empty)
+                {
+                    return BaseResponse<bool>.FailureResponse(message: "Chuồng này chưa diễn ra lứa nuôi nào");
+                }
+
+            }
 
             var taskType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(existTask.TaskTypeId) && x.IsDeleted == false).FirstOrDefault()?.SubCategoryName;
 
@@ -241,7 +259,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                         await _unitOfWork.SaveChangesAsync();
                     }
                 }
-
+                existTask.EndWorkDate = DateTime.Now.ToLocalTime();
                 _unitOfWork.TaskRepository.Update(existTask);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
@@ -256,7 +274,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
             }
             finally
             {
-                var location = existTask.TaskLocations.FirstOrDefault();
                 if (location?.LocationType?.Equals("COOP") == true)
                 {
                     var taskLog = new TaskLog
@@ -272,8 +289,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                 if (taskType.Equals("feed"))
                 {
-                    var coop = _unitOfWork.ChickenCoopRepository.Get(filter: x => x.ChickenCoopId.Equals(location.CoopId) && x.IsDeleted == false, includeProperties: "ChickenBatches").FirstOrDefault();
-
                     var unit = _ = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("kg") && x.IsDeleted == false).FirstOrDefault();
 
                     var groupResources = request?.TaskResources
@@ -302,11 +317,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                         {
                             var feedLog = new FeedLog
                             {
-                                ChickenBatchId = coop?.ChickenBatches
-                                                    .Where(x => x.EndDate == null)
-                                                    .OrderByDescending(x => x.StartDate)
-                                                    .Select(x => x.ChickenBatchId)
-                                                    .FirstOrDefault(),
+                                ChickenBatchId = chickenBatch,
                                 FeedingDate = DateTime.Now.ToLocalTime(),
                                 ActualFeedAmount = detail.ConsumedQuantity,
                                 UnitId = unit?.SubCategoryId,
@@ -322,18 +333,12 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                 if (taskType.Equals("inject"))
                 {
-                    var coop = _unitOfWork.ChickenCoopRepository.Get(filter: x => x.ChickenCoopId.Equals(location.CoopId) && x.IsDeleted == false, includeProperties: "ChickenBatches").FirstOrDefault();
-
                     var vaccineLog = new VaccineLog
                     {
                         Notes = request.Note,
                         Status = 1,
                         Reaction = request.Reaction,
-                        ChickenBatchId = coop?.ChickenBatches
-                                            .Where(x => x.EndDate == null)
-                                            .OrderByDescending(x => x.StartDate)
-                                            .Select(x => x.ChickenBatchId)
-                                            .FirstOrDefault(),
+                        ChickenBatchId = chickenBatch,
                         TaskId = request.TaskId
                     };
 
@@ -365,20 +370,14 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     }
                 }
 
-                if (taskType.Equals("inspect"))
+                if (taskType.Equals("evaluate"))
                 {
-                    var coop = _unitOfWork.ChickenCoopRepository.Get(filter: x => x.ChickenCoopId.Equals(location.CoopId) && x.IsDeleted == false, includeProperties: "ChickenBatches").FirstOrDefault();
-
                     var healthLog = new HealthLog
                     {
                         StartDate = existTask.StartWorkDate,
                         EndDate = existTask.EndWorkDate,
                         Notes = request?.Note,
-                        ChickenBatchId = coop?.ChickenBatches
-                                            .Where(x => x.EndDate == null)
-                                            .OrderByDescending(x => x.StartDate)
-                                            .Select(x => x.ChickenBatchId)
-                                            .FirstOrDefault(),
+                        ChickenBatchId = chickenBatch,
                         CheckedAt = DateTime.Now.ToLocalTime(),
                         Location = "COOP",
                         TaskId = request?.TaskId

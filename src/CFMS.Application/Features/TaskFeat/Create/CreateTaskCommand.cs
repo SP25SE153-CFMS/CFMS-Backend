@@ -6,12 +6,11 @@ namespace CFMS.Application.Features.TaskFeat.Create
 {
     public class CreateTaskCommand : IRequest<BaseResponse<bool>>
     {
-        public CreateTaskCommand(string? taskName, Guid? taskTypeId, string? description, int? isHarvest, Guid farmId, DateTime[]? startWorkDate, Guid[]? shiftIds, string? locationType, Guid locationId, IEnumerable<TaskResourceRequest>? taskResources)
+        public CreateTaskCommand(string? taskName, Guid? taskTypeId, string? description, Guid farmId, DateTime[]? startWorkDate, Guid[]? shiftIds, string? locationType, Guid locationId, IEnumerable<TaskResourceRequest>? taskResources)
         {
             TaskName = taskName;
             TaskTypeId = taskTypeId;
             Description = description;
-            IsHarvest = isHarvest;
             FarmId = farmId;
             StartWorkDate = startWorkDate;
             ShiftIds = shiftIds;
@@ -26,7 +25,7 @@ namespace CFMS.Application.Features.TaskFeat.Create
 
         public string? Description { get; set; }
 
-        public int? IsHarvest { get; set; }
+        //public int? IsHarvest { get; set; }
 
         //public int? Status { get; set; }
 

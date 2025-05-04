@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
         public string? Reaction { get; set; }
 
-        public List<HealthLogDetailDto>? HealthLogDetails { get; set; } = new List<HealthLogDetailDto>();
+        public IEnumerable<HealthLogDetailDto>? HealthLogDetails { get; set; }
 
         public IEnumerable<TaskResourceRequest>? TaskResources { get; set; }
 
