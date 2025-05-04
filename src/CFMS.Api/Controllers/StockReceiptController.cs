@@ -1,6 +1,4 @@
-﻿using CFMS.Application.Features.AssignmentFeat.Delete;
-using CFMS.Application.Features.AssignmentFeat.Update;
-using CFMS.Application.Features.StockReceipt.Create;
+﻿using CFMS.Application.Features.StockReceipt.Create;
 using CFMS.Application.Features.StockReceipt.Delete;
 using CFMS.Application.Features.StockReceipt.GetStockReceipt;
 using CFMS.Application.Features.StockReceipt.GetStockReceipts;
