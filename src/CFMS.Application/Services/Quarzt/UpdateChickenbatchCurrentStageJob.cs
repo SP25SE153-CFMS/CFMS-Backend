@@ -29,7 +29,7 @@ namespace CFMS.Application.Services.Quartz
                 var systemId = _unitOfWork.UserRepository.Get(filter: u => u.SystemRole == -1).FirstOrDefault()?.UserId;
                 _currentUserService.SetSystemId(systemId.Value);
 
-                var today = DateTime.Now.Date;
+                var today = DateTime.Now.ToLocalTime().Date;
 
                 var chickenBatches = _unitOfWork.ChickenBatchRepository.Get(
                     filter: cb => !cb.IsDeleted && cb.StartDate != null,
