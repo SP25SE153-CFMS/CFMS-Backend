@@ -6,7 +6,7 @@ using StackExchange.Redis;
 
 namespace CFMS.Application.Services.Quarzt
 {
-    public class CheckWareStockJob : IJob
+    public class CheckWareStockJob
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CheckWareStockJob> _logger;
