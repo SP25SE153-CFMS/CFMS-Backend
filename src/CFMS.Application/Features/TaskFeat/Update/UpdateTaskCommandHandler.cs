@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using CFMS.Application.Common;
+using CFMS.Application.Services.SignalR;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CFMS.Application.Features.TaskFeat.Update
 {
@@ -10,11 +13,13 @@ namespace CFMS.Application.Features.TaskFeat.Update
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly NotiHub _hubContext;
 
-        public UpdateTaskCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public UpdateTaskCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, NotiHub hubContext)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _hubContext = hubContext;
         }
 
         public async Task<BaseResponse<bool>> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
@@ -22,8 +27,13 @@ namespace CFMS.Application.Features.TaskFeat.Update
             try
             {
                 var existingTask = _unitOfWork.TaskRepository
-                    .Get(filter: t => t.FarmId == request.FarmId && !t.IsDeleted, includeProperties: "TaskResources,ShiftSchedules,TaskLocations")
-                    .FirstOrDefault();
+                    .GetIncludeMultiLayer(filter: t => t.TaskId == request.TaskId && !t.IsDeleted,
+                    include: x => x
+                    .Include(i => i.Assignments)
+                    .Include(i => i.TaskResources)
+                    .Include(i => i.ShiftSchedules)
+                    .Include(i => i.TaskLocations)
+                    ).FirstOrDefault();
 
                 if (existingTask == null)
                     return BaseResponse<bool>.FailureResponse("Công việc không tồn tại");
@@ -32,34 +42,33 @@ namespace CFMS.Application.Features.TaskFeat.Update
                     .Get(filter: t => t.SubCategoryId == request.TaskTypeId && !t.IsDeleted)
                     .FirstOrDefault();
 
-                existingTask.TaskName = request.TaskName?.Trim();
-                existingTask.TaskTypeId = request.TaskTypeId;
-                existingTask.Description = request.Description?.Trim();
+                existingTask.TaskName = request.TaskName?.Trim() ?? existingTask.TaskName;
+                existingTask.TaskTypeId = request.TaskTypeId ?? existingTask.TaskTypeId;
+                existingTask.Description = request.Description?.Trim() ?? existingTask.Description;
                 existingTask.IsHarvest = taskType?.ToString().ToLower() == "harvest" ? 1 : 0;
 
-                existingTask.ShiftSchedules.Clear();
-                if (request.ShiftIds != null)
+                if (request.ShiftId != null)
                 {
-                    foreach (var shiftId in request.ShiftIds)
+                    existingTask.ShiftSchedules.Clear();
+
+                    var existShift = _unitOfWork.ShiftRepository
+                        .Get(filter: s => s.ShiftId == request.ShiftId && !s.IsDeleted)
+                        .FirstOrDefault();
+
+                    if (existShift == null)
+                        return BaseResponse<bool>.FailureResponse("Ca làm việc không tồn tại");
+
+                    existingTask.ShiftSchedules.Add(new ShiftSchedule
                     {
-                        var existShift = _unitOfWork.ShiftRepository
-                            .Get(filter: s => s.ShiftId == shiftId && !s.IsDeleted)
-                            .FirstOrDefault();
-
-                        if (existShift == null)
-                            return BaseResponse<bool>.FailureResponse("Ca làm việc không tồn tại");
-
-                        existingTask.ShiftSchedules.Add(new ShiftSchedule
-                        {
-                            ShiftId = shiftId,
-                            Date = DateOnly.FromDateTime(DateTime.Now)
-                        });
-                    }
+                        ShiftId = request.ShiftId,
+                        Date = DateOnly.FromDateTime(DateTime.Now.ToLocalTime())
+                    });
                 }
 
-                existingTask.TaskResources.Clear();
                 if (request.TaskResources != null)
                 {
+                    existingTask.TaskResources.Clear();
+
                     foreach (var res in request.TaskResources)
                     {
                         var existResource = _unitOfWork.ResourceRepository
@@ -79,17 +88,59 @@ namespace CFMS.Application.Features.TaskFeat.Update
                     }
                 }
 
-                existingTask.TaskLocations.Clear();
-                existingTask.TaskLocations.Add(new TaskLocation
+                if (request?.LocationId != null)
                 {
-                    CoopId = request.LocationType == "COOP" ? request.LocationId : null,
-                    WareId = request.LocationType == "WARE" ? request.LocationId : null,
-                    LocationType = request.LocationType
-                });
+                    existingTask.TaskLocations.Clear();
+                    existingTask.TaskLocations.Add(new TaskLocation
+                    {
+                        CoopId = request.LocationType == "COOP" ? request.LocationId : null,
+                        WareId = request.LocationType == "WARE" ? request.LocationId : null,
+                        LocationType = request.LocationType
+                    });
+                }
 
-                if (request.StartWorkDate != null && request.StartWorkDate.Length > 0)
+                if (request.StartWorkDate != null)
                 {
-                    existingTask.StartWorkDate = request.StartWorkDate.First();
+                    existingTask.StartWorkDate = request.StartWorkDate;
+                }
+
+                if (request.AssignedTos != null)
+                {
+                    existingTask.Assignments.Clear();
+                    foreach (var assignedTo in request.AssignedTos)
+                    {
+                        var existEmployee = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(assignedTo.AssignedToId) && u.FarmEmployees.Any(fe => fe.FarmId.Equals(existingTask.FarmId)) && u.Status == 1, includeProperties: "FarmEmployees").FirstOrDefault();
+                        if (existEmployee == null)
+                        {
+                            return BaseResponse<bool>.FailureResponse(message: "Người dùng không tồn tại");
+                        }
+
+                        var assignment = new Assignment
+                        {
+                            TaskId = request.TaskId,
+                            AssignedDate = request.AssignedDate,
+                            AssignedToId = assignedTo.AssignedToId,
+                            Note = request.Note,
+                            Status = assignedTo.Status,
+                        };
+
+                        var noti = new Notification
+                        {
+                            UserId = assignedTo.AssignedToId,
+                            NotificationName = "Thông báo giao việc",
+                            NotificationType = "ASSIGNMENT_TASK",
+                            Content = "Công việc " + existingTask.TaskName + " đã được giao đến bạn, vui lòng hoàn thành đúng thời hạn",
+                            IsRead = 0
+                        };
+
+                        existingTask.Status = 1;
+                        _unitOfWork.TaskRepository.Update(existingTask);
+
+                        await _hubContext.SendMessage(noti);
+
+                        _unitOfWork.NotificationRepository.Insert(noti);
+                        _unitOfWork.AssignmentRepository.Insert(assignment);
+                    }
                 }
 
                 _unitOfWork.TaskRepository.Update(existingTask);
