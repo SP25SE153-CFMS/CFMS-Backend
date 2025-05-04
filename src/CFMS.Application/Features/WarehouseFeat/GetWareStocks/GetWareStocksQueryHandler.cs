@@ -242,7 +242,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                             {
                                 ResourceId = resource?.ResourceId ?? Guid.Empty,
                                 HarvestProductId = resource?.HarvestProductId ?? Guid.Empty,
-                                HarvestProductCode = resource?.HarvestProduct?.HarvestProductName,
+                                HarvestProductCode = resource?.HarvestProduct?.HarvestProductCode,
                                 HarvestProductName = resource?.HarvestProduct?.HarvestProductName,
                                 HarvestProductTypeId = existHarvestProductType?.SubCategoryId,
                                 HarvestProductTypeName = existHarvestProductType?.SubCategoryName,
