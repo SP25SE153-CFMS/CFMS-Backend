@@ -1,6 +1,7 @@
 ﻿using CFMS.Application.Features.AssignmentFeat.Delete;
 using CFMS.Application.Features.AssignmentFeat.Update;
 using CFMS.Application.Features.StockReceipt.Create;
+using CFMS.Application.Features.StockReceipt.Delete;
 using CFMS.Application.Features.StockReceipt.GetStockReceipt;
 using CFMS.Application.Features.StockReceipt.GetStockReceipts;
 using MediatR;
@@ -35,15 +36,15 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(UpdateAssignmentCommand command)
-        {
-            var result = await Send(command);
-            return result;
-        }
+        //[HttpPut]
+        //public async Task<IActionResult> Update(UpdateAssignmentCommand command)
+        //{
+        //    var result = await Send(command);
+        //    return result;
+        //}
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(DeleteAssignmentCommand command)
+        public async Task<IActionResult> Delete(DeleteStockReceiptCommand command)
         {
             var result = await Send(command);
             return result;
