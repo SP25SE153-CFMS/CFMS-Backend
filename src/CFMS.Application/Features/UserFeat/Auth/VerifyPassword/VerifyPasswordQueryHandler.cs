@@ -33,7 +33,7 @@ namespace CFMS.Application.Features.UserFeat.Auth.VerifyPassword
             var isMatch = _utilityService.VerifyPassword(request.Password, userHashedPassword);
 
             return isMatch 
-                ? BaseResponse<bool>.FailureResponse(isMatch, "Xác thực mật khẩu thành công")
+                ? BaseResponse<bool>.SuccessResponse(isMatch, "Xác thực mật khẩu thành công")
                 : BaseResponse<bool>.FailureResponse(isMatch, "Xác thực mật khẩu thất bại");
         }
     }

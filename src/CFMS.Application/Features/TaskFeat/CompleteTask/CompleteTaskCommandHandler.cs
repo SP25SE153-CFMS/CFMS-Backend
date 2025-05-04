@@ -90,7 +90,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                 {
                     return BaseResponse<bool>.FailureResponse(message: "Chuồng này chưa diễn ra lứa nuôi nào");
                 }
-
             }
 
             var taskType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(existTask.TaskTypeId) && x.IsDeleted == false).FirstOrDefault()?.SubCategoryName;
