@@ -130,8 +130,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         };
 
                         _unitOfWork.NotificationRepository.Insert(notiSend);
-                        await _unitOfWork.SaveChangesAsync();
-                        await _hubContext.SendMessageToUser(x?.UserId?.ToString(), notiSend);
+                        await _hubContext.SendMessageToUser(x.UserId.ToString()!, notiSend);
                     }
 
                     string? userInvited = "";
@@ -162,8 +161,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                     };
 
                     _unitOfWork.NotificationRepository.Insert(notiReceive);
-                    await _unitOfWork.SaveChangesAsync();
-                    await _hubContext.SendMessageToUser(notiReceive?.UserId?.ToString(), notiReceive);
+                    await _hubContext.SendMessageToUser(existUser.UserId.ToString(), notiReceive);
                 }
 
                 if (method.Equals("enroll") || method.Equals("enrollment"))
@@ -225,9 +223,8 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                             };
 
                             _unitOfWork.NotificationRepository.Insert(notiSend);
-                            return _hubContext.SendMessageToUser(mf?.UserId?.ToString(), notiSend);
+                            return _hubContext.SendMessageToUser(mf.UserId.ToString()!, notiSend);
                         });
-                    await _unitOfWork.SaveChangesAsync();
                     await System.Threading.Tasks.Task.WhenAll(sendTasks);
 
                     var notiReceive = new Notification
@@ -240,8 +237,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                     };
 
                     _unitOfWork.NotificationRepository.Insert(notiReceive);
-                    await _unitOfWork.SaveChangesAsync();
-                    await _hubContext.SendMessageToUser(notiReceive?.UserId?.ToString(), notiReceive);
+                    await _hubContext.SendMessageToUser(existUser.UserId.ToString(), notiReceive);
                 }
 
                 return method.Equals("invite") || method.Equals("invitation")

@@ -110,9 +110,9 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                             };
 
                             _unitOfWork.NotificationRepository.Insert(sendNoti);
-                            return _hubContext.SendMessageToUser(mf?.UserId?.ToString(), sendNoti);
+                            return _hubContext.SendMessageToUser(mf.UserId.ToString()!, sendNoti);
                         });
-                    await _unitOfWork.SaveChangesAsync();
+
                     await System.Threading.Tasks.Task.WhenAll(sendTasks);
 
                     var notiReceive = new Notification
@@ -125,8 +125,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                     };
 
                     _unitOfWork.NotificationRepository.Insert(notiReceive);
-                    await _unitOfWork.SaveChangesAsync();
-                    await _hubContext.SendMessageToUser(notiReceive?.UserId?.ToString(), notiReceive);
+                    await _hubContext.SendMessageToUser(existUser.UserId.ToString(), notiReceive);
                 }
 
                 if (existNoti.NotificationType.Contains("ENROLL"))
@@ -164,8 +163,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                     };
 
                     _unitOfWork.NotificationRepository.Insert(notiSend);
-                    await _unitOfWork.SaveChangesAsync();
-                    await _hubContext.SendMessageToUser(notiSend?.UserId?.ToString(), notiSend);
+                    await _hubContext.SendMessageToUser(notiSend.UserId.ToString()!, notiSend);
 
                     var notiReceive = new Notification
                     {
@@ -178,8 +176,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                     };
 
                     _unitOfWork.NotificationRepository.Insert(notiReceive);
-                    await _unitOfWork.SaveChangesAsync();
-                    await _hubContext.SendMessageToUser(notiReceive?.UserId?.ToString(), notiReceive);
+                    await _hubContext.SendMessageToUser(existUser.UserId.ToString(), notiReceive);
                 }
 
                 await _unitOfWork.SaveChangesAsync();
