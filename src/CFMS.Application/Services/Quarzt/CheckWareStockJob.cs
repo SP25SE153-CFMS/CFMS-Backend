@@ -30,7 +30,7 @@ namespace CFMS.Application.Services.Quarzt
                 var systemId = _unitOfWork.UserRepository.Get(filter: u => u.SystemRole == -1).FirstOrDefault()?.UserId;
                 _currentUserService.SetSystemId(systemId.Value);
 
-                var today = DateTime.Now.Date;
+                var today = DateTime.Now.ToLocalTime().Date;
                 var thresholdMin = _unitOfWork.SystemConfigRepository.Get(filter: s => s.SettingName.Equals("ThresholdMinWareHouse") && !s.IsDeleted && s.EffectedDateTo > DateTime.Now.ToLocalTime()).FirstOrDefault(); // số lượng dưới mức này là cảnh báo sắp hết
                 var thresholdMax = _unitOfWork.SystemConfigRepository.Get(filter: s => s.SettingName.Equals("ThresholdMaxWareHouse") && !s.IsDeleted && s.EffectedDateTo > DateTime.Now.ToLocalTime()).FirstOrDefault(); // số lượng dưới mức này là cảnh báo sắp hết
 
@@ -68,7 +68,7 @@ namespace CFMS.Application.Services.Quarzt
                                         UserId = recipient!.UserId,
                                         NotificationName = "Cảnh báo kho sắp đầy",
                                         NotificationType = "WARESTOCK_WARNING",
-                                        Content = $"Kho {ware.WarehouseName} gần đầy ({totalStock}/{maxCapacity})",
+                                        Content = $"Kho: {ware.WarehouseName} gần đầy ({totalStock}/{maxCapacity})",
                                         IsRead = 0,
                                     };
 
@@ -87,7 +87,7 @@ namespace CFMS.Application.Services.Quarzt
                                         UserId = recipient!.UserId,
                                         NotificationName = "Cảnh báo kho sắp hết",
                                         NotificationType = "WARESTOCK_WARNING",
-                                        Content = $"Kho {ware.WarehouseName} sắp hết ({totalStock}/{maxCapacity})",
+                                        Content = $"Kho: {ware.WarehouseName} sắp hết ({totalStock}/{maxCapacity})",
                                         IsRead = 0,
                                     };
 

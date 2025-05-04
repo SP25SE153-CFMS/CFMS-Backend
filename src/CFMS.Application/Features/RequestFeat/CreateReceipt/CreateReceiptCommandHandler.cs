@@ -48,7 +48,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
 
             string receiptCodePrefix = existReceiptType.SubCategoryName.Equals(RequestType.IMPORT.ToString()) ? "PNK" : "PXK";
 
-            if (existRequest.InventoryRequests.FirstOrDefault().IsFulfilled == 1)
+            if (existRequest?.InventoryRequests?.FirstOrDefault()?.IsFulfilled == 1)
                 return existReceiptType.SubCategoryName.Equals(RequestType.IMPORT.ToString())
                     ? BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu nhập này đã được đạt số lượng yêu cầu")
                     : BaseResponse<bool>.FailureResponse($"Phiếu yêu cầu xuất này đã được đạt số lượng yêu cầu");
@@ -71,7 +71,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                     ReceiptTypeId = request.ReceiptTypeId,
                     ReceiptCodeNumber = $"{receiptCodePrefix}-{DateTime.Now.ToLocalTime().Ticks}",
                     BatchNumber = request.BatchNumber,
-                    FarmId = existRequest.FarmId,
+                    FarmId = existRequest?.FarmId,
                 };
 
                 _unitOfWork.InventoryReceiptRepository.Insert(inventoryReceipt);
