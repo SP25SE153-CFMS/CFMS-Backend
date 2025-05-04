@@ -42,15 +42,36 @@ namespace CFMS.Application.Features.TaskFeat.Update
                     .Get(filter: t => t.SubCategoryId == request.TaskTypeId && !t.IsDeleted)
                     .FirstOrDefault();
 
-                existingTask.TaskName = request.TaskName?.Trim() ?? existingTask.TaskName;
-                existingTask.TaskTypeId = request.TaskTypeId ?? existingTask.TaskTypeId;
-                existingTask.Description = request.Description?.Trim() ?? existingTask.Description;
-                existingTask.IsHarvest = taskType?.ToString().ToLower() == "harvest" ? 1 : 0;
-
                 if (request.ShiftId != null)
                 {
                     existingTask.ShiftSchedules.Clear();
+                }
 
+                if (request.TaskResources != null)
+                {
+                    existingTask.TaskResources.Clear();
+                }
+
+                if (request?.LocationId != null)
+                {
+                    existingTask.TaskLocations.Clear();
+                }
+
+                if (request?.AssignedTos != null)
+                {
+                    existingTask.Assignments.Clear();
+                }
+
+                _unitOfWork.TaskRepository.Update(existingTask);
+                await _unitOfWork.SaveChangesAsync();
+
+                existingTask.TaskName = request?.TaskName?.Trim() ?? existingTask.TaskName;
+                existingTask.TaskTypeId = request?.TaskTypeId ?? existingTask.TaskTypeId;
+                existingTask.Description = request?.Description?.Trim() ?? existingTask.Description;
+                existingTask.IsHarvest = taskType?.ToString().ToLower() == "harvest" ? 1 : 0;
+
+                if (request?.ShiftId != null)
+                {
                     var existShift = _unitOfWork.ShiftRepository
                         .Get(filter: s => s.ShiftId == request.ShiftId && !s.IsDeleted)
                         .FirstOrDefault();
@@ -65,10 +86,8 @@ namespace CFMS.Application.Features.TaskFeat.Update
                     });
                 }
 
-                if (request.TaskResources != null)
+                if (request?.TaskResources != null)
                 {
-                    existingTask.TaskResources.Clear();
-
                     foreach (var res in request.TaskResources)
                     {
                         var existResource = _unitOfWork.ResourceRepository
@@ -90,7 +109,6 @@ namespace CFMS.Application.Features.TaskFeat.Update
 
                 if (request?.LocationId != null)
                 {
-                    existingTask.TaskLocations.Clear();
                     existingTask.TaskLocations.Add(new TaskLocation
                     {
                         CoopId = request.LocationType == "COOP" ? request.LocationId : null,
@@ -99,15 +117,13 @@ namespace CFMS.Application.Features.TaskFeat.Update
                     });
                 }
 
-                if (request.StartWorkDate != null)
+                if (request?.StartWorkDate != null)
                 {
                     existingTask.StartWorkDate = request.StartWorkDate;
                 }
 
-                if (request.AssignedTos != null)
+                if (request?.AssignedTos != null)
                 {
-                    existingTask.Assignments.Clear();
-
                     var chosenLeader = request.AssignedTos.Any(x => x.Status == 1);
 
                     var isHaveLeader = existingTask.Assignments.Any(x => x.Status == 1);
