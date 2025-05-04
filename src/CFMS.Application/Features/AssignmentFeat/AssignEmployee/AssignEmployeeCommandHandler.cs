@@ -37,7 +37,7 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
 
             var isHaveLeader = task.Assignments.Any(x => x.Status == 1);
 
-            if (!chosenLeader && !isHaveLeader)
+            if (!chosenLeader && isHaveLeader)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Công việc này chưa có đội trưởng đảm nhận");
             }

@@ -128,10 +128,15 @@ namespace CFMS.Application.Features.TaskFeat.Update
 
                     var isHaveLeader = existingTask.Assignments.Any(x => x.Status == 1);
 
-                    if (!chosenLeader && !isHaveLeader)
+                    if (!chosenLeader && isHaveLeader)
                     {
                         return BaseResponse<bool>.FailureResponse(message: "Công việc này chưa có đội trưởng đảm nhận");
                     }
+
+                    //if (!chosenLeader && !isHaveLeader && existingTask.Status == 1)
+                    //{
+                    //    return BaseResponse<bool>.FailureResponse(message: "Công việc này chưa có đội trưởng đảm nhận");
+                    //}
 
                     if (chosenLeader && isHaveLeader)
                     {
