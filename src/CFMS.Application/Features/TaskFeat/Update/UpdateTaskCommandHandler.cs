@@ -107,6 +107,27 @@ namespace CFMS.Application.Features.TaskFeat.Update
                 if (request.AssignedTos != null)
                 {
                     existingTask.Assignments.Clear();
+
+                    var chosenLeader = request.AssignedTos.Any(x => x.Status == 1);
+
+                    var isHaveLeader = existingTask.Assignments.Any(x => x.Status == 1);
+
+                    if (!chosenLeader && !isHaveLeader)
+                    {
+                        return BaseResponse<bool>.FailureResponse(message: "Công việc này chưa có đội trưởng đảm nhận");
+                    }
+
+                    if (chosenLeader && isHaveLeader)
+                    {
+                        return BaseResponse<bool>.FailureResponse(message: "Công việc này đã có đội trưởng đảm nhận");
+                    }
+
+                    var existUserAssigned = existingTask.Assignments.Any(x => request.AssignedTos.Select(t => t.AssignedToId).Contains(x.AssignedToId ?? Guid.Empty));
+                    if (existUserAssigned)
+                    {
+                        return BaseResponse<bool>.FailureResponse(message: "Người dùng đã được giao công việc này");
+                    }
+
                     foreach (var assignedTo in request.AssignedTos)
                     {
                         var existEmployee = _unitOfWork.UserRepository.Get(filter: u => u.UserId.Equals(assignedTo.AssignedToId) && u.FarmEmployees.Any(fe => fe.FarmId.Equals(existingTask.FarmId)) && u.Status == 1, includeProperties: "FarmEmployees").FirstOrDefault();
