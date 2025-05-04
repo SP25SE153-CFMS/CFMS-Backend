@@ -34,18 +34,18 @@ namespace CFMS.Api.Extensions
                 );
             });
             
-            services.AddQuartz(q =>
-            {
-                var jobKey = new JobKey("CheckWareStockJob");
+            //services.AddQuartz(q =>
+            //{
+                //var jobKey = new JobKey("CheckWareStockJob");
 
-                q.AddJob<CheckWareStockJob>(opts => opts.WithIdentity(jobKey));
+                //q.AddJob<CheckWareStockJob>(opts => opts.WithIdentity(jobKey));
 
-                q.AddTrigger(opts => opts
-                    .ForJob(jobKey)
-                    .WithIdentity("CheckWareStockJob-trigger")
-                    .WithCronSchedule(configuration["Quartz:CheckWareStockJob"] ?? "0 0 0 ? * 1")
-                );
-            });
+                //q.AddTrigger(opts => opts
+                //    .ForJob(jobKey)
+                //    .WithIdentity("CheckWareStockJob-trigger")
+                    //.WithCronSchedule(configuration["Quartz:CheckWareStockJob"] ?? "0 0 0 ? * 1")
+                //);
+            //});
 
             services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
