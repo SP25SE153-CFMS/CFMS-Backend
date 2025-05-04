@@ -27,16 +27,16 @@ namespace CFMS.Application.DTOs.Task
 
         public Guid? FarmId { get; set; }
 
-        public virtual SubCategory? TaskType { get; set; }
+        public SubCategory? TaskType { get; set; }
 
-        public virtual ShiftScheduleDto ShiftSchedule { get; set; }
+        public ShiftScheduleDto ShiftSchedule { get; set; }
 
-        public virtual TaskLocationDto TaskLocation { get; set; }
+        public TaskLocationDto TaskLocation { get; set; }
 
-        public virtual ICollection<AssignmentDto> Assignments { get; set; } = new List<AssignmentDto>();
+        public ICollection<AssignmentDto> Assignments { get; set; } = new List<AssignmentDto>();
 
-        public virtual ICollection<TaskResourceDto> TaskResources { get; set; } = new List<TaskResourceDto>();
+        public ICollection<TaskResourceDto> TaskResources { get; set; } = new List<TaskResourceDto>();
 
-        public virtual ICollection<FeedLogDto> FeedLogs { get; set; } = new List<FeedLogDto>();
+        public ICollection<FeedLogDto> FeedLogs { get; set; } = new List<FeedLogDto>();
     }
 }

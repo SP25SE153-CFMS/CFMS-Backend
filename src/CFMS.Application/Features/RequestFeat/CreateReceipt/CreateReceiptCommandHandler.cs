@@ -70,7 +70,8 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                     InventoryRequestId = request.InventoryRequestId,
                     ReceiptTypeId = request.ReceiptTypeId,
                     ReceiptCodeNumber = $"{receiptCodePrefix}-{DateTime.Now.ToLocalTime().Ticks}",
-                    BatchNumber = request.BatchNumber
+                    BatchNumber = request.BatchNumber,
+                    FarmId = existRequest.FarmId,
                 };
 
                 _unitOfWork.InventoryReceiptRepository.Insert(inventoryReceipt);
