@@ -31,7 +31,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                 return BaseResponse<bool>.FailureResponse(message: "Không thể chọn chung chuồng");
 
             var existCoop = _unitOfWork.ChickenCoopRepository
-                .Get(filter: c => c.ChickenCoopId == request.ChickenCoopId && c.Status == 0 && !c.IsDeleted)
+                .Get(filter: c => c.ChickenCoopId == request.ChickenCoopId && c.Status == 1 && !c.IsDeleted)
                 .FirstOrDefault();
 
             if (existCoop == null)
