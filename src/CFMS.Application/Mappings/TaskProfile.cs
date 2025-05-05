@@ -81,7 +81,7 @@ namespace CFMS.Application.Mappings
 
                     dest.ResourceCode =
                         src.Resource?.Food?.FoodCode ??
-                        src.Resource?.Medicine?.MedicineCode  ??
+                        src.Resource?.Medicine?.MedicineCode ??
                         src.Resource?.Equipment?.EquipmentCode ??
                         src.Resource?.Chicken?.ChickenCode ??
                         src.Resource?.HarvestProduct?.HarvestProductCode ??
@@ -110,8 +110,8 @@ namespace CFMS.Application.Mappings
                 {
                     dest.AssignedToId = src.AssignedTo?.UserId ?? Guid.Empty;
                     dest.AssignedTo = src.AssignedTo?.FullName ?? "Không xác định";
-                });            
-            
+                });
+
             CreateMap<FeedLog, FeedLogDto>()
                 .AfterMap((src, dest) =>
                 {
@@ -146,6 +146,80 @@ namespace CFMS.Application.Mappings
                     var packageSize = src.Resource?.PackageSize;
 
                     dest.ActualQuantity = src.ActualFeedAmount;
+                    dest.UnitSpecification = $"{packageSize} {unit}/{package}";
+                });
+
+            CreateMap<VaccineLog, VaccineLogDto>()
+                .AfterMap((src, dest) =>
+                {
+                    //dest.ResourceId =
+                    //    src.Resource?.Food?.FoodId ??
+                    //    src.Resource?.Medicine?.MedicineId ??
+                    //    src.Resource?.Equipment?.EquipmentId ??
+                    //    src.Resource?.Chicken?.ChickenId ??
+                    //    src.Resource?.HarvestProduct?.HarvestProductId ??
+                    //    Guid.Empty;
+
+                    dest.ResourceId = src.ResourceId;
+
+                    dest.ResourceName =
+                        src.Resource?.Food?.FoodName ??
+                        src.Resource?.Medicine?.MedicineName ??
+                        src.Resource?.Equipment?.EquipmentName ??
+                        src.Resource?.Chicken?.ChickenName ??
+                        src.Resource?.HarvestProduct?.HarvestProductName ??
+                        "Không xác định";
+
+                    dest.ResourceCode =
+                        src.Resource?.Food?.FoodCode ??
+                        src.Resource?.Medicine?.MedicineCode ??
+                        src.Resource?.Equipment?.EquipmentCode ??
+                        src.Resource?.Chicken?.ChickenCode ??
+                        src.Resource?.HarvestProduct?.HarvestProductCode ??
+                        "Không xác định";
+
+                    var package = src.Resource?.Package?.SubCategoryName;
+                    var unit = src.Resource?.Unit?.SubCategoryName;
+                    var packageSize = src.Resource?.PackageSize;
+
+                    dest.ActualQuantity = src.ActualVaccineAmount;
+                    dest.UnitSpecification = $"{packageSize} {unit}/{package}";
+                });
+
+            CreateMap<HealthLog, HealthLogDto>()
+                .AfterMap((src, dest) =>
+                {
+                    //dest.ResourceId =
+                    //    src.Resource?.Food?.FoodId ??
+                    //    src.Resource?.Medicine?.MedicineId ??
+                    //    src.Resource?.Equipment?.EquipmentId ??
+                    //    src.Resource?.Chicken?.ChickenId ??
+                    //    src.Resource?.HarvestProduct?.HarvestProductId ??
+                    //    Guid.Empty;
+
+                    dest.ResourceId = src.ResourceId;
+
+                    dest.ResourceName =
+                        src.Resource?.Food?.FoodName ??
+                        src.Resource?.Medicine?.MedicineName ??
+                        src.Resource?.Equipment?.EquipmentName ??
+                        src.Resource?.Chicken?.ChickenName ??
+                        src.Resource?.HarvestProduct?.HarvestProductName ??
+                        "Không xác định";
+
+                    dest.ResourceCode =
+                        src.Resource?.Food?.FoodCode ??
+                        src.Resource?.Medicine?.MedicineCode ??
+                        src.Resource?.Equipment?.EquipmentCode ??
+                        src.Resource?.Chicken?.ChickenCode ??
+                        src.Resource?.HarvestProduct?.HarvestProductCode ??
+                        "Không xác định";
+
+                    var package = src.Resource?.Package?.SubCategoryName;
+                    var unit = src.Resource?.Unit?.SubCategoryName;
+                    var packageSize = src.Resource?.PackageSize;
+
+                    dest.ActualQuantity = src.ActualItemAmount;
                     dest.UnitSpecification = $"{packageSize} {unit}/{package}";
                 });
         }
