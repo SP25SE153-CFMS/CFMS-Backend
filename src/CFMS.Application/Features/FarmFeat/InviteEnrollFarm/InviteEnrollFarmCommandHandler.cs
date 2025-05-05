@@ -46,7 +46,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
             var method = request.MethodAccess.ToLower();
             if (method != "invite" && method != "enroll" && method != "invitation" && method != "enrollment")
             {
-                return BaseResponse<bool>.SuccessResponse(message: "Phương thức không hợp lệ");
+                return BaseResponse<bool>.FailureResponse(message: "Phương thức không hợp lệ");
             }
 
             var existFarm = _unitOfWork.FarmRepository.GetIncludeMultiLayer(filter: f => f.FarmCode.Equals(request.FarmCode) && f.IsDeleted == false,
@@ -239,6 +239,8 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                     _unitOfWork.NotificationRepository.Insert(notiReceive);
                     await _hubContext.SendMessageToUser(existUser.UserId.ToString(), notiReceive);
                 }
+
+                await _unitOfWork.SaveChangesAsync();
 
                 return method.Equals("invite") || method.Equals("invitation")
                     ? BaseResponse<bool>.SuccessResponse(message: "Gửi lời mời thành công")

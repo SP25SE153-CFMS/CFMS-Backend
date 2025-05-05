@@ -166,7 +166,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                             {
                                 RequestId = newRequest.RequestId,
                                 InventoryRequestTypeId = requestType?.SubCategoryId,
-                                WareToId = ware?.WareId,
+                                WareToId = ware?.WareId
                             };
 
                             _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
