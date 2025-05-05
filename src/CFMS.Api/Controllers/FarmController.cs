@@ -8,6 +8,7 @@ using CFMS.Application.Features.FarmFeat.GetFarmByCurrentEmployeeByFarmId;
 using CFMS.Application.Features.FarmFeat.GetFarmByCurrentUserId;
 using CFMS.Application.Features.FarmFeat.GetFarmByUserId;
 using CFMS.Application.Features.FarmFeat.GetFarmEmployee;
+using CFMS.Application.Features.FarmFeat.GetFarmEmployeeByUserId;
 using CFMS.Application.Features.FarmFeat.GetFarmEmployees;
 using CFMS.Application.Features.FarmFeat.GetFarms;
 using CFMS.Application.Features.FarmFeat.InviteEnrollFarm;
@@ -119,6 +120,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetFarmEmployee(Guid id)
         {
             var result = await Send(new GetFarmEmployeeQuery(id));
+            return result;
+        }
+
+        [HttpGet("get-farm-employee/{userId}/{farmId}")]
+        public async Task<IActionResult> GetFarmEmployeeByUserId(Guid userId, Guid farmId)
+        {
+            var result = await Send(new GetFarmEmployeeByUserIdQuery(userId, farmId));
             return result;
         }
 

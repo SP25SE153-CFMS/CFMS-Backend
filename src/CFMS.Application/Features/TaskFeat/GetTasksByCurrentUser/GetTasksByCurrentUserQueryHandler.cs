@@ -36,6 +36,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTasksByCurrentUser
                include: q => q
                     .Include(t => t.Assignments)
                         .ThenInclude(s => s.AssignedTo)
+                            .ThenInclude(s => s.FarmEmployees)
                     .Include(t => t.TaskType)
                     .Include(t => t.ShiftSchedules)
                         .ThenInclude(s => s.Shift)
