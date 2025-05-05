@@ -46,7 +46,8 @@ namespace CFMS.Application.Features.RequestFeat.GetReceipt
                         FarmId = r.FarmId,
                         WareFromId = inventoryReq?.WareFromId,
                         WareToId = inventoryReq?.WareToId,
-                        InventoryReceiptDetails = r.InventoryReceiptDetails
+                        InventoryReceiptDetails = r.InventoryReceiptDetails,
+                        UserId = r.CreatedByUserId
                     };
                 }).FirstOrDefault();
 
