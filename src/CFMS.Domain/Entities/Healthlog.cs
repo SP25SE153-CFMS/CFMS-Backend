@@ -20,13 +20,7 @@ public partial class HealthLog : EntityAudit
 
     public DateTime? CheckedAt { get; set; }
 
-    public decimal? ActualItemAmount { get; set; }
-
     public string? Location { get; set; }
-
-    public Guid? UnitId { get; set; }
-
-    public Guid? ResourceId { get; set; }
 
     [JsonIgnore]
     public virtual ChickenBatch? ChickenBatch { get; set; }
@@ -35,6 +29,4 @@ public partial class HealthLog : EntityAudit
 
     [JsonIgnore]
     public virtual Task? Task { get; set; }
-
-    public virtual Resource? Resource { get; set; }
 }
