@@ -1,4 +1,5 @@
 ﻿using CFMS.Application.Common;
+using CFMS.Application.DTOs.Receipt;
 using CFMS.Application.Features.RequestFeat.GetRequest;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CFMS.Application.Features.RequestFeat.GetReceipt
 {
-    public class GetReceiptQueryHandler : IRequestHandler<GetReceiptQuery, BaseResponse<InventoryReceipt>>
+    public class GetReceiptQueryHandler : IRequestHandler<GetReceiptQuery, BaseResponse<ReceiptResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -21,18 +22,40 @@ namespace CFMS.Application.Features.RequestFeat.GetReceipt
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<BaseResponse<InventoryReceipt>> Handle(GetReceiptQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<ReceiptResponse>> Handle(GetReceiptQuery request, CancellationToken cancellationToken)
         {
             var existReceipt = _unitOfWork.InventoryReceiptRepository.GetIncludeMultiLayer(filter: f => f.InventoryReceiptId.Equals(request.Id) && f.IsDeleted == false,
                 include: x => x
-                .Include(r => r.InventoryReceiptDetails)
-                ).FirstOrDefault();
+                .Include(r => r.InventoryReceiptDetails),
+                orderBy: q => q.OrderByDescending(x => x.CreatedWhen)
+                ).ToList()
+                .Select(r =>
+                {
+                    var inventoryReq = _unitOfWork.InventoryRequestRepository.GetIncludeMultiLayer(filter: f => f.InventoryRequestId.Equals(r.InventoryRequestId) && !f.IsDeleted,
+                        include: x => x
+                        .Include(i => i.InventoryRequestDetails)
+                        ).FirstOrDefault();
+
+                    return new ReceiptResponse
+                    {
+                        InventoryReceiptId = r.InventoryReceiptId,
+                        InventoryRequestId = r.InventoryRequestId,
+                        ReceiptTypeId = r.ReceiptTypeId,
+                        ReceiptCodeNumber = r.ReceiptCodeNumber,
+                        BatchNumber = r.BatchNumber,
+                        FarmId = r.FarmId,
+                        WareFromId = inventoryReq?.WareFromId,
+                        WareToId = inventoryReq?.WareToId,
+                        InventoryReceiptDetails = r.InventoryReceiptDetails
+                    };
+                }).FirstOrDefault();
+
             if (existReceipt == null)
             {
-                return BaseResponse<InventoryReceipt>.FailureResponse(message: "Phiếu yêu cầu không tồn tại");
+                return BaseResponse<ReceiptResponse>.FailureResponse(message: "Phiếu yêu cầu không tồn tại");
             }
 
-            return BaseResponse<InventoryReceipt>.SuccessResponse(data: existReceipt);
+            return BaseResponse<ReceiptResponse>.SuccessResponse(data: existReceipt);
         }
     }
 }
