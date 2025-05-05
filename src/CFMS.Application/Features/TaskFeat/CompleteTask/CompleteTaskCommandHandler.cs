@@ -332,16 +332,44 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                 if (taskType.Equals("inject"))
                 {
-                    var vaccineLog = new VaccineLog
-                    {
-                        Notes = request.Note,
-                        Status = 1,
-                        Reaction = request.Reaction,
-                        ChickenBatchId = chickenBatch,
-                        TaskId = request.TaskId
-                    };
+                    var unit = _ = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("kg") && x.IsDeleted == false).FirstOrDefault();
 
-                    _unitOfWork.VaccineLogRepository.Insert(vaccineLog);
+                    var groupResources = request?.TaskResources
+                        .Select(detail => new
+                        {
+                            Resource = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(
+                            filter: r => r.ResourceId == detail.ResourceId,
+                            include: x => x
+                                .Include(t => t.HarvestProduct)
+                                .Include(t => t.Food)
+                                .Include(t => t.Medicine)
+                                .Include(t => t.Chicken)
+                                .Include(t => t.Equipment))
+                                .FirstOrDefault(),
+                            ConsumedQuantity = detail.ConsumedQuantity,
+                        })
+                        .GroupBy(x => new
+                        {
+                            x?.Resource?.ResourceId
+                        })
+                        .ToList();
+
+                    foreach (var group in groupResources)
+                    {
+                        foreach (var detail in group)
+                        {
+                            var vaccineLog = new VaccineLog
+                            {
+                                Notes = request.Note,
+                                Status = 1,
+                                Reaction = request.Reaction,
+                                ChickenBatchId = chickenBatch,
+                                TaskId = request.TaskId,
+                            };
+
+                            _unitOfWork.VaccineLogRepository.Insert(vaccineLog);
+                        }
+                    }
                 }
 
                 if (taskType.Equals("harvest"))
