@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250504081514_UpdateDatabaseV28")]
-    partial class UpdateDatabaseV28
+    [Migration("20250505085900_UpdateDatabaseV30")]
+    partial class UpdateDatabaseV30
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

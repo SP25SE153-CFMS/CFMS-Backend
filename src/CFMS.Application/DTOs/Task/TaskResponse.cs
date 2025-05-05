@@ -29,9 +29,9 @@ namespace CFMS.Application.DTOs.Task
 
         public SubCategory? TaskType { get; set; }
 
-        public ShiftScheduleDto ShiftSchedule { get; set; }
+        public ShiftScheduleDto? ShiftSchedule { get; set; }
 
-        public TaskLocationDto TaskLocation { get; set; }
+        public TaskLocationDto? TaskLocation { get; set; }
 
         public ICollection<AssignmentDto> Assignments { get; set; } = new List<AssignmentDto>();
 
