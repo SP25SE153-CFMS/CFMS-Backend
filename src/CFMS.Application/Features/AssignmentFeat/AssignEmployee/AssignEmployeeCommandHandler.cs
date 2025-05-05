@@ -35,17 +35,17 @@ namespace CFMS.Application.Features.AssignmentFeat.AssignEmployee
 
             var chosenLeader = request.AssignedTos.Any(x => x.Status == 1);
 
-            var isHaveLeader = task.Assignments.Any(x => x.Status == 1);
+            //var isHaveLeader = task.Assignments.Any(x => x.Status == 1);
 
-            if (!chosenLeader && isHaveLeader)
+            if (!chosenLeader)
             {
                 return BaseResponse<bool>.FailureResponse(message: "Công việc này chưa có đội trưởng đảm nhận");
             }
 
-            if (chosenLeader && isHaveLeader)
-            {
-                return BaseResponse<bool>.FailureResponse(message: "Công việc này đã có đội trưởng đảm nhận");
-            }
+            //if (chosenLeader)
+            //{
+            //    return BaseResponse<bool>.FailureResponse(message: "Công việc này đã có đội trưởng đảm nhận");
+            //}
 
             var existUserAssigned = task.Assignments.Any(x => request.AssignedTos.Select(t => t.AssignedToId).Contains(x.AssignedToId ?? Guid.Empty));
             if (existUserAssigned)
