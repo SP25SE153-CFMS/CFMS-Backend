@@ -263,9 +263,9 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return BaseResponse<bool>.SuccessResponse(message: "Cập nhật công việc thành công");
+                    return BaseResponse<bool>.SuccessResponse(message: "Báo cáo công việc thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Báo cáo công việc thất bại");
             }
             catch (Exception ex)
             {
@@ -384,13 +384,12 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                     foreach (var detail in request.HealthLogDetails)
                     {
-                        var healthLogDetail = new HealthLogDetail
+                        healthLog.HealthLogDetails.Add(new HealthLogDetail
                         {
                             HealthLogId = healthLog.HealthLogId,
                             CriteriaId = detail.CriteriaId,
                             Result = detail.Result,
-                        };
-                        _unitOfWork.HealthLogDetailRepository.Insert(healthLogDetail);
+                        });
                     }
 
                     _unitOfWork.HealthLogRepository.Insert(healthLog);
