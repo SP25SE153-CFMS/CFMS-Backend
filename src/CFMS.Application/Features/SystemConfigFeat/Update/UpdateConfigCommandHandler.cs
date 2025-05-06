@@ -28,35 +28,35 @@ namespace CFMS.Application.Features.SystemConfigFeat.Update
                 return BaseResponse<bool>.FailureResponse("Tên cấu hình đã tồn tại");
             }
 
-            switch (request.EntityType)
-            {
-                case nameof(EntityType.COOP_TYPE):
-                    var coop = _unitOfWork.ChickenCoopRepository
-                        .Get(e => e.ChickenCoopId.Equals(request.EntityId) && !e.IsDeleted)
-                        .FirstOrDefault();
-                    if (coop == null)
-                    {
-                        return BaseResponse<bool>.FailureResponse("Chuồng gà không tồn tại");
-                    }
-                    break;
+            //switch (request.EntityType)
+            //{
+            //    case nameof(EntityType.COOP_TYPE):
+            //        var coop = _unitOfWork.ChickenCoopRepository
+            //            .Get(e => e.ChickenCoopId.Equals(request.EntityId) && !e.IsDeleted)
+            //            .FirstOrDefault();
+            //        if (coop == null)
+            //        {
+            //            return BaseResponse<bool>.FailureResponse("Chuồng gà không tồn tại");
+            //        }
+            //        break;
 
-                case nameof(EntityType.WARE_TYPE):
-                    var warehouse = _unitOfWork.WarehouseRepository
-                        .Get(e => e.WareId.Equals(request.EntityId) && !e.IsDeleted)
-                        .FirstOrDefault();
-                    if (warehouse == null)
-                    {
-                        return BaseResponse<bool>.FailureResponse("Kho không tồn tại");
-                    }
-                    break;
+            //    case nameof(EntityType.WARE_TYPE):
+            //        var warehouse = _unitOfWork.WarehouseRepository
+            //            .Get(e => e.WareId.Equals(request.EntityId) && !e.IsDeleted)
+            //            .FirstOrDefault();
+            //        if (warehouse == null)
+            //        {
+            //            return BaseResponse<bool>.FailureResponse("Kho không tồn tại");
+            //        }
+            //        break;
 
-                default:
-                    return BaseResponse<bool>.FailureResponse("Đối tượng cấu hình không hợp lệ");
-            }
+            //    default:
+            //        return BaseResponse<bool>.FailureResponse("Đối tượng cấu hình không hợp lệ");
+            //}
 
             try
             {
-                existConfig.SettingName = request.SettingName;
+                //existConfig.SettingName = request.SettingName;
                 existConfig.SettingValue = request.SettingValue;
                 existConfig.Description = request.Description;
                 existConfig.EffectedDateFrom = request.EffectedDateFrom;
