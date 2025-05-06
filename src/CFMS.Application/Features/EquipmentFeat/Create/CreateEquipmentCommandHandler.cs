@@ -65,7 +65,8 @@ namespace CFMS.Application.Features.EquipmentFeat.Create
                        request.PackageId,
                        request.PackageSize,
                        request.WareId,
-                       true
+                       true,
+                       null
                     ));
 
                 return BaseResponse<bool>.SuccessResponse("Thêm trang thiết bị thành công");

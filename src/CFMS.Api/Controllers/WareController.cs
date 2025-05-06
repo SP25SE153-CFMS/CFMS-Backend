@@ -5,6 +5,7 @@ using CFMS.Application.Features.WarehouseFeat.GetWares;
 using CFMS.Application.Features.WarehouseFeat.GetWaresByFarmId;
 using CFMS.Application.Features.WarehouseFeat.GetWareStock;
 using CFMS.Application.Features.WarehouseFeat.GetWareStockByWareId;
+using CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier;
 using CFMS.Application.Features.WarehouseFeat.GetWarestockResourceTypeByFarmId;
 using CFMS.Application.Features.WarehouseFeat.GetWareStocks;
 using CFMS.Application.Features.WarehouseFeat.Update;
@@ -45,6 +46,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetWareStockByWareId(Guid resourceId, Guid wareId)
         {
             var result = await Send(new GetWareStockByWareIdQuery(resourceId, wareId));
+            return result;
+        }
+
+        [HttpGet("warestock-depend-suppliers/{wareId}/{resourceTypeId}")]
+        public async Task<IActionResult> GetWareStockDependSupplier(Guid wareId, Guid resourceTypeId)
+        {
+            var result = await Send(new GetWareStockDepentSupplierQuery(wareId, resourceTypeId));
             return result;
         }
 

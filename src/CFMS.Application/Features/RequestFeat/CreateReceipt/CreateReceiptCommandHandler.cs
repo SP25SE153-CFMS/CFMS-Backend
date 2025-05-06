@@ -83,7 +83,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                     {
                         ResourceId = d.ResourceId,
                         InventoryReceiptId = inventoryReceipt.InventoryReceiptId, 
-                        ResourceSupplierId = null,
+                        ResourceSupplierId = d.ResourceSupplierId,
                         ActualQuantity = d.ActualQuantity,
                         ActualDate = DateTime.Now.ToLocalTime(),
                         Note = d.Note
@@ -93,6 +93,21 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                     var existResource = _unitOfWork.ResourceRepository.Get(filter: x => x.ResourceId.Equals(d.ResourceId)).FirstOrDefault();
 
                     var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(existResource.ResourceTypeId)).FirstOrDefault();
+
+                    if (existResourceType == null)
+                    {
+                        return BaseResponse<bool>.FailureResponse("Không tìm thấy loại hàng hoá");
+                    }
+
+                    //var resourceSupplier = _unitOfWork.ResourceSupplierRepository.GetIncludeMultiLayer(filter: x => x.ResourceSupplierId.Equals(d.ResourceSupplierId),
+                    //    include: x => x
+                    //    .Include(t => t.Supplier)
+                    //    ).FirstOrDefault();
+
+                    //if (resourceSupplier == null)
+                    //{
+                    //    return BaseResponse<bool>.FailureResponse("Không tìm thấy nhà cung cấp");
+                    //}
 
                     var typeName = existResourceType?.SubCategoryName;
 
@@ -116,7 +131,8 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                         existResource?.PackageId,
                         existResource?.PackageSize,
                         receiptCodePrefix == "PNK" ? request.WareToId ?? Guid.Empty : request.WareFromId ?? Guid.Empty,
-                        false
+                        false,
+                        null
                     ));
 
                     var transaction = new WareTransaction

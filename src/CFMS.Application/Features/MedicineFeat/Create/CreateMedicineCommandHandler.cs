@@ -48,7 +48,8 @@ namespace CFMS.Application.Features.MedicineFeat.Create
                         request.PackageId,
                         request.PackageSize,
                         request.WareId,
-                        true
+                        true,
+                        null
                     ));
 
                 return BaseResponse<bool>.SuccessResponse("Thêm dược phẩm thành công");

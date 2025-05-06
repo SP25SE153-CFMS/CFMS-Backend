@@ -43,7 +43,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
 
             if (resources.Count == 0)
             {
-                return BaseResponse<IEnumerable<object>>.SuccessResponse([], "Không có hàng hoá nào");
+                return BaseResponse<IEnumerable<object>>.FailureResponse([], "Không có hàng hoá nào");
             }
 
             var wareStockFoodResponses = resources
