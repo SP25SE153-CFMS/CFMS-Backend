@@ -93,7 +93,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                                                 : $"{(int)quantity} {unit.SubCategoryName}",
                             UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                             CurrentSupplierId = null,
-                            CurrentSupplierName = "Chưa có nhà cung cấp",
+                            CurrentSupplierName = "Không rõ nguồn gốc",
                             SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                             SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
@@ -144,7 +144,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                                                 : $"{(int)quantity} {unit.SubCategoryName}",
                             UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                             CurrentSupplierId = null,
-                            CurrentSupplierName = "Chưa có nhà cung cấp",
+                            CurrentSupplierName = "Không rõ nguồn gốc",
                             SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                             SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
@@ -193,7 +193,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                                                 : $"{(int)quantity} {unit.SubCategoryName}",
                             UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                             CurrentSupplierId = null,
-                            CurrentSupplierName = "Chưa có nhà cung cấp",
+                            CurrentSupplierName = "Không rõ nguồn gốc",
                             SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                             SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
@@ -237,7 +237,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                                                 : $"{(int)quantity} {unit.SubCategoryName}",
                             UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                             CurrentSupplierId = null,
-                            CurrentSupplierName = "Chưa có nhà cung cấp",
+                            CurrentSupplierName = "Không rõ nguồn gốc",
                             SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                             SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
@@ -281,7 +281,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                                                 : $"{(int)quantity} {unit.SubCategoryName}",
                             UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                             CurrentSupplierId = null,
-                            CurrentSupplierName = "Chưa có nhà cung cấp",
+                            CurrentSupplierName = "Không rõ nguồn gốc",
                             SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
                             SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)

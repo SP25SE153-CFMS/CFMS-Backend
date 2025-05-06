@@ -25,7 +25,7 @@ public class UpdateNutritionPlanCommandHandler : IRequestHandler<UpdateNutrition
         }
 
         var existName = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) && p.IsDeleted == false && p.FarmId.Equals(existNutritionPlan.FarmId) && p.NutritionPlanId != request.NutritionPlanId).FirstOrDefault();
-        if (existNutritionPlan != null)
+        if (existName != null)
         {
             return BaseResponse<bool>.FailureResponse("Tên chế độ dinh dưỡng đã tồn tại");
         }

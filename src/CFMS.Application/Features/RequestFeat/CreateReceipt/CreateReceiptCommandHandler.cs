@@ -104,10 +104,10 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                         .Include(t => t.Supplier)
                         ).FirstOrDefault();
 
-                    if (resourceSupplier == null)
-                    {
-                        return BaseResponse<bool>.FailureResponse("Không tìm thấy nhà cung cấp");
-                    }
+                    //if (resourceSupplier == null)
+                    //{
+                    //    return BaseResponse<bool>.FailureResponse("Không tìm thấy nhà cung cấp");
+                    //}
 
                     var typeName = existResourceType?.SubCategoryName;
 
@@ -132,7 +132,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                         existResource?.PackageSize,
                         receiptCodePrefix == "PNK" ? request.WareToId ?? Guid.Empty : request.WareFromId ?? Guid.Empty,
                         false,
-                        resourceSupplier.SupplierId
+                        resourceSupplier?.SupplierId
                     ));
 
                     var transaction = new WareTransaction
