@@ -64,27 +64,38 @@ namespace CFMS.Application.Events.Handlers
                 await _unitOfWork.SaveChangesAsync();
             }
 
-            var wareStock = await _unitOfWork.WareStockRepository
-                  .FirstOrDefaultAsync(x => x.WareId.Equals(notification.WareId) && x.ResourceId.Equals(resource.ResourceId));
-
             var ware = await _unitOfWork.WarehouseRepository
                   .FirstOrDefaultAsync(x => x.WareId.Equals(notification.WareId));
-
-            if (notification.IsCreatedCall && resource != null && wareStock != null)
-            {
-                throw new Exception("Hàng hoá có quy cách tính này đã tồn tại");
-            }
 
             if (ware == null)
             {
                 throw new Exception("Không tìm thấy kho");
             }
 
+            var wareStock = await _unitOfWork.WareStockRepository
+                .FirstOrDefaultAsync(x => x.WareId.Equals(notification.WareId) && x.ResourceId.Equals(resource.ResourceId) && x.SupplierId.Equals(notification.SupplierId));
+
+
+            if (notification.IsCreatedCall && resource != null && wareStock != null)
+            {
+                throw new Exception("Hàng hoá có quy cách tính này đã tồn tại");
+            }
+
+
+            var tempStock = await _unitOfWork.WareStockRepository
+            .FirstOrDefaultAsync(x => x.WareId.Equals(notification.WareId) && x.ResourceId.Equals(resource.ResourceId) && x.SupplierId == null);
+
+            if (tempStock != null)
+            {
+                _unitOfWork.WareStockRepository.Delete(tempStock);
+            }
+
             wareStock ??= new WareStock
             {
                 WareId = notification.WareId,
                 ResourceId = resource?.ResourceId,
-                Quantity = 0
+                Quantity = 0,
+                SupplierId = null
             };
 
             ware.CurrentQuantity += notification.Quantity;

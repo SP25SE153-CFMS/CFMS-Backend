@@ -17,5 +17,7 @@ namespace CFMS.Application.DTOs.Receipt
         public Guid? UnitId { get; set; }
 
         public string? Note { get; set; }
+
+        public Guid? ResourceSupplierId { get; set; }
     }
 }

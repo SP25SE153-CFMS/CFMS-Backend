@@ -48,7 +48,8 @@ namespace CFMS.Application.Features.HarvestProductFeat.Create
                         request.PackageId,
                         request.PackageSize,
                         request.WareId,
-                        true
+                        true,
+                        null
                     ));
 
                 return BaseResponse<bool>.SuccessResponse("Thêm sản phẩm thu hoạch thành công");

@@ -48,7 +48,8 @@ namespace CFMS.Application.Features.FoodFeat.Create
                         request.PackageId,
                         request.PackageSize,
                         request.WareId,
-                        true
+                        true,
+                        null
                     ));
 
                 return BaseResponse<bool>.SuccessResponse("Thêm thực phẩm thành công");

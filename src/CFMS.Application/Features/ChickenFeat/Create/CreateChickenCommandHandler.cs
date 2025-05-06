@@ -55,7 +55,8 @@ namespace CFMS.Application.Features.ChickenFeat.Create
                         request.PackageId,
                         request.PackageSize,
                         request.WareId,
-                        true
+                        true,
+                        null
                     ));
 
                 //await _unitOfWork.SaveChangesAsync();

@@ -57,7 +57,8 @@ namespace CFMS.Application.Features.StockReceipt.Create
                             existResource.PackageId,
                             existResource.PackageSize,
                             stockReceiptDetail.ToWareId,
-                            false
+                            false,
+                            null
                         ));
                 }
 
