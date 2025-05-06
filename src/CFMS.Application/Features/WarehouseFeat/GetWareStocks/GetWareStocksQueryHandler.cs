@@ -87,7 +87,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                                                           $"{(quantity % resource?.PackageSize > 0 ? $" (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})" : "")}"
                                                         : $"{(int)quantity} {unit.SubCategoryName}",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -132,7 +132,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                                                           $"{(quantity % resource?.PackageSize > 0 ? $" (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})" : "")}"
                                                         : $"{(int)quantity} {unit.SubCategoryName}",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -175,7 +175,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                                                           $"{(quantity % resource?.PackageSize > 0 ? $" (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})" : "")}"
                                                         : $"{(int)quantity} {unit.SubCategoryName}",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -213,7 +213,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                                                           $"{(quantity % resource?.PackageSize > 0 ? $" (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})" : "")}"
                                                         : $"{(int)quantity} {unit.SubCategoryName}",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -251,7 +251,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStocks
                                                           $"{(quantity % resource?.PackageSize > 0 ? $" (lẻ {quantity % resource?.PackageSize} {unit.SubCategoryName})" : "")}"
                                                         : $"{(int)quantity} {unit.SubCategoryName}",
                                 UnitSpecification = $"{resource?.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
-                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
