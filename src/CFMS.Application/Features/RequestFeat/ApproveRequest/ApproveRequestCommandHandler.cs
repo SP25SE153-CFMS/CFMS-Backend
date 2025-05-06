@@ -41,7 +41,7 @@ namespace CFMS.Application.Features.RequestFeat.ApproveRequest
                 return BaseResponse<bool>.FailureResponse(message: "Hành động không hợp lệ");
             }
 
-            if ((request.IsApproved == 1) || (request.IsApproved == 2))
+            if ((existRequest.Status == 1) || (existRequest.Status == 2))
             {
                 return BaseResponse<bool>.FailureResponse(message: "Phiếu yêu cầu này đã được xử lí");
             }
