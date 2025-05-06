@@ -99,15 +99,15 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                         return BaseResponse<bool>.FailureResponse("Không tìm thấy loại hàng hoá");
                     }
 
-                    //var resourceSupplier = _unitOfWork.ResourceSupplierRepository.GetIncludeMultiLayer(filter: x => x.ResourceSupplierId.Equals(d.ResourceSupplierId),
-                    //    include: x => x
-                    //    .Include(t => t.Supplier)
-                    //    ).FirstOrDefault();
+                    var resourceSupplier = _unitOfWork.ResourceSupplierRepository.GetIncludeMultiLayer(filter: x => x.ResourceSupplierId.Equals(d.ResourceSupplierId),
+                        include: x => x
+                        .Include(t => t.Supplier)
+                        ).FirstOrDefault();
 
-                    //if (resourceSupplier == null)
-                    //{
-                    //    return BaseResponse<bool>.FailureResponse("Không tìm thấy nhà cung cấp");
-                    //}
+                    if (resourceSupplier == null)
+                    {
+                        return BaseResponse<bool>.FailureResponse("Không tìm thấy nhà cung cấp");
+                    }
 
                     var typeName = existResourceType?.SubCategoryName;
 
@@ -132,7 +132,7 @@ public class CreateInventoryReceiptCommandHandler : IRequestHandler<CreateInvent
                         existResource?.PackageSize,
                         receiptCodePrefix == "PNK" ? request.WareToId ?? Guid.Empty : request.WareFromId ?? Guid.Empty,
                         false,
-                        null
+                        resourceSupplier.SupplierId
                     ));
 
                     var transaction = new WareTransaction
