@@ -21,10 +21,10 @@ namespace CFMS.Domain.Interfaces
         IGenericRepository<ChickenDetail> ChickenDetailRepository { get; }
         IGenericRepository<CoopEquipment> CoopEquipmentRepository { get; }
         IGenericRepository<Equipment> EquipmentRepository { get; }
-        IGenericRepository<EvaluatedTarget> EvaluatedTargetRepository { get; }
-        IGenericRepository<EvaluationResult> EvaluationResultRepository { get; }
-        IGenericRepository<EvaluationResultDetail> EvaluationResultDetailRepository { get; }
-        IGenericRepository<EvaluationTemplate> EvaluationTemplateRepository { get; }
+        //IGenericRepository<EvaluatedTarget> EvaluatedTargetRepository { get; }
+        //IGenericRepository<EvaluationResult> EvaluationResultRepository { get; }
+        //IGenericRepository<EvaluationResultDetail> EvaluationResultDetailRepository { get; }
+        //IGenericRepository<EvaluationTemplate> EvaluationTemplateRepository { get; }
         IGenericRepository<Farm> FarmRepository { get; }
         IGenericRepository<FarmEmployee> FarmEmployeeRepository { get; }
         IGenericRepository<FeedLog> FeedLogRepository { get; }
@@ -58,7 +58,7 @@ namespace CFMS.Domain.Interfaces
         IGenericRepository<TaskRequest> TaskRequestRepository { get; }
         IGenericRepository<TaskResource> TaskResourceRepository { get; }
         //IGenericRepository<FrequencySchedule> FrequencyScheduleRepository { get; }
-        IGenericRepository<TemplateCriterion> TemplateCriterionRepository { get; }
+        //IGenericRepository<TemplateCriterion> TemplateCriterionRepository { get; }
         IGenericRepository<User> UserRepository { get; }
         IGenericRepository<VaccineLog> VaccineLogRepository { get; }
         IGenericRepository<WarePermission> WarePermissionRepository { get; }

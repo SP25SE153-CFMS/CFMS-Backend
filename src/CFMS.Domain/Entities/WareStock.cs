@@ -11,9 +11,13 @@ public partial class WareStock
 
     public Guid? ResourceId { get; set; }
 
+    public Guid? SupplierId { get; set; }
+
     public int? Quantity { get; set; }
 
     public virtual Resource? Resource { get; set; }
+
+    public virtual Supplier? Supplier { get; set; }
 
     public virtual Warehouse? Ware { get; set; }
 }

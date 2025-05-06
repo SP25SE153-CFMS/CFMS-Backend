@@ -30,5 +30,5 @@ public partial class Chicken : EntityAudit
     //[JsonIgnore]
     public virtual SubCategory? ChickenType { get; set; }
 
-    public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
+    //public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
 }

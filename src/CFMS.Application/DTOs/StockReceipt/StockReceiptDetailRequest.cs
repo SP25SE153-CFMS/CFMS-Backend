@@ -10,6 +10,6 @@
 
         public Guid ResourceId { get; set; }
 
-        public Guid ResourceSupplierId { get; set; }
+        public Guid SupplierId { get; set; }
     }
 }

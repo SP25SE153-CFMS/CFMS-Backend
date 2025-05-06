@@ -28,7 +28,7 @@ public partial class Task : EntityAudit
 
     public virtual ICollection<ShiftSchedule> ShiftSchedules { get; set; } = new List<ShiftSchedule>();
 
-    public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
+    //public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
 
     public virtual ICollection<FeedLog> FeedLogs { get; set; } = new List<FeedLog>();
 

@@ -22,4 +22,6 @@ public partial class Supplier : EntityAudit
     public int? Status { get; set; }
 
     public virtual ICollection<ResourceSupplier> ResourceSuppliers { get; set; } = new List<ResourceSupplier>();
+
+    public virtual ICollection<WareStock> ResourceWareStocks { get; set; } = new List<WareStock>();
 }

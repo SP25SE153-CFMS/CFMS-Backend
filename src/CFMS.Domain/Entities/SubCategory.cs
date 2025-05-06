@@ -55,11 +55,11 @@ public partial class SubCategory : EntityAudit
     [JsonIgnore]
     public virtual ICollection<Equipment> EquipmentMaterials { get; set; } = new List<Equipment>();
 
-    [JsonIgnore]
-    public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
+    //[JsonIgnore]
+    //public virtual ICollection<EvaluatedTarget> EvaluatedTargets { get; set; } = new List<EvaluatedTarget>();
 
-    [JsonIgnore]
-    public virtual ICollection<EvaluationTemplate> EvaluationTemplates { get; set; } = new List<EvaluationTemplate>();
+    //[JsonIgnore]
+    //public virtual ICollection<EvaluationTemplate> EvaluationTemplates { get; set; } = new List<EvaluationTemplate>();
 
     [JsonIgnore]
     public virtual ICollection<FeedLog> FeedLogs { get; set; } = new List<FeedLog>();
@@ -124,9 +124,9 @@ public partial class SubCategory : EntityAudit
     //public virtual ICollection<FrequencySchedule> TimeUnits { get; set; } = new List<FrequencySchedule>();
 
     [JsonIgnore]
-    public virtual ICollection<TemplateCriterion> TemplateCriteria { get; set; } = new List<TemplateCriterion>();
+    //public virtual ICollection<TemplateCriterion> TemplateCriteria { get; set; } = new List<TemplateCriterion>();
 
-    [JsonIgnore]
+    //[JsonIgnore]
     public virtual ICollection<WareTransaction> WareTransactions { get; set; } = new List<WareTransaction>();
 
     [JsonIgnore]

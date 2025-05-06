@@ -41,13 +41,13 @@ public partial class CfmsDbContext : DbContext
 
     public virtual DbSet<Equipment> Equipment { get; set; }
 
-    public virtual DbSet<EvaluatedTarget> EvaluatedTargets { get; set; }
+    //public virtual DbSet<EvaluatedTarget> EvaluatedTargets { get; set; }
 
-    public virtual DbSet<EvaluationResult> EvaluationResults { get; set; }
+    //public virtual DbSet<EvaluationResult> EvaluationResults { get; set; }
 
-    public virtual DbSet<EvaluationResultDetail> EvaluationResultDetails { get; set; }
+    //public virtual DbSet<EvaluationResultDetail> EvaluationResultDetails { get; set; }
 
-    public virtual DbSet<EvaluationTemplate> EvaluationTemplates { get; set; }
+    //public virtual DbSet<EvaluationTemplate> EvaluationTemplates { get; set; }
 
     public virtual DbSet<Farm> Farms { get; set; }
 
@@ -117,7 +117,7 @@ public partial class CfmsDbContext : DbContext
 
     //public virtual DbSet<FrequencySchedule> FrequencySchedules { get; set; }
 
-    public virtual DbSet<TemplateCriterion> TemplateCriteria { get; set; }
+    //public virtual DbSet<TemplateCriterion> TemplateCriteria { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -774,77 +774,77 @@ public partial class CfmsDbContext : DbContext
                 .HasConstraintName("Equipment_MaterialId_fkey");
         });
 
-        modelBuilder.Entity<EvaluatedTarget>(entity =>
-        {
-            entity.HasKey(e => e.EvaluatedTargetId).HasName("EvaluatedTarget_pkey");
+        //modelBuilder.Entity<EvaluatedTarget>(entity =>
+        //{
+        //    entity.HasKey(e => e.EvaluatedTargetId).HasName("EvaluatedTarget_pkey");
 
-            entity.ToTable("EvaluatedTarget");
+        //    entity.ToTable("EvaluatedTarget");
 
-            entity.Property(e => e.EvaluatedTargetId).HasDefaultValueSql("gen_random_uuid()");
+        //    entity.Property(e => e.EvaluatedTargetId).HasDefaultValueSql("gen_random_uuid()");
 
-            entity.HasOne(d => d.Target).WithMany(p => p.EvaluatedTargets)
-                .HasForeignKey(d => d.TargetId)
-                .HasConstraintName("EvaluatedTarget_TargetId_fkey1");
+        //    entity.HasOne(d => d.Target).WithMany(p => p.EvaluatedTargets)
+        //        .HasForeignKey(d => d.TargetId)
+        //        .HasConstraintName("EvaluatedTarget_TargetId_fkey1");
 
-            entity.HasOne(d => d.TargetNavigation).WithMany(p => p.EvaluatedTargets)
-                .HasForeignKey(d => d.TargetId)
-                .HasConstraintName("EvaluatedTarget_TargetId_fkey");
+        //    entity.HasOne(d => d.TargetNavigation).WithMany(p => p.EvaluatedTargets)
+        //        .HasForeignKey(d => d.TargetId)
+        //        .HasConstraintName("EvaluatedTarget_TargetId_fkey");
 
-            entity.HasOne(d => d.TargetType).WithMany(p => p.EvaluatedTargets)
-                .HasForeignKey(d => d.TargetTypeId)
-                .HasConstraintName("EvaluatedTarget_TargetTypeId_fkey");
-        });
+        //    entity.HasOne(d => d.TargetType).WithMany(p => p.EvaluatedTargets)
+        //        .HasForeignKey(d => d.TargetTypeId)
+        //        .HasConstraintName("EvaluatedTarget_TargetTypeId_fkey");
+        //});
 
-        modelBuilder.Entity<EvaluationResult>(entity =>
-        {
-            entity.HasKey(e => e.EvaluationResultId).HasName("EvaluationResult_pkey");
+        //modelBuilder.Entity<EvaluationResult>(entity =>
+        //{
+        //    entity.HasKey(e => e.EvaluationResultId).HasName("EvaluationResult_pkey");
 
-            entity.ToTable("EvaluationResult");
+        //    entity.ToTable("EvaluationResult");
 
-            entity.Property(e => e.EvaluationResultId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.EvaluatedDate)
-                .HasColumnType("timestamp(6) without time zone")
-                .HasColumnName("EvaluatedDate ");
+        //    entity.Property(e => e.EvaluationResultId).HasDefaultValueSql("gen_random_uuid()");
+        //    entity.Property(e => e.EvaluatedDate)
+        //        .HasColumnType("timestamp(6) without time zone")
+        //        .HasColumnName("EvaluatedDate ");
 
-            entity.HasOne(d => d.EvaluatedTarget).WithMany(p => p.EvaluationResults)
-                .HasForeignKey(d => d.EvaluatedTargetId)
-                .HasConstraintName("EvaluationResult_EvaluatedTargetId_fkey");
+        //    entity.HasOne(d => d.EvaluatedTarget).WithMany(p => p.EvaluationResults)
+        //        .HasForeignKey(d => d.EvaluatedTargetId)
+        //        .HasConstraintName("EvaluationResult_EvaluatedTargetId_fkey");
 
-            entity.HasOne(d => d.EvaluationTemplate).WithMany(p => p.EvaluationResults)
-                .HasForeignKey(d => d.EvaluationTemplateId)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("EvaluationResult_EvaluationTemplateId_fkey");
-        });
+        //    entity.HasOne(d => d.EvaluationTemplate).WithMany(p => p.EvaluationResults)
+        //        .HasForeignKey(d => d.EvaluationTemplateId)
+        //        .OnDelete(DeleteBehavior.SetNull)
+        //        .HasConstraintName("EvaluationResult_EvaluationTemplateId_fkey");
+        //});
 
-        modelBuilder.Entity<EvaluationResultDetail>(entity =>
-        {
-            entity.HasKey(e => e.EvaluationResultDetailId).HasName("EvaluationResultDetail_pkey");
+        //modelBuilder.Entity<EvaluationResultDetail>(entity =>
+        //{
+        //    entity.HasKey(e => e.EvaluationResultDetailId).HasName("EvaluationResultDetail_pkey");
 
-            entity.ToTable("EvaluationResultDetail");
+        //    entity.ToTable("EvaluationResultDetail");
 
-            entity.Property(e => e.EvaluationResultDetailId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.ActualValue).HasColumnType("character varying");
-            entity.Property(e => e.IsPass).HasDefaultValue(0);
+        //    entity.Property(e => e.EvaluationResultDetailId).HasDefaultValueSql("gen_random_uuid()");
+        //    entity.Property(e => e.ActualValue).HasColumnType("character varying");
+        //    entity.Property(e => e.IsPass).HasDefaultValue(0);
 
-            entity.HasOne(d => d.EvaluationResult).WithMany(p => p.EvaluationResultDetails)
-                .HasForeignKey(d => d.EvaluationResultId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("EvaluationResultDetail_EvaluationResultId_fkey");
-        });
+        //    entity.HasOne(d => d.EvaluationResult).WithMany(p => p.EvaluationResultDetails)
+        //        .HasForeignKey(d => d.EvaluationResultId)
+        //        .OnDelete(DeleteBehavior.Cascade)
+        //        .HasConstraintName("EvaluationResultDetail_EvaluationResultId_fkey");
+        //});
 
-        modelBuilder.Entity<EvaluationTemplate>(entity =>
-        {
-            entity.HasKey(e => e.EvaluationTemplateId).HasName("EvaluationTemplate_pkey");
+        //modelBuilder.Entity<EvaluationTemplate>(entity =>
+        //{
+        //    entity.HasKey(e => e.EvaluationTemplateId).HasName("EvaluationTemplate_pkey");
 
-            entity.ToTable("EvaluationTemplate");
+        //    entity.ToTable("EvaluationTemplate");
 
-            entity.Property(e => e.EvaluationTemplateId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.TemplateName).HasColumnType("character varying");
+        //    entity.Property(e => e.EvaluationTemplateId).HasDefaultValueSql("gen_random_uuid()");
+        //    entity.Property(e => e.TemplateName).HasColumnType("character varying");
 
-            entity.HasOne(d => d.TemplateType).WithMany(p => p.EvaluationTemplates)
-                .HasForeignKey(d => d.TemplateTypeId)
-                .HasConstraintName("EvaluationTemplate_TemplateTypeId_fkey");
-        });
+        //    entity.HasOne(d => d.TemplateType).WithMany(p => p.EvaluationTemplates)
+        //        .HasForeignKey(d => d.TemplateTypeId)
+        //        .HasConstraintName("EvaluationTemplate_TemplateTypeId_fkey");
+        //});
 
         modelBuilder.Entity<Farm>(entity =>
         {
@@ -1531,24 +1531,24 @@ public partial class CfmsDbContext : DbContext
         //        .HasConstraintName("FrequencySchedule_FrequencyScheduleId_fkey");
         //});
 
-        modelBuilder.Entity<TemplateCriterion>(entity =>
-        {
-            entity.HasKey(e => e.TemplateCriteriaId).HasName("TemplateCriteria_pkey");
+        //modelBuilder.Entity<TemplateCriterion>(entity =>
+        //{
+        //    entity.HasKey(e => e.TemplateCriteriaId).HasName("TemplateCriteria_pkey");
 
-            entity.Property(e => e.TemplateCriteriaId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.ExpectedCondition).HasColumnType("character varying");
-            entity.Property(e => e.ExpectedUnit).HasColumnType("character varying");
-            entity.Property(e => e.ExpectedValue).HasColumnType("character varying");
-            entity.Property(e => e.TemplateName).HasColumnType("character varying");
+        //    entity.Property(e => e.TemplateCriteriaId).HasDefaultValueSql("gen_random_uuid()");
+        //    entity.Property(e => e.ExpectedCondition).HasColumnType("character varying");
+        //    entity.Property(e => e.ExpectedUnit).HasColumnType("character varying");
+        //    entity.Property(e => e.ExpectedValue).HasColumnType("character varying");
+        //    entity.Property(e => e.TemplateName).HasColumnType("character varying");
 
-            entity.HasOne(d => d.Criteria).WithMany(p => p.TemplateCriteria)
-                .HasForeignKey(d => d.CriteriaId)
-                .HasConstraintName("TemplateCriteria_CriteriaId_fkey");
+        //    entity.HasOne(d => d.Criteria).WithMany(p => p.TemplateCriteria)
+        //        .HasForeignKey(d => d.CriteriaId)
+        //        .HasConstraintName("TemplateCriteria_CriteriaId_fkey");
 
-            entity.HasOne(d => d.EvaluationTemplate).WithMany(p => p.TemplateCriteria)
-                .HasForeignKey(d => d.EvaluationTemplateId)
-                .HasConstraintName("TemplateCriteria_EvaluationTemplateId_fkey");
-        });
+            //entity.HasOne(d => d.EvaluationTemplate).WithMany(p => p.TemplateCriteria)
+            //    .HasForeignKey(d => d.EvaluationTemplateId)
+            //    .HasConstraintName("TemplateCriteria_EvaluationTemplateId_fkey");
+        //});
 
         modelBuilder.Entity<User>(entity =>
         {
@@ -1619,6 +1619,10 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.Resource).WithMany(p => p.WareStocks)
                 .HasForeignKey(d => d.ResourceId)
                 .HasConstraintName("WareStock_ResourceId_fkey");
+            
+            entity.HasOne(d => d.Supplier).WithMany(p => p.ResourceWareStocks)
+                .HasForeignKey(d => d.SupplierId)
+                .HasConstraintName("WareStock_SupplierId_fkey");
 
             entity.HasOne(d => d.Ware).WithMany(p => p.WareStocks)
                 .HasForeignKey(d => d.WareId)

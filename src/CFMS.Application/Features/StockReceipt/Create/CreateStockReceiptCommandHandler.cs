@@ -43,7 +43,7 @@ namespace CFMS.Application.Features.StockReceipt.Create
                     {
                         Quantity = stockReceiptDetail.Quantity,
                         ResourceId = stockReceiptDetail.ResourceId,
-                        ResourceSupplierId = stockReceiptDetail.ResourceSupplierId,
+                        SupplierId = stockReceiptDetail.SupplierId,
                         ToWareId = stockReceiptDetail.ToWareId,
                         UnitId = stockReceiptDetail.UnitId,
                     });

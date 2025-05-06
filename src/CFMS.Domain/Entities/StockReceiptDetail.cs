@@ -16,7 +16,7 @@ namespace CFMS.Domain.Entities
 
         public Guid? ResourceId { get; set; }
 
-        public Guid? ResourceSupplierId { get; set; }
+        public Guid? SupplierId { get; set; }
 
         public virtual SubCategory? Unit { get; set; }
 
@@ -24,7 +24,7 @@ namespace CFMS.Domain.Entities
 
         public virtual Resource? Resource { get; set; }
 
-        public virtual ResourceSupplier? ResourceSupplier { get; set; }
+        public virtual Supplier? Supplier { get; set; }
 
         [JsonIgnore]
         public virtual StockReceipt? StockReceipt { get; set; }

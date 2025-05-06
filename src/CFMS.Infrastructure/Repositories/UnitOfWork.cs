@@ -20,10 +20,10 @@ namespace CFMS.Infrastructure.Repositories
         private GenericRepository<ChickenDetail> chickenDetailRepository;
         private GenericRepository<CoopEquipment> coopEquipmentRepository;
         private GenericRepository<Equipment> equipmentRepository;
-        private GenericRepository<EvaluatedTarget> evaluatedTargetRepository;
-        private GenericRepository<EvaluationResult> evaluationResultRepository;
-        private GenericRepository<EvaluationResultDetail> evaluationResultDetailRepository;
-        private GenericRepository<EvaluationTemplate> evaluationTemplateRepository;
+        //private GenericRepository<EvaluatedTarget> evaluatedTargetRepository;
+        //private GenericRepository<EvaluationResult> evaluationResultRepository;
+        //private GenericRepository<EvaluationResultDetail> evaluationResultDetailRepository;
+        //private GenericRepository<EvaluationTemplate> evaluationTemplateRepository;
         private GenericRepository<Farm> farmRepository;
         private GenericRepository<FarmEmployee> farmEmployeeRepository;
         private GenericRepository<FeedLog> feedLogRepository;
@@ -57,7 +57,7 @@ namespace CFMS.Infrastructure.Repositories
         private GenericRepository<TaskRequest> taskRequestRepository;
         private GenericRepository<TaskResource> taskResourceRepository;
         //private GenericRepository<FrequencySchedule> FrequencySchedule;
-        private GenericRepository<TemplateCriterion> templateCriterionRepository;
+        //private GenericRepository<TemplateCriterion> templateCriterionRepository;
         private GenericRepository<User> userRepository;
         private GenericRepository<VaccineLog> vaccineLogRepository;
         private GenericRepository<WarePermission> warePermissionRepository;
@@ -84,10 +84,10 @@ namespace CFMS.Infrastructure.Repositories
         public IGenericRepository<ChickenDetail> ChickenDetailRepository => chickenDetailRepository ??= new GenericRepository<ChickenDetail>(context);
         public IGenericRepository<CoopEquipment> CoopEquipmentRepository => coopEquipmentRepository ??= new GenericRepository<CoopEquipment>(context);
         public IGenericRepository<Equipment> EquipmentRepository => equipmentRepository ??= new GenericRepository<Equipment>(context);
-        public IGenericRepository<EvaluatedTarget> EvaluatedTargetRepository => evaluatedTargetRepository ??= new GenericRepository<EvaluatedTarget>(context);
-        public IGenericRepository<EvaluationResult> EvaluationResultRepository => evaluationResultRepository ??= new GenericRepository<EvaluationResult>(context);
-        public IGenericRepository<EvaluationResultDetail> EvaluationResultDetailRepository => evaluationResultDetailRepository ??= new GenericRepository<EvaluationResultDetail>(context);
-        public IGenericRepository<EvaluationTemplate> EvaluationTemplateRepository => evaluationTemplateRepository ??= new GenericRepository<EvaluationTemplate>(context);
+        //public IGenericRepository<EvaluatedTarget> EvaluatedTargetRepository => evaluatedTargetRepository ??= new GenericRepository<EvaluatedTarget>(context);
+        //public IGenericRepository<EvaluationResult> EvaluationResultRepository => evaluationResultRepository ??= new GenericRepository<EvaluationResult>(context);
+        //public IGenericRepository<EvaluationResultDetail> EvaluationResultDetailRepository => evaluationResultDetailRepository ??= new GenericRepository<EvaluationResultDetail>(context);
+        //public IGenericRepository<EvaluationTemplate> EvaluationTemplateRepository => evaluationTemplateRepository ??= new GenericRepository<EvaluationTemplate>(context);
         public IGenericRepository<Farm> FarmRepository => farmRepository ??= new GenericRepository<Farm>(context);
         public IGenericRepository<FarmEmployee> FarmEmployeeRepository => farmEmployeeRepository ??= new GenericRepository<FarmEmployee>(context);
         public IGenericRepository<FeedLog> FeedLogRepository => feedLogRepository ??= new GenericRepository<FeedLog>(context);
@@ -124,7 +124,7 @@ namespace CFMS.Infrastructure.Repositories
         public IGenericRepository<TaskRequest> TaskRequestRepository => taskRequestRepository ??= new GenericRepository<TaskRequest>(context);
         public IGenericRepository<TaskResource> TaskResourceRepository => taskResourceRepository ??= new GenericRepository<TaskResource>(context);
         //public IGenericRepository<FrequencySchedule> FrequencyScheduleRepository => FrequencySchedule ??= new GenericRepository<FrequencySchedule>(context);
-        public IGenericRepository<TemplateCriterion> TemplateCriterionRepository => templateCriterionRepository ??= new GenericRepository<TemplateCriterion>(context);
+        //public IGenericRepository<TemplateCriterion> TemplateCriterionRepository => templateCriterionRepository ??= new GenericRepository<TemplateCriterion>(context);
         public IGenericRepository<VaccineLog> VaccineLogRepository => vaccineLogRepository ??= new GenericRepository<VaccineLog>(context);
         public IGenericRepository<WarePermission> WarePermissionRepository => warePermissionRepository ??= new GenericRepository<WarePermission>(context);
         public IGenericRepository<WareStock> WareStockRepository => wareStockRepository ??= new GenericRepository<WareStock>(context);
