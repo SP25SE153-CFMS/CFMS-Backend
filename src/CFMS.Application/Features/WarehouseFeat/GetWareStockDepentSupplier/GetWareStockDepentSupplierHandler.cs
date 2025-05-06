@@ -94,7 +94,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                             UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                             CurrentSupplierId = null,
                             CurrentSupplierName = "Không rõ nguồn gốc",
-                            SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                            SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                             SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -145,7 +145,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                             UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                             CurrentSupplierId = null,
                             CurrentSupplierName = "Không rõ nguồn gốc",
-                            SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                            SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                             SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -194,7 +194,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                             UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                             CurrentSupplierId = null,
                             CurrentSupplierName = "Không rõ nguồn gốc",
-                            SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                            SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                             SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -238,7 +238,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                             UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                             CurrentSupplierId = null,
                             CurrentSupplierName = "Không rõ nguồn gốc",
-                            SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                            SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                             SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -282,7 +282,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                             UnitSpecification = $"{resource.PackageSize} {unit.SubCategoryName}/{package.SubCategoryName}",
                             CurrentSupplierId = null,
                             CurrentSupplierName = "Không rõ nguồn gốc",
-                            SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                            SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                             SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -335,7 +335,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                                 CurrentSupplierName = rs.Supplier.SupplierName,
                                 CurrentSupplierCode = rs.Supplier.SupplierCode,
                                 ResourceSupplierId = rs.ResourceSupplierId,
-                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -386,7 +386,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                                 CurrentSupplierName = rs.Supplier.SupplierName,
                                 CurrentSupplierCode = rs.Supplier.SupplierCode,
                                 ResourceSupplierId = rs.ResourceSupplierId,
-                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -435,7 +435,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                                 CurrentSupplierName = rs.Supplier.SupplierName,
                                 CurrentSupplierCode = rs.Supplier.SupplierCode,
                                 ResourceSupplierId = rs.ResourceSupplierId,
-                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -479,7 +479,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                                 CurrentSupplierName = rs.Supplier.SupplierName,
                                 CurrentSupplierCode = rs.Supplier.SupplierCode,
                                 ResourceSupplierId = rs.ResourceSupplierId,
-                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
@@ -523,7 +523,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                                 CurrentSupplierName = rs.Supplier.SupplierName,
                                 CurrentSupplierCode = rs.Supplier.SupplierCode,
                                 ResourceSupplierId = rs.ResourceSupplierId,
-                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Chưa có nhà cung cấp",
+                                SupplierName = resourceSuppliers.Count > 0 ? $"Có {resourceSuppliers.Count} nhà cung cấp" : "Không rõ nguồn gốc",
                                 SuppliersName = resourceSuppliers
                                     .Where(rs => rs.Supplier != null)
                                     .GroupBy(rs => rs?.Supplier?.SupplierId)
