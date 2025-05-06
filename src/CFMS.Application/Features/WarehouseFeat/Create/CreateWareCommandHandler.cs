@@ -38,7 +38,7 @@ namespace CFMS.Application.Features.WarehouseFeat.Create
             }
 
             var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.ResourceTypeId) && s.IsDeleted == false).FirstOrDefault();
-            if (existFarm == null)
+            if (existResourceType == null)
             {
                 return BaseResponse<bool>.FailureResponse("Loại hàng hoá không tồn tại");
             }

@@ -77,7 +77,7 @@ namespace CFMS.Application.Events.Handlers
             }
 
             var wareStock = await _unitOfWork.WareStockRepository
-                .FirstOrDefaultAsync(x => x.WareId.Equals(notification.WareId) && x.ResourceId.Equals(resource.ResourceId) && x.SupplierId.Equals(notification.SupplierId));
+                .FirstOrDefaultAsync(x => x.WareId.Equals(notification.WareId) && x.ResourceId.Equals(resource.ResourceId) && x.SupplierId == notification.SupplierId);
 
 
             if (notification.IsCreatedCall && resource != null && wareStock != null)
@@ -86,13 +86,13 @@ namespace CFMS.Application.Events.Handlers
             }
 
 
-            var tempStock = await _unitOfWork.WareStockRepository
-                  .FirstOrDefaultAsync(x => x.WareId.Equals(notification.WareId) && x.ResourceId.Equals(resource.ResourceId) && x.SupplierId == null);
+            //var tempStock = await _unitOfWork.WareStockRepository
+            //      .FirstOrDefaultAsync(x => x.WareId.Equals(notification.WareId) && x.ResourceId.Equals(resource.ResourceId) && x.SupplierId == null);
 
-            if (tempStock != null)
-            {
-                _unitOfWork.WareStockRepository.Delete(tempStock);
-            }
+            //if (tempStock != null)
+            //{
+            //    _unitOfWork.WareStockRepository.Delete(tempStock);
+            //}
 
             wareStock ??= new WareStock
             {

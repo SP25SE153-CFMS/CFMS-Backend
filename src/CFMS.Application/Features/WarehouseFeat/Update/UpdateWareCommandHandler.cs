@@ -28,7 +28,7 @@ namespace CFMS.Application.Features.WarehouseFeat.Update
             }
 
             var existName = _unitOfWork.WarehouseRepository.Get(filter: s => s.FarmId.Equals(request.FarmId) && s.WarehouseName.Equals(request.WarehouseName) && s.IsDeleted == false && s.WareId != request.WareId).FirstOrDefault();
-            if (existWare != null)
+            if (existName != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên kho đã tồn tại");
             }
@@ -40,7 +40,7 @@ namespace CFMS.Application.Features.WarehouseFeat.Update
             }
 
             var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: s => s.SubCategoryId.Equals(request.ResourceTypeId) && s.IsDeleted == false).FirstOrDefault();
-            if (existFarm == null)
+            if (existResourceType == null)
             {
                 return BaseResponse<bool>.FailureResponse("Loại hàng hoá không tồn tại");
             }
