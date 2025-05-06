@@ -166,7 +166,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                             {
                                 RequestId = newRequest.RequestId,
                                 InventoryRequestTypeId = requestType?.SubCategoryId,
-                                WareToId = ware?.WareId,
+                                WareToId = ware?.WareId
                             };
 
                             _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
@@ -263,9 +263,9 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return BaseResponse<bool>.SuccessResponse(message: "Cập nhật công việc thành công");
+                    return BaseResponse<bool>.SuccessResponse(message: "Báo cáo công việc thành công");
                 }
-                return BaseResponse<bool>.FailureResponse(message: "Cập nhật không thành công");
+                return BaseResponse<bool>.FailureResponse(message: "Báo cáo công việc thất bại");
             }
             catch (Exception ex)
             {
@@ -332,16 +332,44 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                 if (taskType.Equals("inject"))
                 {
-                    var vaccineLog = new VaccineLog
-                    {
-                        Notes = request.Note,
-                        Status = 1,
-                        Reaction = request.Reaction,
-                        ChickenBatchId = chickenBatch,
-                        TaskId = request.TaskId
-                    };
+                    var unit = _ = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("kg") && x.IsDeleted == false).FirstOrDefault();
 
-                    _unitOfWork.VaccineLogRepository.Insert(vaccineLog);
+                    var groupResources = request?.TaskResources
+                        .Select(detail => new
+                        {
+                            Resource = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(
+                            filter: r => r.ResourceId == detail.ResourceId,
+                            include: x => x
+                                .Include(t => t.HarvestProduct)
+                                .Include(t => t.Food)
+                                .Include(t => t.Medicine)
+                                .Include(t => t.Chicken)
+                                .Include(t => t.Equipment))
+                                .FirstOrDefault(),
+                            ConsumedQuantity = detail.ConsumedQuantity,
+                        })
+                        .GroupBy(x => new
+                        {
+                            x?.Resource?.ResourceId
+                        })
+                        .ToList();
+
+                    foreach (var group in groupResources)
+                    {
+                        foreach (var detail in group)
+                        {
+                            var vaccineLog = new VaccineLog
+                            {
+                                Notes = request.Note,
+                                Status = 1,
+                                Reaction = request.Reaction,
+                                ChickenBatchId = chickenBatch,
+                                TaskId = request.TaskId,
+                            };
+
+                            _unitOfWork.VaccineLogRepository.Insert(vaccineLog);
+                        }
+                    }
                 }
 
                 if (taskType.Equals("harvest"))
@@ -384,13 +412,12 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                     foreach (var detail in request.HealthLogDetails)
                     {
-                        var healthLogDetail = new HealthLogDetail
+                        healthLog.HealthLogDetails.Add(new HealthLogDetail
                         {
                             HealthLogId = healthLog.HealthLogId,
                             CriteriaId = detail.CriteriaId,
                             Result = detail.Result,
-                        };
-                        _unitOfWork.HealthLogDetailRepository.Insert(healthLogDetail);
+                        });
                     }
 
                     _unitOfWork.HealthLogRepository.Insert(healthLog);

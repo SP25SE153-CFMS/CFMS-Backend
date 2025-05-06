@@ -56,8 +56,9 @@ namespace CFMS.Application.Features.RequestFeat.GetReceiptByFarmId
                         FarmId = r.FarmId,
                         WareFromId = inventoryReq?.WareFromId,
                         WareToId = inventoryReq?.WareToId,
-                        InventoryReceiptDetails = r.InventoryReceiptDetails
-                    };
+                        InventoryReceiptDetails = r.InventoryReceiptDetails,
+                        UserId = r.CreatedByUserId
+                        };
                 }).ToList();
 
             return BaseResponse<IEnumerable<ReceiptResponse>>.SuccessResponse(data: existReceipt);

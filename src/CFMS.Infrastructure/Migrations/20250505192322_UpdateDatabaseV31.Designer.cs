@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CFMS.Infrastructure.Migrations
 {
     [DbContext(typeof(CfmsDbContext))]
-    [Migration("20250504081514_UpdateDatabaseV28")]
-    partial class UpdateDatabaseV28
+    [Migration("20250505192322_UpdateDatabaseV31")]
+    partial class UpdateDatabaseV31
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1235,6 +1235,9 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
+                    b.Property<decimal?>("ActualItemAmount")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime?>("CheckedAt")
                         .HasColumnType("timestamp without time zone");
 
@@ -1268,10 +1271,16 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("character varying");
 
+                    b.Property<Guid?>("ResourceId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid?>("TaskId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UnitId")
                         .HasColumnType("uuid");
 
                     b.HasKey("HealthLogId")
@@ -1282,6 +1291,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("LastEditedByUserId");
+
+                    b.HasIndex("ResourceId");
 
                     b.HasIndex("TaskId");
 
@@ -2721,6 +2732,9 @@ namespace CFMS.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
+                    b.Property<decimal?>("ActualVaccineAmount")
+                        .HasColumnType("numeric");
+
                     b.Property<Guid?>("ChickenBatchId")
                         .HasColumnType("uuid");
 
@@ -2748,11 +2762,20 @@ namespace CFMS.Infrastructure.Migrations
                     b.Property<string>("Reaction")
                         .HasColumnType("character varying");
 
+                    b.Property<Guid?>("ResourceId")
+                        .HasColumnType("uuid");
+
                     b.Property<int?>("Status")
                         .HasColumnType("integer");
 
                     b.Property<Guid?>("TaskId")
                         .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UnitId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("VaccineDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("VaccineLogId")
                         .HasName("VaccineLog_pkey");
@@ -2762,6 +2785,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("LastEditedByUserId");
+
+                    b.HasIndex("ResourceId");
 
                     b.HasIndex("TaskId");
 
@@ -3670,6 +3695,10 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("CFMS.Domain.Entities.Resource", "Resource")
+                        .WithMany()
+                        .HasForeignKey("ResourceId");
+
                     b.HasOne("CFMS.Domain.Entities.Task", "Task")
                         .WithMany("HealthLogs")
                         .HasForeignKey("TaskId")
@@ -3680,6 +3709,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("LastEditedByUser");
+
+                    b.Navigation("Resource");
 
                     b.Navigation("Task");
                 });
@@ -4530,6 +4561,10 @@ namespace CFMS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CFMS.Domain.Entities.Resource", "Resource")
+                        .WithMany()
+                        .HasForeignKey("ResourceId");
+
                     b.HasOne("CFMS.Domain.Entities.Task", "Task")
                         .WithMany("VaccineLogs")
                         .HasForeignKey("TaskId")
@@ -4540,6 +4575,8 @@ namespace CFMS.Infrastructure.Migrations
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("LastEditedByUser");
+
+                    b.Navigation("Resource");
 
                     b.Navigation("Task");
                 });

@@ -36,6 +36,7 @@ namespace CFMS.Application.Features.TaskFeat.GetTasksByCurrentUser
                include: q => q
                     .Include(t => t.Assignments)
                         .ThenInclude(s => s.AssignedTo)
+                            .ThenInclude(s => s.FarmEmployees)
                     .Include(t => t.TaskType)
                     .Include(t => t.ShiftSchedules)
                         .ThenInclude(s => s.Shift)
@@ -84,6 +85,9 @@ namespace CFMS.Application.Features.TaskFeat.GetTasksByCurrentUser
                     .Include(t => t.FeedLogs)
                         .ThenInclude(s => s.Resource)
                             .ThenInclude(z => z.Package)
+                    .Include(t => t.VaccineLogs)
+                    .Include(t => t.HealthLogs)
+                        .ThenInclude(s => s.HealthLogDetails)
                     ).ToList();
 
             return BaseResponse<IEnumerable<TaskResponse>>.SuccessResponse(data: _mapper.Map<IEnumerable<TaskResponse>>(existTasks));

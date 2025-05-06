@@ -25,6 +25,8 @@ namespace CFMS.Application.DTOs.Receipt
 
         public Guid? WareToId { get; set; }
 
+        public Guid? UserId { get; set; }
+
         public ICollection<InventoryReceiptDetail> InventoryReceiptDetails { get; set; } = new List<InventoryReceiptDetail>();
     }
 }

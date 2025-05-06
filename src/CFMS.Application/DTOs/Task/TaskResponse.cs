@@ -29,14 +29,18 @@ namespace CFMS.Application.DTOs.Task
 
         public SubCategory? TaskType { get; set; }
 
-        public ShiftScheduleDto ShiftSchedule { get; set; }
+        public ShiftScheduleDto? ShiftSchedule { get; set; }
 
-        public TaskLocationDto TaskLocation { get; set; }
+        public TaskLocationDto? TaskLocation { get; set; }
 
         public ICollection<AssignmentDto> Assignments { get; set; } = new List<AssignmentDto>();
 
         public ICollection<TaskResourceDto> TaskResources { get; set; } = new List<TaskResourceDto>();
 
         public ICollection<FeedLogDto> FeedLogs { get; set; } = new List<FeedLogDto>();
+
+        //public ICollection<VaccineLogDto> VaccineLogs { get; set; } = new List<VaccineLogDto>();
+
+        //public ICollection<HealthLogDto> HealthLogs { get; set; } = new List<HealthLogDto>();
     }
 }
