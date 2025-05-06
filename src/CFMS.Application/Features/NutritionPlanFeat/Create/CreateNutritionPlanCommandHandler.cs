@@ -21,7 +21,7 @@ namespace CFMS.Application.Features.NutritionPlanFeat.Create
         {
             try
             {
-                var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) && p.IsDeleted == false).FirstOrDefault();
+                var existNutritionPlan = _unitOfWork.NutritionPlanRepository.Get(filter: p => p.Name.Equals(request.Name) && p.IsDeleted == false && p.FarmId.Equals(request.FarmId)).FirstOrDefault();
                 if (existNutritionPlan != null)
                 {
                     return BaseResponse<bool>.FailureResponse("Tên chế độ dinh dưỡng đã tồn tại");

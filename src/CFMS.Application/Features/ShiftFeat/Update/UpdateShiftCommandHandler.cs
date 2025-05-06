@@ -27,11 +27,11 @@ namespace CFMS.Application.Features.ShiftFeat.Update
                 return BaseResponse<bool>.FailureResponse(message: "Ca làm không tồn tại");
             }
 
-            //var existName = _unitOfWork.ShiftRepository.Get(filter: s => s.ShiftName.Equals(request.ShiftName) && s.IsDeleted == false && s.ShiftId.Equals(request.ShiftId)).FirstOrDefault();
-            //if (existName == null)
-            //{
-            //    return BaseResponse<bool>.FailureResponse("Tên ca làm đã tồn tại");
-            //}
+            var existName = _unitOfWork.ShiftRepository.Get(filter: s => s.ShiftName.Equals(request.ShiftName) && s.FarmId.Equals(existShift.FarmId) && s.IsDeleted == false && s.ShiftId != request.ShiftId).FirstOrDefault();
+            if (existName == null)
+            {
+                return BaseResponse<bool>.FailureResponse("Tên ca làm đã tồn tại");
+            }
 
             try
             {

@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.ShiftFeat.Create
 
         public async Task<BaseResponse<bool>> Handle(CreateShiftCommand request, CancellationToken cancellationToken)
         {
-            var existShift = _unitOfWork.ShiftRepository.Get(filter: s => s.ShiftName.Equals(request.ShiftName) && s.IsDeleted == false).FirstOrDefault();
+            var existShift = _unitOfWork.ShiftRepository.Get(filter: s => s.ShiftName.Equals(request.ShiftName) && s.FarmId.Equals(request.FarmId) && s.IsDeleted == false).FirstOrDefault();
             if (existShift != null)
             {
                 return BaseResponse<bool>.FailureResponse("Tên ca làm đã tồn tại");
