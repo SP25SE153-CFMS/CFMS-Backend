@@ -45,7 +45,7 @@ namespace CFMS.Application.Features.SupplierFeat.GetSupplierByResourceId
                     SupplierId = t.SupplierId,
                     SupplierName = t?.Supplier?.SupplierName,
                     SupplierCode = t?.Supplier?.SupplierCode,
-                    ResourceSupplierId = t.ResourceSupplierId
+                    ResourceSupplierId = t?.ResourceSupplierId
                 };
             })
             .Where(x => x != null)

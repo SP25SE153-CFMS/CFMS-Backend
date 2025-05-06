@@ -5,6 +5,7 @@ using CFMS.Application.Features.SupplierFeat.DeleteResourceSupplier;
 using CFMS.Application.Features.SupplierFeat.GetResourceSuppliers;
 using CFMS.Application.Features.SupplierFeat.GetSupplier;
 using CFMS.Application.Features.SupplierFeat.GetSupplierByResourceId;
+using CFMS.Application.Features.SupplierFeat.GetSupplierByResourceSupplierId;
 using CFMS.Application.Features.SupplierFeat.GetSuppliers;
 using CFMS.Application.Features.SupplierFeat.GetSuppliersByFarmId;
 using CFMS.Application.Features.SupplierFeat.Update;
@@ -94,6 +95,13 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> GetSupplierByResourceId(Guid resourceId)
         {
             var result = await Send(new GetSupplierByResourceIdQuery(resourceId));
+            return result;
+        }
+
+        [HttpGet("by-resource-supplier/{resourceSupplierId}")]
+        public async Task<IActionResult> GetSupplierByResourceSupplierId(Guid resourceSupplierId)
+        {
+            var result = await Send(new GetSupplierByResourceSupplierIdQuery(resourceSupplierId));
             return result;
         }
     }
