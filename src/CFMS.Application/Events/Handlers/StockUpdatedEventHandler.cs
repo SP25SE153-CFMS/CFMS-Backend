@@ -95,7 +95,7 @@ namespace CFMS.Application.Events.Handlers
                 WareId = notification.WareId,
                 ResourceId = resource?.ResourceId,
                 Quantity = 0,
-                SupplierId = null
+                SupplierId = notification.SupplierId
             };
 
             ware.CurrentQuantity += notification.Quantity;
