@@ -14,8 +14,6 @@ public partial class FeedLog : EntityAudit
 
     public decimal? ActualFeedAmount { get; set; }
 
-    public Guid? UnitId { get; set; }
-
     public Guid? TaskId { get; set; }
 
     public string? Note { get; set; }
@@ -27,9 +25,6 @@ public partial class FeedLog : EntityAudit
 
     [JsonIgnore]
     public virtual Task? Task { get; set; }
-
-    [JsonIgnore]
-    public virtual SubCategory? Unit { get; set; }
 
     public virtual Resource? Resource { get; set; }
 }

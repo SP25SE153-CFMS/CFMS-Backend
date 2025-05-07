@@ -339,7 +339,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 ChickenBatchId = chickenBatch,
                                 FeedingDate = DateTime.Now.ToLocalTime(),
                                 ActualFeedAmount = detail.ConsumedQuantity,
-                                UnitId = unit?.SubCategoryId,
                                 TaskId = request?.TaskId,
                                 Note = request?.Reason,
                                 ResourceId = detail.Resource?.ResourceId
@@ -380,11 +379,12 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                         {
                             var vaccineLog = new VaccineLog
                             {
-                                Notes = request.Note,
-                                Status = 1,
+                                Note = request.Note,
+                                ActualVaccineAmount = detail.ConsumedQuantity,
                                 Reaction = request.Reaction,
                                 ChickenBatchId = chickenBatch,
                                 TaskId = request.TaskId,
+                                ResourceId = detail.Resource?.ResourceId
                             };
 
                             _unitOfWork.VaccineLogRepository.Insert(vaccineLog);
