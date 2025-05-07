@@ -908,10 +908,6 @@ public partial class CfmsDbContext : DbContext
             entity.HasOne(d => d.Resource).WithMany(p => p.FeedLogs)
                 .HasForeignKey(d => d.ResourceId)
                 .HasConstraintName("FeedLog_ResourceId_fkey");
-
-            entity.HasOne(d => d.Unit).WithMany(p => p.FeedLogs)
-                .HasForeignKey(d => d.UnitId)
-                .HasConstraintName("FeedLog_UnitId_fkey");
         });
 
         modelBuilder.Entity<FeedSession>(entity =>
@@ -1576,7 +1572,7 @@ public partial class CfmsDbContext : DbContext
             entity.ToTable("VaccineLog");
 
             entity.Property(e => e.VaccineLogId).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.Notes).HasColumnType("character varying");
+            entity.Property(e => e.Note).HasColumnType("character varying");
             entity.Property(e => e.Reaction).HasColumnType("character varying");
 
             entity.HasOne(d => d.ChickenBatch).WithMany(p => p.VaccineLogs)
