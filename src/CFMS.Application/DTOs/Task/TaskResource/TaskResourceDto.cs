@@ -19,5 +19,7 @@ namespace CFMS.Application.DTOs.Task.TaskResource
         public string? SpecQuantity { get; set; }
 
         public string? UnitSpecification { get; set; }
+
+        public Guid? SupplierId { get; set; }
     }
 }
