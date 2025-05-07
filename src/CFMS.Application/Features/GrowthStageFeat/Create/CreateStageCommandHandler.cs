@@ -32,7 +32,7 @@ namespace CFMS.Application.Features.GrowthStageFeat.Create
             }
 
             var groupStages = _unitOfWork.GrowthStageRepository.Get(
-                filter: s => s.StageCode.Equals(request.StageCode) && s.IsDeleted == false,
+                filter: s => s.StageCode.Equals(request.StageCode) && s.IsDeleted == false && s.FarmId.Equals(request.FarmId),
                 orderBy: s => s.OrderBy(s => s.MinAgeWeek)
             ).ToList();
 
