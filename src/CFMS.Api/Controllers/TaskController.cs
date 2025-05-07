@@ -1,4 +1,5 @@
-﻿using CFMS.Application.Features.TaskFeat.CompleteTask;
+﻿using CFMS.Application.Features.TaskFeat.CancelTask;
+using CFMS.Application.Features.TaskFeat.CompleteTask;
 using CFMS.Application.Features.TaskFeat.Create;
 using CFMS.Application.Features.TaskFeat.Delete;
 using CFMS.Application.Features.TaskFeat.GetTask;
@@ -76,6 +77,13 @@ namespace CFMS.Api.Controllers
 
         [HttpPut("complete-task")]
         public async Task<IActionResult> CompleteTask(CompleteTaskCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }        
+        
+        [HttpPut("cancel-task")]
+        public async Task<IActionResult> CancelTask(CancelTaskCommand command)
         {
             var result = await Send(command);
             return result;
