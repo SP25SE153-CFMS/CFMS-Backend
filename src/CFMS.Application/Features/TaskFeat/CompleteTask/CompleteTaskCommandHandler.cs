@@ -143,37 +143,50 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                     .FirstOrDefault(),
                             SuppliedQuantity = detail.SuppliedQuantity,
                             ConsumedQuantity = detail.ConsumedQuantity,
+                            SupplierId = detail.SupplierId
                         })
                         .GroupBy(x =>
                         {
                             var resource = x.Resource;
-                            if (resource?.Food != null) return "Kho thực phẩm";
-                            if (resource?.Medicine != null) return "Kho dược phẩm";
-                            if (resource?.Equipment != null) return "Kho thiết bị";
-                            if (resource?.Chicken != null) return "Kho con giống";
-                            if (resource?.HarvestProduct != null) return "Kho thu hoạch";
-                            return "Kho khác";
+                            if (resource?.Food != null) return "food";
+                            if (resource?.Medicine != null) return "medicine";
+                            if (resource?.Equipment != null) return "equipment";
+                            if (resource?.Chicken != null) return "breeding";
+                            if (resource?.HarvestProduct != null) return "harvest_product";
+                            return "others";
                         })
                         .ToList();
 
                         foreach (var group in groupedResources)
                         {
-                            var ware = _unitOfWork.WarehouseRepository
-                                .Get(filter: w => w.WarehouseName.Equals(group.Key) && w.IsDeleted == false)
-                                .FirstOrDefault();
-
-                            var inventoryRequest = new InventoryRequest
-                            {
-                                RequestId = newRequest.RequestId,
-                                InventoryRequestTypeId = requestType?.SubCategoryId,
-                                WareToId = ware?.WareId
-                            };
-
-                            _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
-                            await _unitOfWork.SaveChangesAsync();
+                            bool isCreateRequest = false;
+                            var inventoryRequest = new InventoryRequest();
 
                             foreach (var detail in group)
                             {
+                                var stock = _unitOfWork.WareStockRepository
+                                    .Get(filter: w => w.ResourceId.Equals(detail.Resource.ResourceId) && w.SupplierId == detail.SupplierId) 
+                                    .FirstOrDefault();
+
+                                var ware = _unitOfWork.WarehouseRepository
+                                    .Get(filter: w => w.WareId.Equals(stock.WareId) && w.IsDeleted == false)
+                                    .FirstOrDefault();
+                                
+                                if (!isCreateRequest)
+                                {
+                                    inventoryRequest = new InventoryRequest
+                                    {
+                                        RequestId = newRequest.RequestId,
+                                        InventoryRequestTypeId = requestType?.SubCategoryId,
+                                        WareToId = ware?.WareId
+                                    };
+
+                                    _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
+                                    await _unitOfWork.SaveChangesAsync();
+
+                                    isCreateRequest = true;
+                                }
+
                                 var inventoryRequestDetail = new InventoryRequestDetail
                                 {
                                     InventoryRequestId = inventoryRequest.InventoryRequestId,
