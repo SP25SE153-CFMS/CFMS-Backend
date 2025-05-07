@@ -76,7 +76,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                     var quantity = resource.WareStocks
                         .FirstOrDefault(x => x.ResourceId == resource.ResourceId && x.WareId == request.WareId)?.Quantity ?? 0;
 
-                    if (existResourceType.SubCategoryName == "food")
+                    if (existResourceType.SubCategoryName == "food" && resource.WareStocks.Any(x => x.SupplierId == null))
                     {
                         var defaultResponse = (WareStockResponseBase)new WareStockFoodResponse
                         {
@@ -119,7 +119,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                         return new List<WareStockResponseBase> { defaultResponse };
                     }
 
-                    if (existResourceType.SubCategoryName == "equipment")
+                    if (existResourceType.SubCategoryName == "equipment" && resource.WareStocks.Any(x => x.SupplierId == null))
                     {
                         var existMaterial = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.Equipment.MaterialId) && f.IsDeleted == false).FirstOrDefault();
 
@@ -170,7 +170,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                         return new List<WareStockEquipmentResponse> { defaultResponse };
                     }
 
-                    if (existResourceType.SubCategoryName == "medicine")
+                    if (existResourceType.SubCategoryName == "medicine" && resource.WareStocks.Any(x => x.SupplierId == null))
                     {
                         var existDisease = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.Medicine.DiseaseId) && f.IsDeleted == false).FirstOrDefault();
 
@@ -219,7 +219,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                         return new List<WareStockMedicineResponse> { defaultResponse };
                     }
 
-                    if (existResourceType.SubCategoryName == "breeding")
+                    if (existResourceType.SubCategoryName == "breeding" && resource.WareStocks.Any(x => x.SupplierId == null))
                     {
                         var existChickenTypeName = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.Chicken.ChickenTypeId) && f.IsDeleted == false).FirstOrDefault();
 
@@ -263,7 +263,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                         return new List<WareStockChickenBreedingResponse> { defaultResponse };
                     }
 
-                    if (existResourceType.SubCategoryName == "harvest_product")
+                    if (existResourceType.SubCategoryName == "harvest_product" && resource.WareStocks.Any(x => x.SupplierId == null))
                     {
                         var existHarvestProductType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.HarvestProduct.HarvestProductTypeId) && f.IsDeleted == false).FirstOrDefault();
 
@@ -315,9 +315,9 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                         var quantity = resource.WareStocks
                             .FirstOrDefault(w => w.WareId == request.WareId && w.SupplierId == rs.Supplier.SupplierId)?.Quantity ?? 0;
 
-                        if (existResourceType.SubCategoryName == "food")
+                        if (existResourceType.SubCategoryName == "food" && resource.WareStocks.Any(x => x.SupplierId == rs.Supplier.SupplierId))
                         {
-                            return (WareStockResponseBase) new WareStockFoodResponse
+                            return (WareStockResponseBase)new WareStockFoodResponse
                             {
                                 ResourceId = resource.ResourceId,
                                 FoodId = resource.FoodId ?? Guid.Empty,
@@ -358,7 +358,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                             };
                         }
 
-                        if (existResourceType.SubCategoryName == "equipment")
+                        if (existResourceType.SubCategoryName == "equipment" && resource.WareStocks.Any(x => x.SupplierId == rs.Supplier.SupplierId))
                         {
                             var existMaterial = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.Equipment.MaterialId) && f.IsDeleted == false).FirstOrDefault();
 
@@ -409,7 +409,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                             };
                         }
 
-                        if (existResourceType.SubCategoryName == "medicine")
+                        if (existResourceType.SubCategoryName == "medicine" && resource.WareStocks.Any(x => x.SupplierId == rs.Supplier.SupplierId))
                         {
                             var existDisease = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.Medicine.DiseaseId) && f.IsDeleted == false).FirstOrDefault();
 
@@ -458,7 +458,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                             };
                         }
 
-                        if (existResourceType.SubCategoryName == "breeding")
+                        if (existResourceType.SubCategoryName == "breeding" && resource.WareStocks.Any(x => x.SupplierId == rs.Supplier.SupplierId))
                         {
                             var existChickenTypeName = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.Chicken.ChickenTypeId) && f.IsDeleted == false).FirstOrDefault();
 
@@ -502,7 +502,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                             };
                         }
 
-                        if (existResourceType.SubCategoryName == "harvest_product")
+                        if (existResourceType.SubCategoryName == "harvest_product" && resource.WareStocks.Any(x => x.SupplierId == rs.Supplier.SupplierId))
                         {
                             var existHarvestProductType = _unitOfWork.SubCategoryRepository.Get(filter: f => f.SubCategoryId.Equals(resource.HarvestProduct.HarvestProductTypeId) && f.IsDeleted == false).FirstOrDefault();
 
@@ -550,7 +550,9 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
                     });
 
                 return result;
-            }).ToList();
+            })
+            .Where(x => x != null)
+            .ToList();
             return BaseResponse<IEnumerable<object>>.SuccessResponse(responses);
         }
     }
