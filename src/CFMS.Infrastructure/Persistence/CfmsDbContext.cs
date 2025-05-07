@@ -250,7 +250,7 @@ public partial class CfmsDbContext : DbContext
         .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<StockReceipt>()
-        .HasOne(a => a.CreatedByUser)
+        .HasOne(a => a.LastEditedByUser)
         .WithMany()
         .HasForeignKey(a => a.LastEditedByUserId)
         .OnDelete(DeleteBehavior.Restrict);
