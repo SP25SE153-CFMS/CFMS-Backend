@@ -49,6 +49,9 @@ namespace CFMS.Application.Features.RequestFeat.GetRequest
                 .Include(r => r.InventoryRequests)
                     .ThenInclude(r => r.InventoryReceipts)
                         .ThenInclude(r => r.InventoryReceiptDetails)
+                .Include(r => r.InventoryRequests)
+                    .ThenInclude(r => r.InventoryRequestDetails)
+                        .ThenInclude(r => r.Unit)
                 ).FirstOrDefault();
             if (existRequest == null)
             {

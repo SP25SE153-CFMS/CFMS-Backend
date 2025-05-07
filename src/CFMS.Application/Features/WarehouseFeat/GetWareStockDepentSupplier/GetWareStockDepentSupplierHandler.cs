@@ -551,7 +551,7 @@ namespace CFMS.Application.Features.WarehouseFeat.GetWareStockDepentSupplier
 
                 return result;
             })
-            .Where(x => x != null)
+            //.Where(x => x != null)
             .ToList();
             return BaseResponse<IEnumerable<object>>.SuccessResponse(responses);
         }
