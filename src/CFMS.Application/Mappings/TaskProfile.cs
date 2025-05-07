@@ -103,6 +103,7 @@ namespace CFMS.Application.Mappings
                     };
                     dest.SpecQuantity = $"{src.Quantity} {src.Unit?.SubCategoryName}";
                     dest.UnitSpecification = $"{packageSize} {unit}/{package}";
+                    dest.SupplierId = src.SupplierId;
                 });
 
             CreateMap<Assignment, AssignmentDto>()
