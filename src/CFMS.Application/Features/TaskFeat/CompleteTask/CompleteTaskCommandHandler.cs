@@ -322,10 +322,12 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 .FirstOrDefault(),
                             ConsumedQuantity = detail.ConsumedQuantity,
                         })
+                        .Where(x => x?.Resource?.FoodId != null)
                         .GroupBy(x => new
                         {
                             x?.Resource?.ResourceId
                         })
+                        .Where(x => x != null)
                         .ToList();
 
                     foreach (var group in groupResources)
