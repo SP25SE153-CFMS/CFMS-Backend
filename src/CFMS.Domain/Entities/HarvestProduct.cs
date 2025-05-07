@@ -1,4 +1,6 @@
-﻿namespace CFMS.Domain.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace CFMS.Domain.Entities
 {
     public class HarvestProduct : EntityAudit
     {
