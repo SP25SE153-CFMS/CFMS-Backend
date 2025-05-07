@@ -34,4 +34,6 @@ public partial class WareTransaction : EntityAudit
     public virtual SubCategory? TransactionTypeNavigation { get; set; }
 
     public virtual Warehouse? Ware { get; set; }
+
+    public decimal CurrentQuantity { get; set; }
 }

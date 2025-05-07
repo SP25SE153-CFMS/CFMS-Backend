@@ -12,11 +12,13 @@ namespace CFMS.Domain.Entities
 
         public Guid? UnitId { get; set; }
 
-        public Guid ToWareId { get; set; }
+        public Guid ToWarehouseId { get; set; }
 
         public Guid? ResourceId { get; set; }
 
         public Guid? SupplierId { get; set; }
+
+        public Guid? WarehouseWareId { get; set; }
 
         public virtual SubCategory? Unit { get; set; }
 

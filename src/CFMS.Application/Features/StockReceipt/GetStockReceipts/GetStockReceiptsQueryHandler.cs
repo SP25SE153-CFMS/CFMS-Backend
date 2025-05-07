@@ -15,7 +15,10 @@ namespace CFMS.Application.Features.StockReceipt.GetStockReceipts
 
         public async Task<BaseResponse<IEnumerable<Domain.Entities.StockReceipt>>> Handle(GetStockReceiptsQuery request, CancellationToken cancellationToken)
         {
-            var stockReceipts = _unitOfWork.StockReceiptRepository.Get(filter: s => !s.IsDeleted && s.FarmId.Equals(request.FarmId));
+            var stockReceipts = _unitOfWork.StockReceiptRepository.Get(
+                filter: s => !s.IsDeleted && s.FarmId.Equals(request.FarmId),
+                includeProperties: "CreatedByUser,ReceiptType"
+                );
             return BaseResponse<IEnumerable<Domain.Entities.StockReceipt>>.SuccessResponse(data: stockReceipts);
         }
     }

@@ -3,6 +3,7 @@ using CFMS.Application.Events;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Interfaces;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CFMS.Application.Features.StockReceipt.Create
 {
@@ -25,7 +26,7 @@ namespace CFMS.Application.Features.StockReceipt.Create
                 {
                     ReceiptTypeId = request.ReceiptTypeId,
                     FarmId = request.FarmId,
-                    StockReceiptCode = $"PNK-{DateTime.Now.ToLocalTime().Ticks}"
+                    StockReceiptCode = $"DNK-{DateTime.Now.ToLocalTime().Ticks}"
                 };
 
                 foreach (var stockReceiptDetail in request.StockReceiptDetails)
@@ -60,7 +61,7 @@ namespace CFMS.Application.Features.StockReceipt.Create
                         Quantity = stockReceiptDetail.Quantity,
                         ResourceId = stockReceiptDetail.ResourceId,
                         SupplierId = stockReceiptDetail.SupplierId,
-                        ToWareId = stockReceiptDetail.ToWareId,
+                        ToWarehouseId = stockReceiptDetail.ToWareId,
                         UnitId = stockReceiptDetail.UnitId,
                     });
 
@@ -76,6 +77,19 @@ namespace CFMS.Application.Features.StockReceipt.Create
                             false,
                             stockReceiptDetail.SupplierId
                         ));
+
+                    var transaction = new WareTransaction
+                    {
+                        WareId = stockReceiptDetail.ToWareId,
+                        ResourceId = existResource.ResourceId,
+                        Quantity = (int)stockReceiptDetail.Quantity,
+                        UnitId = existResource?.UnitId,
+                        BatchNumber = 1,
+                        TransactionType = Guid.Parse("2d004c3f-f081-4986-b88a-644a43200f4b"),
+                        TransactionDate = DateTime.Now.ToLocalTime(),
+                        LocationToId = stockReceiptDetail.ToWareId
+                    };
+                    _unitOfWork.WareTransactionRepository.Insert(transaction);
                 }
 
                 _unitOfWork.StockReceiptRepository.Insert(stockReceipt);
