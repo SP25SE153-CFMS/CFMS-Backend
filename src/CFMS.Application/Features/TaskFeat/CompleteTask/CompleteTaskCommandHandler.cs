@@ -306,8 +306,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                 if (taskType.Equals("feed"))
                 {
-                    var unit = _ = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("kg") && x.IsDeleted == false).FirstOrDefault();
-
                     var groupResources = request?.TaskResources
                         .Select(detail => new
                         {
@@ -351,8 +349,6 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
                 if (taskType.Equals("inject"))
                 {
-                    var unit = _ = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Contains("kg") && x.IsDeleted == false).FirstOrDefault();
-
                     var groupResources = request?.TaskResources
                         .Select(detail => new
                         {
@@ -367,6 +363,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 .FirstOrDefault(),
                             ConsumedQuantity = detail.ConsumedQuantity,
                         })
+                        .Where(x => x?.Resource?.MedicineId != null)
                         .GroupBy(x => new
                         {
                             x?.Resource?.ResourceId
@@ -384,7 +381,8 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 Reaction = request.Reaction,
                                 ChickenBatchId = chickenBatch,
                                 TaskId = request.TaskId,
-                                ResourceId = detail.Resource?.ResourceId
+                                ResourceId = detail.Resource?.ResourceId,
+                                VaccineDate = DateTime.UtcNow.ToLocalTime().AddHours(7)
                             };
 
                             _unitOfWork.VaccineLogRepository.Insert(vaccineLog);

@@ -24,7 +24,7 @@ namespace CFMS.Application.Features.HarvestProductFeat.Delete
             var existHavest = _unitOfWork.HarvestProductRepository.Get(filter: f => f.HarvestProductId.Equals(request.Id) && f.IsDeleted == false).FirstOrDefault();
             if (existHavest == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Thực phẩm không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Sản phẩm không tồn tại");
             }
 
             try

@@ -39,7 +39,7 @@ namespace CFMS.Application.DTOs.Task
 
         public ICollection<FeedLogDto> FeedLogs { get; set; } = new List<FeedLogDto>();
 
-        //public ICollection<VaccineLogDto> VaccineLogs { get; set; } = new List<VaccineLogDto>();
+        public ICollection<VaccineLogDto> VaccineLogs { get; set; } = new List<VaccineLogDto>();
 
         //public ICollection<HealthLogDto> HealthLogs { get; set; } = new List<HealthLogDto>();
     }
