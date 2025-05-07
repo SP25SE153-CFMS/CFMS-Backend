@@ -29,7 +29,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.CloseChickenBatch
 
             try
             {
-                existBatch.EndDate = DateTime.Now.ToLocalTime();
+                existBatch.EndDate = DateTime.UtcNow.ToLocalTime().AddHours(7);
                 existBatch.Status = 2;
 
                 existCoop.Status = 0;

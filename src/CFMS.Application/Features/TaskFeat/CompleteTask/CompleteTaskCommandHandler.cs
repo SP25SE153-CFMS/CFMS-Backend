@@ -263,7 +263,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 ExpectedQuantity = detail?.HarvestQuantity,
                                 UnitId = detail?.Resource?.UnitId,
                                 Reason = request?.Reason,
-                                ExpectedDate = DateTime.Now.ToLocalTime(),
+                                ExpectedDate = DateTime.UtcNow.ToLocalTime().AddHours(7),
                                 Note = request?.Note
                             };
 
@@ -274,7 +274,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     }
                 }
 
-                existTask.EndWorkDate = DateTime.Now.ToLocalTime();
+                existTask.EndWorkDate = DateTime.UtcNow.ToLocalTime().AddHours(7);
                 existTask.Status = 2;
 
                 _unitOfWork.TaskRepository.Update(existTask);
@@ -296,7 +296,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                     var taskLog = new TaskLog
                     {
                         ChickenCoopId = location.CoopId,
-                        CompletedAt = DateTime.Now.ToLocalTime(),
+                        CompletedAt = DateTime.UtcNow.ToLocalTime().AddHours(7),
                         TaskId = existTask.TaskId,
                         Note = request?.Note,
                     };
@@ -335,7 +335,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                             var feedLog = new FeedLog
                             {
                                 ChickenBatchId = chickenBatch,
-                                FeedingDate = DateTime.Now.ToLocalTime(),
+                                FeedingDate = DateTime.UtcNow.ToLocalTime().AddHours(7),
                                 ActualFeedAmount = detail.ConsumedQuantity,
                                 TaskId = request?.TaskId,
                                 Note = request?.Reason,
@@ -423,7 +423,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                         EndDate = existTask.EndWorkDate,
                         Notes = request?.Note,
                         ChickenBatchId = chickenBatch,
-                        CheckedAt = DateTime.Now.ToLocalTime(),
+                        CheckedAt = DateTime.UtcNow.ToLocalTime().AddHours(7),
                         Location = "COOP",
                         TaskId = request?.TaskId
                     };

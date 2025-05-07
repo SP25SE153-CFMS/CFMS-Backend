@@ -23,7 +23,7 @@ namespace CFMS.Application.Services.Quartz
 
             try
             {
-                var today = DateTime.Now.ToLocalTime().Date;
+                var today = DateTime.UtcNow.ToLocalTime().AddHours(7).Date;
 
                 var chickenBatches = _unitOfWork.ChickenBatchRepository.Get(
                     filter: cb => cb.IsDeleted == false
