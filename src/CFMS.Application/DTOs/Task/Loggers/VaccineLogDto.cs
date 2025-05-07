@@ -18,7 +18,7 @@ namespace CFMS.Application.DTOs.Task.Loggers
 
         public decimal? ActualQuantity { get; set; }
 
-        public string? Notes { get; set; }
+        public string? Note { get; set; }
 
         public string? Reaction { get; set; }
     }
