@@ -10,7 +10,7 @@ public partial class VaccineLog : EntityAudit
 
     public Guid? ChickenBatchId { get; set; }
 
-    public DateTime? VccineDate { get; set; }
+    public DateTime? VaccineDate { get; set; }
 
     public decimal? ActualVaccineAmount { get; set; }
 
