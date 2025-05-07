@@ -339,7 +339,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                                 ActualFeedAmount = detail.ConsumedQuantity,
                                 UnitId = unit?.SubCategoryId,
                                 TaskId = request?.TaskId,
-                                Note = request?.Note,
+                                Note = request?.Reason,
                                 ResourceId = detail.Resource?.ResourceId
                             };
 
