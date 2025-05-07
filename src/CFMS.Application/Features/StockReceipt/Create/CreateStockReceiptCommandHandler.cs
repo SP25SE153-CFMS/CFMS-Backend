@@ -25,7 +25,7 @@ namespace CFMS.Application.Features.StockReceipt.Create
                 {
                     ReceiptTypeId = request.ReceiptTypeId,
                     FarmId = request.FarmId,
-                    StockReceiptCode = $"PNK-{DateTime.Now.ToLocalTime().AddHours(7).Ticks}"
+                    StockReceiptCode = $"PNK-{DateTime.Now.ToLocalTime().Ticks}"
                 };
 
                 foreach (var stockReceiptDetail in request.StockReceiptDetails)
@@ -39,6 +39,22 @@ namespace CFMS.Application.Features.StockReceipt.Create
                         return BaseResponse<bool>.FailureResponse(message: "Resource không tồn tại");
                     }
 
+                    var existResourceType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(existResource.ResourceTypeId)).FirstOrDefault();
+
+                    var typeName = existResourceType?.SubCategoryName;
+
+                    var resourceId = typeName.Equals("food")
+                        ? existResource?.FoodId
+                        : typeName.Equals("equipment")
+                            ? existResource?.EquipmentId
+                            : typeName.Equals("equipment")
+                                ? existResource?.MedicineId
+                                    : typeName.Equals("breeding")
+                                        ? existResource?.ChickenId
+                                            : typeName.Equals("harvest_product")
+                                                ? existResource?.HarvestProductId
+                                                : null;
+
                     stockReceipt.StockReceiptDetails.Add(new StockReceiptDetail
                     {
                         Quantity = stockReceiptDetail.Quantity,
@@ -50,7 +66,7 @@ namespace CFMS.Application.Features.StockReceipt.Create
 
                     await _mediator.Publish(new StockUpdatedEvent
                          (
-                            existResource.ResourceId,
+                            resourceId ?? Guid.Empty,
                             (int)stockReceiptDetail.Quantity,
                             existResource.UnitId,
                             existResource.ResourceType.SubCategoryName,
@@ -58,7 +74,7 @@ namespace CFMS.Application.Features.StockReceipt.Create
                             existResource.PackageSize,
                             stockReceiptDetail.ToWareId,
                             false,
-                            null
+                            stockReceiptDetail.SupplierId
                         ));
                 }
 
