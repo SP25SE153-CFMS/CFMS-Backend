@@ -12,6 +12,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using CFMS.Application.Features.CategoryFeat.GetSub;
 using CFMS.Application.Features.CategoryFeat.GetSubByName;
+using CFMS.Application.Features.CategoryFeat.UpdateSubCategory;
 
 namespace CFMS.Api.Controllers
 {
@@ -84,8 +85,22 @@ namespace CFMS.Api.Controllers
             return result;
         }
 
-        [HttpPost("addSub")]
+        [HttpPost("add-sub")]
         public async Task<IActionResult> AddSubCategory(AddSubCateCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPost("update-sub")]
+        public async Task<IActionResult> UpdateSubCategory(UpdateSubCategoryCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpPost("delete-sub")]
+        public async Task<IActionResult> DeleteSubCategory(DeleteCategoryCommand command)
         {
             var result = await Send(command);
             return result;
