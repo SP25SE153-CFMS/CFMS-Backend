@@ -18,6 +18,8 @@ public partial class TaskResource : EntityAudit
 
     public Guid? UnitId { get; set; }
 
+    public Guid? SupplierId { get; set; }
+
     public virtual SubCategory? ResourceType { get; set; }
 
     public virtual SubCategory? Unit { get; set; }
