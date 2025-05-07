@@ -29,7 +29,7 @@ namespace CFMS.Application.Services.Quarzt
                 var systemId = _unitOfWork.UserRepository.Get(filter: u => u.SystemRole == -1).FirstOrDefault()?.UserId;
                 _currentUserService.SetSystemId(systemId.Value);
 
-                var threshold = _unitOfWork.SystemConfigRepository.Get(filter: s => s.SettingName.Equals("MaintenanceThreshold") && !s.IsDeleted && s.EffectedDateTo > DateTime.Now.ToLocalTime()).FirstOrDefault(); // s
+                var threshold = _unitOfWork.SystemConfigRepository.Get(filter: s => s.SettingName.Equals("MaintenanceThreshold") && !s.IsDeleted && s.EffectedDateTo > DateTime.UtcNow.ToLocalTime().AddHours(7)).FirstOrDefault(); // s
 
                 var farms = _unitOfWork.FarmRepository.Get(
                     filter: f => !f.IsDeleted,

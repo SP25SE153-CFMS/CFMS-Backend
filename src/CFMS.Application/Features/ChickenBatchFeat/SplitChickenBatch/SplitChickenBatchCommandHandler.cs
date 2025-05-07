@@ -55,7 +55,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                 }
 
                 var newBatch = _mapper.Map<ChickenBatch>(request);
-                var currentDate = DateOnly.FromDateTime(DateTime.Now);
+                var currentDate = DateOnly.FromDateTime(DateTime.UtcNow.ToLocalTime().AddHours(7));
                 var startDate = DateOnly.FromDateTime(newBatch.StartDate!.Value);
 
                 newBatch.Status = startDate > currentDate ? 0 : 1;
@@ -87,7 +87,7 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
 
                 existParentBatch.QuantityLogs.Add(new QuantityLog
                 {
-                    LogDate = DateTime.Now,
+                    LogDate = DateTime.UtcNow.ToLocalTime().AddHours(7),
                     LogType = 1,
                     Notes = request.Notes,
                     Quantity = request.ChickenDetailRequests.Sum(x => x.Quantity)

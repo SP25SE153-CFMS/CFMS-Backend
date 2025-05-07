@@ -31,9 +31,9 @@ namespace CFMS.Application.Services.Quarzt
                 var systemId = _unitOfWork.UserRepository.Get(filter: u => u.SystemRole == -1).FirstOrDefault()?.UserId;
                 _currentUserService.SetSystemId(systemId.Value);
 
-                var today = DateTime.Now.ToLocalTime().Date;
-                var thresholdMin = _unitOfWork.SystemConfigRepository.Get(filter: s => s.SettingName.Equals("ThresholdMinWareHouse") && !s.IsDeleted && s.EffectedDateTo > DateTime.Now.ToLocalTime()).FirstOrDefault(); // số lượng dưới mức này là cảnh báo sắp hết
-                var thresholdMax = _unitOfWork.SystemConfigRepository.Get(filter: s => s.SettingName.Equals("ThresholdMaxWareHouse") && !s.IsDeleted && s.EffectedDateTo > DateTime.Now.ToLocalTime()).FirstOrDefault(); // số lượng dưới mức này là cảnh báo sắp hết
+                var today = DateTime.UtcNow.ToLocalTime().AddHours(7).Date;
+                var thresholdMin = _unitOfWork.SystemConfigRepository.Get(filter: s => s.SettingName.Equals("ThresholdMinWareHouse") && !s.IsDeleted && s.EffectedDateTo > DateTime.UtcNow.ToLocalTime().AddHours(7)).FirstOrDefault(); // số lượng dưới mức này là cảnh báo sắp hết
+                var thresholdMax = _unitOfWork.SystemConfigRepository.Get(filter: s => s.SettingName.Equals("ThresholdMaxWareHouse") && !s.IsDeleted && s.EffectedDateTo > DateTime.UtcNow.ToLocalTime().AddHours(7)).FirstOrDefault(); // số lượng dưới mức này là cảnh báo sắp hết
 
                 var farms = _unitOfWork.FarmRepository.Get(
                     filter: f => !f.IsDeleted,

@@ -22,7 +22,7 @@ namespace CFMS.Application.Services.Impl
             var otpData = new
             {
                 Otp = otp,
-                CreatedAt = DateTime.Now.ToLocalTime()
+                CreatedAt = DateTime.UtcNow.ToLocalTime().AddHours(7)
             };
 
             var options = new DistributedCacheEntryOptions()
@@ -60,7 +60,7 @@ namespace CFMS.Application.Services.Impl
 
             var createdAt = DateTime.Parse(otpData.CreatedAt.ToString());
             var expiryTime = createdAt.AddMinutes(5);
-            if (DateTime.Now.ToLocalTime() > expiryTime)
+            if (DateTime.UtcNow.ToLocalTime().AddHours(7) > expiryTime)
             {
                 await RemoveOtpAsync(userId);
                 return false;

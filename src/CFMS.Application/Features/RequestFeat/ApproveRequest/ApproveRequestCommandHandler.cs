@@ -48,7 +48,7 @@ namespace CFMS.Application.Features.RequestFeat.ApproveRequest
 
             var user = _currentUserService.GetUserId();
             existRequest.Status = request.IsApproved;
-            existRequest.ApprovedAt = DateTime.Now.ToLocalTime();
+            existRequest.ApprovedAt = DateTime.UtcNow.ToLocalTime().AddHours(7);
 
             if (existRequest.TaskRequests.Count() > 0)
             {
