@@ -33,11 +33,6 @@ namespace CFMS.Application.Events.Handlers
                     && x.PackageSize.Equals(notification.PackageSize)
                     && x.IsDeleted == false).FirstOrDefault();
 
-            if (resource == null)
-            {
-                throw new Exception("Hàng hoá không tồn tại");
-            }
-
             var resourceType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryName.Equals(notification.ResourceType) && x.IsDeleted == false).FirstOrDefault();
             if (resourceType == null)
             {

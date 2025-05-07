@@ -160,7 +160,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         IsRead = 0,
                     };
 
-                    _unitOfWork.NotificationRepository.Insert(notiReceive);
+                    //_unitOfWork.NotificationRepository.Insert(notiReceive);
                     await _hubContext.SendMessageToUser(existUser.UserId.ToString(), notiReceive);
                 }
 
@@ -236,7 +236,7 @@ namespace CFMS.Application.Features.FarmFeat.InviteEnrollFarm
                         IsRead = 0,
                     };
 
-                    _unitOfWork.NotificationRepository.Insert(notiReceive);
+                    //_unitOfWork.NotificationRepository.Insert(notiReceive);
                     await _hubContext.SendMessageToUser(existUser.UserId.ToString(), notiReceive);
                 }
 
