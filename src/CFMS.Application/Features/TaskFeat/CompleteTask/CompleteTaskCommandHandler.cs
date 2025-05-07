@@ -74,6 +74,7 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
             {
                 return BaseResponse<bool>.FailureResponse(message: "Công việc này đã được báo cáo rồi");
             }
+
             var chickenBatch = Guid.Empty;
             var location = existTask.TaskLocations.FirstOrDefault();
             if (location?.LocationType?.Equals("COOP") == true)
@@ -94,122 +95,123 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
 
             var taskType = _unitOfWork.SubCategoryRepository.Get(filter: x => x.SubCategoryId.Equals(existTask.TaskTypeId) && x.IsDeleted == false).FirstOrDefault()?.SubCategoryName;
 
-            var totalConsumed = request?.TaskResources?.Sum(x => x.ConsumedQuantity) ?? 0;
-            var totalSupplied = request?.TaskResources?.Sum(x => x.SuppliedQuantity) ?? 0;
-            var isRedundant = totalSupplied - totalConsumed > 0 ? true : false;
+            //var totalConsumed = request?.TaskResources?.Sum(x => x.ConsumedQuantity) ?? 0;
+            //var totalSupplied = request?.TaskResources?.Sum(x => x.SuppliedQuantity) ?? 0;
+            //var isRedundant = totalSupplied - totalConsumed > 0 ? true : false;
 
             try
             {
                 //string[] keywords = { "thực phẩm", "dược phẩm", "thiết bị", "thu hoạch", "con giống" };
 
-                existTask.Status = 2;
                 //var leader = existTask.Assignments.Where(x => x.Status.Equals(1)).FirstOrDefault();
                 //leader.Note = request.Note;
 
-                var requestType = _unitOfWork.SubCategoryRepository.Get(x => x.SubCategoryName.Equals("IMPORT") && x.IsDeleted == false).FirstOrDefault();
 
                 //var lastRequest = _unitOfWork.RequestRepository.Get(filter: r => r.CreatedByUser.UserId.ToString().Equals(leader.AssignedToId)).FirstOrDefault();
 
-                var newRequest = new Request()
-                {
-                    RequestTypeId = requestType?.SubCategoryId,
-                    FarmId = existTask.FarmId,
-                    Status = 0
-                };
+                //if (isRedundant || (request?.HarvestProducts?.ToList().Count > 0))
+                //{
+                //    _unitOfWork.RequestRepository.Insert(newRequest);
+                //    await _unitOfWork.SaveChangesAsync();
 
-                if (isRedundant || (request?.HarvestProducts?.ToList().Count > 0))
-                {
-                    _unitOfWork.RequestRepository.Insert(newRequest);
-                    await _unitOfWork.SaveChangesAsync();
+                //    if (request?.TaskResources != null)
+                //    {
+                //        Resource resource;
 
-                    if (request?.TaskResources != null)
-                    {
-                        Resource resource;
+                //        var groupedResources = request?.TaskResources?
+                //        .Select(detail => new
+                //        {
 
-                        var groupedResources = request?.TaskResources?
-                        .Select(detail => new
-                        {
+                //            Resource = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(
+                //                filter: r => r.ResourceId == detail.ResourceId,
+                //                include: x => x
+                //                    .Include(t => t.Food)
+                //                    .Include(t => t.Equipment)
+                //                    .Include(t => t.Medicine)
+                //                    .Include(t => t.Chicken)
+                //                    .Include(t => t.HarvestProduct)
+                //                    .Include(t => t.ResourceType)
+                //                    .Include(t => t.ResourceSuppliers))
+                //                    .FirstOrDefault(),
+                //            SuppliedQuantity = detail.SuppliedQuantity,
+                //            ConsumedQuantity = detail.ConsumedQuantity,
+                //            SupplierId = detail.SupplierId
+                //        })
+                //        .GroupBy(x =>
+                //        {
+                //            var resource = x.Resource;
+                //            if (resource?.Food != null) return "food";
+                //            if (resource?.Medicine != null) return "medicine";
+                //            if (resource?.Equipment != null) return "equipment";
+                //            if (resource?.Chicken != null) return "breeding";
+                //            if (resource?.HarvestProduct != null) return "harvest_product";
+                //            return "others";
+                //        })
+                //        .ToList();
 
-                            Resource = _unitOfWork.ResourceRepository.GetIncludeMultiLayer(
-                                filter: r => r.ResourceId == detail.ResourceId,
-                                include: x => x
-                                    .Include(t => t.Food)
-                                    .Include(t => t.Equipment)
-                                    .Include(t => t.Medicine)
-                                    .Include(t => t.Chicken)
-                                    .Include(t => t.HarvestProduct)
-                                    .Include(t => t.ResourceType)
-                                    .Include(t => t.ResourceSuppliers))
-                                    .FirstOrDefault(),
-                            SuppliedQuantity = detail.SuppliedQuantity,
-                            ConsumedQuantity = detail.ConsumedQuantity,
-                            SupplierId = detail.SupplierId
-                        })
-                        .GroupBy(x =>
-                        {
-                            var resource = x.Resource;
-                            if (resource?.Food != null) return "food";
-                            if (resource?.Medicine != null) return "medicine";
-                            if (resource?.Equipment != null) return "equipment";
-                            if (resource?.Chicken != null) return "breeding";
-                            if (resource?.HarvestProduct != null) return "harvest_product";
-                            return "others";
-                        })
-                        .ToList();
+                //        foreach (var group in groupedResources)
+                //        {
+                //            bool isCreateRequest = false;
+                //            var inventoryRequest = new InventoryRequest();
 
-                        foreach (var group in groupedResources)
-                        {
-                            bool isCreateRequest = false;
-                            var inventoryRequest = new InventoryRequest();
+                //            foreach (var detail in group)
+                //            {
+                //                var stock = _unitOfWork.WareStockRepository
+                //                    .Get(filter: w => w.ResourceId.Equals(detail.Resource.ResourceId) && w.SupplierId == detail.SupplierId) 
+                //                    .FirstOrDefault();
 
-                            foreach (var detail in group)
-                            {
-                                var stock = _unitOfWork.WareStockRepository
-                                    .Get(filter: w => w.ResourceId.Equals(detail.Resource.ResourceId) && w.SupplierId == detail.SupplierId) 
-                                    .FirstOrDefault();
+                //                var ware = _unitOfWork.WarehouseRepository
+                //                    .Get(filter: w => w.WareId.Equals(stock.WareId) && w.IsDeleted == false)
+                //                    .FirstOrDefault();
 
-                                var ware = _unitOfWork.WarehouseRepository
-                                    .Get(filter: w => w.WareId.Equals(stock.WareId) && w.IsDeleted == false)
-                                    .FirstOrDefault();
-                                
-                                if (!isCreateRequest)
-                                {
-                                    inventoryRequest = new InventoryRequest
-                                    {
-                                        RequestId = newRequest.RequestId,
-                                        InventoryRequestTypeId = requestType?.SubCategoryId,
-                                        WareToId = ware?.WareId
-                                    };
+                //                if (!isCreateRequest)
+                //                {
+                //                    inventoryRequest = new InventoryRequest
+                //                    {
+                //                        RequestId = newRequest.RequestId,
+                //                        InventoryRequestTypeId = requestType?.SubCategoryId,
+                //                        WareToId = ware?.WareId
+                //                    };
 
-                                    _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
-                                    await _unitOfWork.SaveChangesAsync();
+                //                    _unitOfWork.InventoryRequestRepository.Insert(inventoryRequest);
+                //                    await _unitOfWork.SaveChangesAsync();
 
-                                    isCreateRequest = true;
-                                }
+                //                    isCreateRequest = true;
+                //                }
 
-                                var inventoryRequestDetail = new InventoryRequestDetail
-                                {
-                                    InventoryRequestId = inventoryRequest.InventoryRequestId,
-                                    ResourceId = detail?.Resource?.ResourceId,
-                                    ResourceSupplierId = detail?.Resource?.ResourceSuppliers?.Where(t => t.ResourceId.Equals(detail?.Resource?.ResourceId)).FirstOrDefault()?.ResourceSupplierId,
-                                    ExpectedQuantity = detail?.SuppliedQuantity - detail?.ConsumedQuantity,
-                                    UnitId = detail?.Resource?.UnitId,
-                                    Reason = request?.Reason,
-                                    ExpectedDate = DateTime.Now.ToLocalTime(),
-                                    Note = request?.Note
-                                };
+                //                var inventoryRequestDetail = new InventoryRequestDetail
+                //                {
+                //                    InventoryRequestId = inventoryRequest.InventoryRequestId,
+                //                    ResourceId = detail?.Resource?.ResourceId,
+                //                    ResourceSupplierId = detail?.Resource?.ResourceSuppliers?.Where(t => t.ResourceId.Equals(detail?.Resource?.ResourceId)).FirstOrDefault()?.ResourceSupplierId,
+                //                    ExpectedQuantity = detail?.SuppliedQuantity - detail?.ConsumedQuantity,
+                //                    UnitId = detail?.Resource?.UnitId,
+                //                    Reason = request?.Reason,
+                //                    ExpectedDate = DateTime.Now.ToLocalTime(),
+                //                    Note = request?.Note
+                //                };
 
-                                _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);
-                            }
+                //                _unitOfWork.InventoryRequestDetailRepository.Insert(inventoryRequestDetail);
+                //            }
 
-                            await _unitOfWork.SaveChangesAsync();
-                        }
-                    }
-                }
+                //            await _unitOfWork.SaveChangesAsync();
+                //        }
+                //    }
+                //}
 
                 if (request?.HarvestProducts != null)
                 {
+
+                    var requestType = _unitOfWork.SubCategoryRepository.Get(x => x.SubCategoryName.Equals("IMPORT") && x.IsDeleted == false).FirstOrDefault();
+
                     Resource resource;
+
+                    var newRequest = new Request()
+                    {
+                        RequestTypeId = requestType?.SubCategoryId,
+                        FarmId = existTask.FarmId,
+                        Status = 0
+                    };
 
                     var groupedResources = request?.HarvestProducts?
                     .Select(detail => new
@@ -271,7 +273,10 @@ namespace CFMS.Application.Features.TaskFeat.CompleteTask
                         await _unitOfWork.SaveChangesAsync();
                     }
                 }
+
                 existTask.EndWorkDate = DateTime.Now.ToLocalTime();
+                existTask.Status = 2;
+
                 _unitOfWork.TaskRepository.Update(existTask);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
