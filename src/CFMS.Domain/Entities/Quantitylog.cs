@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class QuantityLog : EntityAudit
+public partial class QuantityLog : EntityAudit
 {
     public Guid QuantityLogId { get; set; }
 
@@ -15,9 +16,12 @@ public class QuantityLog : EntityAudit
 
     public int? Quantity { get; set; }
 
-    public string? Img { get; set; }
-
     public int? LogType { get; set; }
 
+    public string? ImageUrl { get; set; }
+
+    [JsonIgnore]
     public virtual ChickenBatch? ChickenBatch { get; set; }
+
+    public virtual ICollection<QuantityLogDetail> QuantityLogDetails { get; set; } = new List<QuantityLogDetail>();
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class ResourceSupplier : EntityAudit
+public partial class ResourceSupplier : EntityAudit
 {
     public Guid ResourceSupplierId { get; set; }
 
@@ -15,17 +16,12 @@ public class ResourceSupplier : EntityAudit
 
     public decimal? Price { get; set; }
 
-    public Guid? UnitPriceId { get; set; }
-
-    public Guid? PackagePriceId { get; set; }
-
-    public decimal? PackageSizePrice { get; set; }
-
-    public virtual SubCategory? PackagePrice { get; set; }
-
     public virtual Resource? Resource { get; set; }
 
-    public virtual SubCategory? Supplier { get; set; }
+    [JsonIgnore]
+    public virtual Supplier? Supplier { get; set; }
 
-    public virtual SubCategory? UnitPrice { get; set; }
+    //public virtual SubCategory? UnitPrice { get; set; }
+
+    public virtual ICollection<InventoryRequestDetail> InventoryRequestDetails { get; set; } = new List<InventoryRequestDetail>();
 }

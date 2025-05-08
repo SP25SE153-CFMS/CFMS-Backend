@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class FeedSession : EntityAudit
+public partial class FeedSession : EntityAudit
 {
     public Guid FeedSessionId { get; set; }
 
     public Guid? NutritionPlanId { get; set; }
 
-    public DateTime? FeedingTime { get; set; }
+    public TimeOnly? StartTime { get; set; }
+
+    public TimeOnly? EndTime { get; set; }
 
     public decimal? FeedAmount { get; set; }
 
@@ -17,6 +18,7 @@ public class FeedSession : EntityAudit
 
     public string? Note { get; set; }
 
+    [JsonIgnore]
     public virtual NutritionPlan? NutritionPlan { get; set; }
 
     public virtual SubCategory? Unit { get; set; }

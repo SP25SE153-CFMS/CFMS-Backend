@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class BreedingArea : EntityAudit
+public partial class BreedingArea : EntityAudit
 {
     public Guid BreedingAreaId { get; set; }
 
@@ -17,9 +18,16 @@ public class BreedingArea : EntityAudit
 
     public Guid? FarmId { get; set; }
 
-    public double? Area { get; set; }
+    public decimal? Area { get; set; }
+
+    public Guid? AreaUnitId { get; set; }
+
+    public int? Status { get; set; }
+
+    public virtual SubCategory? AreaUnit { get; set; }
 
     public virtual ICollection<ChickenCoop> ChickenCoops { get; set; } = new List<ChickenCoop>();
 
+    [JsonIgnore]
     public virtual Farm? Farm { get; set; }
 }

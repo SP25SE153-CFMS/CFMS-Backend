@@ -1,39 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CFMS.Application.Common;
+using CFMS.Domain.Entities;
+using MediatR;
 
 namespace CFMS.Application.Features.ChickenCoopFeat.Update
 {
-    internal class UpdateCoopCommand
+    public class UpdateCoopCommand : IRequest<BaseResponse<bool>>
     {
-        public UpdateCoopCommand(Guid id, string? chickenCoopCode, string? chickenCoopName, int? capacity, int? area, bool? status, string? description, Guid? purposeId, Guid? breedingAreaId)
+        public UpdateCoopCommand(Guid chickenCoopId, string? chickenCoopCode, string? chickenCoopName, int? maxQuantity, int? area, decimal? density, int? currentQuantity, string? description, int? status, Guid? purposeId, Guid? breedingAreaId)
         {
-            Id = id;
+            ChickenCoopId = chickenCoopId;
             ChickenCoopCode = chickenCoopCode;
             ChickenCoopName = chickenCoopName;
-            Capacity = capacity;
+            MaxQuantity = maxQuantity;
             Area = area;
-            Status = status;
+            Density = density;
+            CurrentQuantity = currentQuantity;
             Description = description;
+            Status = status;
             PurposeId = purposeId;
             BreedingAreaId = breedingAreaId;
         }
 
-        public Guid Id { get; set; }
+        public Guid ChickenCoopId { get; set; }
 
         public string? ChickenCoopCode { get; set; }
 
         public string? ChickenCoopName { get; set; }
 
-        public int? Capacity { get; set; }
+        public int? MaxQuantity { get; set; }
 
         public int? Area { get; set; }
 
-        public bool? Status { get; set; }
+        public decimal? Density { get; set; }
+
+        public int? CurrentQuantity { get; set; }
 
         public string? Description { get; set; }
+
+        public int? Status { get; set; }
 
         public Guid? PurposeId { get; set; }
 

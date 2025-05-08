@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class Assignment : EntityAudit
+public partial class Assignment : EntityAudit
 {
     public Guid AssignmentId { get; set; }
 
@@ -13,19 +14,16 @@ public class Assignment : EntityAudit
 
     public DateTime? AssignedDate { get; set; }
 
-    public Guid? ShiftScheduleId { get; set; }
-
-    public Guid? TaskScheduleId { get; set; }
-
-    public string? Status { get; set; }
+    public int? Status { get; set; }
 
     public string? Note { get; set; }
 
     public virtual User? AssignedTo { get; set; }
 
-    public virtual ShiftSchedule? ShiftSchedule { get; set; }
-
+    [JsonIgnore]
     public virtual Task? Task { get; set; }
 
-    public virtual TaskSchedule? TaskSchedule { get; set; }
+    //public Guid? ShiftScheduleId { get; set; }
+
+    //public Guid? TaskScheduleId { get; set; }
 }

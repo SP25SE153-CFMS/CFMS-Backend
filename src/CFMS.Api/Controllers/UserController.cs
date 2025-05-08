@@ -1,7 +1,11 @@
-﻿using CFMS.Application.Features.UserFeat.Delete;
+﻿using CFMS.Application.Common;
+using CFMS.Application.Features.UserFeat.Delete;
 using CFMS.Application.Features.UserFeat.GetUser;
+using CFMS.Application.Features.UserFeat.GetUserByCCCDByPhoneByEmail;
 using CFMS.Application.Features.UserFeat.GetUsers;
 using CFMS.Application.Features.UserFeat.Update;
+using CFMS.Application.Features.UserFeat.UploadImage;
+using Google.Apis.Drive.v3;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,6 +42,20 @@ namespace CFMS.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await Send(new DeleteUserCommand(id));
+            return result;
+        }
+
+        [HttpPost("upload-image")]
+        public async Task<IActionResult> UploadImage(UploadImageCommand command)
+        {
+            var result = await Send(command);
+            return result;
+        }
+
+        [HttpGet("search/{searchTemp}")]
+        public async Task<IActionResult> UploadImage(string searchTemp)
+        {
+            var result = await Send(new GetUserByCCCDByPhoneByEmailQuery(searchTemp));
             return result;
         }
     }

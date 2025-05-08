@@ -1,4 +1,6 @@
 ﻿using CFMS.Api.Extensions;
+using CFMS.Api.Middlewares;
+using CFMS.Application.Services.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,17 +10,28 @@ builder.Services.AddCorsPolicy();
 builder.Services.AddSwaggerDocumentation();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
-builder.Services.AddAuthorizationPolicies();
+builder.Services.AddQuartzServices(builder.Configuration);
 
 var app = builder.Build();
 
 app.UseSwaggerDocumentation();
-app.UseMiddleware<ErrorHandlingMiddleware>();
+
+app.UseHttpsRedirection();
+
 app.UseCorsPolicy();
 
+app.UseRouting();
+
 app.UseAuthentication();
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<JwtBlacklistMiddleware>();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<NotiHub>("/noti");
+
 app.Run();
+

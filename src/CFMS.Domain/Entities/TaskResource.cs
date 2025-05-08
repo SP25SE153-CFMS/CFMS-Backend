@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class TaskResource : EntityAudit
+public partial class TaskResource : EntityAudit
 {
     public Guid TaskResourceId { get; set; }
 
@@ -17,7 +18,14 @@ public class TaskResource : EntityAudit
 
     public Guid? UnitId { get; set; }
 
+    public Guid? SupplierId { get; set; }
+
     public virtual SubCategory? ResourceType { get; set; }
 
+    public virtual SubCategory? Unit { get; set; }
+
+    public virtual Resource? Resource { get; set; }
+
+    [JsonIgnore]
     public virtual Task Task { get; set; } = null!;
 }

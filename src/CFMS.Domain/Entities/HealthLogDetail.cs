@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class HealthLogDetail : EntityAudit
+public partial class HealthLogDetail
 {
     public Guid HealthLogDetailId { get; set; }
 
@@ -13,7 +14,9 @@ public class HealthLogDetail : EntityAudit
 
     public string? Result { get; set; }
 
+    [JsonIgnore]
     public virtual SubCategory? Criteria { get; set; }
 
+    [JsonIgnore]
     public virtual HealthLog? HealthLog { get; set; }
 }

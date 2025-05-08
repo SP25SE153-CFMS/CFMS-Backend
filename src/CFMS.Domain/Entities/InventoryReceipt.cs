@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class InventoryReceipt : EntityAudit
+public partial class InventoryReceipt : EntityAudit
 {
     public Guid InventoryReceiptId { get; set; }
 
@@ -11,14 +12,15 @@ public class InventoryReceipt : EntityAudit
 
     public Guid? ReceiptTypeId { get; set; }
 
-    public Guid? WareFromId { get; set; }
+    public string? ReceiptCodeNumber { get; set; }
 
-    public Guid? WareToId { get; set; }
+    public int? BatchNumber { get; set; }
 
-    public int? Status { get; set; }
+    public Guid? FarmId { get; set; }
 
     public virtual ICollection<InventoryReceiptDetail> InventoryReceiptDetails { get; set; } = new List<InventoryReceiptDetail>();
 
+    [JsonIgnore]
     public virtual InventoryRequest? InventoryRequest { get; set; }
 
     public virtual SubCategory? ReceiptType { get; set; }

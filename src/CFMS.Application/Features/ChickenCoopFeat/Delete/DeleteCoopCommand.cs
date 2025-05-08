@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CFMS.Application.Common;
+using MediatR;
 
 namespace CFMS.Application.Features.ChickenCoopFeat.Delete
 {
-    internal class DeleteCoopCommand
+    public class DeleteCoopCommand : IRequest<BaseResponse<bool>>
     {
+        public DeleteCoopCommand(Guid id)
+        {
+            Id = id;
+        }
+
+        public Guid Id { get; set; }
     }
 }

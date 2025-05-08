@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class ChickenBatch : EntityAudit
+public partial class ChickenBatch : EntityAudit
 {
     public Guid ChickenBatchId { get; set; }
-
-    public Guid? ChickenCoopId { get; set; }
 
     public string? ChickenBatchName { get; set; }
 
@@ -19,9 +18,30 @@ public class ChickenBatch : EntityAudit
 
     public int? Status { get; set; }
 
+    public int MinGrowDays { get; set; }
+
+    public int MaxGrowDays { get; set; }
+
+    public int InitChickenQuantity { get; set; }
+
+    public Guid? ChickenId { get; set; }
+
+    public Guid? ChickenCoopId { get; set; }
+
+    public Guid? ParentBatchId { get; set; }
+
+    public Guid? CurrentStageId { get; set; }
+
+    [JsonIgnore]
+    public virtual ChickenBatch? ParentBatch { get; set; }
+
+    [JsonIgnore]
     public virtual ChickenCoop? ChickenCoop { get; set; }
 
-    public virtual ICollection<Chicken> Chickens { get; set; } = new List<Chicken>();
+    [JsonIgnore]
+    public virtual GrowthStage? CurrentStage { get; set; }
+
+    public virtual Chicken? Chicken { get; set; }
 
     public virtual ICollection<FeedLog> FeedLogs { get; set; } = new List<FeedLog>();
 
@@ -32,4 +52,6 @@ public class ChickenBatch : EntityAudit
     public virtual ICollection<QuantityLog> QuantityLogs { get; set; } = new List<QuantityLog>();
 
     public virtual ICollection<VaccineLog> VaccineLogs { get; set; } = new List<VaccineLog>();
+
+    public virtual ICollection<ChickenDetail> ChickenDetails { get; set; } = new List<ChickenDetail>();
 }

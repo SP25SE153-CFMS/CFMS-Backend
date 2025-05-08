@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class NutritionPlan : EntityAudit
+public partial class NutritionPlan : EntityAudit
 {
     public Guid NutritionPlanId { get; set; }
 
@@ -11,11 +12,16 @@ public class NutritionPlan : EntityAudit
 
     public string? Description { get; set; }
 
-    public string? Target { get; set; }
+    public Guid? FarmId { get; set; }
+
+    //public DateTime? StartDate { get; set; }
+
+    //public DateTime? EndDate { get; set; }
 
     public virtual ICollection<FeedSession> FeedSessions { get; set; } = new List<FeedSession>();
 
-    public virtual ICollection<GrowthNutrition> GrowthNutritions { get; set; } = new List<GrowthNutrition>();
+    [JsonIgnore]
+    public virtual ICollection<GrowthStage> GrowthStages { get; set; } = new List<GrowthStage>();
 
     public virtual ICollection<NutritionPlanDetail> NutritionPlanDetails { get; set; } = new List<NutritionPlanDetail>();
 }

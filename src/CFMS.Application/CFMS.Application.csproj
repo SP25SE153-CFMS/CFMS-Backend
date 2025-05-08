@@ -7,14 +7,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\TaskFeat\RetryTask\**" />
+    <EmbeddedResource Remove="Features\TaskFeat\RetryTask\**" />
+    <None Remove="Features\TaskFeat\RetryTask\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.69.0.3703" />
+    <PackageReference Include="MailKit" Version="4.12.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.9.0" />
+    <PackageReference Include="MimeKit" Version="4.12.0" />
+    <PackageReference Include="Quartz" Version="3.14.0" />
+    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.14.0" />
+    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.14.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.31" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.9.0" />
+    <PackageReference Include="Twilio" Version="7.10.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,9 +40,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\UserFeat\GetUsers\" />
     <Folder Include="Features\UserFeat\Delete\" />
     <Folder Include="Features\UserFeat\Update\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Features\SupplierFeat\Update\UpdateSupplierCommandHandler.cs" />
   </ItemGroup>
 
 </Project>

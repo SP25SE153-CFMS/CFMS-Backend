@@ -1,0 +1,38 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace CFMS.Infrastructure.Migrations
+{
+    /// <inheritdoc />
+    public partial class UpdateDatabaseV16 : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "IsFulfilled",
+                table: "InventoryReceipt");
+
+            migrationBuilder.AddColumn<int>(
+                name: "IsFulfilled",
+                table: "InventoryRequest",
+                type: "integer",
+                nullable: true);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "IsFulfilled",
+                table: "InventoryRequest");
+
+            migrationBuilder.AddColumn<int>(
+                name: "IsFulfilled",
+                table: "InventoryReceipt",
+                type: "integer",
+                nullable: true);
+        }
+    }
+}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class Request : EntityAudit
+public partial class Request : EntityAudit
 {
     public Guid RequestId { get; set; }
 
@@ -14,6 +14,8 @@ public class Request : EntityAudit
     public Guid? ApprovedById { get; set; }
 
     public DateTime? ApprovedAt { get; set; }
+
+    public Guid? FarmId { get; set; }
 
     public virtual User? ApprovedBy { get; set; }
 

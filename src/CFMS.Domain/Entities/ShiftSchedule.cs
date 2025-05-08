@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class ShiftSchedule : EntityAudit
+public partial class ShiftSchedule
 {
     public Guid ShiftScheduleId { get; set; }
 
@@ -11,7 +12,10 @@ public class ShiftSchedule : EntityAudit
 
     public DateOnly? Date { get; set; }
 
-    public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
+    public Guid? TaskId { get; set; }
 
+    [JsonIgnore]
+    public virtual Task? Task { get; set; }
+    [JsonIgnore]
     public virtual Shift? Shift { get; set; }
 }

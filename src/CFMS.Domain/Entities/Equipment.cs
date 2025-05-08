@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class Equipment : EntityAudit
+public partial class Equipment : EntityAudit
 {
     public Guid EquipmentId { get; set; }
 
@@ -11,19 +12,27 @@ public class Equipment : EntityAudit
 
     public string? EquipmentName { get; set; }
 
-    public string? Material { get; set; }
+    public Guid? MaterialId { get; set; }
 
     public string? Usage { get; set; }
 
     public int? Warranty { get; set; }
 
-    public double? Size { get; set; }
+    public decimal? Size { get; set; }
 
-    public double? Weight { get; set; }
+    public Guid? SizeUnitId { get; set; }
+
+    public decimal? Weight { get; set; }
+
+    public Guid? WeightUnitId { get; set; }
 
     public DateTime? PurchaseDate { get; set; }
 
     public virtual ICollection<CoopEquipment> CoopEquipments { get; set; } = new List<CoopEquipment>();
 
-    public virtual Resource EquipmentNavigation { get; set; } = null!;
+    public virtual SubCategory? SizeUnit { get; set; }
+
+    public virtual SubCategory? Material { get; set; }
+
+    public virtual SubCategory? WeightUnit { get; set; }
 }

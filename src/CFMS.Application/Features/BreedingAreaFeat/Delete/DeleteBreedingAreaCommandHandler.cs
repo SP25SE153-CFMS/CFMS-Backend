@@ -15,15 +15,15 @@ namespace CFMS.Application.Features.BreedingAreaFeat.Delete
 
         public async Task<BaseResponse<bool>> Handle(DeleteBreedingAreaCommand request, CancellationToken cancellationToken)
         {
-            var existFarm = _unitOfWork.BreedingAreaRepository.GetByID(request.Id);
-            if (existFarm == null)
+            var existBreeding = _unitOfWork.BreedingAreaRepository.Get(filter: b => b.BreedingAreaId.Equals(request.Id) && b.IsDeleted == false).FirstOrDefault();
+            if (existBreeding == null)
             {
-                return BaseResponse<bool>.FailureResponse(message: "Farm không tồn tại");
+                return BaseResponse<bool>.FailureResponse(message: "Khu nuôi không tồn tại");
             }
 
             try
             {
-                _unitOfWork.FarmRepository.Delete(existFarm);
+                _unitOfWork.BreedingAreaRepository.Delete(existBreeding);
                 var result = await _unitOfWork.SaveChangesAsync();
                 if (result > 0)
                 {

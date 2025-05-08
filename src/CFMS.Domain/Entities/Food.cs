@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class Food : EntityAudit
+public partial class Food : EntityAudit
 {
     public Guid FoodId { get; set; }
 
@@ -13,13 +14,10 @@ public class Food : EntityAudit
 
     public string? Note { get; set; }
 
-    public Guid? FoodIngredientId { get; set; }
-
     public DateTime? ProductionDate { get; set; }
 
     public DateTime? ExpiryDate { get; set; }
 
-    public virtual Resource FoodNavigation { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual ICollection<NutritionPlanDetail> NutritionPlanDetails { get; set; } = new List<NutritionPlanDetail>();
 }

@@ -12,9 +12,20 @@ namespace CFMS.Application.Services.Impl
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        private Guid? _systemId;
+
+        public bool IsSystem => _systemId.HasValue;
+
+        public Guid? SystemId => _systemId;
+
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
+        }
+
+        public ClaimsPrincipal? GetCurrentUser()
+        {
+            return _httpContextAccessor.HttpContext?.User;
         }
 
         public string? GetUserId()
@@ -34,12 +45,17 @@ namespace CFMS.Application.Services.Impl
 
         public bool? IsAdmin()
         {
-            return _httpContextAccessor.HttpContext?.User.IsInRole(SystemRole.Admin.ToString());
+            return _httpContextAccessor.HttpContext?.User.IsInRole(GeneralRole.ADMIN_ROLE.ToString());
         }
 
         public bool? IsUser()
         {
-            return _httpContextAccessor.HttpContext?.User.IsInRole(SystemRole.User.ToString());
+            return _httpContextAccessor.HttpContext?.User.IsInRole(GeneralRole.USER_ROLE.ToString());
+        }
+
+        public void SetSystemId(Guid systemId)
+        {
+            _systemId = systemId;
         }
     }
 }

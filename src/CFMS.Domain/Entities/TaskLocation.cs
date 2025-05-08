@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class TaskLocation : EntityAudit
+public partial class TaskLocation
 {
     public Guid TaskLocationId { get; set; }
 
     public Guid? TaskId { get; set; }
 
-    public Guid? LocationTypeId { get; set; }
+    public string? LocationType { get; set; }
 
-    public Guid LocationId { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Guid? CoopId { get; set; }
 
-    public virtual SubCategory? LocationType { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Guid? WareId { get; set; }
 
+    public virtual ChickenCoop? Location { get; set; }
+
+    public virtual Warehouse? LocationNavigation { get; set; }
+
+    [JsonIgnore]
     public virtual Task? Task { get; set; }
 }

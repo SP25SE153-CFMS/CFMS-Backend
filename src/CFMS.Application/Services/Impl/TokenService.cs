@@ -1,13 +1,16 @@
-﻿using CFMS.Application.DTOs.Auth;
+﻿ using CFMS.Application.DTOs.Auth;
 using CFMS.Application.Services;
+using CFMS.Application.Services.Impl;
 using CFMS.Domain.Entities;
 using CFMS.Domain.Enums.Roles;
 using CFMS.Domain.Interfaces;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using Task = System.Threading.Tasks.Task;
 
 public class TokenService : ITokenService
@@ -17,14 +20,18 @@ public class TokenService : ITokenService
     private readonly string _issuer;
     private readonly string _audience;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUserService _currentUserService;
+    private readonly IUtilityService _utilityService;
 
-    public TokenService(IConfiguration config, IUnitOfWork unitOfWork)
+    public TokenService(IConfiguration config, IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IUtilityService utilityService)
     {
         _accessSecretKey = config["Jwt:AccessSecretKey"];
         _refreshSecretKey = config["Jwt:RefreshSecretKey"];
         _issuer = config["Jwt:Issuer"];
         _audience = config["Jwt:Audience"];
         _unitOfWork = unitOfWork;
+        _currentUserService = currentUserService;
+        _utilityService = utilityService;
     }
 
     public string GenerateAccessToken(User user)
@@ -43,7 +50,7 @@ public class TokenService : ITokenService
             _issuer,
             _audience,
             claims,
-            expires: DateTime.UtcNow.AddMinutes(15),
+            expires: DateTime.UtcNow.ToLocalTime().AddHours(7).AddYears(1),
             signingCredentials: creds
         );
 
@@ -66,7 +73,7 @@ public class TokenService : ITokenService
             _issuer,
             _audience,
             claims,
-            expires: DateTime.UtcNow.AddDays(7),
+            expires: DateTime.UtcNow.ToLocalTime().AddHours(7).AddDays(7),
             signingCredentials: creds
         );
 
@@ -100,7 +107,7 @@ public class TokenService : ITokenService
             if (jwtToken == null) return null;
 
             var expiryDateUnix = long.Parse(jwtToken.Claims.First(x => x.Type == "exp").Value);
-            var expiryDateTime = DateTimeOffset.FromUnixTimeSeconds(expiryDateUnix).UtcDateTime;
+            var expiryDateTime = DateTimeOffset.FromUnixTimeSeconds(expiryDateUnix).DateTime.ToLocalTime().AddHours(7);
 
             var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
             var roleClaim = principal.FindFirst(ClaimTypes.Role);
@@ -146,12 +153,12 @@ public class TokenService : ITokenService
 
     public bool IsTokenRevoked(RevokedToken token)
     {
-        return token.RevokedAt != null && DateTime.UtcNow >= token.RevokedAt;
+        return token.RevokedAt != null && DateTime.UtcNow.ToLocalTime().AddHours(7) >= token.RevokedAt;
     }
 
     public async Task RevokeRefreshTokenAsync(RevokedToken token)
     {
-        token.RevokedAt = DateTime.UtcNow;
+        token.RevokedAt = DateTime.UtcNow.ToLocalTime().AddHours(7);
         _unitOfWork.RevokedTokenRepository.Update(token);
     }
 
@@ -159,7 +166,7 @@ public class TokenService : ITokenService
     {
         var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
         var expiryDateUnix = long.Parse(jwtToken.Claims.First(x => x.Type == "exp").Value);
-        var expiryDateTime = DateTimeOffset.FromUnixTimeSeconds(expiryDateUnix).UtcDateTime;
+        var expiryDateTime = DateTimeOffset.FromUnixTimeSeconds(expiryDateUnix).DateTime.ToLocalTime();
 
         return expiryDateTime;
     }
@@ -175,13 +182,43 @@ public class TokenService : ITokenService
             if (expiryClaim == null) return true;
 
             var expiryDateUnix = long.Parse(expiryClaim.Value);
-            var expiryDateTime = DateTimeOffset.FromUnixTimeSeconds(expiryDateUnix).UtcDateTime;
+            var expiryDateTime = DateTimeOffset.FromUnixTimeSeconds(expiryDateUnix).DateTime.ToLocalTime().AddHours(7);
 
-            return expiryDateTime < DateTime.UtcNow;
+            return expiryDateTime < DateTime.UtcNow.ToLocalTime().AddHours(7);
         }
         catch
         {
             return true;
         }
+    }
+
+    public async Task<string> GenerateJwtTokenGoogle(ClaimsPrincipal user)
+    {
+        var issuer = _issuer;
+        var audience = _audience;
+        var key = Encoding.ASCII.GetBytes(_accessSecretKey);
+        var securityKey = new SymmetricSecurityKey(key);
+        var creds = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        var claims = new List<Claim>
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.FindFirstValue(ClaimTypes.NameIdentifier)),
+            new Claim(JwtRegisteredClaimNames.Email, user.FindFirstValue(ClaimTypes.Email)),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Role, GeneralRole.USER_ROLE.ToString())
+        };
+
+        var identity = new ClaimsIdentity(claims);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = identity,
+            Expires = DateTime.UtcNow.ToLocalTime().AddHours(7).AddYears(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        var tokenString = tokenHandler.WriteToken(token);
+
+        return tokenString;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CFMS.Domain.Entities;
 
-public class WareTransaction : EntityAudit
+public partial class WareTransaction : EntityAudit
 {
     public Guid TransactionId { get; set; }
 
@@ -15,7 +15,7 @@ public class WareTransaction : EntityAudit
 
     public Guid? UnitId { get; set; }
 
-    public string? BatchNumber { get; set; }
+    public int? BatchNumber { get; set; }
 
     public Guid? TransactionType { get; set; }
 
@@ -34,4 +34,6 @@ public class WareTransaction : EntityAudit
     public virtual SubCategory? TransactionTypeNavigation { get; set; }
 
     public virtual Warehouse? Ware { get; set; }
+
+    public decimal CurrentQuantity { get; set; }
 }

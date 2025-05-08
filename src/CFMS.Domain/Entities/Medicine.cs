@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class Medicine : EntityAudit
+public partial class Medicine : EntityAudit
 {
     public Guid MedicineId { get; set; }
+
+    public string? MedicineCode { get; set; }
+
+    public string? MedicineName { get; set; }
 
     public string? Usage { get; set; }
 
@@ -20,6 +25,4 @@ public class Medicine : EntityAudit
     public DateTime? ExpiryDate { get; set; }
 
     public virtual SubCategory? Disease { get; set; }
-
-    public virtual Resource MedicineNavigation { get; set; } = null!;
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public  class FarmEmployee : EntityAudit
+public partial class FarmEmployee : EntityAudit
 {
     public Guid FarmEmployeeId { get; set; }
 
@@ -19,6 +20,11 @@ public  class FarmEmployee : EntityAudit
 
     public int? FarmRole { get; set; }
 
+    public string? Mail { get; set; }
+
+    public string? PhoneNumber { get; set; }
+
+    [JsonIgnore]
     public virtual Farm? Farm { get; set; }
 
     public virtual User? User { get; set; }

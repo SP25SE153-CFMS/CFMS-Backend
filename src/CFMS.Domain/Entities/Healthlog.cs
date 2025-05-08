@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class HealthLog : EntityAudit
+public partial class HealthLog : EntityAudit
 {
     public Guid HealthLogId { get; set; }
 
@@ -21,9 +22,11 @@ public class HealthLog : EntityAudit
 
     public string? Location { get; set; }
 
+    [JsonIgnore]
     public virtual ChickenBatch? ChickenBatch { get; set; }
 
     public virtual ICollection<HealthLogDetail> HealthLogDetails { get; set; } = new List<HealthLogDetail>();
 
+    [JsonIgnore]
     public virtual Task? Task { get; set; }
 }

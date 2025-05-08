@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CFMS.Domain.Entities;
 
-public class NutritionPlanDetail : EntityAudit
+public partial class NutritionPlanDetail
 {
     public Guid NutritionPlanDetailId { get; set; }
 
@@ -15,10 +16,9 @@ public class NutritionPlanDetail : EntityAudit
 
     public decimal? FoodWeight { get; set; }
 
-    public decimal? ConsumptionRate { get; set; }
-
     public virtual Food? Food { get; set; }
 
+    [JsonIgnore]
     public virtual NutritionPlan? NutritionPlan { get; set; }
 
     public virtual SubCategory? Unit { get; set; }
