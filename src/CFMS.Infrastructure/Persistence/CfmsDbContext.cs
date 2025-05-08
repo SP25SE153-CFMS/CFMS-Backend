@@ -237,8 +237,8 @@ public partial class CfmsDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            //optionsBuilder.UseNpgsql(GetConnectionString("DefaultConnection"));
-            optionsBuilder.UseNpgsql("Host=db-prod.cfms.site;Database=cfms-prod;Username=root;Password=iumaycauratnhiu;Timeout=15;");
+            optionsBuilder.UseNpgsql(GetConnectionString("DefaultConnection"));
+            //optionsBuilder.UseNpgsql("Host=db-prod.cfms.site;Database=cfms-prod;Username=root;Password=iumaycauratnhiu;Timeout=15;");
         }
     }
 
