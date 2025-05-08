@@ -61,6 +61,14 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                 newBatch.Status = startDate > currentDate ? 0 : 1;
                 newBatch.CurrentStageId = stages.First().GrowthStageId;
 
+                var quantityLog = new QuantityLog
+                {
+                    LogDate = DateTime.UtcNow.ToLocalTime().AddHours(7),
+                    LogType = 1,
+                    Notes = request.Notes,
+                    Quantity = request.ChickenDetailRequests.Sum(x => x.Quantity)
+                };
+
                 foreach (var chickenDetail in request.ChickenDetailRequests)
                 {
                     var matchedDetail = existParentBatch.ChickenDetails
@@ -83,15 +91,15 @@ namespace CFMS.Application.Features.ChickenBatchFeat.SplitChickenBatch
                         Quantity = chickenDetail.Quantity,
                         Gender = chickenDetail.Gender
                     });
+
+                    quantityLog.QuantityLogDetails.Add(new Domain.Entities.QuantityLogDetail
+                    {
+                        Gender = chickenDetail.Gender,
+                        Quantity = chickenDetail.Quantity
+                    });
                 }
 
-                existParentBatch.QuantityLogs.Add(new QuantityLog
-                {
-                    LogDate = DateTime.UtcNow.ToLocalTime().AddHours(7),
-                    LogType = 1,
-                    Notes = request.Notes,
-                    Quantity = request.ChickenDetailRequests.Sum(x => x.Quantity)
-                });
+                existParentBatch.QuantityLogs.Add(quantityLog);
 
                 foreach (var stage in stages)
                 {
